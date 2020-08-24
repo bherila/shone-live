@@ -4,6 +4,8 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CoffeesModule } from './coffees/coffees.module';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 import * as Joi from '@hapi/joi';
 
 @Module({
@@ -17,7 +19,6 @@ import * as Joi from '@hapi/joi';
         DATABASE_PORT: Joi.number().default(5432),
       }),
     }),
-    CoffeesModule,
     TypeOrmModule.forRoot({
       type: 'postgres', // type of our database
       host: process.env.DATABASE_HOST, // database host
@@ -28,6 +29,9 @@ import * as Joi from '@hapi/joi';
       autoLoadEntities: true, // models will be loaded automatically (you don't have to explicitly specify the entities: [] array)
       synchronize: true, // your entities will be synced with the database (ORM will map entity definitions to corresponding SQL tabled), every time you run the application (recommended: disable in the production)
     }),
+    AuthModule,
+    CoffeesModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
