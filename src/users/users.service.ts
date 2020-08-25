@@ -19,17 +19,18 @@ export class UsersService {
 
     findAll(paginationQuery: PaginationQueryDto) {
         const { limit, offset } = paginationQuery;
-        //TODO add error handling everywhere so if these values are missing
-        //we return helpful error not 500 server error
         return this.userRepository.find({
-            // relations: ['shows', 'products'] //TODO set up
+            relations: ['shows'],
             skip: offset,
             take: limit,
         });
     }
 
     async findOne(username: string): Promise<User | undefined> {
-        const user = await this.userRepository.findOne({ username })
+        const user = await this.userRepository.findOne({
+            where: {username: username},
+            relations: ['shows']
+        });
         if (!user) {
             throw new NotFoundException(`User with username: ${username} not found`);
         }

@@ -3,8 +3,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { CoffeesModule } from './coffees/coffees.module';
 import { AuthModule } from './auth/auth.module';
+import { CoffeesModule } from './coffees/coffees.module';
+import { ShowsModule } from './shows/shows.module';
 import { UsersModule } from './users/users.module';
 import * as Joi from '@hapi/joi';
 
@@ -31,6 +32,7 @@ import * as Joi from '@hapi/joi';
     }),
     AuthModule,
     CoffeesModule,
+    ShowsModule,
     UsersModule,
   ],
   controllers: [AppController],

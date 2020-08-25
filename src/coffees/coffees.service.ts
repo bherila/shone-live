@@ -73,6 +73,7 @@ export class CoffeesService {
         return this.coffeeRepository.remove(coffee);
     }
 
+    // todo: copy this transaction logic to all the services
     async recommendCoffee(coffee: Coffee) {
         const queryRunner = this.connection.createQueryRunner();
 
@@ -97,6 +98,7 @@ export class CoffeesService {
         }
     }
 
+    // this is for where casecade is used implicityl in object creation
     private async preloadFlavorByName(name: string): Promise<Flavor> {
         const existingFlavor = await this.flavorRepository.findOne({ name });
         if (existingFlavor) {

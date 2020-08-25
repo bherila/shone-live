@@ -1,19 +1,40 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { Show } from 'src/shows/entities/show.entity'
 
+// comments not yet supported by typeorm for psql, but can leave as notes for now
 @Entity() // sql table === 'user'
 export class User {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ unique: true })
+    @Column({
+        unique: true,
+        comment: "display username for use in the app"
+    })
     username: string;
 
-    @Column()
+    @Column({
+        comment: "bcrypt salted user submitted passord"
+    })
     password: string;
 
-    @Column()
+    @Column({
+        comment: "used for various authorizations sellers must be validated"
+    })
     seller: boolean;
 
-    @Column({ unique: true })
+    @Column({
+        unique: true,
+        comment: "email used for unique user identification"
+    })
     email: string;
+
+    @OneToMany(
+        type => Show,
+        show => show.user,  // what is "user" within the Show Entity
+        {
+            cascade: true
+        }
+    )
+    shows: Show[];
 }
