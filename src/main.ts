@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import * as expressListRoutes from 'express-list-routes'; // note package has vulnerabilities
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -15,5 +16,10 @@ async function bootstrap() {
     })
   );
   await app.listen(3000);
+
+  // todo, only run this in dev
+  const server = app.getHttpServer();
+  const router = server._events.request._router;
+  console.log(expressListRoutes({}, 'API:', router));
 }
 bootstrap();
