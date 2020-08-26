@@ -5,6 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { CoffeesModule } from './coffees/coffees.module';
+import { ProductsModule } from './products/products.module';
 import { ShowsModule } from './shows/shows.module';
 import { UsersModule } from './users/users.module';
 import * as Joi from '@hapi/joi';
@@ -32,6 +33,7 @@ import * as Joi from '@hapi/joi';
     }),
     AuthModule,
     CoffeesModule,
+    ProductsModule,
     ShowsModule,
     UsersModule,
   ],

@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 import { Show } from 'src/shows/entities/show.entity'
+import { Product } from "src/products/entities/product.entity";
 
 // comments not yet supported by typeorm for psql, but can leave as notes for now
 @Entity() // sql table === 'user'
@@ -37,4 +38,13 @@ export class User {
         }
     )
     shows: Show[];
+
+    @OneToMany(
+        type => Product,
+        product => product.user,  // what is "user" within the Product Entity
+        {
+            cascade: true
+        }
+    )
+    products: Product[];
 }

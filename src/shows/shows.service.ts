@@ -16,18 +16,21 @@ export class ShowsService {
         private readonly userRepository: Repository<User>,
     ) { }
 
+    // todo add nested route structure for these association lookups
+    // EG todo find all by user id (user/{id}/shows)
     findAll(paginationQuery: PaginationQueryDto) {
         const { limit, offset } = paginationQuery;
         return this.showRepository.find({
-            relations: ['user'],
+            relations: ['user', 'products'],
             skip: offset,
             take: limit,
         });
     }
 
+    // todo add nested route structure for these association lookups
     async findOne(id: string) {
         const show = await this.showRepository.findOne(id, {
-            relations: ['user'],
+            relations: ['user', 'products'],
           });
         if (!show) {
             throw new NotFoundException(`Show with id ${id} not found`);
@@ -37,7 +40,7 @@ export class ShowsService {
 
     async create(createShowDto: CreateShowDto) {
         const show = this.showRepository.create(createShowDto);
-        show.user = await this.userRepository.findOne(createShowDto.userId) ;
+        show.user = await this.userRepository.findOne(createShowDto.userId);
         return this.showRepository.save(show);
     }
 

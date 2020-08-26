@@ -20,7 +20,7 @@ export class UsersService {
     findAll(paginationQuery: PaginationQueryDto) {
         const { limit, offset } = paginationQuery;
         return this.userRepository.find({
-            relations: ['shows'],
+            relations: ['shows', 'products'],
             skip: offset,
             take: limit,
         });
@@ -29,7 +29,7 @@ export class UsersService {
     async findOne(username: string): Promise<User | undefined> {
         const user = await this.userRepository.findOne({
             where: {username: username},
-            relations: ['shows']
+            relations: ['shows', 'products']
         });
         if (!user) {
             throw new NotFoundException(`User with username: ${username} not found`);
