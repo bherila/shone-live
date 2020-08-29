@@ -22,7 +22,7 @@ export class ProductsService {
     findAll(paginationQuery: PaginationQueryDto) {
         const { limit, offset } = paginationQuery;
         return this.productRepository.find({
-            relations: ['user', 'show'],
+            relations: ['user', 'show', 'files'],
             skip: offset,
             take: limit,
         });
@@ -30,7 +30,7 @@ export class ProductsService {
 
     async findOne(id: string) {
         const product = await this.productRepository.findOne(id, {
-            relations: ['user', 'show'],
+            relations: ['user', 'show', 'files'],
         });
         if (!product) {
             throw new NotFoundException(`Product id: ${id} not found`)

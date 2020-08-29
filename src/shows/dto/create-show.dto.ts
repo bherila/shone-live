@@ -11,9 +11,6 @@ export class CreateShowDto {
     readonly length: number;
 
     @IsString()
-    readonly photo: string;
-
-    @IsString()
     readonly description: string;
 
     @IsString()

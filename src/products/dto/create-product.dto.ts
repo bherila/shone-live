@@ -8,9 +8,6 @@ export class CreateProductDto {
     readonly showId: number;
 
     @IsString()
-    readonly photo: string;
-
-    @IsString()
     readonly name: string;
 
     @IsString()

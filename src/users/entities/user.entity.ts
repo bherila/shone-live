@@ -1,4 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { File } from "src/files/entities/file.entity";
 import { Show } from 'src/shows/entities/show.entity'
 import { Product } from "src/products/entities/product.entity";
 
@@ -47,4 +48,13 @@ export class User {
         }
     )
     products: Product[];
+
+    @OneToMany(
+        type => File,
+        file => file.user,  // what is "user" within the File Entity
+        {
+            cascade: true
+        }
+    )
+    files: File[];
 }

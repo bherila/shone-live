@@ -1,17 +1,12 @@
-import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, ManyToMany } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, ManyToMany, OneToMany } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { Show } from 'src/shows/entities/show.entity';
+import { File } from "src/files/entities/file.entity";
 
 @Entity()
 export class Product {
     @PrimaryGeneratedColumn()
     id: number;
-
-    // todo add multiple associated photos
-    @Column({
-        comment: "url of product photo",
-    })
-    photo: string;
 
     @Column({
         comment: "product name",
@@ -52,4 +47,13 @@ export class Product {
         }
     )
     show: Show;
+
+    @OneToMany(
+        type => File,
+        file => file.product,  // what is "product" within the File Entity
+        {
+            cascade: true
+        }
+    )
+    files: File[];
 }

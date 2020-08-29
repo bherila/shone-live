@@ -1,6 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { Product } from 'src/products/entities/product.entity';
+import { File } from "src/files/entities/file.entity";
 
 @Entity()
 export class Show {
@@ -18,12 +19,6 @@ export class Show {
         comment: "anticipated/approximate length of show in seconds"
     })
     length: number;
-
-    // todo support multiple photos
-    @Column({
-        comment: "url to single preview photo"
-    })
-    photo: string;
 
     @Column({
         comment: "seller generated description of show"
@@ -55,4 +50,13 @@ export class Show {
         }
     )
     products: Product[];
+
+    @OneToMany(
+        type => File,
+        file => file.show,  // what is "show" within the File Entity
+        {
+            cascade: true
+        }
+    )
+    files: File[];
 }

@@ -18,10 +18,12 @@ export class ShowsService {
 
     // todo add nested route structure for these association lookups
     // EG todo find all by user id (user/{id}/shows)
+    // todo for findall on all objects maybe don't return nested
+    // todo need better filters and query params for all too
     findAll(paginationQuery: PaginationQueryDto) {
         const { limit, offset } = paginationQuery;
         return this.showRepository.find({
-            relations: ['user', 'products'],
+            relations: ['user', 'products', 'files'],
             skip: offset,
             take: limit,
         });
@@ -30,8 +32,8 @@ export class ShowsService {
     // todo add nested route structure for these association lookups
     async findOne(id: string) {
         const show = await this.showRepository.findOne(id, {
-            relations: ['user', 'products'],
-          });
+            relations: ['user', 'products', 'files'],
+        });
         if (!show) {
             throw new NotFoundException(`Show with id ${id} not found`);
         }
