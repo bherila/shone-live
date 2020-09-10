@@ -1,7 +1,7 @@
 import { Controller, Get, Post, UseInterceptors, UploadedFile, UploadedFiles, Param, Res, Query, Body, Delete } from '@nestjs/common';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { editFileName, imageFileFilter } from '../utils/file-uploading.utils';
+import { editFileName, imageFileFilter } from './utils/file-uploading.utils';
 import { FilesService } from './files.service';
 import { CreateFileDto } from './dto/create-file.dto';
 
