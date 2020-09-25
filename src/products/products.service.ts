@@ -7,6 +7,7 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { User } from 'src/users/entities/user.entity';
 import { Show } from 'src/shows/entities/show.entity';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
+import { StripeService } from 'src/stripe/stripe.service';
 
 @Injectable()
 export class ProductsService {
@@ -17,6 +18,7 @@ export class ProductsService {
         private readonly userRepository: Repository<User>,
         @InjectRepository(Show)
         private readonly showRepository: Repository<Show>,
+        private readonly stripeService: StripeService,
     ) { }
 
     findAll(paginationQuery: PaginationQueryDto) {
@@ -39,15 +41,26 @@ export class ProductsService {
     }
 
     async create(createProductDto: CreateProductDto) {
-        const product = this.productRepository.create(createProductDto);
-        product.user = await this.userRepository.findOne(createProductDto.userId);
-        product.show = await this.showRepository.findOne(createProductDto.showId);
-        return this.productRepository.save(product);
+        const show = await this.showRepository.findOne(createProductDto.showId);
+        const user = await this.userRepository.findOne(createProductDto.userId);
+        const stripeProduct = await this.stripeService.createStripeProduct(createProductDto, show.id, show.date.toString());
+        const product = this.productRepository.create({
+            id: stripeProduct.id,
+            show: show,
+            user: user,
+            // current_quantity: createProductDto.quantity,
+            ...createProductDto,
+        });
+        const savedProduct = await this.productRepository.save(product);
+        // this.stripeService.createStripePrice(savedProduct);
+        // refactor to take the product and then the SKU specific info
+        // this.stripeService.createStripeSku(savedProduct); // todo: this is an eg of async, but many of these functions tagged async are actually awaiting everything so are blocking and should be cleaned up
+        return savedProduct;
     }
 
     async update(id: string, updateProductDto: UpdateProductDto) {
         const product = await this.productRepository.preload({
-            id: +id,
+            id: id,
             userId: updateProductDto.userId, // todo see if can remove, should be included in DTO already
             showId: updateProductDto.showId, // todo see if can remove, should be included in DTO already
             ...updateProductDto,

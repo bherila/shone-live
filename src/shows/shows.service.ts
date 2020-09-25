@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, Inject } from '@nestjs/common';
 import { Show } from './entities/show.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -6,14 +6,20 @@ import { CreateShowDto } from './dto/create-show.dto';
 import { UpdateShowDto } from './dto/update-show.dto';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
 import { User } from 'src/users/entities/user.entity';
+import { Sku } from 'src/skus/entities/sku.entity';
+import { StripeService } from 'src/stripe/stripe.service';
 
 @Injectable()
 export class ShowsService {
     constructor(
         @InjectRepository(Show)
         private readonly showRepository: Repository<Show>,
+        @InjectRepository(Sku)
+        private readonly skuRepository: Repository<Sku>,
         @InjectRepository(User)
         private readonly userRepository: Repository<User>,
+        @Inject(StripeService)
+        private readonly stripeService: StripeService,
     ) { }
 
     // todo add nested route structure for these association lookups
@@ -23,7 +29,7 @@ export class ShowsService {
     findAll(paginationQuery: PaginationQueryDto) {
         const { limit, offset } = paginationQuery;
         return this.showRepository.find({
-            relations: ['user', 'products', 'files'],
+            relations: ['user', 'products', 'files', 'skus'],
             skip: offset,
             take: limit,
         });
@@ -32,7 +38,7 @@ export class ShowsService {
     // todo add nested route structure for these association lookups
     async findOne(id: string) {
         const show = await this.showRepository.findOne(id, {
-            relations: ['user', 'products', 'files'],
+            relations: ['user', 'products', 'files', 'skus'],
         });
         if (!show) {
             throw new NotFoundException(`Show with id ${id} not found`);
@@ -49,11 +55,20 @@ export class ShowsService {
     async update(id: string, updateShowDto: UpdateShowDto) {
         const show = await this.showRepository.preload({
             id: +id,
-            userId: updateShowDto.userId,
             ...updateShowDto,
         });
         if (!show) {
             throw new NotFoundException(`Show with id ${id} not found`);
+        }
+        // should prob move into Skus Service
+        if (updateShowDto.start) {
+            const skus = await this.skuRepository.find({ where: { show: +id } })
+            // probably need error handling to save failed records and skip
+            skus.map((sku) => this.stripeService.activateStripeSku(sku));
+        } else if (updateShowDto.end) {
+            const skus = await this.skuRepository.find({ where: { show: +id } })
+            // probably need error handling to save failed records and skip
+            skus.map((sku) => this.stripeService.deactivateStripeSku(sku));
         }
         return this.showRepository.save(show);
     }

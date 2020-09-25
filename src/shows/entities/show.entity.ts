@@ -2,6 +2,7 @@ import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'ty
 import { User } from 'src/users/entities/user.entity';
 import { Product } from 'src/products/entities/product.entity';
 import { File } from "src/files/entities/file.entity";
+import { Sku } from 'src/skus/entities/sku.entity';
 
 @Entity()
 export class Show {
@@ -11,9 +12,21 @@ export class Show {
     // ALL DATE-TIME WILL BE STORED IN UTC
     // TODO: WE MUST TRANSFORM ALL LOCAL TIMEZONE ON THE SERVER
     @Column({
-        comment: "datetime that show starts in eg 2020-12-01T00:00:00"
+        comment: "datetime that show is scheduled for in eg 2020-12-01T00:00:00"
+    })
+    date: Date;
+
+    @Column({
+        comment: "datetime that show actually started in eg 2020-12-01T00:00:00",
+        nullable: true,
     })
     start: Date;
+
+    @Column({
+        comment: "datetime that show actually ended in eg 2020-12-01T00:00:00",
+        nullable: true,
+    })
+    end: Date;
 
     @Column({
         comment: "anticipated/approximate length of show in seconds"
@@ -44,7 +57,7 @@ export class Show {
 
     @OneToMany(
         type => Product,
-        product => product.show,  // what is "show" within the Product Entity
+        product => product.show,
         {
             cascade: true
         }
@@ -52,8 +65,17 @@ export class Show {
     products: Product[];
 
     @OneToMany(
+        type => Sku,
+        sku => sku.show,
+        {
+            cascade: true
+        }
+    )
+    skus: Sku[];
+
+    @OneToMany(
         type => File,
-        file => file.show,  // what is "show" within the File Entity
+        file => file.show,
         {
             cascade: true
         }

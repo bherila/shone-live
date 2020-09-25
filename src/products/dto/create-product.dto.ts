@@ -12,10 +12,4 @@ export class CreateProductDto {
 
     @IsString()
     readonly description: string;
-
-    @IsNumber()
-    readonly price: number;
-
-    @IsNumber()
-    readonly quantity: number;
 }

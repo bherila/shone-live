@@ -1,11 +1,13 @@
-import { IsDateString, IsString, IsNumber } from "class-validator";
+import { IsDateString, IsString, IsNumber, IsOptional } from "class-validator";
 
 export class CreateShowDto {
     @IsNumber()
     readonly userId: number;
 
+    // this should inclue the time that the show starts at, as it's a datetime
+    // https://en.wikipedia.org/wiki/ISO_8601
     @IsDateString()
-    readonly start: string;
+    readonly date: string;
 
     @IsNumber()
     readonly length: number;
@@ -15,4 +17,12 @@ export class CreateShowDto {
 
     @IsString()
     readonly name: string;
+
+    @IsOptional()
+    @IsDateString()
+    readonly start: string;
+
+    @IsOptional()
+    @IsDateString()
+    readonly end: string;
 }

@@ -1,18 +1,9 @@
-import { IsString, IsBoolean, IsEmail, IsOptional, ValidateNested } from 'class-validator';
-import { Type } from 'class-transformer';
-import { StripeAddress } from 'src/stripe/dto/stripe-address.dto';
-import { StripeShippingAddress } from 'src/stripe/dto/stripe-shipping-address.dto';
+import { IsString, IsOptional, ValidateNested } from "class-validator";
+import { Type } from "class-transformer";
+import { StripeAddress } from "./stripe-address.dto";
+import { StripeShippingAddress } from "./stripe-shipping-address.dto";
 
-export class CreateUserDto {
-    @IsString()
-    readonly username: string;
-
-    @IsString()
-    readonly password: string;
-
-    @IsBoolean()
-    readonly seller: boolean;
-
+export class CreateStripeCustomerDto {
     @IsOptional()
     @ValidateNested()
     @Type(() => StripeAddress)
@@ -39,5 +30,5 @@ export class CreateUserDto {
 
     @IsOptional()
     @IsString()
-    readonly paymentMethod?: string;
+    readonly paymentMethod?: string; // returns as default source from stripe
 }

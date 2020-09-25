@@ -9,8 +9,17 @@ import { ProductsModule } from './products/products.module';
 import { ShowsModule } from './shows/shows.module';
 import { UsersModule } from './users/users.module';
 import { FilesModule } from './files/files.module';
+import { StripeModule } from './stripe/stripe.module';
+import { CardsModule } from './cards/cards.module';
+import { SkusModule } from './skus/skus.module';
+import { OrdersModule } from './orders/orders.module';
 
 import * as Joi from '@hapi/joi';
+
+let dbLogging = []; // presume this logs nothing, because this var can be boolean or string or array in the docs, which seems against strict typing!
+if (process.env.NODE_ENV === 'dev') {
+  dbLogging = ["error"];
+}
 
 @Module({
   imports: [
@@ -32,6 +41,7 @@ import * as Joi from '@hapi/joi';
       database: process.env.DATABASE_NAME, // name of our database,
       autoLoadEntities: true, // models will be loaded automatically (you don't have to explicitly specify the entities: [] array)
       synchronize: true, // your entities will be synced with the database (ORM will map entity definitions to corresponding SQL tabled), every time you run the application (recommended: disable in the production)
+      logging: dbLogging, // if in dev mode enable db logging
     }),
     AuthModule,
     CoffeesModule,
@@ -39,6 +49,10 @@ import * as Joi from '@hapi/joi';
     ProductsModule,
     ShowsModule,
     UsersModule,
+    StripeModule,
+    CardsModule,
+    SkusModule,
+    OrdersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,7 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToOne } from "typeorm";
 import { User } from "src/users/entities/user.entity";
 import { Product } from "src/products/entities/product.entity";
 import { Show } from "src/shows/entities/show.entity";
+import { Sku } from "src/skus/entities/sku.entity";
+import { Order } from "src/orders/entities/order.entity";
 
 // todo make it work on AWS, won't be trivial
 // maybe minio is easier for this since it supports
@@ -17,13 +19,13 @@ export class File {
     name: string;
 
     @Column({
-        comment: "the type of the associated object eg product, show, user"
+        comment: "the type of the associated object eg product, show, user, sku"
     })
     type: string;
 
     @ManyToOne(
         type => User,
-        user => user.files, // what is "file" within the User Entity
+        user => user.files,
         {
             cascade: ["insert", "update"]
         }
@@ -32,7 +34,7 @@ export class File {
 
     @ManyToOne(
         type => Product,
-        product => product.files, // what is "file" within the Product Entity
+        product => product.files,
         {
             cascade: ["insert", "update"]
         }
@@ -41,10 +43,29 @@ export class File {
 
     @ManyToOne(
         type => Show,
-        show => show.files, // what is "file" within the Show Entity
+        show => show.files,
         {
             cascade: ["insert", "update"]
         }
     )
     show: Show;
+
+    @ManyToOne(
+        type => Order,
+        order => order.files,
+        {
+            cascade: ["insert", "update"]
+        }
+    )
+    order: Order;
+
+
+    @OneToOne(
+        type => Sku,
+        sku => sku.file,
+        {
+            cascade: ["insert", "update"]
+        }
+    )
+    sku: Sku;
 }

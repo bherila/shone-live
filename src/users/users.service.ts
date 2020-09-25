@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, NotFoundException, HttpException, HttpStatus, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
@@ -7,14 +7,17 @@ import * as bcrypt from 'bcrypt';
 import PostgresErrorCode from '../database/postgres-error-code.enum';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { StripeService } from 'src/stripe/stripe.service';
 
 @Injectable()
 export class UsersService {
-    private readonly users: User[];
+    private readonly users: User[]; // TODO, get rid of this, not sure what it's for
 
     constructor(
         @InjectRepository(User)
         private readonly userRepository: Repository<User>,
+        @Inject(StripeService)
+        private readonly stripeService: StripeService,
     ) { }
 
     findAll(paginationQuery: PaginationQueryDto) {
@@ -39,10 +42,15 @@ export class UsersService {
 
     async create(createUserDto: CreateUserDto) {
         const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
+
+        // find out how to transform dto more efficiently
+        const stripeCustomer = await this.stripeService.createStripeCustomer(createUserDto);
+
         try {
             const user = this.userRepository.create({
                 ...createUserDto,
                 password: hashedPassword,
+                id: stripeCustomer.id,
             });
             return await this.userRepository.save(user);
         } catch (error) {
@@ -57,7 +65,7 @@ export class UsersService {
         // TODO add in lookup for associations like in coffees.service.ts
         try {
             const user = await this.userRepository.preload({
-                id: +id,
+                id: id,
                 ...updateUserDto,
                 //todo add associations
             })
@@ -67,6 +75,7 @@ export class UsersService {
             if (!user) {
                 throw new NotFoundException(`User #${id} not found`);
             }
+            this.stripeService.updateStripeCustomer(updateUserDto)
             return this.userRepository.save(user);
         } catch (error) { // prevent updating to an existing email (also refactor to have separate username and email!)
             if (error?.code === PostgresErrorCode.UniqueViolation) {
