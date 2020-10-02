@@ -5,26 +5,29 @@ import { Repository } from 'typeorm';
 import { StripeService } from 'src/stripe/stripe.service';
 import { User } from 'src/users/entities/user.entity';
 import { CreateCardDto } from './dto/create-card.dto';
+import { Address } from 'src/addresses/entities/address.entity';
 
 @Injectable()
 export class CardsService {
     constructor(
+        @InjectRepository(Address)
+        private readonly addressRepository: Repository<Address>,
         @InjectRepository(Card)
         private readonly cardRepository: Repository<Card>,
         @InjectRepository(User)
         private readonly userRepository: Repository<User>,
-        @Inject(StripeService)
         private readonly stripeService: StripeService,
     ) { }
 
     async create(createCardDto: CreateCardDto){
         const stripeCard = await this.stripeService.createStripeCard(createCardDto.user, createCardDto.stripeCardToken);
-        const user = await this.userRepository.findOne(createCardDto.user);
+        const user = await this.userRepository.findOne(createCardDto.user); // should be userId
+        const address = this.addressRepository.create(this.stripeService.getAddressFromCard(stripeCard));
         try {
             const card = this.cardRepository.create({
                 id: stripeCard.id,
+                address: address,
                 user: user,
-                // todo add and link address
                 // needed to cast all these below as any because there is a typing error in the stripe library
                 // check back if stripe will support order object with payment method/payment intent in future
                 address_zip_check: (stripeCard as any).address_zip_check,

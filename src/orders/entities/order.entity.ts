@@ -4,6 +4,7 @@ import { File } from "../../files/entities/file.entity";
 import { Card } from "src/cards/entities/card.entity";
 import { User } from "src/users/entities/user.entity";
 import { OrderStatus } from "../enums/order-status.enum";
+import { Address } from "src/addresses/entities/address.entity";
 
 @Entity()
 export class Order {
@@ -31,7 +32,7 @@ export class Order {
 
     // TODO: need to set up webhooks for enum update from stripe, basically these should never come directly from client unless/until client talks directly to stripe API
     @Column({
-        comment: "always comes from stripe via webhook for now, we have enum but don't need to use while stripe makes it. is one of [created, paid, canceled, fulfilled, returned]",
+        comment: "always comes from stripe via webhook for now, we have enum but dont need to use while stripe makes it. is one of [created, paid, canceled, fulfilled, returned]",
         // nullable: true, // since we send to stripe first not sure if it should be nullable, but also might sometimes want to save failed records in the future w/o status (or maybe add our own status of failed_on_stripe)
         enum: OrderStatus,
     })
@@ -95,6 +96,12 @@ export class Order {
         }
     )
     files: File[];
+
+    @ManyToOne(
+        type => Address,
+        address => address.orders,
+    )
+    address: Address;
 
     @ManyToOne(
         type => Card,

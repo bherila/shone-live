@@ -1,8 +1,8 @@
 import { IsString, IsNumber } from "class-validator";
 
 export class CreateProductDto {
-    @IsNumber()
-    readonly userId: number;
+    @IsString()
+    readonly userId: string;
 
     @IsNumber()
     readonly showId: number;

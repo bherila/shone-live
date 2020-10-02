@@ -1,8 +1,8 @@
 import { IsDateString, IsString, IsNumber, IsOptional } from "class-validator";
 
 export class CreateShowDto {
-    @IsNumber()
-    readonly userId: number;
+    @IsString()
+    readonly userId: string;
 
     // this should inclue the time that the show starts at, as it's a datetime
     // https://en.wikipedia.org/wiki/ISO_8601

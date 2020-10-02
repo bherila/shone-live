@@ -13,6 +13,7 @@ import { StripeModule } from './stripe/stripe.module';
 import { CardsModule } from './cards/cards.module';
 import { SkusModule } from './skus/skus.module';
 import { OrdersModule } from './orders/orders.module';
+import { AddressesModule } from './addresses/addresses.module';
 
 import * as Joi from '@hapi/joi';
 
@@ -53,6 +54,7 @@ if (process.env.NODE_ENV === 'dev') {
     CardsModule,
     SkusModule,
     OrdersModule,
+    AddressesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

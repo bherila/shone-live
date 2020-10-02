@@ -29,8 +29,7 @@ export class CreateUserDto {
     readonly last_name: string;
 
     @IsString()
-    @IsOptional()
-    readonly phone?: string;
+    readonly phone: string;
 
     @IsOptional()
     @ValidateNested()

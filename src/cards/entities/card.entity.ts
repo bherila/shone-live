@@ -1,6 +1,7 @@
 import { Entity, Column, OneToMany, PrimaryColumn, ManyToOne } from "typeorm";
 import { User } from "src/users/entities/user.entity";
 import { Order } from "src/orders/entities/order.entity";
+import { Address } from "src/addresses/entities/address.entity";
 
 @Entity()
 export class Card {
@@ -62,7 +63,16 @@ export class Card {
     })
     name: string;
 
-    // TODO: add address and then address association
+
+    @ManyToOne(
+        type => Address,
+        Address => Address.cards,
+        {
+            cascade: ["insert", "update"],
+            nullable: true,
+        }
+    )
+    address: Address;
 
     @ManyToOne(
         type => User,

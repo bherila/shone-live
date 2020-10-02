@@ -18,7 +18,6 @@ export class ShowsService {
         private readonly skuRepository: Repository<Sku>,
         @InjectRepository(User)
         private readonly userRepository: Repository<User>,
-        @Inject(StripeService)
         private readonly stripeService: StripeService,
     ) { }
 

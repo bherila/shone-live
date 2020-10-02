@@ -4,6 +4,7 @@ import { Show } from 'src/shows/entities/show.entity'
 import { Product } from "src/products/entities/product.entity";
 import { Card } from "src/cards/entities/card.entity";
 import { Order } from "src/orders/entities/order.entity";
+import { UserAddress } from "src/user-addresses/user-address.entity";
 
 // comments not yet supported by typeorm for psql, but can leave as notes for now
 @Entity() // sql table === 'user'
@@ -95,4 +96,14 @@ export class User {
         order => order.user
     )
     orders: Order[];
+
+
+    @OneToMany(
+        type => UserAddress,
+        userAddress => userAddress.user,
+        {
+            cascade: true,
+        }
+    )
+    userAddresses: UserAddress[];
 }

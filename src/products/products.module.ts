@@ -5,13 +5,22 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Product } from './entities/product.entity';
 import { User } from 'src/users/entities/user.entity';
 import { Show } from 'src/shows/entities/show.entity';
-import { StripeService } from 'src/stripe/stripe.service';
 import { Sku } from 'src/skus/entities/sku.entity';
 import { File } from "../files/entities/file.entity";
+import { StripeModule } from 'src/stripe/stripe.module';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Product, User, Show, Sku, File])],
+    imports: [
+        TypeOrmModule.forFeature([
+            Product,
+            User,
+            Show,
+            Sku,
+            File]
+        ),
+        StripeModule,
+    ],
     controllers: [ProductsController],
-    providers: [ProductsService, StripeService]
+    providers: [ProductsService]
 })
-export class ProductsModule {}
+export class ProductsModule { }

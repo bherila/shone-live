@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { StripeService } from 'src/stripe/stripe.service';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -9,6 +9,7 @@ import { OrderSku } from 'src/order-skus/entities/order-sku.entity';
 import { Sku } from 'src/skus/entities/sku.entity';
 import { OrderStatus } from './enums/order-status.enum';
 import { Card } from 'src/cards/entities/card.entity';
+import { AddressesService } from 'src/addresses/addresses.service';
 
 @Injectable()
 export class OrdersService {
@@ -24,18 +25,20 @@ export class OrdersService {
         @InjectRepository(Card)
         private readonly cardRepository: Repository<Card>,
         private readonly stripeService: StripeService,
+        private readonly addressesService: AddressesService,
     ) { }
+
     // TODO: need to set up webhooks for enum update from stripe after order is paid
     async create(createOrderDto: CreateOrderDto) {
         const user = await this.userRepository.findOne(createOrderDto.user);
         const card = await this.cardRepository.findOne(createOrderDto.card);
         const stripeOrder = await this.stripeService.createStripeOrder(createOrderDto, user);
         const sku = await this.skuRepository.findOne(createOrderDto.sku);
-        // save all the relevant fields down from stripe
-        // TODO:associate shipping address
+        const savedAddress = await this.addressesService.create(this.stripeService.getAddressFromOrder(stripeOrder), user);
 
         const order = await this.orderRepository.create({
             id: stripeOrder.id,
+            address: savedAddress,
             user: user,
             status: stripeOrder.status,
             stripe_created: this.stripeService.secondsToISOString(stripeOrder.created),
@@ -47,11 +50,13 @@ export class OrdersService {
         const savedOrder = await this.orderRepository.save(order);
 
         // save the link of sku to order (only 1 for now)
-        this.orderSkuRepository.create({
+        const orderSku = await this.orderSkuRepository.create({
             order: savedOrder,
             sku: sku,
             quantity: createOrderDto.quantity,
         })
+        this.orderSkuRepository.save(orderSku);
+
         // pay the order
         const paidOrder = await this.stripeService.payStripeOrder(stripeOrder.id, createOrderDto.user);
         // add code for when paying order fails
@@ -59,7 +64,7 @@ export class OrdersService {
         savedOrder.paid = this.stripeService.secondsToDate(paidOrder.status_transitions.paid);
 
         sku.current_quantity -= createOrderDto.quantity;
-        this.userRepository.save(sku);
+        this.skuRepository.save(sku);
         return this.orderRepository.save(savedOrder); //is there a more correct way to do this?
     }
 }

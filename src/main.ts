@@ -20,7 +20,7 @@ async function bootstrap() {
   if (process.env.NODE_ENV === 'dev') {
     const server = app.getHttpServer();
     const router = server._events.request._router;
-    console.log(expressListRoutes({}, 'API:', router));
+    console.log(expressListRoutes({}, 'you are in DEV mode: API:', router));
   }
 }
 bootstrap();
