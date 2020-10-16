@@ -1,95 +1,96 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-
-import { File } from "src/files/entities/file.entity";
+import { File } from 'src/files/entities/file.entity';
 import { Order } from 'src/orders/entities/order.entity';
 import { Product } from 'src/products/entities/product.entity';
 import { Sku } from 'src/skus/entities/sku.entity';
 import { User } from 'src/users/entities/user.entity';
+import {
+  Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Show {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    // ALL DATE-TIME WILL BE STORED IN UTC
-    // TODO: WE MUST TRANSFORM ALL LOCAL TIMEZONE ON THE SERVER
-    @Column({
-        comment: "datetime that show is scheduled for in eg 2020-12-01T00:00:00"
-    })
-    date: Date;
+  // ALL DATE-TIME WILL BE STORED IN UTC
+  // TODO: WE MUST TRANSFORM ALL LOCAL TIMEZONE ON THE SERVER
+  @Column({
+    comment: 'datetime that show is scheduled for in eg 2020-12-01T00:00:00',
+  })
+  date: Date;
 
-    @Column({
-        comment: "datetime that show actually started in eg 2020-12-01T00:00:00",
-        nullable: true,
-    })
-    start: Date;
+  @Column({
+    comment: 'datetime that show actually started in eg 2020-12-01T00:00:00',
+    nullable: true,
+  })
+  start: Date;
 
-    @Column({
-        comment: "datetime that show actually ended in eg 2020-12-01T00:00:00",
-        nullable: true,
-    })
-    end: Date;
+  @Column({
+    comment: 'datetime that show actually ended in eg 2020-12-01T00:00:00',
+    nullable: true,
+  })
+  end: Date;
 
-    @Column({
-        comment: "anticipated/approximate length of show in seconds"
-    })
-    length: number;
+  @Column({
+    comment: 'anticipated/approximate length of show in seconds',
+  })
+  length: number;
 
-    @Column({
-        comment: "seller generated description of show"
-    })
-    description: string;
+  @Column({
+    comment: 'seller generated description of show',
+  })
+  description: string;
 
-    // todo, may want to allow recurring show names
-    @Column({
-        comment: "seller generated name of show"
-    })
-    name: string;
+  // todo, may want to allow recurring show names
+  @Column({
+    comment: 'seller generated name of show',
+  })
+  name: string;
 
-    // if many to many we we use join table and note it on the owner
-    // @JoinTable() // 👈 Join the 2 tables - only the OWNER-side does this
-    @ManyToOne(
-        type => User,
-        user => user.shows, // what is "show" within the User Entity
-        {
-            cascade: ["insert", "update"]
-        }
-    )
-    user: User;
+  // if many to many we we use join table and note it on the owner
+  // @JoinTable() // 👈 Join the 2 tables - only the OWNER-side does this
+  @ManyToOne(
+    type => User,
+    user => user.shows, // what is "show" within the User Entity
+    {
+      cascade: ['insert', 'update'],
+    },
+  )
+  user: User;
 
-    @OneToMany(
-        type => Product,
-        product => product.show,
-        {
-            cascade: true
-        }
-    )
-    products: Product[];
+  @OneToMany(
+    type => Product,
+    product => product.show,
+    {
+      cascade: true,
+    },
+  )
+  products: Product[];
 
-    @OneToMany(
-        type => Sku,
-        sku => sku.show,
-        {
-            cascade: true
-        }
-    )
-    skus: Sku[];
+  @OneToMany(
+    type => Sku,
+    sku => sku.show,
+    {
+      cascade: true,
+    },
+  )
+  skus: Sku[];
 
-    @OneToMany(
-        type => Order,
-        order => order.show,
-        {
-            cascade: true
-        }
-    )
-    orders: Order[];
+  @OneToMany(
+    type => Order,
+    order => order.show,
+    {
+      cascade: true,
+    },
+  )
+  orders: Order[];
 
-    @OneToMany(
-        type => File,
-        file => file.show,
-        {
-            cascade: true
-        }
-    )
-    files: File[];
+  @OneToMany(
+    type => File,
+    file => file.show,
+    {
+      cascade: true,
+    },
+  )
+  files: File[];
 }

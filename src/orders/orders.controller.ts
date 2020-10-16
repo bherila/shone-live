@@ -1,5 +1,7 @@
-import { Controller, Post, Body, Get, Query } from '@nestjs/common';
 import { ShowGateway } from 'src/shows/show.gateway';
+
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+
 import { CreateOrderDto } from './dto/create-order.dto';
 import { OrdersQueryDto } from './dto/orders-query.dto';
 import { OrdersService } from './orders.service';
@@ -13,7 +15,7 @@ export class OrdersController {
 
   @Get()
   async findAll(@Query() getOrderDto: OrdersQueryDto) {
-      return this.ordersService.findAll(getOrderDto);
+    return this.ordersService.findAll(getOrderDto);
   }
 
   // create

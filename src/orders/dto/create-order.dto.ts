@@ -1,37 +1,38 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString, ValidateNested, isString } from "class-validator";
-
-import { StripeAddress } from "src/stripe/dto/stripe-address.dto";
-import { Type } from "class-transformer";
+import { Type } from 'class-transformer';
+import {
+  IsNotEmpty, IsNumber, IsOptional, IsString, ValidateNested,
+} from 'class-validator';
+import { StripeAddress } from 'src/stripe/dto/stripe-address.dto';
 
 export class CreateOrderDto {
-    @IsNumber()
-    quantity: number; // the total quantity of the one sku, will need hash once multiple SKUs supported
+  @IsNumber()
+  quantity: number; // the total quantity of the one sku, will need hash once multiple SKUs supported
 
-    @IsNotEmpty()
-    @ValidateNested()
-    @Type(() => StripeAddress)
-    readonly shipping: StripeAddress;
+  @IsNotEmpty()
+  @ValidateNested()
+  @Type(() => StripeAddress)
+  readonly shipping: StripeAddress;
 
-    @IsOptional()
-    @IsString()
-    email: string;
+  @IsOptional()
+  @IsString()
+  email: string;
 
-    @IsOptional()
-    @IsString()
-    shipping_name: string;
+  @IsOptional()
+  @IsString()
+  shipping_name: string;
 
-    @IsString()
-    sku: string; //id, right now only one SKU at a time
+  @IsString()
+  sku: string; //id, right now only one SKU at a time
 
-    @IsOptional()
-    files: string[]; // array of file links
+  @IsOptional()
+  files: string[]; // array of file links
 
-    @IsString()
-    card: string; //id TODO: rename to cardId
+  @IsString()
+  card: string; //id TODO: rename to cardId
 
-    @IsString()
-    user: string; //id TODO: rename to userId
+  @IsString()
+  user: string; //id TODO: rename to userId
 
-    @IsNumber()
-    showId: number;
+  @IsNumber()
+  showId: number;
 }

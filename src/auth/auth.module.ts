@@ -1,20 +1,21 @@
-import { Module } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { UsersModule } from '../users/users.module';
-import { PassportModule } from '@nestjs/passport';
-import { LocalStrategy } from './local.strategy';
-import { JwtStrategy } from './jwt.strategy';
-import { JwtModule } from '@nestjs/jwt';
-import { ConfigModule } from '@nestjs/config';
-import * as Joi from '@hapi/joi';
 import { User } from 'src/users/entities/user.entity';
+
+import * as Joi from '@hapi/joi';
+import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
+import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
+
+import { AuthService } from './auth.service';
+import { JwtStrategy } from './jwt.strategy';
+import { LocalStrategy } from './local.strategy';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       validationSchema: Joi.object({
-        JWT_SECRET_KEY: Joi.required()
+        JWT_SECRET_KEY: Joi.required(),
       }),
     }),
     PassportModule.register({ defaultStrategy: 'jwt' }),
@@ -27,4 +28,4 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   providers: [AuthService, LocalStrategy, JwtStrategy],
   exports: [AuthService],
 })
-export class AuthModule { }
+export class AuthModule {}

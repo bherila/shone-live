@@ -1,14 +1,16 @@
+import { Order } from 'src/orders/entities/order.entity';
+import { Product } from 'src/products/entities/product.entity';
+import { Show } from 'src/shows/entities/show.entity';
+import { Sku } from 'src/skus/entities/sku.entity';
+import { User } from 'src/users/entities/user.entity';
+
 import { Module } from '@nestjs/common';
+import { MulterModule } from '@nestjs/platform-express';
+import { TypeOrmModule } from '@nestjs/typeorm';
+
+import { File } from './entities/file.entity';
 import { FilesController } from './files.controller';
 import { FilesService } from './files.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { File } from './entities/file.entity';
-import { User } from 'src/users/entities/user.entity';
-import { MulterModule } from '@nestjs/platform-express';
-import { Show } from 'src/shows/entities/show.entity';
-import { Product } from 'src/products/entities/product.entity';
-import { Sku } from "src/skus/entities/sku.entity";
-import { Order } from 'src/orders/entities/order.entity';
 
 @Module({
   imports: [
@@ -18,6 +20,6 @@ import { Order } from 'src/orders/entities/order.entity';
     TypeOrmModule.forFeature([File, User, Product, Show, Sku, Order]),
   ],
   controllers: [FilesController],
-  providers: [FilesService]
+  providers: [FilesService],
 })
-export class FilesModule { }
+export class FilesModule {}

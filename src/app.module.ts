@@ -1,6 +1,12 @@
-import * as Joi from '@hapi/joi';
+import { join } from 'path';
 
+import * as Joi from '@hapi/joi';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import {
+  ServeStaticModule,
+} from '@nestjs/serve-static/dist/serve-static.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AddressesModule } from './addresses/addresses.module';
 import { AlertModule } from './alert/alert.module';
@@ -9,18 +15,14 @@ import { AuthModule } from './auth/auth.module';
 import { CardsModule } from './cards/cards.module';
 import { ChatModule } from './chat/chat.module';
 import { CoffeesModule } from './coffees/coffees.module';
-import { ConfigModule } from '@nestjs/config';
 import { FilesModule } from './files/files.module';
 import { LoggerMiddleware } from './logger.middleware';
 import { OrdersModule } from './orders/orders.module';
 import { ProductsModule } from './products/products.module';
-import { ServeStaticModule } from '@nestjs/serve-static/dist/serve-static.module';
 import { ShowsModule } from './shows/shows.module';
 import { SkusModule } from './skus/skus.module';
 import { StripeModule } from './stripe/stripe.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
-import { join } from 'path';
 
 let dbLogging = []; // presume this logs nothing, because this var can be boolean or string or array in the docs, which seems against strict typing!
 if (process.env.NODE_ENV === 'dev') {
@@ -68,11 +70,8 @@ if (process.env.NODE_ENV === 'dev') {
   ],
   controllers: [AppController],
 })
-
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(LoggerMiddleware)
-      .forRoutes('*');
+    consumer.apply(LoggerMiddleware).forRoutes('*');
   }
 }

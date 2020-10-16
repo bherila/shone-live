@@ -1,14 +1,10 @@
-import {
-  OnGatewayConnection,
-  OnGatewayDisconnect,
-  OnGatewayInit,
-  SubscribeMessage,
-  WebSocketGateway,
-  WebSocketServer,
-} from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 
 import { Logger } from '@nestjs/common';
+import {
+  OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit, SubscribeMessage,
+  WebSocketGateway, WebSocketServer,
+} from '@nestjs/websockets';
 
 // here follow what was set up in chats to make the show part work
 @WebSocketGateway(3002, {
@@ -22,7 +18,7 @@ export class ShowGateway
 
   @WebSocketServer() wss: Server;
   // todo: fine to have in memory but should also log in the DB (create entity)
-  users: number = 0;
+  users = 0;
 
   afterInit(server: Server) {
     this.logger.log('initialized');
@@ -65,5 +61,4 @@ export class ShowGateway
   // inventory updates should be emitted to all users however
   // for the seller channel for now it can just be their ID+SHOW-ID that's secure enough
   // the seller gets the full detail of the sale, all other users just get an inventory update push
-
 }

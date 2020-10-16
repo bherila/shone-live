@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+
 import { AlertGateway } from './alert.gateway';
 
 describe('AlertGateway', () => {

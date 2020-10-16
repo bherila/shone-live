@@ -1,14 +1,10 @@
-import {
-  OnGatewayConnection,
-  OnGatewayDisconnect,
-  OnGatewayInit,
-  SubscribeMessage,
-  WebSocketGateway,
-  WebSocketServer,
-} from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 
 import { Logger } from '@nestjs/common';
+import {
+  OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit, SubscribeMessage,
+  WebSocketGateway, WebSocketServer,
+} from '@nestjs/websockets';
 
 // TODO add connections entity to save all the user with show, connected, disconnected
 @WebSocketGateway(3002, {
@@ -19,9 +15,9 @@ import { Logger } from '@nestjs/common';
 export class ChatGateway
   implements OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit {
   private logger: Logger = new Logger('ChatGateway');
-  
-    @WebSocketServer() wss: Server;
-    users: number = 0;
+
+  @WebSocketServer() wss: Server;
+  users = 0;
 
   afterInit(server: Server) {
     this.logger.log('initialized');

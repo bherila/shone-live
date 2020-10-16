@@ -1,13 +1,15 @@
-import { Injectable, NotFoundException, Inject } from '@nestjs/common';
-import { Show } from './entities/show.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { CreateShowDto } from './dto/create-show.dto';
-import { UpdateShowDto } from './dto/update-show.dto';
-import { User } from 'src/users/entities/user.entity';
 import { Sku } from 'src/skus/entities/sku.entity';
 import { StripeService } from 'src/stripe/stripe.service';
+import { User } from 'src/users/entities/user.entity';
+import { Repository } from 'typeorm';
+
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+
+import { CreateShowDto } from './dto/create-show.dto';
 import { ShowsQueryDto } from './dto/shows-query.dto';
+import { UpdateShowDto } from './dto/update-show.dto';
+import { Show } from './entities/show.entity';
 
 @Injectable()
 export class ShowsService {
@@ -42,7 +44,6 @@ export class ShowsService {
       take: limit,
     });
   }
-
 
   // todo add nested route structure for these association lookups
   async findOne(id: string) {

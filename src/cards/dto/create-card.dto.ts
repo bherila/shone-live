@@ -1,9 +1,9 @@
-import { IsString } from "class-validator";
+import { IsString } from 'class-validator';
 
 export class CreateCardDto {
-    @IsString()
-    readonly user: string;
+  @IsString()
+  readonly user: string;
 
-    @IsString()
-    readonly stripeCardToken: string;
+  @IsString()
+  readonly stripeCardToken: string;
 }
