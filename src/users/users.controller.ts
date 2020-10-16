@@ -1,10 +1,22 @@
-import { Controller, Post, Body, Query, Param, Get, Patch, Delete } from "@nestjs/common";
+import {
+    Controller,
+    Post,
+    Body,
+    Query,
+    Param,
+    Get,
+    Patch,
+    Delete,
+    UseGuards
+} from "@nestjs/common";
 import { UsersService } from "./users.service";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { PaginationQueryDto } from "src/common/dto/pagination-query.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
+import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
 
 @Controller('users')
+@UseGuards(JwtAuthGuard)
 export class UsersController {
     constructor(private readonly usersService: UsersService) { }
 
@@ -26,10 +38,7 @@ export class UsersController {
 
     @Post()
     async create(@Body() createUserDto: CreateUserDto) {
-        const user = await this.usersService.create(createUserDto);
-        // todo move sanitization to service (can have common function)
-        const { password, ...result } = user;
-        return result;
+        return await this.usersService.create(createUserDto);
     }
 
     @Patch(':id')

@@ -9,22 +9,16 @@ import { Card } from 'src/cards/entities/card.entity';
 import { Order } from 'src/orders/entities/order.entity';
 import { UserAddress } from 'src/user-addresses/user-address.entity';
 import { StripeModule } from 'src/stripe/stripe.module';
-
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([
-      User,
-      Show,
-      Product,
-      Card,
-      Order,
-      UserAddress
-    ]),
+    TypeOrmModule.forFeature([User, Show, Product, Card, Order, UserAddress]),
+    AuthModule,
     StripeModule,
   ],
   controllers: [UsersController],
   providers: [UsersService],
   exports: [UsersService],
 })
-export class UsersModule { }
+export class UsersModule {}

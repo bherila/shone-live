@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="http://localhost:3002/websockets/socket.io.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      href="https://unpkg.com/vue-simple-notify/dist/vue-simple-notify.min.css"
+    />
+    <script src="https://unpkg.com/vue-simple-notify/dist/vue-simple-notify.min.js"></script>
+  </head>
+
+  <body>
+    <div id="v-app">
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <h1>merchant order websocket testing</h1>
+          </div>
+          <div class="col">
+            <vue-simple-notify :items="alerts"></vue-simple-notify>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    Vue.component('VueSimpleNotify', VueSimpleNotify.VueSimpleNotify);
+    var app = new Vue({
+      el: '#v-app',
+      data: {
+        room: '2', // TODO ALWAYS HARDCODE EXAMPLE SHOW ID HERE FOR TESTING
+        alerts: [],
+        socket: { show: null },
+      },
+      methods: {
+        recieveOrder(msg) {
+          this.alerts.push(msg);
+        },
+      },
+      created() {
+        this.socket.show = io('http://localhost:3002/show', {
+          path: '/websockets',
+        });
+        this.socket.show.on('connect', () => {
+          console.log('connected to socket');
+          this.socket.show.emit('joinRoom', this.room);
+        });
+        this.socket.show.on('order', msg => {
+          console.log(msg);
+          this.recieveOrder(msg);
+        });
+      },
+    });
+  </script>
+</html>

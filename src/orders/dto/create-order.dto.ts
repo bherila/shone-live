@@ -1,6 +1,7 @@
-import { Type } from "class-transformer";
-import { IsOptional, IsString, IsNumber, ValidateNested, IsNotEmpty } from "class-validator";
+import { IsNotEmpty, IsNumber, IsOptional, IsString, ValidateNested, isString } from "class-validator";
+
 import { StripeAddress } from "src/stripe/dto/stripe-address.dto";
+import { Type } from "class-transformer";
 
 export class CreateOrderDto {
     @IsNumber()
@@ -26,8 +27,11 @@ export class CreateOrderDto {
     files: string[]; // array of file links
 
     @IsString()
-    card: string; //id
+    card: string; //id TODO: rename to cardId
 
     @IsString()
-    user: string; //id
+    user: string; //id TODO: rename to userId
+
+    @IsNumber()
+    showId: number;
 }

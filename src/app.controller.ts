@@ -1,6 +1,5 @@
 import { Controller, Get, Request, Post, UseGuards } from '@nestjs/common';
 import { LocalAuthGuard } from './auth/local-auth.guard';
-import { AppService } from './app.service';
 import { AuthService } from './auth/auth.service';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 
@@ -8,15 +7,9 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
 export class AppController {
   constructor(
     private authService: AuthService,
-    private readonly appService: AppService,
   ) { }
 
   // TODO remove and factor out all routes from this base controller
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
-  }
-
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
   async login(@Request() req) {

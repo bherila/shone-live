@@ -1,8 +1,10 @@
-import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'typeorm';
-import { User } from 'src/users/entities/user.entity';
-import { Product } from 'src/products/entities/product.entity';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+
 import { File } from "src/files/entities/file.entity";
+import { Order } from 'src/orders/entities/order.entity';
+import { Product } from 'src/products/entities/product.entity';
 import { Sku } from 'src/skus/entities/sku.entity';
+import { User } from 'src/users/entities/user.entity';
 
 @Entity()
 export class Show {
@@ -72,6 +74,15 @@ export class Show {
         }
     )
     skus: Sku[];
+
+    @OneToMany(
+        type => Order,
+        order => order.show,
+        {
+            cascade: true
+        }
+    )
+    orders: Order[];
 
     @OneToMany(
         type => File,

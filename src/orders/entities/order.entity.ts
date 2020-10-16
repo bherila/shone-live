@@ -1,10 +1,12 @@
-import { Entity, PrimaryColumn, Column, OneToMany, ManyToMany, ManyToOne, OneToOne } from "typeorm";
-import { OrderSku } from "../../order-skus/entities/order-sku.entity";
-import { File } from "../../files/entities/file.entity";
-import { Card } from "src/cards/entities/card.entity";
-import { User } from "src/users/entities/user.entity";
-import { OrderStatus } from "../enums/order-status.enum";
+import { Column, Entity, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryColumn } from "typeorm";
+
 import { Address } from "src/addresses/entities/address.entity";
+import { Card } from "src/cards/entities/card.entity";
+import { File } from "../../files/entities/file.entity";
+import { OrderSku } from "../../order-skus/entities/order-sku.entity";
+import { OrderStatus } from "../enums/order-status.enum";
+import { Show } from "src/shows/entities/show.entity";
+import { User } from "src/users/entities/user.entity";
 
 @Entity()
 export class Order {
@@ -102,6 +104,12 @@ export class Order {
         address => address.orders,
     )
     address: Address;
+
+    @ManyToOne(
+        type => Show,
+        show => show.orders,
+    )
+    show: Show;
 
     @ManyToOne(
         type => Card,

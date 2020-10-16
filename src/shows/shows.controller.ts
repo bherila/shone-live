@@ -1,17 +1,18 @@
-import { Controller, Get, Param, Post, Body, Patch, Delete, Query, NotFoundException } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Patch, Delete, Query, UseGuards } from '@nestjs/common';
 import { ShowsService } from './shows.service';
 import { CreateShowDto } from './dto/create-show.dto';
+import { ShowsQueryDto } from './dto/shows-query.dto';
 import { UpdateShowDto } from './dto/update-show.dto';
-import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('shows')
+@UseGuards(JwtAuthGuard)
 export class ShowsController {
     constructor(private readonly showService: ShowsService) { }
 
     @Get()
-    async findAll(@Query() paginationQuery: PaginationQueryDto) {
-        const { limit, offset } = paginationQuery;
-        return this.showService.findAll(paginationQuery);
+    async findAll(@Query() getShowDto: ShowsQueryDto) {
+        return this.showService.findAll(getShowDto);
     }
 
     @Get(':id')
