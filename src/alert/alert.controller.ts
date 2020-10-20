@@ -1,7 +1,9 @@
 import { Body, Controller, HttpCode, Post } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
 import { AlertGateway } from './alert.gateway';
 
+@ApiTags('alert')
 @Controller('alert')
 export class AlertController {
   constructor(private alertGateway: AlertGateway) {}

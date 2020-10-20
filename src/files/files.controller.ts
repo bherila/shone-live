@@ -5,13 +5,15 @@ import {
   UploadedFiles, UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+// todo: update file uploader to save url (filepath for now in this dir)
+// todo: add a get files endpoint with query params
+import { ApiTags } from '@nestjs/swagger';
 
 import { CreateFileDto } from './dto/create-file.dto';
 import { FilesService } from './files.service';
 import { editFileName, imageFileFilter } from './utils/file-uploading.utils';
 
-// todo: update file uploader to save url (filepath for now in this dir)
-// todo: add a get files endpoint with query params
+@ApiTags('files')
 @Controller('files')
 export class FilesController {
   constructor(private readonly filesService: FilesService) {}

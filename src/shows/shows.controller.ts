@@ -3,12 +3,14 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import {
   Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
 import { CreateShowDto } from './dto/create-show.dto';
 import { ShowsQueryDto } from './dto/shows-query.dto';
 import { UpdateShowDto } from './dto/update-show.dto';
 import { ShowsService } from './shows.service';
 
+@ApiTags('shows')
 @Controller('shows')
 @UseGuards(JwtAuthGuard)
 export class ShowsController {
