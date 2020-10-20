@@ -1,15 +1,16 @@
 import { Module } from '@nestjs/common';
-import { UsersService } from './users.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+
+import { AuthModule } from '../auth/auth.module';
+import { Card } from '../cards/entities/card.entity';
+import { Order } from '../orders/entities/order.entity';
+import { Product } from '../products/entities/product.entity';
+import { Show } from '../shows/entities/show.entity';
+import { StripeModule } from '../stripe/stripe.module';
+import { UserAddress } from '../user-addresses/user-address.entity';
 import { User } from './entities/user.entity';
 import { UsersController } from './users.controller';
-import { Product } from 'src/products/entities/product.entity';
-import { Show } from 'src/shows/entities/show.entity';
-import { Card } from 'src/cards/entities/card.entity';
-import { Order } from 'src/orders/entities/order.entity';
-import { UserAddress } from 'src/user-addresses/user-address.entity';
-import { StripeModule } from 'src/stripe/stripe.module';
-import { AuthModule } from 'src/auth/auth.module';
+import { UsersService } from './users.service';
 
 @Module({
   imports: [

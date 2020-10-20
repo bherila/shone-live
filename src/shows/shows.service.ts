@@ -1,11 +1,11 @@
-import { Sku } from 'src/skus/entities/sku.entity';
-import { StripeService } from 'src/stripe/stripe.service';
-import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
 
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
+import { Sku } from '../skus/entities/sku.entity';
+import { StripeService } from '../stripe/stripe.service';
+import { User } from '../users/entities/user.entity';
 import { CreateShowDto } from './dto/create-show.dto';
 import { ShowsQueryDto } from './dto/shows-query.dto';
 import { UpdateShowDto } from './dto/update-show.dto';

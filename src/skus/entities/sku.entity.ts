@@ -1,18 +1,11 @@
 import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  OneToOne,
-  PrimaryColumn,
-  PrimaryGeneratedColumn,
+  Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryColumn,
 } from 'typeorm';
 
-import { File } from 'src/files/entities/file.entity';
-import { OrderSku } from 'src/order-skus/entities/order-sku.entity';
-import { Product } from 'src/products/entities/product.entity';
-import { Show } from 'src/shows/entities/show.entity';
+import { File } from '../../files/entities/file.entity';
+import { OrderSku } from '../../order-skus/entities/order-sku.entity';
+import { Product } from '../../products/entities/product.entity';
+import { Show } from '../../shows/entities/show.entity';
 
 @Entity()
 export class Sku {

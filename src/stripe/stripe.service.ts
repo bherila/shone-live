@@ -1,14 +1,15 @@
-import { CreateAddressDto } from 'src/addresses/dto/create-address.dto';
-import { CreateOrderDto } from 'src/orders/dto/create-order.dto';
-import { CreateProductDto } from 'src/products/dto/create-product.dto';
-import { CreateSkuDto } from 'src/skus/dto/create-sku.dto';
-import { Sku } from 'src/skus/entities/sku.entity';
-import { CreateUserDto } from 'src/users/dto/create-user.dto';
-import { UpdateUserDto } from 'src/users/dto/update-user.dto';
-import { User } from 'src/users/entities/user.entity';
 import Stripe from 'stripe';
 
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+
+import { CreateAddressDto } from '../addresses/dto/create-address.dto';
+import { CreateOrderDto } from '../orders/dto/create-order.dto';
+import { CreateProductDto } from '../products/dto/create-product.dto';
+import { CreateSkuDto } from '../skus/dto/create-sku.dto';
+import { Sku } from '../skus/entities/sku.entity';
+import { CreateUserDto } from '../users/dto/create-user.dto';
+import { UpdateUserDto } from '../users/dto/update-user.dto';
+import { User } from '../users/entities/user.entity';
 
 @Injectable()
 export class StripeService {

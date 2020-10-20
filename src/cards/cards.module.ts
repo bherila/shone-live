@@ -1,11 +1,10 @@
-import { Address } from 'src/addresses/entities/address.entity';
-import { Order } from 'src/orders/entities/order.entity';
-import { StripeModule } from 'src/stripe/stripe.module';
-import { User } from 'src/users/entities/user.entity';
-
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+import { Address } from '../addresses/entities/address.entity';
+import { Order } from '../orders/entities/order.entity';
+import { StripeModule } from '../stripe/stripe.module';
+import { User } from '../users/entities/user.entity';
 import { CardsController } from './cards.controller';
 import { CardsService } from './cards.service';
 import { Card } from './entities/card.entity';

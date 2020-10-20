@@ -15,6 +15,7 @@ module.exports = {
     jest: true,
   },
   rules: {
+    'max-len': [2, { code: 140, ignorePattern: '^import .*' }],
     // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
     // e.g. "@typescript-eslint/explicit-function-return-type": "off",
   },

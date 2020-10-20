@@ -1,8 +1,7 @@
-import { ShowGateway } from 'src/shows/show.gateway';
-
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
+import { ShowGateway } from '../shows/show.gateway';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { OrdersQueryDto } from './dto/orders-query.dto';
 import { OrdersService } from './orders.service';

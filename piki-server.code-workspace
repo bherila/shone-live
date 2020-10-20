@@ -5,7 +5,7 @@
     }
   ],
   "settings": {
-    "files.autoSave": "afterDelay",
+    "files.autoSave": "onFocusChange",
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
     "editor.renderWhitespace": "all",

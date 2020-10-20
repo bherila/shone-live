@@ -1,7 +1,8 @@
-import { Card } from 'src/cards/entities/card.entity';
-import { Order } from 'src/orders/entities/order.entity';
-import { UserAddress } from 'src/user-addresses/user-address.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+
+import { Card } from '../../cards/entities/card.entity';
+import { Order } from '../../orders/entities/order.entity';
+import { UserAddress } from '../../user-addresses/user-address.entity';
 
 @Entity()
 export class Address {

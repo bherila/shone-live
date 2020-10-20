@@ -1,12 +1,12 @@
-import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
-import { Show } from 'src/shows/entities/show.entity';
-import { StripeService } from 'src/stripe/stripe.service';
-import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
 
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
+import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
+import { Show } from '../shows/entities/show.entity';
+import { StripeService } from '../stripe/stripe.service';
+import { User } from '../users/entities/user.entity';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';

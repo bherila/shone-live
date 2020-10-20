@@ -1,10 +1,11 @@
-import { Entity, Column, OneToMany, PrimaryColumn } from 'typeorm';
-import { File } from 'src/files/entities/file.entity';
-import { Show } from 'src/shows/entities/show.entity';
-import { Product } from 'src/products/entities/product.entity';
-import { Card } from 'src/cards/entities/card.entity';
-import { Order } from 'src/orders/entities/order.entity';
-import { UserAddress } from 'src/user-addresses/user-address.entity';
+import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+
+import { Card } from '../../cards/entities/card.entity';
+import { File } from '../../files/entities/file.entity';
+import { Order } from '../../orders/entities/order.entity';
+import { Product } from '../../products/entities/product.entity';
+import { Show } from '../../shows/entities/show.entity';
+import { UserAddress } from '../../user-addresses/user-address.entity';
 
 // comments not yet supported by typeorm for psql, but can leave as notes for now
 @Entity() // sql table === 'user'

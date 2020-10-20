@@ -1,13 +1,12 @@
-import {
-  IsString,
-  IsBoolean,
-  IsEmail,
-  IsOptional,
-  ValidateNested,
-} from 'class-validator';
 import { Type } from 'class-transformer';
-import { StripeAddress } from 'src/stripe/dto/stripe-address.dto';
-import { StripeShippingAddress } from 'src/stripe/dto/stripe-shipping-address.dto';
+import {
+  IsBoolean, IsOptional, IsString, ValidateNested,
+} from 'class-validator';
+
+import { StripeAddress } from '../../stripe/dto/stripe-address.dto';
+import {
+  StripeShippingAddress,
+} from '../../stripe/dto/stripe-shipping-address.dto';
 
 export class CreateUserDto {
   @IsString()

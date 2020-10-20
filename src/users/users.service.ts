@@ -1,21 +1,18 @@
+import * as bcrypt from 'bcrypt';
+import { Repository } from 'typeorm';
+
 import {
-  Injectable,
-  NotFoundException,
-  HttpException,
-  HttpStatus,
-  Inject,
-  forwardRef,
+  HttpException, HttpStatus, Inject, Injectable, NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from './entities/user.entity';
-import { Repository } from 'typeorm';
-import { CreateUserDto } from './dto/create-user.dto';
-import * as bcrypt from 'bcrypt';
-import PostgresErrorCode from '../database/postgres-error-code.enum';
-import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { StripeService } from 'src/stripe/stripe.service';
+
 import { AuthService } from '../auth/auth.service';
+import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
+import PostgresErrorCode from '../database/postgres-error-code.enum';
+import { StripeService } from '../stripe/stripe.service';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {

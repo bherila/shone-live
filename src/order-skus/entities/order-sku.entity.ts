@@ -1,6 +1,7 @@
-import { Order } from 'src/orders/entities/order.entity';
-import { Sku } from 'src/skus/entities/sku.entity';
 import { Column, Entity, ManyToOne } from 'typeorm';
+
+import { Order } from '../../orders/entities/order.entity';
+import { Sku } from '../../skus/entities/sku.entity';
 
 @Entity()
 export class OrderSku {

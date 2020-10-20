@@ -1,11 +1,11 @@
-import { Product } from 'src/products/entities/product.entity';
-import { Show } from 'src/shows/entities/show.entity';
-import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
 
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
+import { Product } from '../products/entities/product.entity';
+import { Show } from '../shows/entities/show.entity';
+import { User } from '../users/entities/user.entity';
 import { CreateFileDto } from './dto/create-file.dto';
 import { File } from './entities/file.entity';
 

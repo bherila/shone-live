@@ -1,9 +1,8 @@
-import { UserAddress } from 'src/user-addresses/user-address.entity';
-import { User } from 'src/users/entities/user.entity';
-
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+import { UserAddress } from '../user-addresses/user-address.entity';
+import { User } from '../users/entities/user.entity';
 import { AddressesController } from './addresses.controller';
 import { AddressesService } from './addresses.service';
 import { Address } from './entities/address.entity';

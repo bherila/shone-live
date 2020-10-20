@@ -1,6 +1,7 @@
 import { Type } from 'class-transformer';
 import * as ClassValidator from 'class-validator';
-import { StripeAddress } from 'src/stripe/dto/stripe-address.dto';
+
+import { StripeAddress } from '../../stripe/dto/stripe-address.dto';
 
 export class CreatePaymentMethodDto {
   @ClassValidator.IsString()

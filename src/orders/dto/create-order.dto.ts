@@ -2,7 +2,8 @@ import { Type } from 'class-transformer';
 import {
   IsNotEmpty, IsNumber, IsOptional, IsString, ValidateNested,
 } from 'class-validator';
-import { StripeAddress } from 'src/stripe/dto/stripe-address.dto';
+
+import { StripeAddress } from '../../stripe/dto/stripe-address.dto';
 
 export class CreateOrderDto {
   @IsNumber()

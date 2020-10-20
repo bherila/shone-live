@@ -1,13 +1,12 @@
-import { Order } from 'src/orders/entities/order.entity';
-import { Product } from 'src/products/entities/product.entity';
-import { Show } from 'src/shows/entities/show.entity';
-import { Sku } from 'src/skus/entities/sku.entity';
-import { User } from 'src/users/entities/user.entity';
-
 import { Module } from '@nestjs/common';
 import { MulterModule } from '@nestjs/platform-express';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+import { Order } from '../orders/entities/order.entity';
+import { Product } from '../products/entities/product.entity';
+import { Show } from '../shows/entities/show.entity';
+import { Sku } from '../skus/entities/sku.entity';
+import { User } from '../users/entities/user.entity';
 import { File } from './entities/file.entity';
 import { FilesController } from './files.controller';
 import { FilesService } from './files.service';

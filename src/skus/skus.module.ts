@@ -1,11 +1,10 @@
-import { OrderSku } from 'src/order-skus/entities/order-sku.entity';
-import { Product } from 'src/products/entities/product.entity';
-import { Show } from 'src/shows/entities/show.entity';
-import { StripeModule } from 'src/stripe/stripe.module';
-
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+import { OrderSku } from '../order-skus/entities/order-sku.entity';
+import { Product } from '../products/entities/product.entity';
+import { Show } from '../shows/entities/show.entity';
+import { StripeModule } from '../stripe/stripe.module';
 import { Sku } from './entities/sku.entity';
 import { SkusController } from './skus.controller';
 import { SkusService } from './skus.service';

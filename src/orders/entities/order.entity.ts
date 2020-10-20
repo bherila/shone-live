@@ -1,11 +1,11 @@
-import { Address } from 'src/addresses/entities/address.entity';
-import { Card } from 'src/cards/entities/card.entity';
-import { Show } from 'src/shows/entities/show.entity';
-import { User } from 'src/users/entities/user.entity';
 import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
 
+import { Address } from '../../addresses/entities/address.entity';
+import { Card } from '../../cards/entities/card.entity';
 import { File } from '../../files/entities/file.entity';
 import { OrderSku } from '../../order-skus/entities/order-sku.entity';
+import { Show } from '../../shows/entities/show.entity';
+import { User } from '../../users/entities/user.entity';
 import { OrderStatus } from '../enums/order-status.enum';
 
 @Entity()

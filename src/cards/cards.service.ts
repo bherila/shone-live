@@ -1,11 +1,11 @@
-import { Address } from 'src/addresses/entities/address.entity';
-import { StripeService } from 'src/stripe/stripe.service';
-import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
 
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
+import { Address } from '../addresses/entities/address.entity';
+import { StripeService } from '../stripe/stripe.service';
+import { User } from '../users/entities/user.entity';
 import { CreateCardDto } from './dto/create-card.dto';
 import { Card } from './entities/card.entity';
 

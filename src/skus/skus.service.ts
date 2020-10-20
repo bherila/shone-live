@@ -1,11 +1,11 @@
-import { Product } from 'src/products/entities/product.entity';
-import { Show } from 'src/shows/entities/show.entity';
-import { StripeService } from 'src/stripe/stripe.service';
 import { Repository } from 'typeorm';
 
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
+import { Product } from '../products/entities/product.entity';
+import { Show } from '../shows/entities/show.entity';
+import { StripeService } from '../stripe/stripe.service';
 import { CreateSkuDto } from './dto/create-sku.dto';
 import { Sku } from './entities/sku.entity';
 

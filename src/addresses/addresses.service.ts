@@ -1,10 +1,10 @@
-import { UserAddress } from 'src/user-addresses/user-address.entity';
-import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
 
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
+import { UserAddress } from '../user-addresses/user-address.entity';
+import { User } from '../users/entities/user.entity';
 import { CreateAddressDto } from './dto/create-address.dto';
 import { Address } from './entities/address.entity';
 

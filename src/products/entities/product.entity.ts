@@ -1,8 +1,9 @@
-import { File } from 'src/files/entities/file.entity';
-import { Show } from 'src/shows/entities/show.entity';
-import { Sku } from 'src/skus/entities/sku.entity';
-import { User } from 'src/users/entities/user.entity';
 import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
+
+import { File } from '../../files/entities/file.entity';
+import { Show } from '../../shows/entities/show.entity';
+import { Sku } from '../../skus/entities/sku.entity';
+import { User } from '../../users/entities/user.entity';
 
 @Entity()
 export class Product {

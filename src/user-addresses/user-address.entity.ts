@@ -1,6 +1,7 @@
-import { Address } from 'src/addresses/entities/address.entity';
-import { User } from 'src/users/entities/user.entity';
 import { Entity, ManyToOne } from 'typeorm';
+
+import { Address } from '../addresses/entities/address.entity';
+import { User } from '../users/entities/user.entity';
 
 @Entity()
 export class UserAddress {

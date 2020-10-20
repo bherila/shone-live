@@ -1,11 +1,12 @@
-import { Order } from 'src/orders/entities/order.entity';
-import { Product } from 'src/products/entities/product.entity';
-import { Show } from 'src/shows/entities/show.entity';
-import { Sku } from 'src/skus/entities/sku.entity';
-import { User } from 'src/users/entities/user.entity';
 import {
   Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn,
 } from 'typeorm';
+
+import { Order } from '../../orders/entities/order.entity';
+import { Product } from '../../products/entities/product.entity';
+import { Show } from '../../shows/entities/show.entity';
+import { Sku } from '../../skus/entities/sku.entity';
+import { User } from '../../users/entities/user.entity';
 
 // todo make it work on AWS, won't be trivial
 // maybe minio is easier for this since it supports

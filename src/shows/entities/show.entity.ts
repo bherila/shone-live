@@ -1,11 +1,12 @@
-import { File } from 'src/files/entities/file.entity';
-import { Order } from 'src/orders/entities/order.entity';
-import { Product } from 'src/products/entities/product.entity';
-import { Sku } from 'src/skus/entities/sku.entity';
-import { User } from 'src/users/entities/user.entity';
 import {
   Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn,
 } from 'typeorm';
+
+import { File } from '../../files/entities/file.entity';
+import { Order } from '../../orders/entities/order.entity';
+import { Product } from '../../products/entities/product.entity';
+import { Sku } from '../../skus/entities/sku.entity';
+import { User } from '../../users/entities/user.entity';
 
 @Entity()
 export class Show {
