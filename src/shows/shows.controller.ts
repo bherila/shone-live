@@ -1,7 +1,7 @@
 import {
   Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CreateShowDto } from './dto/create-show.dto';
@@ -11,7 +11,11 @@ import { ShowsService } from './shows.service';
 
 @ApiTags('shows')
 @Controller('shows')
-@UseGuards(JwtAuthGuard)
+@ApiBearerAuth() // TODO check this,
+// but these should show wherever there's auth gaurd on route in swatgger docs
+// and then we should add this everywhere we add gaurd
+@UseGuards(JwtAuthGuard) // TODO add guard everywhere it's applicable
+//                          (ie most routes)
 export class ShowsController {
   constructor(private readonly showService: ShowsService) {}
 

@@ -1,5 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 
+import { Auth } from '../../auth/entities/auth.entity';
 import { Card } from '../../cards/entities/card.entity';
 import { File } from '../../files/entities/file.entity';
 import { Order } from '../../orders/entities/order.entity';
@@ -7,7 +8,6 @@ import { Product } from '../../products/entities/product.entity';
 import { Show } from '../../shows/entities/show.entity';
 import { UserAddress } from '../../user-addresses/user-address.entity';
 
-// comments not yet supported by typeorm for psql, but can leave as notes for now
 @Entity() // sql table === 'user'
 export class User {
   @PrimaryColumn({
@@ -20,11 +20,6 @@ export class User {
     comment: 'display username for use in the app',
   })
   username: string;
-
-  @Column({
-    comment: 'bcrypt salted user submitted password',
-  })
-  password: string;
 
   @Column({
     comment: 'users first name',
@@ -72,6 +67,15 @@ export class User {
     },
   )
   shows: Show[];
+
+  @OneToMany(
+    type => Auth,
+    auth => auth.user,
+    {
+      cascade: true,
+    },
+  )
+  auths: Auth[];
 
   @OneToMany(
     type => Product,

@@ -38,7 +38,7 @@ describe('[Feature] Coffees - /coffees', () => {
           host: 'localhost',
           port: 5433,
           username: 'postgres',
-          password: 'pass123',
+          password: 'postgres',
           database: 'postgres',
           autoLoadEntities: true,
           synchronize: true,
@@ -65,7 +65,6 @@ describe('[Feature] Coffees - /coffees', () => {
 
   afterAll(async () => {
     await app.close();
-    // need to add DB vacuuming otherwise tests often break
   });
 
   it('Create [POST /]', () => {

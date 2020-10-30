@@ -12,6 +12,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   if (process.env.NODE_ENV === 'dev') {
     // just for dev
+    console.log(`the environment mode is ${process.env.NODE_ENV} mode`);
+
     app.enableCors();
   }
   app.useGlobalPipes(

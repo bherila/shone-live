@@ -1,4 +1,4 @@
-import * as bcrypt from 'bcrypt';
+import * as crypto from 'crypto';
 import { Repository } from 'typeorm';
 
 import {
@@ -6,9 +6,11 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { AuthService } from '../auth/auth.service';
+import PostgresErrorCode from '../common/database/postgres-error-code.enum';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
-import PostgresErrorCode from '../database/postgres-error-code.enum';
+import {
+  UniquenessConstraintException,
+} from '../common/exceptions/uniqueness-constraint-violation.exception';
 import { StripeService } from '../stripe/stripe.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -23,7 +25,6 @@ export class UsersService {
     private readonly userRepository: Repository<User>,
     @Inject(StripeService) // TODO: look at all these inject with stripe service in various files, I don't understand why it's needed...shouldn't be
     private readonly stripeService: StripeService,
-    private authService: AuthService,
   ) {}
 
   findAll(paginationQuery: PaginationQueryDto) {
@@ -46,28 +47,29 @@ export class UsersService {
     return user;
   }
 
-  async create(createUserDto: CreateUserDto) {
-    const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
-
-    // find out how to transform dto more efficiently
-    const stripeCustomer = await this.stripeService.createStripeCustomer(
-      createUserDto,
-    );
-
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    // todo add call back to stripe on cronjob for the failed ones
+    let id: string;
     try {
-      const user = this.userRepository.create({
-        ...createUserDto,
-        password: hashedPassword,
-        id: stripeCustomer.id,
-      });
-      const savedUser = await this.userRepository.save(user);
-      return this.authService.login(savedUser); // todo: should have a better name maybe than login? since used for create...
+      const stripeCustomer = await this.stripeService.createStripeCustomer(
+        createUserDto,
+      );
+      id = stripeCustomer.id;
     } catch (error) {
-      if (error?.code === PostgresErrorCode.UniqueViolation) {
-        throw new HttpException(
-          `${error.detail}`, // TODO: clean this up as there are multiple uniques at least saw username, email, phone...need helpful error for client
-          HttpStatus.BAD_REQUEST,
-        );
+      // todo review docs and add error handling to get this case to sentry
+      // for our cronjob we can just search where the id had the prefix
+      id = `temp_user_id_${crypto.randomBytes(20).toString('hex')}`;
+    }
+
+    const user = this.userRepository.create({
+      ...createUserDto,
+      id: id,
+    });
+    try {
+      return await this.userRepository.save(user);
+    } catch (error) {
+      if (error && error.code === PostgresErrorCode.UniqueViolation) {
+        throw new UniquenessConstraintException(`${error.detail}`);
       }
       throw new HttpException(
         'Something went wrong',
@@ -84,21 +86,15 @@ export class UsersService {
         ...updateUserDto,
         //todo add associations
       });
-      if (user && updateUserDto.password) {
-        user.password = await bcrypt.hash(updateUserDto.password, 10);
-      }
       if (!user) {
         throw new NotFoundException(`User #${id} not found`);
       }
       this.stripeService.updateStripeCustomer(updateUserDto);
       return this.userRepository.save(user);
     } catch (error) {
-      // prevent updating to an existing email (also refactor to have separate username and email!)
+      // prevent updating to an existing email
       if (error?.code === PostgresErrorCode.UniqueViolation) {
-        throw new HttpException(
-          'User with that email already exists',
-          HttpStatus.BAD_REQUEST,
-        );
+        throw new UniquenessConstraintException(`${error.detail}`);
       }
       throw new HttpException(
         'Something went wrong',

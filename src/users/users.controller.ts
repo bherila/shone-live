@@ -17,21 +17,12 @@ export class UsersController {
 
   @Get()
   async findAll(@Query() paginationQuery: PaginationQueryDto) {
-    const users = await this.usersService.findAll(paginationQuery);
-    // todo move sanitization to service (can have common function)
-    const sanitizedUsers = users.map(user => {
-      delete user.password;
-      return user;
-    });
-    return sanitizedUsers;
+    return await this.usersService.findAll(paginationQuery);
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    const user = await this.usersService.findOne(id);
-    // todo move sanitization to service (can have common function)
-    const { password, ...result } = user;
-    return result;
+    return await this.usersService.findOne(id);
   }
 
   @Post()
@@ -41,15 +32,11 @@ export class UsersController {
 
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    const user = await this.usersService.update(id, updateUserDto);
-    const { password, ...result } = user;
-    return result;
+    return await this.usersService.update(id, updateUserDto);
   }
 
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    const user = await this.usersService.remove(id);
-    const { password, ...result } = user;
-    return result;
+    return await this.usersService.remove(id);
   }
 }

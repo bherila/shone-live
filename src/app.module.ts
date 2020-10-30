@@ -7,10 +7,11 @@ import {
   ServeStaticModule,
 } from '@nestjs/serve-static/dist/serve-static.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { SentryModule } from '@ntegral/nestjs-sentry';
+import { LogLevel } from '@sentry/types';
 
 import { AddressesModule } from './addresses/addresses.module';
 import { AlertModule } from './alert/alert.module';
-import { AppController } from './app.controller';
 import { AuthModule } from './auth/auth.module';
 import { CardsModule } from './cards/cards.module';
 import { ChatModule } from './chat/chat.module';
@@ -40,6 +41,14 @@ if (process.env.NODE_ENV === 'dev') {
         DATABASE_PORT: Joi.number().default(5432),
       }),
     }),
+    SentryModule.forRoot({
+      dsn:
+        'https://6d671267ceaa4230b187967c3071c2f7@o459464.ingest.sentry.io/5480197',
+      debug: true, // true | false,
+      environment: process.env.NODE_ENV,
+      release: null, // if not null, must create release in sentry.io dashboard
+      logLevel: LogLevel.Debug, //based on sentry.io loglevel //
+    }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'static'),
     }),
@@ -68,7 +77,6 @@ if (process.env.NODE_ENV === 'dev') {
     ChatModule,
     AlertModule,
   ],
-  controllers: [AppController],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

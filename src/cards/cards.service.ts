@@ -4,6 +4,10 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Address } from '../addresses/entities/address.entity';
+import PostgresErrorCode from '../common/database/postgres-error-code.enum';
+import {
+  UniquenessConstraintException,
+} from '../common/exceptions/uniqueness-constraint-violation.exception';
 import { StripeService } from '../stripe/stripe.service';
 import { User } from '../users/entities/user.entity';
 import { CreateCardDto } from './dto/create-card.dto';
@@ -50,9 +54,9 @@ export class CardsService {
       });
       return await this.cardRepository.save(card);
     } catch (error) {
-      // if (error?.code === PostgresErrorCode.UniqueViolation) {
-      //     throw new HttpException('card with that email already exists', HttpStatus.BAD_REQUEST);
-      // }
+      if (error?.code === PostgresErrorCode.UniqueViolation) {
+        throw new UniquenessConstraintException(`${error.detail}`);
+      }
       throw new HttpException(
         'Something went wrong',
         HttpStatus.INTERNAL_SERVER_ERROR,

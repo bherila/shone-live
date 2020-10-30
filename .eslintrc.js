@@ -15,7 +15,15 @@ module.exports = {
     jest: true,
   },
   rules: {
-    'max-len': [2, { code: 140, ignorePattern: '^import .*' }],
+    'max-len': [2, { code: 80, ignorePattern: '^import .*' }],
+    'sort-keys': [
+      // this doesn't actually work, but the idea was to sort the functions in a class
+      'error',
+      'asc',
+      { caseSensitive: true, natural: true, minKeys: 2 },
+    ],
+    'sort-vars': ['error', { ignoreCase: true }],
+    'member-ordering': [true, { alphabetize: true }], // not working, not sure why
     // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
     // e.g. "@typescript-eslint/explicit-function-return-type": "off",
   },

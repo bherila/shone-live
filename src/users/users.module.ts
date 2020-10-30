@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { AuthModule } from '../auth/auth.module';
+import { Auth } from '../auth/entities/auth.entity';
 import { Card } from '../cards/entities/card.entity';
 import { Order } from '../orders/entities/order.entity';
 import { Product } from '../products/entities/product.entity';
@@ -13,13 +13,20 @@ import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 
 @Module({
+  controllers: [UsersController],
+  exports: [UsersService],
   imports: [
-    TypeOrmModule.forFeature([User, Show, Product, Card, Order, UserAddress]),
-    AuthModule,
+    TypeOrmModule.forFeature([
+      Auth,
+      Card,
+      Order,
+      Product,
+      Show,
+      User,
+      UserAddress,
+    ]),
     StripeModule,
   ],
-  controllers: [UsersController],
   providers: [UsersService],
-  exports: [UsersService],
 })
 export class UsersModule {}
