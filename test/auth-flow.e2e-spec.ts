@@ -84,11 +84,14 @@ describe('[Feature] Authentication', () => {
         AuthModule,
         TypeOrmModule.forRoot({
           type: 'postgres',
-          host: 'localhost',
-          port: 5433,
-          username: 'postgres',
-          password: 'postgres',
-          database: 'postgres',
+          // note this still isn't using docker!
+          // it's using localhost DB,
+          // see note in docker-compose about deciding what to do
+          host: process.env.POSTGRES_LOCAL_HOST,
+          port: +process.env.TEST_POSTGRES_PORT,
+          username: process.env.TEST_POSTGRES_USER,
+          password: process.env.TEST_POSTGRES_PASSWORD,
+          database: process.env.TEST_POSTGRES_DB,
           autoLoadEntities: true,
           synchronize: true,
         }),
@@ -135,7 +138,7 @@ describe('[Feature] Authentication', () => {
     return request(httpServer)
       .post('/auth/register')
       .send(registerDtoDuplicateUsername as RegisterDto)
-      .expect(HttpStatus.BAD_REQUEST)
+      .expect(HttpStatus.UNPROCESSABLE_ENTITY)
       .then(({ body }) => {
         expect(body['message']).toContain('username');
         expect(body['message']).toContain('already exists');
@@ -146,7 +149,7 @@ describe('[Feature] Authentication', () => {
     return request(httpServer)
       .post('/auth/register')
       .send(registerDtoDuplicateEmail as RegisterDto)
-      .expect(HttpStatus.BAD_REQUEST)
+      .expect(HttpStatus.UNPROCESSABLE_ENTITY)
       .then(({ body }) => {
         expect(body['message']).toContain('email');
         expect(body['message']).toContain('already exists');
@@ -157,7 +160,7 @@ describe('[Feature] Authentication', () => {
     return request(httpServer)
       .post('/auth/register')
       .send(registerDtoDuplicatePhone as RegisterDto)
-      .expect(HttpStatus.BAD_REQUEST)
+      .expect(HttpStatus.UNPROCESSABLE_ENTITY)
       .then(({ body }) => {
         expect(body['message']).toContain('phone');
         expect(body['message']).toContain('already exists');

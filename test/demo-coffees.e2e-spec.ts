@@ -29,17 +29,17 @@ describe('[Feature] Coffees - /coffees', () => {
   let app: INestApplication;
   let httpServer: HttpServer;
 
-  beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [
         CoffeesModule,
         TypeOrmModule.forRoot({
           type: 'postgres',
-          host: 'localhost',
-          port: 5433,
-          username: 'postgres',
-          password: 'postgres',
-          database: 'postgres',
+          // see note in auth e2e test about local/vs docker
+          host: process.env.POSTGRES_LOCAL_HOST,
+          port: +process.env.TEST_POSTGRES_PORT,
+          username: process.env.TEST_POSTGRES_USER,
+          password: process.env.TEST_POSTGRES_PASSWORD,
+          database: process.env.TEST_POSTGRES_DB,
           autoLoadEntities: true,
           synchronize: true,
         }),

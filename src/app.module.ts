@@ -34,11 +34,11 @@ if (process.env.NODE_ENV === 'dev') {
   imports: [
     ConfigModule.forRoot({
       validationSchema: Joi.object({
-        DATABASE_HOST: Joi.required(),
-        DATABASE_USER: Joi.required(),
-        DATABASE_PASSWORD: Joi.required(),
-        DATABASE_NAME: Joi.required(),
-        DATABASE_PORT: Joi.number().default(5432),
+        POSTGRES_DOCKER_HOST: Joi.required(),
+        POSTGRES_USER: Joi.required(),
+        POSTGRES_PASSWORD: Joi.required(),
+        POSTGRES_DB: Joi.required(),
+        POSTGRES_PORT: Joi.number().default(5432),
       }),
     }),
     SentryModule.forRoot({
@@ -53,14 +53,15 @@ if (process.env.NODE_ENV === 'dev') {
       rootPath: join(__dirname, '..', 'static'),
     }),
     TypeOrmModule.forRoot({
-      type: 'postgres', // type of our database
-      host: process.env.DATABASE_HOST, // database host
-      port: +process.env.DATABASE_PORT, // database host
-      username: process.env.DATABASE_USER, // username
-      password: process.env.DATABASE_PASSWORD, // user password
-      database: process.env.DATABASE_NAME, // name of our database,
-      autoLoadEntities: true, // models will be loaded automatically (you don't have to explicitly specify the entities: [] array)
-      synchronize: true, // your entities will be synced with the database (ORM will map entity definitions to corresponding SQL tabled), every time you run the application (recommended: disable in the production)
+      type: 'postgres',
+      host: process.env.POSTGRES_DOCKER_HOST,
+      port: +process.env.POSTGRES_PORT,
+      username: process.env.POSTGRES_USER,
+      password: process.env.POSTGRES_PASSWORD,
+      database: process.env.POSTGRES_DB,
+      autoLoadEntities: true,
+      synchronize: true, // disable in the production
+      // TODO: export migration for prod DB
       logging: dbLogging, // if in dev mode enable db logging
     }),
     AuthModule,

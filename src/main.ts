@@ -35,7 +35,7 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, options);
 
-  // todo: fix failed attempt to add auth to swagger api docs page
+  // todo: this works, but we should move the PW to the env at least so it's not in the repo
   app.use(
     '/api',
     basicAuth({
@@ -45,7 +45,7 @@ async function bootstrap() {
   );
   SwaggerModule.setup('/api', app, document);
 
-  await app.listen(3001); // set to 3001 for localhost...figure out how it works in deployment to pick up correct port on AWS
+  await app.listen(process.env.SERVER_PORT); // set to 3001 for localhost...figure out how it works in deployment to pick up correct port on AWS
   // not 3000 b/c my client is running on 3000
 
   if (process.env.NODE_ENV === 'dev') {
