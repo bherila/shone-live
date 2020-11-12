@@ -1,4 +1,4 @@
-import { Repository } from 'typeorm';
+import { Between, Repository } from 'typeorm';
 
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -28,7 +28,11 @@ export class ShowsService {
   // todo for findall on all objects maybe don't return nested
   // todo need better filters and query params for all too
   findAll(getShowDto: ShowsQueryDto) {
-    const { limit, offset, userId } = getShowDto;
+    const { limit, offset, userId, startDate, endDate } = getShowDto;
+
+    // todo figure out how to filter date range with user ID
+    // for now it will just take userId first and ignore date range if sent
+    // due to ordering of if statements
     if (userId) {
       return this.showRepository.find({
         where: { user: userId },
@@ -37,7 +41,16 @@ export class ShowsService {
         take: limit,
       });
     }
-
+    if (startDate && endDate) {
+      return this.showRepository.find({
+        where: {
+          date: Between(startDate, endDate),
+        },
+        relations: ['user', 'products', 'files', 'skus'],
+        skip: offset,
+        take: limit,
+      });
+    }
     return this.showRepository.find({
       relations: ['user', 'products', 'files', 'skus'],
       skip: offset,
