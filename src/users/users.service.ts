@@ -2,15 +2,18 @@ import * as crypto from 'crypto';
 import { Repository } from 'typeorm';
 
 import {
-  HttpException, HttpStatus, Inject, Injectable, NotFoundException,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+  NotFoundException,
+  UnprocessableEntityException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import PostgresErrorCode from '../common/database/postgres-error-code.enum';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
-import {
-  UniquenessConstraintException,
-} from '../common/exceptions/uniqueness-constraint-violation.exception';
+import { UniquenessConstraintException } from '../common/exceptions/uniqueness-constraint-violation.exception';
 import { StripeService } from '../stripe/stripe.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -48,6 +51,12 @@ export class UsersService {
   }
 
   async create(createUserDto: CreateUserDto): Promise<User> {
+    // todo: figure out how to add this kind of validation into the DTO
+    if (!createUserDto.email && !createUserDto.phone) {
+      throw new UnprocessableEntityException(
+        `you must create a user with at least EITHER an email OR a password`,
+      );
+    }
     // todo add call back to stripe on cronjob for the failed ones
     let id: string;
     try {
@@ -68,8 +77,13 @@ export class UsersService {
     try {
       return await this.userRepository.save(user);
     } catch (error) {
-      if (error && error.code === PostgresErrorCode.UniqueViolation) {
+      if (error && error.code === PostgresErrorCode.unique_violation) {
         throw new UniquenessConstraintException(`${error.detail}`);
+      }
+      if (error && error.code === PostgresErrorCode.not_null_violation) {
+        throw new UnprocessableEntityException(
+          `some required fields are null: ${error.detail}`,
+        );
       }
       throw new HttpException(
         'Something went wrong',
@@ -93,7 +107,7 @@ export class UsersService {
       return this.userRepository.save(user);
     } catch (error) {
       // prevent updating to an existing email
-      if (error?.code === PostgresErrorCode.UniqueViolation) {
+      if (error?.code === PostgresErrorCode.unique_violation) {
         throw new UniquenessConstraintException(`${error.detail}`);
       }
       throw new HttpException(

@@ -1,7 +1,5 @@
 import { Type } from 'class-transformer';
-import {
-  IsNotEmpty, IsString, ValidateIf, ValidateNested,
-} from 'class-validator';
+import { IsNotEmpty, IsString, ValidateNested } from 'class-validator';
 
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -30,7 +28,6 @@ export class RegisterDto {
         "email": "abcd@me.co"
       }`,
   })
-  @ValidateIf(dto => dto.identifier !== undefined)
   @IsNotEmpty()
   @ValidateNested()
   @Type(() => CreateUserDto)

@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import { Check, Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 
 import { Auth } from '../../auth/entities/auth.entity';
 import { Card } from '../../cards/entities/card.entity';
@@ -8,6 +8,7 @@ import { Product } from '../../products/entities/product.entity';
 import { Show } from '../../shows/entities/show.entity';
 import { UserAddress } from '../../user-addresses/user-address.entity';
 
+@Check(`"email" IS NOT NULL OR "phone" IS NOT NULL`)
 @Entity() // sql table === 'user'
 export class User {
   @PrimaryColumn({
@@ -18,33 +19,39 @@ export class User {
   @Column({
     unique: true,
     comment: 'display username for use in the app',
+    nullable: true,
   })
   username: string;
 
   @Column({
     comment: 'users first name',
+    nullable: true,
   })
   first_name: string;
 
   @Column({
     comment: 'users last name',
+    nullable: true,
   })
   last_name: string;
 
   @Column({
     unique: true,
     comment: 'users phone number',
+    nullable: true,
   })
   phone: string;
 
   @Column({
     comment: 'used for various authorizations sellers must be validated',
+    nullable: true,
   })
   seller: boolean;
 
   @Column({
     unique: true,
     comment: 'email used for unique user identification',
+    nullable: true,
   })
   email: string;
 
