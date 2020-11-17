@@ -1,17 +1,14 @@
 import { Type } from 'class-transformer';
 import {
-  IsBoolean,
-  IsEmail,
-  IsOptional,
-  IsPhoneNumber,
-  IsString,
-  ValidateNested,
+  IsBoolean, IsEmail, IsOptional, IsPhoneNumber, IsString, ValidateNested,
 } from 'class-validator';
 
 import { ApiProperty } from '@nestjs/swagger';
 
 import { StripeAddress } from '../../stripe/dto/stripe-address.dto';
-import { StripeShippingAddress } from '../../stripe/dto/stripe-shipping-address.dto';
+import {
+  StripeShippingAddress,
+} from '../../stripe/dto/stripe-shipping-address.dto';
 
 export class CreateUserDto {
   @ApiProperty({
