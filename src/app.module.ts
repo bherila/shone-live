@@ -39,6 +39,10 @@ if (process.env.NODE_ENV === 'dev') {
         POSTGRES_PASSWORD: Joi.required(),
         POSTGRES_DB: Joi.required(),
         POSTGRES_PORT: Joi.number().default(5432),
+        AWS_REGION: Joi.string().required(),
+        AWS_ACCESS_KEY_ID: Joi.string().required(),
+        AWS_SECRET_ACCESS_KEY: Joi.string().required(),
+        AWS_PUBLIC_BUCKET_NAME: Joi.string().required(),
       }),
     }),
     SentryModule.forRoot({
@@ -55,6 +59,7 @@ if (process.env.NODE_ENV === 'dev') {
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.POSTGRES_DOCKER_HOST,
+      // host: process.env.POSTGRES_LOCAL_HOST,
       port: +process.env.POSTGRES_PORT,
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,

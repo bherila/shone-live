@@ -1,7 +1,10 @@
-import { Check, Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import {
+  Check, Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryColumn,
+} from 'typeorm';
 
 import { Auth } from '../../auth/entities/auth.entity';
 import { Card } from '../../cards/entities/card.entity';
+import { S3File } from '../../files-aws/entities/s3file.entity';
 import { File } from '../../files/entities/file.entity';
 import { Order } from '../../orders/entities/order.entity';
 import { Product } from '../../products/entities/product.entity';
@@ -101,6 +104,13 @@ export class User {
     },
   )
   files: File[];
+
+  @JoinColumn()
+  @OneToOne(() => S3File, {
+    eager: true,
+    nullable: true,
+  })
+  public avatar?: S3File;
 
   @OneToMany(
     order => Order,

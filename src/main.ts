@@ -1,7 +1,9 @@
+import { config } from 'aws-sdk';
 import * as basicAuth from 'express-basic-auth';
 import * as expressListRoutes from 'express-list-routes'; // note package has vulnerabilities
 
 import { ValidationPipe } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder } from '@nestjs/swagger/dist/document-builder';
 import { SwaggerModule } from '@nestjs/swagger/dist/swagger-module';
@@ -44,6 +46,13 @@ async function bootstrap() {
     }),
   );
   SwaggerModule.setup('/api', app, document);
+
+  const configService = app.get(ConfigService);
+  config.update({
+    accessKeyId: configService.get('AWS_ACCESS_KEY_ID'),
+    secretAccessKey: configService.get('AWS_SECRET_ACCESS_KEY'),
+    region: configService.get('AWS_REGION'),
+  });
 
   await app.listen(process.env.SERVER_PORT); // set to 3001 for localhost...figure out how it works in deployment to pick up correct port on AWS
   // not 3000 b/c my client is running on 3000

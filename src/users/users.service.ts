@@ -2,18 +2,17 @@ import * as crypto from 'crypto';
 import { Repository } from 'typeorm';
 
 import {
-  HttpException,
-  HttpStatus,
-  Inject,
-  Injectable,
-  NotFoundException,
+  HttpException, HttpStatus, Inject, Injectable, NotFoundException,
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import PostgresErrorCode from '../common/database/postgres-error-code.enum';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
-import { UniquenessConstraintException } from '../common/exceptions/uniqueness-constraint-violation.exception';
+import {
+  UniquenessConstraintException,
+} from '../common/exceptions/uniqueness-constraint-violation.exception';
+import { S3FilesService } from '../files-aws/s3files.service';
 import { StripeService } from '../stripe/stripe.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -28,6 +27,7 @@ export class UsersService {
     private readonly userRepository: Repository<User>,
     @Inject(StripeService) // TODO: look at all these inject with stripe service in various files, I don't understand why it's needed...shouldn't be
     private readonly stripeService: StripeService,
+    private readonly filesService: S3FilesService,
   ) {}
 
   findAll(paginationQuery: PaginationQueryDto) {
@@ -120,5 +120,35 @@ export class UsersService {
   async remove(id: string) {
     const user = await this.findOne(id);
     return this.userRepository.remove(user);
+  }
+
+  async addAvatar(userId: string, imageBuffer: Buffer, filename: string) {
+    const user = await this.findOne(userId);
+    if (user.avatar) {
+      await this.userRepository.update(userId, {
+        ...user,
+        avatar: null,
+      });
+      await this.filesService.deletePublicFile(user.avatar.id);
+    }
+    const avatar = await this.filesService.uploadS3File(imageBuffer, filename);
+    await this.userRepository.update(userId, {
+      ...user,
+      avatar,
+    });
+    let foo = 0;
+    return avatar;
+  }
+
+  async deleteAvatar(userId: string) {
+    const user = await this.findOne(userId);
+    const fileId = user.avatar?.id;
+    if (fileId) {
+      await this.userRepository.update(userId, {
+        ...user,
+        avatar: null,
+      });
+      await this.filesService.deletePublicFile(fileId);
+    }
   }
 }

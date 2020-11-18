@@ -26,7 +26,14 @@ services:
     # /usr/src/app/node_modules is an anonymous volume
     volumes:
       - .:/usr/src/app
-      - /usr/src/app/node_modules
+      # the below line prevents the node modules from being updated to match
+      # what's being used for local development; however, this shouldn't matter
+      # it should be in the dockerfile where the build doesn't copy over the
+      # node modules that are only used for development for prod; this should
+      # be accomplished by making sure to install what is only needed for
+      # development (such as typings) by calling
+      #   `npm install --only=development`
+      # - /usr/src/app/node_modules
     # Docker container has its own network
     # we use ports to give host machine access
     # syntax is HOST_PORT:CONTAINER_PORT.
