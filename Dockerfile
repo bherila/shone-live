@@ -29,6 +29,8 @@ ENV NODE_ENV=${NODE_ENV}
 #only install production dependencies for production build
 WORKDIR /usr/src/app
 COPY package*.json ./
+# below line for EC2 bucket
+RUN npm install -g rimraf @nestjs/cli
 RUN npm install --only=production
 COPY . .
 # copy only the /dist dir from the development image
