@@ -3,7 +3,7 @@ version: '3.7'
 services:
   main:
     container_name: main
-    image: 'brettonauerbach/iluvcoffee_main:build202011181100'
+    image: 'brettonauerbach/piki-server:${BUILD_VERSION}'
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
       - 9229:9229
