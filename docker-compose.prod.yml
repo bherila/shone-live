@@ -3,12 +3,12 @@ version: '3.7'
 services:
   main:
     container_name: main
-    build:
-      context: .
-      target: production
+    image: 'brettonauerbach/iluvcoffee_main:build202011181100'
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
       - 9229:9229
+    # can be turned on for debugging in prod
+    # command: npm run start:debug
     env_file:
       - .env
     networks:

@@ -1,8 +1,8 @@
 import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateFileDto {
-  @IsNumber()
-  readonly userId: number;
+  @IsString()
+  readonly userId: string;
 
   @IsOptional()
   @IsNumber()

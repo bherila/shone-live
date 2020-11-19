@@ -123,7 +123,7 @@ export class UsersService {
   }
 
   async addAvatar(userId: string, imageBuffer: Buffer, filename: string) {
-    const user = await this.findOne(userId);
+    const user = await this.userRepository.findOne(userId);
     if (user.avatar) {
       await this.userRepository.update(userId, {
         ...user,
@@ -141,7 +141,7 @@ export class UsersService {
   }
 
   async deleteAvatar(userId: string) {
-    const user = await this.findOne(userId);
+    const user = await this.userRepository.findOne(userId);
     const fileId = user.avatar?.id;
     if (fileId) {
       await this.userRepository.update(userId, {

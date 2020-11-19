@@ -1,14 +1,15 @@
 import { Express } from 'express';
 
 import {
-  Body, Controller, Delete, Get, Param, Patch, Post, Query, UploadedFile,
-  UseGuards, UseInterceptors,
+  Body, Controller, Delete, Get, HttpCode, Param, Patch, Post, Query,
+  UploadedFile, UseGuards, UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express/multer';
 import { ApiTags } from '@nestjs/swagger';
 
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
+import { CreateAvatarDto } from './dto/create-avatar.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersService } from './users.service';
@@ -45,16 +46,22 @@ export class UsersController {
   }
 
   @Post('avatar')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('image'))
   async addAvatar(
-    @Body() userId: string,
     @UploadedFile() file: Express.Multer.File,
+    @Body() createAvatarDto: CreateAvatarDto,
   ) {
-    return this.usersService.addAvatar(userId, file.buffer, file.originalname);
+    return this.usersService.addAvatar(
+      createAvatarDto.userId,
+      file.buffer,
+      file.originalname,
+    );
   }
 
-  @Delete('avatar/:userId')
+  @Delete(':userId/avatar')
+  @HttpCode(204)
   async deleteAvatar(@Param('userId') userId: string) {
+    console.log('supsup');
     return this.usersService.deleteAvatar(userId);
   }
 }
