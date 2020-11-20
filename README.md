@@ -38,7 +38,7 @@ $ npm run test:cov
 
 ## Deploy
 
-instance setup
+### instance setup
 
 1. EC2 instance (currently seeing if deploy works on standard t2.small after t2.micro couldn't compile the server code due to not enough memory [small is 2gb vs micro 1gb])
    (set up the security for TCP to allow any )
@@ -73,3 +73,30 @@ instance setup
    (get container id)
    `$ docker logs --follow --until=3s <container-id>`
 8. confirm you can register and login or hit some endpoint on the server...
+
+### build deploy
+
+deployment
+remove all the old images
+\$`docker system prune -a`
+rebuild the deployment image
+\$`docker build -t piki .`
+tag the build with the timestamp
+get image id
+\$`docker images`
+tag image
+\$`docker tag <id> brettonauerbach/piki-server:build<egtimestamp 202011191500>`
+push the build to dockerhub
+\$`docker push brettonauerbach/piki-server`
+ssh to AWS machine and pull the docker image
+\$`ssh -i "sample-piki-app-1.pem" ec2-user@ec2-54-219-183-150.us-west-1.compute.amazonaws.com`
+run the image on docker
+edit the .env file
+\$`BUILD_VERSION=<update here>`
+run docker-compose
+\$`docker-compose -f docker-compose.prod.yml up -d`
+check all is running okay
+get main image id
+\$`docker ps`
+tail the log to see it workign
+\$`docker logs --follow --until=3s <eg log id 0ae11971e71d>`

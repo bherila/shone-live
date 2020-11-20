@@ -9,9 +9,9 @@ import { ApiTags } from '@nestjs/swagger';
 
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
-import { CreateAvatarDto } from './dto/create-avatar.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UploadFileDto } from './dto/upload-file.dto';
 import { UsersService } from './users.service';
 
 @ApiTags('users')
@@ -49,10 +49,10 @@ export class UsersController {
   @UseInterceptors(FileInterceptor('image'))
   async addAvatar(
     @UploadedFile() file: Express.Multer.File,
-    @Body() createAvatarDto: CreateAvatarDto,
+    @Body() uploadFileDto: UploadFileDto,
   ) {
     return this.usersService.addAvatar(
-      createAvatarDto.userId,
+      uploadFileDto.userId,
       file.buffer,
       file.originalname,
     );
@@ -61,7 +61,34 @@ export class UsersController {
   @Delete(':userId/avatar')
   @HttpCode(204)
   async deleteAvatar(@Param('userId') userId: string) {
-    console.log('supsup');
     return this.usersService.deleteAvatar(userId);
+  }
+
+  @Post('files')
+  @UseInterceptors(FileInterceptor('file'))
+  async addPrivateFile(
+    @Body() uploadFileDto: UploadFileDto,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    return this.usersService.addPrivateFile(
+      uploadFileDto.userId,
+      file.buffer,
+      file.originalname,
+    );
+  }
+
+  @Get(':userId/files')
+  async getAllPrivateFiles(@Param('userId') userId: string) {
+    return this.usersService.getAllPrivateFiles(userId);
+  }
+
+  @Delete(':userId/files/:fileId')
+  @HttpCode(204)
+  async deleteFile(
+    @Param('userId') userId: string,
+    @Param('fileId') fileId: number,
+  ) {
+    // return this.usersService.deleteAvatar(userId);
+    return this.usersService.deletePrivateFile(userId, fileId);
   }
 }

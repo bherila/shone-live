@@ -19,6 +19,7 @@ import { CoffeesModule } from './coffees/coffees.module';
 import { FilesModule } from './files/files.module';
 import { LoggerMiddleware } from './logger.middleware';
 import { OrdersModule } from './orders/orders.module';
+import { PrivateFilesModule } from './private-file/private-files.module';
 import { ProductsModule } from './products/products.module';
 import { ShowsModule } from './shows/shows.module';
 import { SkusModule } from './skus/skus.module';
@@ -43,6 +44,7 @@ if (process.env.NODE_ENV === 'dev') {
         AWS_ACCESS_KEY_ID: Joi.string().required(),
         AWS_SECRET_ACCESS_KEY: Joi.string().required(),
         AWS_PUBLIC_BUCKET_NAME: Joi.string().required(),
+        AWS_PRIVATE_BUCKET_NAME: Joi.string().required(),
       }),
     }),
     SentryModule.forRoot({
@@ -82,6 +84,7 @@ if (process.env.NODE_ENV === 'dev') {
     AddressesModule,
     ChatModule,
     AlertModule,
+    PrivateFilesModule,
   ],
 })
 export class AppModule implements NestModule {

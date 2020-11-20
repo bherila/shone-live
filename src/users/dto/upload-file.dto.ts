@@ -1,6 +1,6 @@
 import { IsString } from 'class-validator';
 
-export class CreateAvatarDto {
+export class UploadFileDto {
   @IsString()
   readonly userId: string;
 }
