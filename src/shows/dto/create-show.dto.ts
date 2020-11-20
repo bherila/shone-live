@@ -25,4 +25,8 @@ export class CreateShowDto {
   @IsOptional()
   @IsDateString()
   readonly end: string;
+
+  @IsOptional()
+  @IsNumber()
+  readonly previewId: number;
 }

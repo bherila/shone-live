@@ -4,7 +4,6 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Product } from '../products/entities/product.entity';
-import { Show } from '../shows/entities/show.entity';
 import { User } from '../users/entities/user.entity';
 import { CreateFileDto } from './dto/create-file.dto';
 import { File } from './entities/file.entity';
@@ -18,8 +17,6 @@ export class FilesService {
     private readonly fileRepository: Repository<File>,
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-    @InjectRepository(Show)
-    private readonly showRepository: Repository<Show>,
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
   ) {}
@@ -35,9 +32,6 @@ export class FilesService {
       file.product = await this.productRepository.findOne(
         createFileDto.productId,
       );
-    }
-    if (createFileDto.showId) {
-      file.show = await this.showRepository.findOne(createFileDto.showId);
     }
     return this.fileRepository.save(file);
   }

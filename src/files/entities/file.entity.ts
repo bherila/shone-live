@@ -4,7 +4,6 @@ import {
 
 import { Order } from '../../orders/entities/order.entity';
 import { Product } from '../../products/entities/product.entity';
-import { Show } from '../../shows/entities/show.entity';
 import { Sku } from '../../skus/entities/sku.entity';
 import { User } from '../../users/entities/user.entity';
 
@@ -43,15 +42,6 @@ export class File {
     },
   )
   product: Product;
-
-  @ManyToOne(
-    type => Show,
-    show => show.files,
-    {
-      cascade: ['insert', 'update'],
-    },
-  )
-  show: Show;
 
   @ManyToOne(
     type => Order,

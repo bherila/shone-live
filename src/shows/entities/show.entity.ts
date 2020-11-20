@@ -2,8 +2,8 @@ import {
   Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { File } from '../../files/entities/file.entity';
 import { Order } from '../../orders/entities/order.entity';
+import PrivateFile from '../../private-files/entities/private-file.entity';
 import { Product } from '../../products/entities/product.entity';
 import { Sku } from '../../skus/entities/sku.entity';
 import { User } from '../../users/entities/user.entity';
@@ -87,11 +87,11 @@ export class Show {
   orders: Order[];
 
   @OneToMany(
-    type => File,
-    file => file.show,
+    type => PrivateFile,
+    privateFile => privateFile.show,
     {
       cascade: true,
     },
   )
-  files: File[];
+  privateFiles: PrivateFile[];
 }

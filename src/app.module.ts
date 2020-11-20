@@ -19,7 +19,7 @@ import { CoffeesModule } from './coffees/coffees.module';
 import { FilesModule } from './files/files.module';
 import { LoggerMiddleware } from './logger.middleware';
 import { OrdersModule } from './orders/orders.module';
-import { PrivateFilesModule } from './private-file/private-files.module';
+import { PrivateFilesModule } from './private-files/private-files.module';
 import { ProductsModule } from './products/products.module';
 import { ShowsModule } from './shows/shows.module';
 import { SkusModule } from './skus/skus.module';

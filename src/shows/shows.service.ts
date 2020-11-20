@@ -3,6 +3,7 @@ import { Between, Repository } from 'typeorm';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
+import PrivateFile from '../private-files/entities/private-file.entity';
 import { Sku } from '../skus/entities/sku.entity';
 import { StripeService } from '../stripe/stripe.service';
 import { User } from '../users/entities/user.entity';
@@ -20,6 +21,8 @@ export class ShowsService {
     private readonly skuRepository: Repository<Sku>,
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    @InjectRepository(PrivateFile)
+    private readonly privateFileRepository: Repository<PrivateFile>,
     private readonly stripeService: StripeService,
   ) {}
 
@@ -71,6 +74,11 @@ export class ShowsService {
 
   async create(createShowDto: CreateShowDto) {
     const show = this.showRepository.create(createShowDto);
+    const preview = await this.privateFileRepository.findOne(
+      createShowDto.previewId,
+    );
+    preview.show = show;
+    this.privateFileRepository.save(preview);
     show.user = await this.userRepository.findOne(createShowDto.userId);
     return this.showRepository.save(show);
   }

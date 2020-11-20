@@ -7,7 +7,7 @@ import { Card } from '../../cards/entities/card.entity';
 import { S3File } from '../../files-aws/entities/s3file.entity';
 import { File } from '../../files/entities/file.entity';
 import { Order } from '../../orders/entities/order.entity';
-import PrivateFile from '../../private-file/entities/private-file.entity';
+import PrivateFile from '../../private-files/entities/private-file.entity';
 import { Product } from '../../products/entities/product.entity';
 import { Show } from '../../shows/entities/show.entity';
 import { UserAddress } from '../../user-addresses/user-address.entity';
