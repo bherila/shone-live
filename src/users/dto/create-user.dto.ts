@@ -14,6 +14,7 @@ export class CreateUserDto {
   @ApiProperty({
     description: `display username for use in the app.
     must be unique across users`,
+    example: `my_username_without_spaces`,
   })
   @IsOptional()
   @IsString()
@@ -21,6 +22,7 @@ export class CreateUserDto {
 
   @ApiProperty({
     description: `used for various authorizations sellers must be validated`,
+    example: true,
   })
   @IsOptional()
   @IsBoolean()
@@ -30,6 +32,14 @@ export class CreateUserDto {
     description: `full address object
     can be passed on creation
     is the home address of the user`,
+    example: {
+      city: 'New York',
+      country: 'US',
+      line1: '1 Broadway',
+      line2: 'Suite 1000',
+      postal_code: '10004',
+      state: 'NY',
+    },
   })
   @IsOptional()
   @ValidateNested()
@@ -38,6 +48,7 @@ export class CreateUserDto {
 
   @ApiProperty({
     description: `email used for unique user identification`,
+    example: 'myemail@gmail.com',
   })
   @IsOptional()
   @IsEmail()
@@ -45,6 +56,7 @@ export class CreateUserDto {
 
   @ApiProperty({
     description: `users first name`,
+    example: 'John',
   })
   @IsOptional()
   @IsString()
@@ -52,6 +64,7 @@ export class CreateUserDto {
 
   @ApiProperty({
     description: `users last name`,
+    example: 'Smith',
   })
   @IsOptional()
   @IsString()
@@ -59,6 +72,7 @@ export class CreateUserDto {
 
   @ApiProperty({
     description: `users phone number`,
+    example: '555-555-1234',
   })
   @IsOptional()
   @IsString()
@@ -69,19 +83,17 @@ export class CreateUserDto {
     description: `full address object
     can be passed on creation
     is the shipping address as saved in Stripe of the user`,
+    example: {
+      city: 'New York',
+      country: 'US',
+      line1: '1 Broadway',
+      line2: 'Suite 1000',
+      postal_code: '10004',
+      state: 'NY',
+    },
   })
   @IsOptional()
   @ValidateNested()
   @Type(() => StripeShippingAddress)
   readonly shipping?: StripeShippingAddress;
-
-  // TODO Check if deprecated and remove
-  // card creation happens after user creation and
-  // card gets associated with user separately so probably remove this
-  @ApiProperty({
-    description: `this is the id of a stripe credit card for now`,
-  })
-  @IsOptional()
-  @IsString()
-  readonly paymentMethod?: string;
 }

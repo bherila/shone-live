@@ -5,7 +5,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 import { Address } from '../addresses/entities/address.entity';
 import PostgresErrorCode from '../common/database/postgres-error-code.enum';
-import { UniquenessConstraintException } from '../common/exceptions/uniqueness-constraint-violation.exception';
+import {
+  UniquenessConstraintException,
+} from '../common/exceptions/uniqueness-constraint-violation.exception';
 import { StripeService } from '../stripe/stripe.service';
 import { User } from '../users/entities/user.entity';
 import { CreateCardDto } from './dto/create-card.dto';
@@ -61,34 +63,4 @@ export class CardsService {
       );
     }
   }
-
-  // this way using payment method, but doesn't work with order so not using for now
-  // async create(createPaymentMethodDto: CreatePaymentMethodDto){
-  //     const stripePaymentMethod = await this.stripeService.createStripePaymentMethod(createPaymentMethodDto);
-  //     // save to the DB
-  //     const user = await this.userRepository.findOne(createPaymentMethodDto.user);
-  //     try {
-  //         const card = this.cardRepository.create({
-  //             id: stripePaymentMethod.id,
-  //             user: user,
-  //             // todo add and link address
-  //             address_zip_check: stripePaymentMethod.card.checks.address_postal_code_check,
-  //             brand: stripePaymentMethod.card.brand,
-  //             country: stripePaymentMethod.card.country,
-  //             cvc_check: stripePaymentMethod.card.checks.cvc_check,
-  //             exp_month: stripePaymentMethod.card.exp_month,
-  //             exp_year: stripePaymentMethod.card.exp_year,
-  //             fingerprint: stripePaymentMethod.card.fingerprint,
-  //             funding: stripePaymentMethod.card.funding,
-  //             last4: stripePaymentMethod.card.last4,
-  //             name: stripePaymentMethod.billing_details.name,
-  //         });
-  //         return await this.cardRepository.save(card);
-  //     } catch (error) {
-  //         // if (error?.code === PostgresErrorCode.UniqueViolation) {
-  //         //     throw new HttpException('card with that email already exists', HttpStatus.BAD_REQUEST);
-  //         // }
-  //         throw new HttpException('Something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
-  //     }
-  // }
 }

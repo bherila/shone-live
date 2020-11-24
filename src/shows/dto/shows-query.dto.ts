@@ -12,7 +12,9 @@ import { PaginationQueryDto } from '../../common/dto/pagination-query.dto';
 // https://stackoverflow.com/questions/64376439/nestjs-dto-extended-with-partialtype-breaks-validation
 export class ShowsQueryDto extends PaginationQueryDto {
   @ApiProperty({
-    description: `this is the user who created the show`,
+    description: `this is the user who created the show
+    it is actually optional - seems showed required by bug`,
+    example: `cus_IPqRS333voIGbS`,
   })
   @IsOptional()
   @IsString()
@@ -26,7 +28,9 @@ export class ShowsQueryDto extends PaginationQueryDto {
     description: `earlierst start date-time of show to query INCLUSIVE
      https://en.wikipedia.org/wiki/ISO_8601
      note this currently has no logical validation eg that format is correct
-     that date is reasonable, that start is before end, that is a TODO, so for now please use carefully`,
+     that date is reasonable, that start is before end, that is a TODO, so for now please use carefully
+     it is actually optional - seems showed required by bug`,
+    example: `2020-11-22T20:39:12+00:00`,
   })
   @IsOptional()
   @IsDateString()
@@ -40,7 +44,9 @@ export class ShowsQueryDto extends PaginationQueryDto {
     description: `latest start date-time of show to query INCLUSIVE
      https://en.wikipedia.org/wiki/ISO_8601
      note this currently has no logical validation eg that format is correct
-     that date is reasonable, that start is before end, that is a TODO, so for now please use carefully`,
+     that date is reasonable, that start is before end, that is a TODO, so for now please use carefully
+     it is actually optional - seems showed required by bug`,
+    example: `2020-11-22T20:39:12+00:00`,
   })
   @IsOptional()
   @IsDateString()

@@ -7,9 +7,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 import { User } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
-import { jwtResponse } from './dto/jwt.response';
 import { RegisterDto } from './dto/register.dto';
 import { Auth } from './entities/auth.entity';
+import { jwtResponse } from './responses/jwt.response';
 
 @Injectable()
 export class AuthService {

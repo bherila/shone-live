@@ -77,9 +77,11 @@ export class ShowsService {
     const preview = await this.privateFileRepository.findOne(
       createShowDto.previewId,
     );
-    preview.show = show;
-    this.privateFileRepository.save(preview);
-    show.user = await this.userRepository.findOne(createShowDto.userId);
+    if (preview) {
+      preview.show = show;
+      this.privateFileRepository.save(preview);
+    }
+    show.user = await this.userRepository.findOne(createShowDto.user_id);
     return this.showRepository.save(show);
   }
 

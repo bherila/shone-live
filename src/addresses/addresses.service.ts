@@ -1,6 +1,6 @@
 import { Repository } from 'typeorm';
 
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { UserAddress } from '../user-addresses/user-address.entity';
@@ -19,17 +19,23 @@ export class AddressesService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  async create(createAddressDto: CreateAddressDto, user?: User) {
-    if (!user) {
-      const user = await this.userRepository.findOne(createAddressDto.user); // should be userId
+  async create(
+    createAddressDto: CreateAddressDto,
+    user?: User,
+  ): Promise<Address> {
+    let find_user = user;
+    if (!find_user) {
+      find_user = await this.userRepository.findOne(createAddressDto.user_id);
+    }
+    if (!find_user) {
+      throw new HttpException('user not found', HttpStatus.BAD_REQUEST);
     }
     const address = this.addressRepository.create({
-      user: user,
       ...createAddressDto,
     });
     const savedAddress = await this.addressRepository.save(address);
     const userAddress = this.userAddressRepository.create({
-      user: user,
+      user: find_user,
       address: savedAddress,
     });
 

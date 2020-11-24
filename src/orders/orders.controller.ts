@@ -1,9 +1,10 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Get, HttpStatus, Post, Query } from '@nestjs/common';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { ShowGateway } from '../shows/show.gateway';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { OrdersQueryDto } from './dto/orders-query.dto';
+import { Order } from './entities/order.entity';
 import { OrdersService } from './orders.service';
 
 @ApiTags('orders')
@@ -14,16 +15,31 @@ export class OrdersController {
     private readonly showGateway: ShowGateway,
   ) {}
 
+  @ApiOperation({ summary: `returns all orders filtered by the query params` })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: `returns all orders`,
+    type: Order,
+    isArray: true,
+  })
   @Get()
-  async findAll(@Query() getOrderDto: OrdersQueryDto) {
+  async findAll(@Query() getOrderDto: OrdersQueryDto): Promise<Order[]> {
     return this.ordersService.findAll(getOrderDto);
   }
 
-  // create
-  // unclear how we do the checkout if we do the order creation and checkout totally from the client or also from the server and what the mix is
-  // pay
+  @ApiOperation({
+    summary: `creates an order in stripe
+  and then pays the order so it gets completed
+  on successful order processing returns the order
+  (if units in stock, payment valid, eventually address validation included)`,
+  })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: `created an order`,
+    type: Order,
+  })
   @Post()
-  async create(@Body() createOrderDto: CreateOrderDto) {
+  async create(@Body() createOrderDto: CreateOrderDto): Promise<Order> {
     const order = await this.ordersService.create(createOrderDto);
     this.showGateway.wss
       .to(`${order.show.id}`)

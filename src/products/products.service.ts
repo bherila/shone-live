@@ -43,8 +43,18 @@ export class ProductsService {
   }
 
   async create(createProductDto: CreateProductDto) {
-    const show = await this.showRepository.findOne(createProductDto.showId);
-    const user = await this.userRepository.findOne(createProductDto.userId);
+    const user = await this.userRepository.findOne(createProductDto.user_id);
+    if (!user) {
+      throw new NotFoundException(
+        `User #${createProductDto.user_id} not found`,
+      );
+    }
+    const show = await this.showRepository.findOne(createProductDto.show_id);
+    if (!show) {
+      throw new NotFoundException(
+        `Show #${createProductDto.show_id} not found`,
+      );
+    }
     const stripeProduct = await this.stripeService.createStripeProduct(
       createProductDto,
       show.id,
@@ -65,10 +75,22 @@ export class ProductsService {
   }
 
   async update(id: string, updateProductDto: UpdateProductDto) {
+    const user = await this.userRepository.findOne(updateProductDto.user_id);
+    if (!user) {
+      throw new NotFoundException(
+        `User #${updateProductDto.user_id} not found`,
+      );
+    }
+    const show = await this.showRepository.findOne(updateProductDto.show_id);
+    if (!show) {
+      throw new NotFoundException(
+        `Show #${updateProductDto.show_id} not found`,
+      );
+    }
     const product = await this.productRepository.preload({
       id: id,
-      userId: updateProductDto.userId, // todo see if can remove, should be included in DTO already
-      showId: updateProductDto.showId, // todo see if can remove, should be included in DTO already
+      user: user,
+      show: show,
       ...updateProductDto,
     });
     if (!product) {

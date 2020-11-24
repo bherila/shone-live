@@ -45,7 +45,12 @@ async function bootstrap() {
       users: { ['admin']: 'admin' },
     }),
   );
-  SwaggerModule.setup('/api', app, document);
+  SwaggerModule.setup('/api', app, document, {
+    swaggerOptions: {
+      tagsSorter: 'alpha',
+      operationsSorter: 'alpha',
+    },
+  });
 
   const configService = app.get(ConfigService);
   config.update({

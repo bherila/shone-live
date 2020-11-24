@@ -119,7 +119,7 @@ export class UsersService {
     }
   }
 
-  async remove(id: string) {
+  async remove(id: string): Promise<User> {
     const user = await this.findOne(id);
     return this.userRepository.remove(user);
   }

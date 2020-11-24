@@ -42,6 +42,7 @@ export class StripeService {
   // todo figure out how to get stripe typings to make this require a stripe card object
   getAddressFromCard(stripeCard: any): CreateAddressDto {
     const data: CreateAddressDto = {
+      user_id: stripeCard.customer,
       city: stripeCard.address_city,
       country: stripeCard.address_country,
       line1: stripeCard.address_line1,
@@ -67,6 +68,7 @@ export class StripeService {
 
   getAddressFromOrder(stripeOrder: any): CreateAddressDto {
     const data: CreateAddressDto = {
+      user_id: stripeOrder.customer,
       city: stripeOrder.shipping.address.city,
       country: stripeOrder.shipping.address.country,
       line1: stripeOrder.shipping.address.line1,
@@ -97,7 +99,6 @@ export class StripeService {
     data.name = `${customerData.first_name} ${customerData.last_name}`;
     data.phone = customerData.phone;
     data.shipping = customerData.shipping;
-    data.payment_method = customerData.paymentMethod;
     const keys = Object.keys(data);
     keys.forEach(key => data[key] == null && delete data[key]);
     return data;
@@ -110,14 +111,14 @@ export class StripeService {
   }
 
   async createStripeProduct(
-    product: CreateProductDto,
+    createProductDto: CreateProductDto,
     showId: number,
     showDate: string,
   ) {
     return this.stripeClient.products.create({
-      name: product.name,
+      name: createProductDto.name,
       active: true, // todo: update to false after show is done
-      description: product.description,
+      description: createProductDto.description,
       type: 'good',
       shippable: true,
       // images: ["some urls here"], // file path ...todo once files are saving path not just name // dummy data
@@ -125,7 +126,7 @@ export class StripeService {
         'https://cdn.shopify.com/s/files/1/2143/3217/products/500_3f527d72-404b-4db7-a96c-471d1f97256e.png?v=1595523310',
       ], // dummy data
       metadata: {
-        product_creator_user_id: product.userId,
+        product_creator_user_id: createProductDto.user_id,
         show_id: showId,
         show_date: showDate,
       },
@@ -181,7 +182,7 @@ export class StripeService {
       : `${user.first_name} ${user.last_name}`;
     const data: any = {
       currency: 'usd',
-      customer: createOrderDto.user,
+      customer: createOrderDto.user_id,
       items: [
         {
           type: 'sku',
@@ -217,39 +218,4 @@ export class StripeService {
     // to switch it for use on stripe
     return this.stripeClient.orders.pay(orderId, { customer: customer });
   }
-
-  // async createStripePaymentMethod(createPaymentMethodDto: CreatePaymentMethodDto) {
-  //     // todo: return the stripe card errors to the client
-  //     const paymentMethod = await this.stripeClient.paymentMethods.create({
-  //         type: 'card',
-  //         card: {
-  //             number: createPaymentMethodDto.number,
-  //             exp_month: createPaymentMethodDto.exp_month,
-  //             exp_year: createPaymentMethodDto.exp_year,
-  //             cvc: createPaymentMethodDto.cvc,
-  //         },
-  //         billing_details: {
-  //             address: createPaymentMethodDto.address,
-  //             name: createPaymentMethodDto.name, // add if optional
-  //         }
-  //     });
-
-  //     await this.stripeClient.paymentMethods.attach(
-  //         paymentMethod.id,
-  //         { customer: createPaymentMethodDto.user }
-  //     );
-
-  //     return paymentMethod;
-  // };
-
-  // async createStripePaymentIntent(amount: number, card: string, user: string) {
-  //     return this.stripeClient.paymentIntents.create({
-  //         amount: amount,
-  //         currency: "usd",
-  //         confirm: true,
-  //         customer: user,
-  //         metadata: { "show": "todo" },
-  //         payment_method: card
-  //     });
-  // }
 }

@@ -35,10 +35,10 @@ export class OrdersService {
   ) {}
 
   findAll(getOrderDto: OrdersQueryDto) {
-    const { limit, offset, showId } = getOrderDto;
-    if (showId) {
+    const { limit, offset, show_id } = getOrderDto;
+    if (show_id) {
       return this.orderRepository.find({
-        where: { show: showId },
+        where: { show: show_id },
         relations: ['user', 'address', 'show', 'card'],
         skip: offset,
         take: limit,
@@ -54,17 +54,17 @@ export class OrdersService {
 
   // TODO: need to set up webhooks for enum update from stripe after order is paid
   async create(createOrderDto: CreateOrderDto) {
-    const user = await this.userRepository.findOne(createOrderDto.user);
-    const show = await this.showRepository.findOne(createOrderDto.showId);
-    const card = await this.cardRepository.findOne(createOrderDto.card);
+    const user = await this.userRepository.findOne(createOrderDto.user_id);
+    const show = await this.showRepository.findOne(createOrderDto.show_id);
+    const card = await this.cardRepository.findOne(createOrderDto.card_id);
     const stripeOrder = await this.stripeService.createStripeOrder(
       createOrderDto,
       user,
     );
     const sku = await this.skuRepository.findOne(createOrderDto.sku);
-    if (!(sku.showId == createOrderDto.showId)) {
+    if (!(sku.showId == createOrderDto.show_id)) {
       throw new HttpException(
-        `SKU ${sku.id} is not available in show ${createOrderDto.showId}`,
+        `SKU ${sku.id} is not available in show ${createOrderDto.show_id}`,
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -105,7 +105,7 @@ export class OrdersService {
     // pay the order
     const paidOrder = await this.stripeService.payStripeOrder(
       stripeOrder.id,
-      createOrderDto.user,
+      createOrderDto.user_id,
     );
     // add code for when paying order fails
     savedOrder.status = OrderStatus.paid;
