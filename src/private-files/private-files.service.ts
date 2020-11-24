@@ -46,6 +46,7 @@ export class PrivateFilesService {
     return s3.getSignedUrlPromise('getObject', {
       Bucket: this.configService.get('AWS_PRIVATE_BUCKET_NAME'),
       Key: key,
+      Expires: 86400,
     });
   }
 
