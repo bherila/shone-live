@@ -9,6 +9,8 @@ import { Sku } from './entities/sku.entity';
 import { SkusService } from './skus.service';
 
 @ApiTags('skus')
+// @UseGuards(JwtAuthGuard)
+// @ApiBearerAuth('JWT')
 @Controller('skus')
 export class SkusController {
   constructor(private readonly skusService: SkusService) {}

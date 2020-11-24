@@ -2,14 +2,13 @@ import { Express } from 'express';
 
 import {
   Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post,
-  Query, UploadedFile, UseGuards, UseInterceptors,
+  Query, UploadedFile, UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express/multer';
 import {
-  ApiBearerAuth, ApiConsumes, ApiOperation, ApiResponse, ApiTags,
+  ApiConsumes, ApiOperation, ApiResponse, ApiTags,
 } from '@nestjs/swagger';
 
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -20,8 +19,8 @@ import { UsersService } from './users.service';
 
 @ApiTags('users')
 @Controller('users')
-@UseGuards(JwtAuthGuard)
-@ApiBearerAuth('JWT')
+// @UseGuards(JwtAuthGuard)
+// @ApiBearerAuth('JWT')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 

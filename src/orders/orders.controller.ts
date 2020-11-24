@@ -8,6 +8,8 @@ import { Order } from './entities/order.entity';
 import { OrdersService } from './orders.service';
 
 @ApiTags('orders')
+// @UseGuards(JwtAuthGuard)
+// @ApiBearerAuth('JWT')
 @Controller('orders')
 export class OrdersController {
   constructor(

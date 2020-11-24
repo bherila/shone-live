@@ -6,6 +6,8 @@ import { CreateAddressDto } from './dto/create-address.dto';
 import { Address } from './entities/address.entity';
 
 @ApiTags('addresses')
+// @UseGuards(JwtAuthGuard)
+// @ApiBearerAuth('JWT')
 @Controller('addresses')
 export class AddressesController {
   constructor(private readonly addressService: AddressesService) {}

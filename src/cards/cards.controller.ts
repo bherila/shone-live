@@ -6,6 +6,8 @@ import { CreateCardDto } from './dto/create-card.dto';
 import { Card } from './entities/card.entity';
 
 @ApiTags('cards')
+// @UseGuards(JwtAuthGuard)
+// @ApiBearerAuth('JWT')
 @Controller('cards')
 export class CardsController {
   constructor(private readonly cardsService: CardsService) {}

@@ -14,6 +14,8 @@ import { Show } from './entities/show.entity';
 import { ShowsService } from './shows.service';
 
 @ApiTags('shows')
+// @UseGuards(JwtAuthGuard)
+// @ApiBearerAuth('JWT')
 @Controller('shows')
 @ApiBearerAuth() // TODO check this,
 // but these should show wherever there's auth gaurd on route in swatgger docs
