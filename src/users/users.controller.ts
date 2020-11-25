@@ -14,6 +14,9 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UploadFileDto } from './dto/upload-file.dto';
 import { User } from './entities/user.entity';
+import {
+  AwsS3PrivateFileCreateResponse,
+} from './responses/aws-s3-file-private.create';
 import { AwsS3FileCreateResponse } from './responses/aws-s3-file.create';
 import { UsersService } from './users.service';
 
@@ -130,7 +133,7 @@ export class UsersController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: `uploaded file`,
-    type: AwsS3FileCreateResponse,
+    type: AwsS3PrivateFileCreateResponse,
   })
   // todo get the file part into the docs for these
   // the file part is missing in the request body
@@ -151,7 +154,7 @@ export class UsersController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: `all the files uploaded by this user`,
-    type: AwsS3FileCreateResponse,
+    type: AwsS3PrivateFileCreateResponse,
     isArray: true,
   })
   @Get(':userId/files')
