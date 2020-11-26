@@ -26,6 +26,7 @@
     "db:reset": "docker-compose stop db && docker-compose rm -f db && docker-compose up -d db"
   },
   "dependencies": {
+    "@asyncapi/generator": "^1.0.1",
     "@hapi/joi": "^17.1.1",
     "@nestjs/common": "^7.0.0",
     "@nestjs/config": "^0.5.0",
