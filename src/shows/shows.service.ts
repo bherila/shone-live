@@ -39,7 +39,7 @@ export class ShowsService {
     if (userId) {
       return this.showRepository.find({
         where: { user: userId },
-        relations: ['user', 'products', 'files', 'skus'],
+        relations: ['user', 'privateFiles', 'products', 'skus'],
         skip: offset,
         take: limit,
       });
@@ -49,13 +49,13 @@ export class ShowsService {
         where: {
           date: Between(startDate, endDate),
         },
-        relations: ['user', 'products', 'files', 'skus'],
+        relations: ['user', 'privateFiles', 'products', 'skus'],
         skip: offset,
         take: limit,
       });
     }
     return this.showRepository.find({
-      relations: ['user', 'products', 'files', 'skus'],
+      relations: ['user', 'privateFiles', 'products', 'skus'],
       skip: offset,
       take: limit,
     });
@@ -64,7 +64,7 @@ export class ShowsService {
   // todo add nested route structure for these association lookups
   async findOne(id: string) {
     const show = await this.showRepository.findOne(id, {
-      relations: ['user', 'products', 'files', 'skus'],
+      relations: ['user', 'privateFiles', 'products', 'skus'],
     });
     if (!show) {
       throw new NotFoundException(`Show with id ${id} not found`);
