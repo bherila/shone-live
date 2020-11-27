@@ -99,13 +99,17 @@ deployment
 6. ssh to AWS machine and pull the docker image
    \$`ssh -i "sample-piki-app-1.pem" ec2-user@ec2-54-219-183-150.us-west-1.compute.amazonaws.com`
 
-7. run the image on docker
+7. stop the server & cleanup
+   \$`docker stop $(docker ps -aq)`
+   \$`docker system prune -a`
+
+8. run the image on docker
    edit the .env file
    \$`BUILD_VERSION=<update here>`
    run docker-compose
    \$`docker-compose -f docker-compose.prod.yml up -d`
 
-8. check all is running okay
+9. check all is running okay
    get main image id
    \$`docker ps`
    tail the log to see it workign
