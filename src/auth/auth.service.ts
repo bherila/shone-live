@@ -9,7 +9,7 @@ import { User } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
 import { RegisterDto } from './dto/register.dto';
 import { Auth } from './entities/auth.entity';
-import { jwtResponse } from './responses/jwt.response';
+import { JwtResponseWithUser } from './responses/jwt.response-with-user';
 
 @Injectable()
 export class AuthService {
@@ -22,7 +22,7 @@ export class AuthService {
     private usersService: UsersService,
   ) {}
 
-  async login(email: string): Promise<jwtResponse> {
+  async login(email: string): Promise<JwtResponseWithUser> {
     const user = await this.userRepository.findOne({
       where: { email },
     });
@@ -32,10 +32,11 @@ export class AuthService {
         id: user.id,
         username: user.username,
       }),
+      user: user,
     };
   }
 
-  async register(registerDto: RegisterDto): Promise<jwtResponse> {
+  async register(registerDto: RegisterDto): Promise<JwtResponseWithUser> {
     const user = await this.usersService.create(registerDto.user);
     const hashedPassword = await bcrypt.hash(registerDto.password, 10);
     const auth = await this.authRepository.create({
@@ -49,6 +50,7 @@ export class AuthService {
         id: user.id,
         username: user.username,
       }),
+      user: user,
     };
   }
 

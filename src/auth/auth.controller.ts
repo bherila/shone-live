@@ -5,8 +5,7 @@ import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 import { LocalAuthGuard } from './local-auth.guard';
-import { jwtResponse } from './responses/jwt.response';
-import { RegisterResponse } from './responses/register.response';
+import { JwtResponseWithUser } from './responses/jwt.response-with-user';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -15,7 +14,8 @@ export class AuthController {
 
   @Post('/login')
   @ApiOperation({
-    summary: `returns JWT token if vaid username and password`,
+    summary: `returns JWT token if vaid username and password,
+    includes user object for client convenience`,
   })
   @ApiResponse({
     status: HttpStatus.UNAUTHORIZED,
@@ -25,23 +25,27 @@ export class AuthController {
     status: HttpStatus.CREATED,
     description: `returns "created" after making new JWT if valid credentials.
     Token valid for ${process.env.JWT_TIMEOUT}`,
-    type: RegisterResponse,
+    type: JwtResponseWithUser,
   })
   @UseGuards(LocalAuthGuard)
-  async login(@Body() loginDto: LoginDto): Promise<jwtResponse> {
+  async login(@Body() loginDto: LoginDto): Promise<JwtResponseWithUser> {
     return this.authService.login(loginDto.email);
   }
 
   @Post('/register')
-  @ApiOperation({ summary: 'returns JWT token if vaid username and password' })
-  // TODO figure out what happens if invalid credentials
+  @ApiOperation({
+    summary: `returns JWT token if vaid username and password,
+  also returns the user object with the parameters passed in`,
+  })
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: `creates a user record and an auth record, returns JWT.
     Token valid for ${process.env.JWT_TIMEOUT}`,
-    type: RegisterResponse,
+    type: JwtResponseWithUser,
   })
-  async create(@Body() createAuthDto: RegisterDto): Promise<jwtResponse> {
+  async create(
+    @Body() createAuthDto: RegisterDto,
+  ): Promise<JwtResponseWithUser> {
     return this.authService.register(createAuthDto);
   }
 }
