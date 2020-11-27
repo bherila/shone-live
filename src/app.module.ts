@@ -1,8 +1,9 @@
 import { join } from 'path';
 
 import * as Joi from '@hapi/joi';
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 import {
   ServeStaticModule,
 } from '@nestjs/serve-static/dist/serve-static.module';
@@ -16,8 +17,8 @@ import { AuthModule } from './auth/auth.module';
 import { CardsModule } from './cards/cards.module';
 import { ChatModule } from './chat/chat.module';
 import { CoffeesModule } from './coffees/coffees.module';
+import { AspectLogger } from './common/interceptors/aspect-logger.interceptor';
 import { FilesModule } from './files/files.module';
-import { LoggerMiddleware } from './logger.middleware';
 import { OrdersModule } from './orders/orders.module';
 import { PrivateFilesModule } from './private-files/private-files.module';
 import { ProductsModule } from './products/products.module';
@@ -86,9 +87,11 @@ if (process.env.NODE_ENV === 'dev') {
     AlertModule,
     PrivateFilesModule,
   ],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: AspectLogger,
+    },
+  ],
 })
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware).forRoutes('*');
-  }
-}
+export class AppModule {}
