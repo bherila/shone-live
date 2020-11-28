@@ -44,22 +44,6 @@ export class CreateShowDto {
   readonly name: string;
 
   @ApiProperty({
-    description: `time the show actually started at`,
-    example: `2020-11-22T20:39:12+00:00`,
-  })
-  @IsOptional()
-  @IsDateString()
-  readonly start: string;
-
-  @ApiProperty({
-    description: `time the show actually ended at`,
-    example: `2020-11-22T20:39:12+00:00`,
-  })
-  @IsOptional()
-  @IsDateString()
-  readonly end: string;
-
-  @ApiProperty({
     description: `the id of the main preview video for the show`,
     example: `1`,
   })
