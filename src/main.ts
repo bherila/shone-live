@@ -10,6 +10,8 @@ import { SwaggerModule } from '@nestjs/swagger/dist/swagger-module';
 
 import { AppModule } from './app.module';
 
+const fs = require('fs');
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   if (process.env.NODE_ENV === 'dev') {
@@ -36,6 +38,9 @@ async function bootstrap() {
     .setVersion('0.1')
     .build();
   const document = SwaggerModule.createDocument(app, options);
+
+  fs.writeFileSync('./open-api.json', JSON.stringify(document));
+  SwaggerModule.setup('/api', app, document);
 
   // todo: this works, but we should move the PW to the env at least so it's not in the repo
   app.use(
