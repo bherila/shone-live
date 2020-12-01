@@ -105,7 +105,7 @@ export class UsersController {
     @Body() uploadFileDto: UploadFileDto,
   ) {
     return this.usersService.addAvatar(
-      uploadFileDto.userId,
+      uploadFileDto.user_id,
       file.buffer,
       file.originalname,
     );
@@ -135,16 +135,15 @@ export class UsersController {
     description: `uploaded file`,
     type: AwsS3PrivateFileCreateResponse,
   })
-  // todo get the file part into the docs for these
-  // the file part is missing in the request body
   @Post('files')
   @UseInterceptors(FileInterceptor('file'))
+  @ApiConsumes('multipart/form-data')
   async addPrivateFile(
     @Body() uploadFileDto: UploadFileDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
     return this.usersService.addPrivateFile(
-      uploadFileDto.userId,
+      uploadFileDto.user_id,
       file.buffer,
       file.originalname,
     );
