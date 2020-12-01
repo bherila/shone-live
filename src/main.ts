@@ -40,7 +40,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options);
 
   fs.writeFileSync('./open-api.json', JSON.stringify(document));
-  SwaggerModule.setup('/api', app, document);
 
   // todo: this works, but we should move the PW to the env at least so it's not in the repo
   app.use(
