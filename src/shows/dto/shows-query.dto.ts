@@ -7,9 +7,7 @@ import { PaginationQueryDto } from '../../common/dto/pagination-query.dto';
 // TODO this should use extends PartialType from nestjs/swagger
 // however if that is used then
 // the class validator breaks on the inherited params
-// so it cannot work, but if it's not used
-// the swagger docs wrongly state the optional params are required
-// https://stackoverflow.com/questions/64376439/nestjs-dto-extended-with-partialtype-breaks-validation
+// so it cannot work
 export class ShowsQueryDto extends PaginationQueryDto {
   @ApiProperty({
     description: `this is the user who created the show

@@ -1,5 +1,5 @@
 import { Body, Controller, Get, HttpStatus, Post, Query } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { ShowGateway } from '../shows/show.gateway';
 import { CreateOrderDto } from './dto/create-order.dto';
@@ -24,6 +24,9 @@ export class OrdersController {
     type: Order,
     isArray: true,
   })
+  @ApiQuery({ name: 'show_id', type: Number, required: false })
+  @ApiQuery({ name: 'offset', type: Number, required: false })
+  @ApiQuery({ name: 'limit', type: Number, required: false })
   @Get()
   async findAll(@Query() getOrderDto: OrdersQueryDto): Promise<Order[]> {
     return this.ordersService.findAll(getOrderDto);
