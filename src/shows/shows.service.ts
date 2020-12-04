@@ -33,32 +33,25 @@ export class ShowsService {
   findAll(getShowDto: ShowsQueryDto) {
     const { limit, offset, userId, startDate, endDate } = getShowDto;
 
-    // todo figure out how to filter date range with user ID
-    // for now it will just take userId first and ignore date range if sent
-    // due to ordering of if statements
-    if (userId) {
-      return this.showRepository.find({
-        where: { user: userId },
-        relations: ['user', 'privateFiles', 'products', 'skus'],
-        skip: offset,
-        take: limit,
-      });
-    }
-    if (startDate && endDate) {
-      return this.showRepository.find({
-        where: {
-          date: Between(startDate, endDate),
-        },
-        relations: ['user', 'privateFiles', 'products', 'skus'],
-        skip: offset,
-        take: limit,
-      });
-    }
-    return this.showRepository.find({
+    let baseQuery: any = {
       relations: ['user', 'privateFiles', 'products', 'skus'],
       skip: offset,
       take: limit,
-    });
+    };
+
+    let where: any = {};
+    if (userId) {
+      where.user = userId;
+    }
+    if (startDate && endDate) {
+      where.date = Between(startDate, endDate);
+    }
+
+    if (Object.keys(where).length > 0) {
+      baseQuery.where = where;
+    }
+
+    return this.showRepository.find(baseQuery);
   }
 
   // todo add nested route structure for these association lookups
