@@ -53,6 +53,7 @@ export class StripeService {
       data.line2 = stripeCard.address_line2;
     }
 
+    // TODO: refactor to use the ObjService
     const keys = Object.keys(data);
     const missingValues: any = [];
     keys.forEach(key => data[key] == null && missingValues.push(key));
@@ -99,6 +100,7 @@ export class StripeService {
     data.name = `${customerData.first_name} ${customerData.last_name}`;
     data.phone = customerData.phone;
     data.shipping = customerData.shipping;
+    // TODO: refactor to use the ObjService
     const keys = Object.keys(data);
     keys.forEach(key => data[key] == null && delete data[key]);
     return data;

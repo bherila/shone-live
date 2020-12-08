@@ -26,6 +26,7 @@ import { ShowsModule } from './shows/shows.module';
 import { SkusModule } from './skus/skus.module';
 import { StripeModule } from './stripe/stripe.module';
 import { UsersModule } from './users/users.module';
+import { CommonModule } from './common/common.module';
 
 let dbLogging = []; // presume this logs nothing, because this var can be boolean or string or array in the docs, which seems against strict typing!
 if (process.env.NODE_ENV === 'dev') {
@@ -86,6 +87,7 @@ if (process.env.NODE_ENV === 'dev') {
     ChatModule,
     AlertModule,
     PrivateFilesModule,
+    CommonModule,
   ],
   providers: [
     {
