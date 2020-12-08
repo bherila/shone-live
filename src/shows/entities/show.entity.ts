@@ -3,7 +3,7 @@ import {
 } from 'typeorm';
 
 import { Order } from '../../orders/entities/order.entity';
-import PrivateFile from '../../private-files/entities/private-file.entity';
+import { PrivateFile } from '../../private-files/entities/private-file.entity';
 import { Product } from '../../products/entities/product.entity';
 import { Sku } from '../../skus/entities/sku.entity';
 import { User } from '../../users/entities/user.entity';

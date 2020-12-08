@@ -4,6 +4,7 @@ import {
 
 import { File } from '../../files/entities/file.entity';
 import { OrderSku } from '../../order-skus/entities/order-sku.entity';
+import { PrivateFile } from '../../private-files/entities/private-file.entity';
 import { Product } from '../../products/entities/product.entity';
 import { Show } from '../../shows/entities/show.entity';
 
@@ -91,6 +92,15 @@ export class Sku {
   )
   @JoinColumn()
   file: File;
+
+  @OneToMany(
+    type => PrivateFile,
+    privateFile => privateFile.show,
+    {
+      cascade: true,
+    },
+  )
+  privateFiles: PrivateFile[];
 
   @OneToMany(
     type => OrderSku,

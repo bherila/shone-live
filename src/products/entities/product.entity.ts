@@ -1,6 +1,7 @@
 import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
 
 import { File } from '../../files/entities/file.entity';
+import { PrivateFile } from '../../private-files/entities/private-file.entity';
 import { Show } from '../../shows/entities/show.entity';
 import { Sku } from '../../skus/entities/sku.entity';
 import { User } from '../../users/entities/user.entity';
@@ -65,6 +66,15 @@ export class Product {
     },
   )
   files: File[];
+
+  @OneToMany(
+    type => PrivateFile,
+    privateFile => privateFile.show,
+    {
+      cascade: true,
+    },
+  )
+  privateFiles: PrivateFile[];
 
   @OneToMany(
     type => Sku,

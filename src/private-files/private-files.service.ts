@@ -1,4 +1,5 @@
 import { S3 } from 'aws-sdk';
+import { ObjService } from 'src/common/helpers/object.service';
 import { Repository } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 
@@ -6,7 +7,8 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import PrivateFile from './entities/private-file.entity';
+import { CreatePrivateFileDto } from './dto/create-private-file.dto';
+import { PrivateFile } from './entities/private-file.entity';
 
 @Injectable()
 export class PrivateFilesService {
@@ -14,11 +16,12 @@ export class PrivateFilesService {
     @InjectRepository(PrivateFile)
     private privateFilesRepository: Repository<PrivateFile>,
     private readonly configService: ConfigService,
+    private readonly objService: ObjService,
   ) {}
 
   async uploadPrivateFile(
+    createPrivateFileDto: CreatePrivateFileDto,
     dataBuffer: Buffer,
-    ownerId: string,
     filename: string,
   ) {
     const s3 = new S3();
@@ -30,12 +33,14 @@ export class PrivateFilesService {
       })
       .promise();
 
-    const newFile = this.privateFilesRepository.create({
-      key: uploadResult.Key,
-      owner: {
-        id: ownerId,
-      },
-    });
+    const saveData = this.objService.filteredNoNulls(
+      Object.assign({}, createPrivateFileDto),
+      ['type', 'product_id', 'sku_id', 'show_id'],
+    );
+    saveData['key'] = uploadResult.Key;
+    saveData['owner'] = { id: createPrivateFileDto.user_id };
+
+    const newFile = this.privateFilesRepository.create(saveData);
     await this.privateFilesRepository.save(newFile);
     return newFile;
   }

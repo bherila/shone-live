@@ -3,7 +3,7 @@ import { Between, Repository } from 'typeorm';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import PrivateFile from '../private-files/entities/private-file.entity';
+import { PrivateFile } from '../private-files/entities/private-file.entity';
 import { Sku } from '../skus/entities/sku.entity';
 import { StripeService } from '../stripe/stripe.service';
 import { User } from '../users/entities/user.entity';

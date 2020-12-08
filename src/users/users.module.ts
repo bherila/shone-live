@@ -6,7 +6,7 @@ import { Card } from '../cards/entities/card.entity';
 import { S3File } from '../files-aws/entities/s3file.entity';
 import { S3FilesModule } from '../files-aws/s3files.module';
 import { Order } from '../orders/entities/order.entity';
-import PrivateFile from '../private-files/entities/private-file.entity';
+import { PrivateFile } from '../private-files/entities/private-file.entity';
 import { PrivateFilesModule } from '../private-files/private-files.module';
 import { Product } from '../products/entities/product.entity';
 import { Show } from '../shows/entities/show.entity';

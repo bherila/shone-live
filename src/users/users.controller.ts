@@ -5,19 +5,18 @@ import {
   Query, UploadedFile, UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express/multer';
-import {
-  ApiConsumes, ApiOperation, ApiResponse, ApiTags,
-} from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
+import {
+  CreatePrivateFileDto,
+} from '../private-files/dto/create-private-file.dto';
+import {
+  AwsS3FileCreateResponse,
+} from '../private-files/responses/aws-s3-file.create';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { UploadFileDto } from './dto/upload-file.dto';
 import { User } from './entities/user.entity';
-import {
-  AwsS3PrivateFileCreateResponse,
-} from './responses/aws-s3-file-private.create';
-import { AwsS3FileCreateResponse } from './responses/aws-s3-file.create';
 import { UsersService } from './users.service';
 
 @ApiTags('users')
@@ -102,10 +101,10 @@ export class UsersController {
   @UseInterceptors(FileInterceptor('image'))
   async addAvatar(
     @UploadedFile() file: Express.Multer.File,
-    @Body() uploadFileDto: UploadFileDto,
+    @Body() createPrivateFileDto: CreatePrivateFileDto,
   ) {
     return this.usersService.addAvatar(
-      uploadFileDto.user_id,
+      createPrivateFileDto.user_id,
       file.buffer,
       file.originalname,
     );
@@ -123,60 +122,5 @@ export class UsersController {
   @HttpCode(204)
   async deleteAvatar(@Param('userId') userId: string) {
     return this.usersService.deleteAvatar(userId);
-  }
-
-  @ApiOperation({
-    summary: `a user can upload any file,
-  this is a private file so can only get access through the user get,
-  non-users cannot access these files`,
-  })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    description: `uploaded file`,
-    type: AwsS3PrivateFileCreateResponse,
-  })
-  @Post('files')
-  @UseInterceptors(FileInterceptor('file'))
-  @ApiConsumes('multipart/form-data')
-  async addPrivateFile(
-    @Body() uploadFileDto: UploadFileDto,
-    @UploadedFile() file: Express.Multer.File,
-  ) {
-    return this.usersService.addPrivateFile(
-      uploadFileDto.user_id,
-      file.buffer,
-      file.originalname,
-    );
-  }
-
-  @ApiOperation({ summary: `get all the files uploaded by a user` })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: `all the files uploaded by this user`,
-    type: AwsS3PrivateFileCreateResponse,
-    isArray: true,
-  })
-  @Get(':userId/files')
-  async getAllPrivateFiles(@Param('userId') userId: string) {
-    return this.usersService.getAllPrivateFiles(userId);
-  }
-
-  @ApiOperation({
-    summary: `delete a file,
-  (only the user who created the file can delete it)`,
-  })
-  @ApiResponse({
-    status: HttpStatus.NO_CONTENT,
-    description: `deleted file`,
-  })
-  @Delete(':userId/files/:fileId')
-  @ApiConsumes('application/octet-stream')
-  @HttpCode(204)
-  async deleteFile(
-    @Param('userId') userId: string,
-    @Param('fileId') fileId: number,
-  ) {
-    // return this.usersService.deleteAvatar(userId);
-    return this.usersService.deletePrivateFile(userId, fileId);
   }
 }

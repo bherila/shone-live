@@ -13,6 +13,9 @@ import {
   UniquenessConstraintException,
 } from '../common/exceptions/uniqueness-constraint-violation.exception';
 import { S3FilesService } from '../files-aws/s3files.service';
+import {
+  CreatePrivateFileDto,
+} from '../private-files/dto/create-private-file.dto';
 import { PrivateFilesService } from '../private-files/private-files.service';
 import { StripeService } from '../stripe/stripe.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -154,10 +157,14 @@ export class UsersService {
     }
   }
 
-  async addPrivateFile(userId: string, imageBuffer: Buffer, filename: string) {
+  async addPrivateFile(
+    createPrivateFileDto: CreatePrivateFileDto,
+    imageBuffer: Buffer,
+    filename: string,
+  ) {
     return this.privateFilesService.uploadPrivateFile(
+      createPrivateFileDto,
       imageBuffer,
-      userId,
       filename,
     );
   }
