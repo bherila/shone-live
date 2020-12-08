@@ -4,13 +4,20 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateSkuDto {
   @ApiProperty({
+    description: `the user who added this sku to the database`,
+    example: `cus_IPqRS333voIGbS`,
+  })
+  @IsString()
+  readonly user_id: string;
+
+  @ApiProperty({
     description: `the id of the product associated with the SKU
     every SKU must currently belong to a product
     this follows the pattern of Stipe, which processes all the unit sales`,
     example: `prod_I7NzQjrlgEJ9ZG`,
   })
   @IsString()
-  readonly product: string;
+  public readonly product_id: string;
 
   @ApiProperty({
     description: `the id of the show that the SKU is being sold in
@@ -19,14 +26,14 @@ export class CreateSkuDto {
     example: `1`,
   })
   @IsNumber()
-  readonly show: number;
+  public readonly show_id: number;
 
   @ApiProperty({
     description: `price of the item in cents eg a price of $1 is 100`,
     example: `100`,
   })
   @IsNumber()
-  readonly price: number;
+  public readonly price: number;
 
   @ApiProperty({
     description: `any descriptive details that it permutes on
@@ -35,7 +42,7 @@ export class CreateSkuDto {
   })
   @IsOptional()
   @IsString()
-  readonly attributes: string;
+  public readonly attributes?: string;
 
   @ApiProperty({
     description: `the quantity at the start of the show,
@@ -45,5 +52,5 @@ export class CreateSkuDto {
     example: `100`,
   })
   @IsNumber()
-  readonly quantity: number;
+  public readonly quantity: number;
 }

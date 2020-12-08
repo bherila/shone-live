@@ -10,6 +10,7 @@ import { Order } from '../../orders/entities/order.entity';
 import { PrivateFile } from '../../private-files/entities/private-file.entity';
 import { Product } from '../../products/entities/product.entity';
 import { Show } from '../../shows/entities/show.entity';
+import { Sku } from '../../skus/entities/sku.entity';
 import { UserAddress } from '../../user-addresses/user-address.entity';
 
 @Check(`"email" IS NOT NULL OR "phone" IS NOT NULL`)
@@ -124,6 +125,14 @@ export class User {
     order => order.user,
   )
   orders: Order[];
+
+  // these are SKUs a seller added
+  @OneToMany(
+    type => Sku,
+    sku => sku.user,
+    { cascade: true },
+  )
+  skus: Sku[];
 
   @OneToMany(
     type => UserAddress,

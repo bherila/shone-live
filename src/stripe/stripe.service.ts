@@ -146,7 +146,7 @@ export class StripeService {
   // refactor to take the product and then the SKU specific info
   async createStripeSku(createSkuDto: CreateSkuDto) {
     return this.stripeClient.skus.create({
-      product: createSkuDto.product,
+      product: createSkuDto.product_id,
       active: false,
       // attributes: {
       //   size: "Medium",

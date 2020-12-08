@@ -7,6 +7,7 @@ import { OrderSku } from '../../order-skus/entities/order-sku.entity';
 import { PrivateFile } from '../../private-files/entities/private-file.entity';
 import { Product } from '../../products/entities/product.entity';
 import { Show } from '../../shows/entities/show.entity';
+import { User } from '../../users/entities/user.entity';
 
 @Entity()
 export class Sku {
@@ -102,6 +103,7 @@ export class Sku {
   )
   privateFiles: PrivateFile[];
 
+  // these are SKUs a buyer ordered
   @OneToMany(
     type => OrderSku,
     orderSku => orderSku.sku,
@@ -111,8 +113,18 @@ export class Sku {
   )
   orderSkus: OrderSku[];
 
+  // these are SKUs a seller added
+  @ManyToOne(
+    type => User,
+    user => user.skus,
+    { cascade: ['insert', 'update'] },
+  )
+  user: User;
+
+  // this returns all the SKUs for a show grouped by show returned on the user
   // https://typeorm.io/#/relations-faq/how-to-use-relation-id-without-joining-relation
-  @Column({ nullable: true }) showId: number;
+  @Column({ nullable: true })
+  showId: number;
   @ManyToOne(
     type => Show,
     show => show.skus,

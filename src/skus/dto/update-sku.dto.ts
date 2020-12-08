@@ -3,6 +3,13 @@ import { IsDateString, IsNumber, IsOptional, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateSkuDto {
+  @ApiProperty({
+    description: `the user who added this sku to the database`,
+    example: `cus_IPqRS333voIGbS`,
+  })
+  @IsString()
+  readonly user_id: string;
+
   // todo make it immutable after show starts
   @ApiProperty({
     description: `the id of the product associated with the SKU
@@ -12,7 +19,7 @@ export class UpdateSkuDto {
   })
   @IsOptional()
   @IsString()
-  readonly product: string;
+  readonly product_id: string;
 
   // todo make it immutable after show starts
   @ApiProperty({
@@ -23,7 +30,7 @@ export class UpdateSkuDto {
   })
   @IsOptional()
   @IsNumber()
-  readonly show: number;
+  readonly show_id: number;
 
   @ApiProperty({
     description: `price of the item in cents eg a price of $1 is 100`,
@@ -62,7 +69,7 @@ export class UpdateSkuDto {
   })
   @IsOptional()
   @IsString()
-  readonly attributes: string;
+  readonly attributes?: string;
 
   // TODO add validation that this cannot be updated after the show starts
   @ApiProperty({

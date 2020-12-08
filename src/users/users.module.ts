@@ -10,6 +10,7 @@ import { PrivateFile } from '../private-files/entities/private-file.entity';
 import { PrivateFilesModule } from '../private-files/private-files.module';
 import { Product } from '../products/entities/product.entity';
 import { Show } from '../shows/entities/show.entity';
+import { Sku } from '../skus/entities/sku.entity';
 import { StripeModule } from '../stripe/stripe.module';
 import { UserAddress } from '../user-addresses/user-address.entity';
 import { User } from './entities/user.entity';
@@ -28,6 +29,7 @@ import { UsersService } from './users.service';
       Product,
       S3File,
       Show,
+      Sku,
       User,
       UserAddress,
     ]),
