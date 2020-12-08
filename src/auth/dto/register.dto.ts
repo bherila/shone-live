@@ -28,6 +28,7 @@ export class RegisterDto {
       seller: true,
       email: 'abcd@me.co',
     },
+    type: CreateUserDto,
   })
   @IsNotEmpty()
   @ValidateNested()

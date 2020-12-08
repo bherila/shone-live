@@ -28,6 +28,7 @@ export class CreateOrderDto {
       postal_code: '10004',
       state: 'NY',
     },
+    type: StripeAddress,
   })
   @IsNotEmpty()
   @ValidateNested()
