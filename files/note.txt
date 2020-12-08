@@ -1,2 +1,0 @@
-for local dev, uploaded files can go here
-don't commit them to the repo
