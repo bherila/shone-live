@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class AwsS3FileCreateResponse {
+export class PublicFileCreateResponse {
   @ApiProperty({ description: `the URL for the avatar image on S3` })
   public readonly url: string;
 

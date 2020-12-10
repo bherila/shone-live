@@ -6,16 +6,16 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { S3File } from './entities/s3file.entity';
+import { PublicFile } from './entities/public-file.entity';
 
 // source
 // https://wanago.io/2020/08/03/api-nestjs-uploading-public-files-to-amazon-s3/
 
 @Injectable()
-export class S3FilesService {
+export class PublicFilesService {
   constructor(
-    @InjectRepository(S3File)
-    private S3FilesRepository: Repository<S3File>,
+    @InjectRepository(PublicFile)
+    private S3FilesRepository: Repository<PublicFile>,
     private readonly configService: ConfigService,
   ) {}
 

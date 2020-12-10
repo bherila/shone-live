@@ -6,7 +6,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 // also should have associated object
 // (or maybe that should only be for private files) check it
 @Entity()
-export class S3File {
+export class PublicFile {
   @PrimaryGeneratedColumn()
   public id: number;
 

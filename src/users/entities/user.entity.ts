@@ -4,7 +4,7 @@ import {
 
 import { Auth } from '../../auth/entities/auth.entity';
 import { Card } from '../../cards/entities/card.entity';
-import { S3File } from '../../files-aws/entities/s3file.entity';
+import { PublicFile } from '../../files-public/entities/public-file.entity';
 import { File } from '../../files/entities/file.entity';
 import { Order } from '../../orders/entities/order.entity';
 import { Product } from '../../products/entities/product.entity';
@@ -98,11 +98,11 @@ export class User {
   products: Product[];
 
   @JoinColumn()
-  @OneToOne(() => S3File, {
+  @OneToOne(() => PublicFile, {
     eager: true,
     nullable: true,
   })
-  public avatar?: S3File;
+  public avatar?: PublicFile;
 
   @OneToMany(
     () => File,

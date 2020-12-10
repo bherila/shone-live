@@ -12,7 +12,7 @@ import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
 import {
   UniquenessConstraintException,
 } from '../common/exceptions/uniqueness-constraint-violation.exception';
-import { S3FilesService } from '../files-aws/s3files.service';
+import { PublicFilesService } from '../files-public/public-files.service';
 import { StripeService } from '../stripe/stripe.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -27,7 +27,7 @@ export class UsersService {
     private readonly userRepository: Repository<User>,
     @Inject(StripeService) // TODO: look at all these inject with stripe service in various files, I don't understand why it's needed...shouldn't be
     private readonly stripeService: StripeService,
-    private readonly filesService: S3FilesService,
+    private readonly filesService: PublicFilesService,
   ) {}
 
   findAll(paginationQuery: PaginationQueryDto) {

@@ -8,7 +8,7 @@ import {
 
 import { CreateFileDto } from './dto/create-file.dto';
 import { FilesService } from './files.service';
-import { AwsS3FileCreateResponse } from './responses/file.create';
+import { FileCreateResponse } from './responses/file.create';
 
 @ApiTags('files')
 @Controller('files')
@@ -23,7 +23,7 @@ export class FilesController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: `uploaded file`,
-    type: AwsS3FileCreateResponse,
+    type: FileCreateResponse,
   })
   @Post()
   @UseInterceptors(FileInterceptor('file'))

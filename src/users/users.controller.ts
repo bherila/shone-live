@@ -9,8 +9,8 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
 import {
-  AwsS3FileCreateResponse,
-} from '../files-aws/responses/aws-s3-file.create';
+  PublicFileCreateResponse,
+} from '../files-public/responses/public-file.create';
 import { CreateFileDto } from '../files/dto/create-file.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -91,7 +91,7 @@ export class UsersController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: `uploaded avatar image`,
-    type: AwsS3FileCreateResponse,
+    type: PublicFileCreateResponse,
   })
   // todo get the file part into the docs for these
   // the file part is missing in the request body
