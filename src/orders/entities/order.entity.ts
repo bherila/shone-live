@@ -2,7 +2,6 @@ import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
 
 import { Address } from '../../addresses/entities/address.entity';
 import { Card } from '../../cards/entities/card.entity';
-import { File } from '../../files/entities/file.entity';
 import { OrderSku } from '../../order-skus/entities/order-sku.entity';
 import { Show } from '../../shows/entities/show.entity';
 import { User } from '../../users/entities/user.entity';
@@ -92,16 +91,6 @@ export class Order {
     },
   )
   orderSkus: OrderSku[];
-
-  @OneToMany(
-    type => File,
-    file => file.order,
-    {
-      cascade: true,
-      nullable: true,
-    },
-  )
-  files: File[];
 
   @ManyToOne(
     type => Address,

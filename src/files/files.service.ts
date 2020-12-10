@@ -1,52 +1,77 @@
+import { S3 } from 'aws-sdk';
+import { ObjService } from 'src/common/helpers/object.service';
 import { Repository } from 'typeorm';
+import { v4 as uuid } from 'uuid';
 
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { Product } from '../products/entities/product.entity';
-import { User } from '../users/entities/user.entity';
 import { CreateFileDto } from './dto/create-file.dto';
 import { File } from './entities/file.entity';
-
-const fs = require('fs');
 
 @Injectable()
 export class FilesService {
   constructor(
     @InjectRepository(File)
-    private readonly fileRepository: Repository<File>,
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
-    @InjectRepository(Product)
-    private readonly productRepository: Repository<Product>,
+    private filesRepository: Repository<File>,
+    private readonly configService: ConfigService,
+    private readonly objService: ObjService,
   ) {}
 
-  async create(createFileDto: CreateFileDto, fileNames) {
-    const file = this.fileRepository.create({
-      name: fileNames.filename,
-      ...createFileDto,
-    });
-    file.user = await this.userRepository.findOne(createFileDto.userId);
+  async uploadFile(
+    createFileDto: CreateFileDto,
+    dataBuffer: Buffer,
+    filename: string,
+  ) {
+    const s3 = new S3();
+    const uploadResult = await s3
+      .upload({
+        Bucket: this.configService.get('AWS_PRIVATE_BUCKET_NAME'),
+        Body: dataBuffer,
+        Key: `${uuid()}-${filename}`,
+      })
+      .promise();
 
-    if (createFileDto.productId) {
-      file.product = await this.productRepository.findOne(
-        createFileDto.productId,
-      );
-    }
-    return this.fileRepository.save(file);
+    const saveData = this.objService.filteredNoNulls(
+      Object.assign({}, createFileDto),
+      ['type', 'product_id', 'sku_id', 'show_id'],
+    );
+    saveData['key'] = uploadResult.Key;
+    saveData['owner'] = { id: createFileDto.user_id };
+
+    const newFile = this.filesRepository.create(saveData);
+    await this.filesRepository.save(newFile);
+    return newFile;
   }
 
-  async remove(id: string) {
-    const file = await this.fileRepository.findOne(id);
-    if (!file) {
-      throw new NotFoundException(`File with id ${id} not found`);
-    }
-    fs.unlink(
-      `/Users/brettonauerbach/nestjs_official_tutorial/iluvcoffee/files/${file.name}`,
-      err => {
-        if (err) throw err;
-      },
+  public async generatePresignedUrl(key: string) {
+    const s3 = new S3();
+
+    return s3.getSignedUrlPromise('getObject', {
+      Bucket: this.configService.get('AWS_PRIVATE_BUCKET_NAME'),
+      Key: key,
+      Expires: 86400,
+    });
+  }
+
+  async deleteFile(userId: string, fileId: number) {
+    const file = await this.filesRepository.findOne(
+      { id: fileId },
+      { relations: ['owner'] },
     );
-    return this.fileRepository.remove(file);
+    if (file.owner.id !== userId) {
+      throw new UnauthorizedException(
+        `User #${userId} does not have permission to delete file #${fileId}`,
+      );
+    }
+    const s3 = new S3();
+    await s3
+      .deleteObject({
+        Bucket: this.configService.get('AWS_PRIVATE_BUCKET_NAME'),
+        Key: file.key,
+      })
+      .promise();
+    await this.filesRepository.delete(fileId);
   }
 }

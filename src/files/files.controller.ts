@@ -1,91 +1,77 @@
-import { diskStorage } from 'multer';
-
 import {
-  Body, Controller, Delete, Get, Param, Post, Query, Res, UploadedFile,
-  UploadedFiles, UseInterceptors,
+  Body, Controller, HttpStatus, Post, UploadedFile, UseInterceptors,
 } from '@nestjs/common';
-import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
-// todo: update file uploader to save url (filepath for now in this dir)
-// todo: add a get files endpoint with query params
-import { ApiTags } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express/multer';
+import {
+  ApiConsumes, ApiOperation, ApiResponse, ApiTags,
+} from '@nestjs/swagger';
 
 import { CreateFileDto } from './dto/create-file.dto';
 import { FilesService } from './files.service';
-import { editFileName, imageFileFilter } from './utils/file-uploading.utils';
+import { AwsS3FileCreateResponse } from './responses/file.create';
 
 @ApiTags('files')
 @Controller('files')
 export class FilesController {
   constructor(private readonly filesService: FilesService) {}
 
-  @Get('type/:type/model/:model')
-  findAll(
-    @Query() paginationQuery,
-    @Param('type') type: string,
-    @Param('model') model: string,
+  @ApiOperation({
+    summary: `a user can upload any file,
+      this is a private file so can only get access through the user get,
+      non-users cannot access these files`,
+  })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: `uploaded file`,
+    type: AwsS3FileCreateResponse,
+  })
+  @Post()
+  @UseInterceptors(FileInterceptor('file'))
+  @ApiConsumes('multipart/form-data')
+  async addFile(
+    @Body() CreateFileDto: CreateFileDto,
+    @UploadedFile() file: Express.Multer.File,
   ) {
-    const { limit, offset } = paginationQuery;
-    return `todo: make this return records by type (eg photo, video), model (eg product) and by pagination`;
+    return this.filesService.uploadFile(
+      CreateFileDto,
+      file.buffer,
+      file.originalname,
+    );
   }
 
-  // todo: implement get by ':type/:model/:id'
-
-  @Get('/image/:imgpath')
-  seeUploadedFile(@Param('imgpath') image, @Res() res) {
-    // todo at least use service to check if filename is valid
-    // todo: add error handling
-    return res.sendFile(image, { root: './files' });
+  // todo: refactor below from user controller for this case
+  /*
+  // todo add query params
+  // and see other chg you made for how to compose the query object
+  @ApiOperation({ summary: `get all the files using query params` })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: `all the files uploaded by this user`,
+    type: AwsS3FileCreateResponse,
+    isArray: true,
+  })
+  @Get(':userId/files')
+  async getAllFiles(@Param('userId') userId: string) {
+    return this.filesService.getAllFiles(userId);
   }
 
-  @Post('image')
-  @UseInterceptors(
-    FileInterceptor('image', {
-      storage: diskStorage({
-        destination: './files',
-        filename: editFileName,
-      }),
-      fileFilter: imageFileFilter,
-    }),
-  )
-  async uploadedFile(
-    @UploadedFile() file,
-    @Body() createFileDto: CreateFileDto,
+  @ApiOperation({
+    summary: `delete a file,
+      (only the user who created the file can delete it)`,
+  })
+  @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+    description: `deleted file`,
+  })
+  @Delete(':userId/files/:fileId')
+  @ApiConsumes('application/octet-stream')
+  @HttpCode(204)
+  async deleteFile(
+    @Param('userId') userId: string,
+    @Param('fileId') fileId: number,
   ) {
-    const fileNames = {
-      originalname: file.originalname,
-      filename: file.filename,
-    };
-    return this.filesService.create(createFileDto, fileNames);
+    // return this.filesService.deleteAvatar(userId);
+    return this.filesService.deleteFile(userId, fileId);
   }
-
-  @Post('images')
-  @UseInterceptors(
-    FilesInterceptor('image', 20, {
-      storage: diskStorage({
-        destination: './files',
-        filename: editFileName,
-      }),
-      fileFilter: imageFileFilter,
-    }),
-  )
-  async uploadMultipleFiles(
-    @UploadedFiles() files,
-    @Body() createFileDto: CreateFileDto,
-  ) {
-    const response = [];
-    files.forEach(file => {
-      const fileNames = {
-        originalname: file.originalname,
-        filename: file.filename,
-      };
-      this.filesService.create(createFileDto, fileNames);
-      response.push(fileNames);
-    });
-    return response;
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.filesService.remove(id);
-  }
+  */
 }

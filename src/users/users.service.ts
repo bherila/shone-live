@@ -13,10 +13,6 @@ import {
   UniquenessConstraintException,
 } from '../common/exceptions/uniqueness-constraint-violation.exception';
 import { S3FilesService } from '../files-aws/s3files.service';
-import {
-  CreatePrivateFileDto,
-} from '../private-files/dto/create-private-file.dto';
-import { PrivateFilesService } from '../private-files/private-files.service';
 import { StripeService } from '../stripe/stripe.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -32,7 +28,6 @@ export class UsersService {
     @Inject(StripeService) // TODO: look at all these inject with stripe service in various files, I don't understand why it's needed...shouldn't be
     private readonly stripeService: StripeService,
     private readonly filesService: S3FilesService,
-    private readonly privateFilesService: PrivateFilesService,
   ) {}
 
   findAll(paginationQuery: PaginationQueryDto) {
@@ -155,44 +150,5 @@ export class UsersService {
       });
       await this.filesService.deletePublicFile(fileId);
     }
-  }
-
-  async addPrivateFile(
-    createPrivateFileDto: CreatePrivateFileDto,
-    imageBuffer: Buffer,
-    filename: string,
-  ) {
-    return this.privateFilesService.uploadPrivateFile(
-      createPrivateFileDto,
-      imageBuffer,
-      filename,
-    );
-  }
-
-  async getAllPrivateFiles(userId: string) {
-    const userWithFiles = await this.userRepository.findOne(
-      { id: userId },
-      { relations: ['privateFiles'] },
-    );
-    console.log({ ...userWithFiles });
-
-    if (userWithFiles) {
-      return Promise.all(
-        userWithFiles.privateFiles.map(async (privateFile: any) => {
-          const url = await this.privateFilesService.generatePresignedUrl(
-            privateFile.key,
-          );
-          return {
-            ...privateFile,
-            url,
-          };
-        }),
-      );
-    }
-    throw new NotFoundException(`User with id ${userId} does not exist`);
-  }
-
-  async deletePrivateFile(userId: string, fileId: number) {
-    return this.privateFilesService.deletePrivateFile(userId, fileId);
   }
 }

@@ -3,7 +3,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AddressesModule } from '../addresses/addresses.module';
 import { Card } from '../cards/entities/card.entity';
-import { File } from '../files/entities/file.entity';
 import { OrderSku } from '../order-skus/entities/order-sku.entity';
 import { Show } from '../shows/entities/show.entity';
 import { ShowsModule } from '../shows/shows.module';
@@ -16,7 +15,7 @@ import { OrdersService } from './orders.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Order, OrderSku, Sku, File, Card, User, Show]),
+    TypeOrmModule.forFeature([Order, OrderSku, Sku, Card, User, Show]),
     StripeModule,
     AddressesModule,
     ShowsModule,

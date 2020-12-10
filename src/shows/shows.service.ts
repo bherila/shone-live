@@ -3,7 +3,7 @@ import { Between, Repository } from 'typeorm';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { PrivateFile } from '../private-files/entities/private-file.entity';
+import { File } from '../files/entities/file.entity';
 import { Sku } from '../skus/entities/sku.entity';
 import { StripeService } from '../stripe/stripe.service';
 import { User } from '../users/entities/user.entity';
@@ -21,8 +21,8 @@ export class ShowsService {
     private readonly skuRepository: Repository<Sku>,
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-    @InjectRepository(PrivateFile)
-    private readonly privateFileRepository: Repository<PrivateFile>,
+    @InjectRepository(File)
+    private readonly fileRepository: Repository<File>,
     private readonly stripeService: StripeService,
   ) {}
 
@@ -34,7 +34,7 @@ export class ShowsService {
     const { limit, offset, userId, startDate, endDate } = getShowDto;
 
     let baseQuery: any = {
-      relations: ['user', 'privateFiles', 'products', 'skus'],
+      relations: ['user', 'files', 'products', 'skus'],
       skip: offset,
       take: limit,
     };
@@ -57,7 +57,7 @@ export class ShowsService {
   // todo add nested route structure for these association lookups
   async findOne(id: string) {
     const show = await this.showRepository.findOne(id, {
-      relations: ['user', 'privateFiles', 'products', 'skus'],
+      relations: ['user', 'files', 'products', 'skus'],
     });
     if (!show) {
       throw new NotFoundException(`Show with id ${id} not found`);
@@ -67,12 +67,10 @@ export class ShowsService {
 
   async create(createShowDto: CreateShowDto) {
     const show = this.showRepository.create(createShowDto);
-    const preview = await this.privateFileRepository.findOne(
-      createShowDto.previewId,
-    );
+    const preview = await this.fileRepository.findOne(createShowDto.previewId);
     if (preview) {
       preview.show = show;
-      this.privateFileRepository.save(preview);
+      this.fileRepository.save(preview);
     }
     show.user = await this.userRepository.findOne(createShowDto.user_id);
     return this.showRepository.save(show);

@@ -7,7 +7,6 @@ import { Card } from '../../cards/entities/card.entity';
 import { S3File } from '../../files-aws/entities/s3file.entity';
 import { File } from '../../files/entities/file.entity';
 import { Order } from '../../orders/entities/order.entity';
-import { PrivateFile } from '../../private-files/entities/private-file.entity';
 import { Product } from '../../products/entities/product.entity';
 import { Show } from '../../shows/entities/show.entity';
 import { Sku } from '../../skus/entities/sku.entity';
@@ -98,15 +97,6 @@ export class User {
   )
   products: Product[];
 
-  @OneToMany(
-    type => File,
-    file => file.user,
-    {
-      cascade: true,
-    },
-  )
-  files: File[];
-
   @JoinColumn()
   @OneToOne(() => S3File, {
     eager: true,
@@ -115,10 +105,10 @@ export class User {
   public avatar?: S3File;
 
   @OneToMany(
-    () => PrivateFile,
-    (file: PrivateFile) => file.owner,
+    () => File,
+    (file: File) => file.owner,
   )
-  public privateFiles: PrivateFile[];
+  public files: File[];
 
   @OneToMany(
     order => Order,

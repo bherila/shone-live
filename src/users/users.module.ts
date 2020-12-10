@@ -5,9 +5,9 @@ import { Auth } from '../auth/entities/auth.entity';
 import { Card } from '../cards/entities/card.entity';
 import { S3File } from '../files-aws/entities/s3file.entity';
 import { S3FilesModule } from '../files-aws/s3files.module';
+import { File } from '../files/entities/file.entity';
+import { FilesModule } from '../files/files.module';
 import { Order } from '../orders/entities/order.entity';
-import { PrivateFile } from '../private-files/entities/private-file.entity';
-import { PrivateFilesModule } from '../private-files/private-files.module';
 import { Product } from '../products/entities/product.entity';
 import { Show } from '../shows/entities/show.entity';
 import { Sku } from '../skus/entities/sku.entity';
@@ -25,7 +25,7 @@ import { UsersService } from './users.service';
       Auth,
       Card,
       Order,
-      PrivateFile,
+      File,
       Product,
       S3File,
       Show,
@@ -34,7 +34,7 @@ import { UsersService } from './users.service';
       UserAddress,
     ]),
     S3FilesModule,
-    PrivateFilesModule,
+    FilesModule,
     StripeModule,
   ],
   providers: [UsersService],

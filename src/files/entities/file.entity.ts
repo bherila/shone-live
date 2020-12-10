@@ -1,38 +1,39 @@
-import {
-  Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
-import { Order } from '../../orders/entities/order.entity';
 import { Product } from '../../products/entities/product.entity';
+import { Show } from '../../shows/entities/show.entity';
 import { Sku } from '../../skus/entities/sku.entity';
 import { User } from '../../users/entities/user.entity';
 
-// todo make it work on AWS, won't be trivial
-// maybe minio is easier for this since it supports
 @Entity()
+// see s3file.entity.ts for public file
+// public files have a URL because they can be accessed
+// by anyone at any time at their URL
+// private files on AWS have none,
+// because these files have a time limited URL
+// should transition to only let server get these files
+// and returnt them thru server so can control access w/ token
 export class File {
   @PrimaryGeneratedColumn()
-  id: number;
+  public id: number;
 
-  @Column({
-    unique: true,
-    comment: 'the name of the file, must be unique',
-  })
-  name: string;
-
-  @Column({
-    comment: 'the type of the associated object eg product, show, user, sku',
-  })
-  type: string;
+  @Column()
+  public key: string;
 
   @ManyToOne(
-    type => User,
-    user => user.files,
+    () => User,
+    (owner: User) => owner.files,
+  )
+  public owner: User;
+
+  @ManyToOne(
+    type => Show,
+    show => show.files,
     {
       cascade: ['insert', 'update'],
     },
   )
-  user: User;
+  show: Show;
 
   @ManyToOne(
     type => Product,
@@ -44,17 +45,8 @@ export class File {
   product: Product;
 
   @ManyToOne(
-    type => Order,
-    order => order.files,
-    {
-      cascade: ['insert', 'update'],
-    },
-  )
-  order: Order;
-
-  @OneToOne(
     type => Sku,
-    sku => sku.file,
+    sku => sku.files,
     {
       cascade: ['insert', 'update'],
     },

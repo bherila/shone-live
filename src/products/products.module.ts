@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { File } from '../files/entities/file.entity';
-import { PrivateFile } from '../private-files/entities/private-file.entity';
 import { Show } from '../shows/entities/show.entity';
 import { Sku } from '../skus/entities/sku.entity';
 import { StripeModule } from '../stripe/stripe.module';
@@ -13,7 +12,7 @@ import { ProductsService } from './products.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Product, User, PrivateFile, Show, Sku, File]),
+    TypeOrmModule.forFeature([Product, User, File, Show, Sku]),
     StripeModule,
   ],
   controllers: [ProductsController],

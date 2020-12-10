@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class AwsS3PrivateFileCreateResponse {
+export class AwsS3FileCreateResponse {
   @ApiProperty({ description: `the S3 bucket generated key` })
   public readonly key: string;
 

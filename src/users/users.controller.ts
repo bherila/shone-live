@@ -9,11 +9,9 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
 import {
-  CreatePrivateFileDto,
-} from '../private-files/dto/create-private-file.dto';
-import {
   AwsS3FileCreateResponse,
-} from '../private-files/responses/aws-s3-file.create';
+} from '../files-aws/responses/aws-s3-file.create';
+import { CreateFileDto } from '../files/dto/create-file.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
@@ -101,10 +99,10 @@ export class UsersController {
   @UseInterceptors(FileInterceptor('image'))
   async addAvatar(
     @UploadedFile() file: Express.Multer.File,
-    @Body() createPrivateFileDto: CreatePrivateFileDto,
+    @Body() createFileDto: CreateFileDto,
   ) {
     return this.usersService.addAvatar(
-      createPrivateFileDto.user_id,
+      createFileDto.user_id,
       file.buffer,
       file.originalname,
     );

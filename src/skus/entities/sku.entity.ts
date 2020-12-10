@@ -1,10 +1,7 @@
-import {
-  Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryColumn,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
 
 import { File } from '../../files/entities/file.entity';
 import { OrderSku } from '../../order-skus/entities/order-sku.entity';
-import { PrivateFile } from '../../private-files/entities/private-file.entity';
 import { Product } from '../../products/entities/product.entity';
 import { Show } from '../../shows/entities/show.entity';
 import { User } from '../../users/entities/user.entity';
@@ -84,24 +81,14 @@ export class Sku {
   )
   product: Product;
 
-  @OneToOne(
-    type => File,
-    file => file.sku,
-    {
-      cascade: true,
-    },
-  )
-  @JoinColumn()
-  file: File;
-
   @OneToMany(
-    type => PrivateFile,
-    privateFile => privateFile.show,
+    type => File,
+    file => file.show,
     {
       cascade: true,
     },
   )
-  privateFiles: PrivateFile[];
+  files: File[];
 
   // these are SKUs a buyer ordered
   @OneToMany(

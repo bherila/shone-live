@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+import { File } from '../files/entities/file.entity';
 import { Order } from '../orders/entities/order.entity';
-import { PrivateFile } from '../private-files/entities/private-file.entity';
 import { Product } from '../products/entities/product.entity';
 import { Sku } from '../skus/entities/sku.entity';
 import { StripeModule } from '../stripe/stripe.module';
@@ -14,7 +14,7 @@ import { ShowsService } from './shows.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Show, User, Product, Sku, Order, PrivateFile]),
+    TypeOrmModule.forFeature([Show, User, Product, Sku, Order, File]),
     StripeModule,
   ],
   controllers: [ShowsController],
