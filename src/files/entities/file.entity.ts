@@ -21,10 +21,10 @@ export class File {
   public key: string;
 
   @ManyToOne(
-    () => User,
-    (owner: User) => owner.files,
+    type => User,
+    (user: User) => user.files,
   )
-  public owner: User;
+  public user: User;
 
   @ManyToOne(
     type => Show,

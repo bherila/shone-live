@@ -38,7 +38,7 @@ export class FilesService {
       ['type', 'product_id', 'sku_id', 'show_id'],
     );
     saveData['key'] = uploadResult.Key;
-    saveData['owner'] = { id: createFileDto.user_id };
+    saveData['user'] = { id: createFileDto.user_id };
 
     const newFile = this.filesRepository.create(saveData);
     await this.filesRepository.save(newFile);
@@ -58,9 +58,9 @@ export class FilesService {
   async deleteFile(userId: string, fileId: number) {
     const file = await this.filesRepository.findOne(
       { id: fileId },
-      { relations: ['owner'] },
+      { relations: ['user'] },
     );
-    if (file.owner.id !== userId) {
+    if (file.user.id !== userId) {
       throw new UnauthorizedException(
         `User #${userId} does not have permission to delete file #${fileId}`,
       );

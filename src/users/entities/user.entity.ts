@@ -106,7 +106,7 @@ export class User {
 
   @OneToMany(
     () => File,
-    (file: File) => file.owner,
+    (file: File) => file.user,
   )
   public files: File[];
 
