@@ -23,6 +23,7 @@ import { FilesModule } from './files/files.module';
 import { OrdersModule } from './orders/orders.module';
 import { ProductsModule } from './products/products.module';
 import { ShowsModule } from './shows/shows.module';
+import { SimpleProductsModule } from './simple-products/simple-products.module';
 import { SkusModule } from './skus/skus.module';
 import { StripeModule } from './stripe/stripe.module';
 import { UsersModule } from './users/users.module';
@@ -86,6 +87,7 @@ if (process.env.NODE_ENV === 'dev') {
     AlertModule,
     FilesModule,
     CommonModule,
+    SimpleProductsModule,
   ],
   providers: [
     {

@@ -9,6 +9,9 @@ import { File } from '../../files/entities/file.entity';
 import { Order } from '../../orders/entities/order.entity';
 import { Product } from '../../products/entities/product.entity';
 import { Show } from '../../shows/entities/show.entity';
+import {
+  SimpleProduct,
+} from '../../simple-products/entities/simple-product.entity';
 import { Sku } from '../../skus/entities/sku.entity';
 import { UserAddress } from '../../user-addresses/user-address.entity';
 
@@ -96,6 +99,15 @@ export class User {
     },
   )
   products: Product[];
+
+  @OneToMany(
+    type => SimpleProduct,
+    simpleProduct => simpleProduct.user,
+    {
+      cascade: true,
+    },
+  )
+  simpleProducts: SimpleProduct[];
 
   @JoinColumn()
   @OneToOne(() => PublicFile, {

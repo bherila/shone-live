@@ -5,6 +5,9 @@ import {
 
 import { Product } from '../../products/entities/product.entity';
 import { Show } from '../../shows/entities/show.entity';
+import {
+  SimpleProduct,
+} from '../../simple-products/entities/simple-product.entity';
 import { Sku } from '../../skus/entities/sku.entity';
 import { User } from '../../users/entities/user.entity';
 
@@ -49,6 +52,13 @@ export class File {
     { cascade: ['insert', 'update'] },
   )
   product: Product;
+
+  @ManyToOne(
+    type => SimpleProduct,
+    simpleProduct => simpleProduct.files,
+    { cascade: ['insert', 'update'] },
+  )
+  simpleProduct: SimpleProduct;
 
   @ManyToOne(
     type => Sku,

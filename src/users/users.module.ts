@@ -10,6 +10,9 @@ import { FilesModule } from '../files/files.module';
 import { Order } from '../orders/entities/order.entity';
 import { Product } from '../products/entities/product.entity';
 import { Show } from '../shows/entities/show.entity';
+import {
+  SimpleProduct,
+} from '../simple-products/entities/simple-product.entity';
 import { Sku } from '../skus/entities/sku.entity';
 import { StripeModule } from '../stripe/stripe.module';
 import { UserAddress } from '../user-addresses/user-address.entity';
@@ -29,6 +32,7 @@ import { UsersService } from './users.service';
       Product,
       PublicFile,
       Show,
+      SimpleProduct,
       Sku,
       User,
       UserAddress,

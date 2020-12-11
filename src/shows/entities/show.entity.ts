@@ -5,6 +5,9 @@ import {
 import { File } from '../../files/entities/file.entity';
 import { Order } from '../../orders/entities/order.entity';
 import { Product } from '../../products/entities/product.entity';
+import {
+  SimpleProduct,
+} from '../../simple-products/entities/simple-product.entity';
 import { Sku } from '../../skus/entities/sku.entity';
 import { User } from '../../users/entities/user.entity';
 
@@ -67,6 +70,15 @@ export class Show {
     },
   )
   products: Product[];
+
+  @OneToMany(
+    type => SimpleProduct,
+    simpleProduct => simpleProduct.show,
+    {
+      cascade: true,
+    },
+  )
+  simpleProducts: SimpleProduct[];
 
   @OneToMany(
     type => Sku,

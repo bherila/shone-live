@@ -4,6 +4,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { CommonModule } from '../common/common.module';
 import { Product } from '../products/entities/product.entity';
+import {
+  SimpleProduct,
+} from '../simple-products/entities/simple-product.entity';
 import { Sku } from '../skus/entities/sku.entity';
 import { User } from '../users/entities/user.entity';
 import { File } from './entities/file.entity';
@@ -12,7 +15,7 @@ import { FilesService } from './files.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Product, Sku, File]),
+    TypeOrmModule.forFeature([User, Product, SimpleProduct, Sku, File]),
     ConfigModule,
     CommonModule,
   ],
