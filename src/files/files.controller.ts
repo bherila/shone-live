@@ -1,17 +1,21 @@
 import {
-  Body, Controller, HttpStatus, Post, UploadedFile, UseInterceptors,
+  Body, ClassSerializerInterceptor, Controller, Delete, Get, HttpStatus, Param,
+  Post, Query, UploadedFile, UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express/multer';
 import {
-  ApiConsumes, ApiOperation, ApiResponse, ApiTags,
+  ApiConsumes, ApiOperation, ApiQuery, ApiResponse, ApiTags,
 } from '@nestjs/swagger';
 
 import { CreateFileDto } from './dto/create-file.dto';
 import { FilesService } from './files.service';
 import { FileCreateResponse } from './responses/file.create';
 
-@ApiTags('files')
 @Controller('files')
+// this is to run the @Exclude() call on the _id column
+// in order to filter it from from the response
+@UseInterceptors(ClassSerializerInterceptor)
+@ApiTags('files')
 export class FilesController {
   constructor(private readonly filesService: FilesService) {}
 
@@ -37,6 +41,22 @@ export class FilesController {
       file.buffer,
       file.originalname,
     );
+  }
+
+  @Get()
+  @ApiQuery({ name: 'user_id', type: String, required: false })
+  findAll(@Query('user_id') user_id: string) {
+    return this.filesService.findAll(user_id);
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.filesService.findOne(id);
+  }
+
+  @Delete()
+  remove(@Param('user_id') user_id: string, @Param('file_id') file_id: string) {
+    return this.filesService.remove(user_id, file_id);
   }
 
   // todo: refactor below from user controller for this case

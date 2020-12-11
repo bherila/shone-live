@@ -14,7 +14,7 @@ import { File } from './entities/file.entity';
 export class FilesService {
   constructor(
     @InjectRepository(File)
-    private filesRepository: Repository<File>,
+    private fileRepository: Repository<File>,
     private readonly configService: ConfigService,
     private readonly objService: ObjService,
   ) {}
@@ -40,8 +40,8 @@ export class FilesService {
     saveData['key'] = uploadResult.Key;
     saveData['user'] = { id: createFileDto.user_id };
 
-    const newFile = this.filesRepository.create(saveData);
-    await this.filesRepository.save(newFile);
+    const newFile = this.fileRepository.create(saveData);
+    await this.fileRepository.save(newFile);
     return newFile;
   }
 
@@ -55,8 +55,16 @@ export class FilesService {
     });
   }
 
-  async deleteFile(userId: string, fileId: number) {
-    const file = await this.filesRepository.findOne(
+  findAll(user_id: string): Promise<File[]> {
+    return this.fileRepository.find({ where: { user: { id: user_id } } });
+  }
+
+  findOne(id: string) {
+    return `This action returns a #${id} simpleProduct`;
+  }
+
+  async remove(userId: string, fileId: string) {
+    const file = await this.fileRepository.findOne(
       { id: fileId },
       { relations: ['user'] },
     );
@@ -72,6 +80,6 @@ export class FilesService {
         Key: file.key,
       })
       .promise();
-    await this.filesRepository.delete(fileId);
+    await this.fileRepository.delete(fileId);
   }
 }

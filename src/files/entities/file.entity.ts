@@ -1,4 +1,7 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Exclude } from 'class-transformer';
+import {
+  Column, Entity, Generated, ManyToOne, PrimaryGeneratedColumn,
+} from 'typeorm';
 
 import { Product } from '../../products/entities/product.entity';
 import { Show } from '../../shows/entities/show.entity';
@@ -14,8 +17,15 @@ import { User } from '../../users/entities/user.entity';
 // should transition to only let server get these files
 // and returnt them thru server so can control access w/ token
 export class File {
-  @PrimaryGeneratedColumn()
-  public id: number;
+  @PrimaryGeneratedColumn({
+    comment: 'private internal ID, actual primary key',
+  })
+  @Exclude()
+  _id: number;
+
+  @Column({ comment: 'public ID, for use by client (is a UUID)' })
+  @Generated('uuid')
+  id: string;
 
   @Column()
   public key: string;
@@ -29,27 +39,21 @@ export class File {
   @ManyToOne(
     type => Show,
     show => show.files,
-    {
-      cascade: ['insert', 'update'],
-    },
+    { cascade: ['insert', 'update'] },
   )
   show: Show;
 
   @ManyToOne(
     type => Product,
     product => product.files,
-    {
-      cascade: ['insert', 'update'],
-    },
+    { cascade: ['insert', 'update'] },
   )
   product: Product;
 
   @ManyToOne(
     type => Sku,
     sku => sku.files,
-    {
-      cascade: ['insert', 'update'],
-    },
+    { cascade: ['insert', 'update'] },
   )
   sku: Sku;
 }

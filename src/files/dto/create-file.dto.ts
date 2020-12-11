@@ -58,7 +58,8 @@ export class CreateFileDto {
     Product, Show or Sku`,
     example: `Show`,
   })
+  @IsOptional()
   @IsString()
   // TODO: add custom validation from enum for valid models to have images
-  public readonly type: string;
+  public readonly type?: string;
 }
