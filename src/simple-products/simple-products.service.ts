@@ -9,6 +9,9 @@ import { User } from '../users/entities/user.entity';
 import { CreateSimpleProductDto } from './dto/create-simple-product.dto';
 import { UpdateSimpleProductDto } from './dto/update-simple-product.dto';
 import { SimpleProduct } from './entities/simple-product.entity';
+import {
+  CreateSimpleProductResponse,
+} from './responses/create-simple-product.response';
 
 @Injectable()
 export class SimpleProductsService {
@@ -25,7 +28,8 @@ export class SimpleProductsService {
 
   async create(
     createSimpleProductDto: CreateSimpleProductDto,
-  ): Promise<SimpleProduct> {
+  ): Promise<CreateSimpleProductResponse> {
+    // move into services and call the service method for one liner
     const user = await this.userRepository.findOne(
       createSimpleProductDto.user_id,
     );
@@ -42,26 +46,24 @@ export class SimpleProductsService {
         `Show #${createSimpleProductDto.show_id} not found`,
       );
     }
+    const file = await this.fileRepository.findOne({
+      where: { id: createSimpleProductDto.image_id },
+    });
+    if (!file) {
+      throw new NotFoundException(
+        `Image #${createSimpleProductDto.image_id} not found`,
+      );
+    }
     const simpleProduct = this.simpleProductRepository.create({
       user: user,
       show: show,
-      current_quantity: createSimpleProductDto.quantity,
+      files: [file],
       ...createSimpleProductDto,
     });
     const savedSimpleProduct = await this.simpleProductRepository.save(
       simpleProduct,
     );
-    const image = await this.fileRepository.findOne({
-      where: { id: createSimpleProductDto.image_id },
-    });
-    if (!image) {
-      throw new NotFoundException(
-        `Image #${createSimpleProductDto.image_id} not found`,
-      );
-    }
-    image.simpleProduct = simpleProduct;
-    this.fileRepository.save(image);
-    return savedSimpleProduct;
+    return new CreateSimpleProductResponse(savedSimpleProduct);
   }
 
   findAll() {

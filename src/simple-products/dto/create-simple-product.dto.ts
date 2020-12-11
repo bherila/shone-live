@@ -8,21 +8,21 @@ export class CreateSimpleProductDto {
     example: `cus_IPqRS333voIGbS`,
   })
   @IsString()
-  readonly user_id: string;
+  public readonly user_id: string;
 
   @ApiProperty({
     description: `the show where this product is being sold`,
     example: `1`,
   })
   @IsNumber()
-  readonly show_id: number;
+  public readonly show_id: number;
 
   @ApiProperty({
     description: `the photo of the product`,
     example: `534f4bac-a095-4fe0-8a35-5220313cd33c`,
   })
   @IsUUID()
-  readonly image_id: string;
+  public readonly image_id: string;
 
   @ApiProperty({
     description: 'product name',

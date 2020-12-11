@@ -37,17 +37,17 @@ export class SimpleProduct {
   @Column({
     comment: `quantity available to sell for associated show
       - set once at the start of the show
-      - cannot update after show starts (see current_quantity for this)`,
+      - cannot update after show starts`,
   })
   quantity: number;
 
   @Column({
-    comment: `currently available quantity.
+    comment: `quantity that has been sold.
     - updated after each successful transaction.
-    - this is the available quantity remaining
     - only modified directly by the server`,
+    default: 0,
   })
-  current_quantity: number;
+  quantity_sold: number;
 
   @ManyToOne(
     type => User,

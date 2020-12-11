@@ -5,6 +5,9 @@ import {
 
 import { CreateSimpleProductDto } from './dto/create-simple-product.dto';
 import { UpdateSimpleProductDto } from './dto/update-simple-product.dto';
+import {
+  CreateSimpleProductResponse,
+} from './responses/create-simple-product.response';
 import { SimpleProductsService } from './simple-products.service';
 
 @Controller('simple-products')
@@ -13,7 +16,9 @@ export class SimpleProductsController {
   constructor(private readonly simpleProductsService: SimpleProductsService) {}
 
   @Post()
-  create(@Body() createSimpleProductDto: CreateSimpleProductDto) {
+  create(
+    @Body() createSimpleProductDto: CreateSimpleProductDto,
+  ): Promise<CreateSimpleProductResponse> {
     return this.simpleProductsService.create(createSimpleProductDto);
   }
 
