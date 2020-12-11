@@ -3,8 +3,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { Auth } from '../auth/entities/auth.entity';
 import { Card } from '../cards/entities/card.entity';
-import { PublicFile } from '../files-public/entities/public-file.entity';
-import { PublicFilesModule } from '../files-public/public-files.module';
 import { File } from '../files/entities/file.entity';
 import { FilesModule } from '../files/files.module';
 import { Order } from '../orders/entities/order.entity';
@@ -30,14 +28,12 @@ import { UsersService } from './users.service';
       Order,
       File,
       Product,
-      PublicFile,
       Show,
       SimpleProduct,
       Sku,
       User,
       UserAddress,
     ]),
-    PublicFilesModule,
     FilesModule,
     StripeModule,
   ],

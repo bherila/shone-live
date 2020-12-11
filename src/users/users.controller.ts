@@ -8,9 +8,6 @@ import { FileInterceptor } from '@nestjs/platform-express/multer';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
-import {
-  PublicFileCreateResponse,
-} from '../files-public/responses/public-file.create';
 import { CreateFileDto } from '../files/dto/create-file.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -91,21 +88,16 @@ export class UsersController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: `uploaded avatar image`,
-    type: PublicFileCreateResponse,
   })
   // todo get the file part into the docs for these
   // the file part is missing in the request body
   @Post('avatar')
   @UseInterceptors(FileInterceptor('image'))
   async addAvatar(
+    @Body() CreateFileDto: CreateFileDto,
     @UploadedFile() file: Express.Multer.File,
-    @Body() createFileDto: CreateFileDto,
   ) {
-    return this.usersService.addAvatar(
-      createFileDto.user_id,
-      file.buffer,
-      file.originalname,
-    );
+    this.usersService.addAvatar(CreateFileDto, file.buffer, file.originalname);
   }
 
   @ApiOperation({

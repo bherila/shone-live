@@ -12,7 +12,8 @@ import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
 import {
   UniquenessConstraintException,
 } from '../common/exceptions/uniqueness-constraint-violation.exception';
-import { PublicFilesService } from '../files-public/public-files.service';
+import { CreateFileDto } from '../files/dto/create-file.dto';
+import { FilesService } from '../files/files.service';
 import { StripeService } from '../stripe/stripe.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -27,7 +28,7 @@ export class UsersService {
     private readonly userRepository: Repository<User>,
     @Inject(StripeService) // TODO: look at all these inject with stripe service in various files, I don't understand why it's needed...shouldn't be
     private readonly stripeService: StripeService,
-    private readonly filesService: PublicFilesService,
+    private readonly filesService: FilesService,
   ) {}
 
   findAll(paginationQuery: PaginationQueryDto) {
@@ -122,22 +123,29 @@ export class UsersService {
     return this.userRepository.remove(user);
   }
 
-  async addAvatar(userId: string, imageBuffer: Buffer, filename: string) {
-    const user = await this.userRepository.findOne(userId);
+  async addAvatar(
+    createFileDto: CreateFileDto,
+    dataBuffer: Buffer,
+    filename: string,
+  ) {
+    const { user_id } = createFileDto;
+    const user = await this.userRepository.findOne(user_id);
     if (user.avatar) {
-      await this.userRepository.update(userId, {
+      await this.userRepository.update(user_id, {
         ...user,
         avatar: null,
       });
       await this.filesService.deletePublicFile(user.avatar.id);
     }
-    const avatar = await this.filesService.uploadS3File(imageBuffer, filename);
-    await this.userRepository.update(userId, {
+    const avatar = await this.filesService.uploadFile(
+      createFileDto,
+      dataBuffer,
+      filename,
+    );
+    await this.userRepository.update(user_id, {
       ...user,
       avatar,
     });
-    let foo = 0;
-    return avatar;
   }
 
   async deleteAvatar(userId: string) {

@@ -1,4 +1,4 @@
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
 
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -20,6 +20,17 @@ export class CreateFileDto {
   public readonly file: any;
 
   @ApiProperty({
+    description: `all files default to being stored in a private bucket
+    however, public files can be created by passing {public: true} in the body
+    these files will immediately return a persistent public URL
+    note there is no authorization these files are exposed to the entire web`,
+    example: `true`,
+  })
+  @IsOptional()
+  @IsBoolean()
+  public readonly is_public?: boolean;
+
+  @ApiProperty({
     description: `the id of the user who uploaded this file
           we need this user id to associate the user so we can
           1. let only this user delete the file
@@ -36,6 +47,14 @@ export class CreateFileDto {
   @IsOptional()
   @IsString()
   public readonly product_id?: string;
+
+  @ApiProperty({
+    description: `the id of the simple-product associated with the image`,
+    example: `534f4bac-a095-4fe0-8a35-5220313cd33c`,
+  })
+  @IsOptional()
+  @IsString()
+  public readonly simple_product_id?: string;
 
   @ApiProperty({
     description: `the id of the sku associated with the image`,

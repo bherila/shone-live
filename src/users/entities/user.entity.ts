@@ -4,7 +4,6 @@ import {
 
 import { Auth } from '../../auth/entities/auth.entity';
 import { Card } from '../../cards/entities/card.entity';
-import { PublicFile } from '../../files-public/entities/public-file.entity';
 import { File } from '../../files/entities/file.entity';
 import { Order } from '../../orders/entities/order.entity';
 import { Product } from '../../products/entities/product.entity';
@@ -110,11 +109,11 @@ export class User {
   simpleProducts: SimpleProduct[];
 
   @JoinColumn()
-  @OneToOne(() => PublicFile, {
+  @OneToOne(() => File, {
     eager: true,
     nullable: true,
   })
-  public avatar?: PublicFile;
+  public avatar?: File;
 
   @OneToMany(
     () => File,

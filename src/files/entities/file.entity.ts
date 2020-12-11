@@ -12,26 +12,38 @@ import { Sku } from '../../skus/entities/sku.entity';
 import { User } from '../../users/entities/user.entity';
 
 @Entity()
-// see s3file.entity.ts for public file
-// public files have a URL because they can be accessed
-// by anyone at any time at their URL
-// private files on AWS have none,
-// because these files have a time limited URL
-// should transition to only let server get these files
-// and returnt them thru server so can control access w/ token
 export class File {
   @PrimaryGeneratedColumn({
-    comment: 'private internal ID, actual primary key',
+    comment: `private internal ID, actual primary key`,
   })
   @Exclude()
   _id: number;
 
-  @Column({ comment: 'public ID, for use by client (is a UUID)' })
+  @Column({ comment: `public ID, for use by client (is a UUID)` })
   @Generated('uuid')
   id: string;
 
-  @Column()
+  @Column({
+    comment: `this key is the AWS S3 id
+  it is used in interacting with the file through the AWS API
+  for example files are deleted by finding them by this key`,
+  })
+  @Exclude()
   public key: string;
+
+  @Column({
+    comment: `is the file public or private
+  - public files have a permanent pubic url with no authorization
+  - private files have a URL that requires access authorization`,
+    default: false,
+  })
+  public is_public: boolean;
+
+  @Column({
+    comment: `this is the URL generated at the time the file is created in AWS`,
+    nullable: true,
+  })
+  public url: string;
 
   @ManyToOne(
     type => User,

@@ -9,7 +9,7 @@ import {
 
 import { CreateFileDto } from './dto/create-file.dto';
 import { FilesService } from './files.service';
-import { FileCreateResponse } from './responses/file.create';
+import { CreateFileResponse } from './responses/create-file.response';
 
 @Controller('files')
 // this is to run the @Exclude() call on the _id column
@@ -20,14 +20,14 @@ export class FilesController {
   constructor(private readonly filesService: FilesService) {}
 
   @ApiOperation({
-    summary: `a user can upload any file,
-      this is a private file so can only get access through the user get,
-      non-users cannot access these files`,
+    summary: `any file type can be uploaded at this endpoint
+    there is no validation on the type of the file
+    files may either be publicly accessible or protected`,
   })
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: `uploaded file`,
-    type: FileCreateResponse,
+    type: CreateFileResponse,
   })
   @Post()
   @UseInterceptors(FileInterceptor('file'))
@@ -35,12 +35,13 @@ export class FilesController {
   async addFile(
     @Body() CreateFileDto: CreateFileDto,
     @UploadedFile() file: Express.Multer.File,
-  ) {
-    return this.filesService.uploadFile(
+  ): Promise<CreateFileResponse> {
+    const newFile = await this.filesService.uploadFile(
       CreateFileDto,
       file.buffer,
       file.originalname,
     );
+    return new CreateFileResponse(newFile);
   }
 
   @Get()
