@@ -16,7 +16,6 @@ import { AlertModule } from './alert/alert.module';
 import { AuthModule } from './auth/auth.module';
 import { CardsModule } from './cards/cards.module';
 import { ChatModule } from './chat/chat.module';
-import { CoffeesModule } from './coffees/coffees.module';
 import { CommonModule } from './common/common.module';
 import { AspectLogger } from './common/interceptors/aspect-logger.interceptor';
 import { FilesModule } from './files/files.module';
@@ -74,7 +73,6 @@ if (process.env.NODE_ENV === 'dev') {
       logging: dbLogging, // if in dev mode enable db logging
     }),
     AuthModule,
-    CoffeesModule,
     ProductsModule,
     ShowsModule,
     UsersModule,
