@@ -113,7 +113,17 @@ deployment
    get main image id
    \$`docker ps`
    tail the log to see it workign
-   \$`docker logs --follow --until=3s <eg log id 0ae11971e71d>`
+   \$`docker logs --follow --until=3s <docker-PID>`
+
+10. debugging
+    because we persist the database migrations may sometimes conflict
+    (we are still building the database off the code instead of using a migration)
+    (we will have to export migration for actual prod since the DB wont exist on the server)
+    if the DB fails, just nuke it
+11. connect to the DB
+    \$`docker exec -it <docker-PID> psql -U piki -W piki piki`
+    \$`DROP SCHEMA public CASCADE;`
+    \$`CREATE SCHEMA public;`
 
 ## OpenAPI
 
