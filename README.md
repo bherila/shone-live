@@ -121,7 +121,7 @@ deployment
     (we will have to export migration for actual prod since the DB wont exist on the server)
     if the DB fails, just nuke it
 11. connect to the DB
-    \$`docker exec -it <docker-PID> psql -U piki -W piki piki`
+    \$`docker exec -it <docker-PID> psql -d piki -U piki --password`
     \$`DROP SCHEMA public CASCADE;`
     \$`CREATE SCHEMA public;`
 
