@@ -11,7 +11,7 @@ import { JwtResponseWithUser } from './responses/jwt.response-with-user';
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
-
+  // TODO: update all response objects to be flat
   @Post('/login')
   @ApiOperation({
     summary: `returns JWT token if vaid username and password,
@@ -29,7 +29,8 @@ export class AuthController {
   })
   @UseGuards(LocalAuthGuard)
   async login(@Body() loginDto: LoginDto): Promise<JwtResponseWithUser> {
-    return this.authService.login(loginDto.email);
+    const { access_token, user } = await this.authService.login(loginDto.email);
+    return new JwtResponseWithUser(user, access_token);
   }
 
   @Post('/register')
@@ -46,6 +47,9 @@ export class AuthController {
   async create(
     @Body() createAuthDto: RegisterDto,
   ): Promise<JwtResponseWithUser> {
-    return this.authService.register(createAuthDto);
+    const { access_token, user } = await this.authService.register(
+      createAuthDto,
+    );
+    return new JwtResponseWithUser(user, access_token);
   }
 }
