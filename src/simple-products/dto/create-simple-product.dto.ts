@@ -12,14 +12,16 @@ export class CreateSimpleProductDto {
 
   @ApiProperty({
     description: `the show where this product is being sold`,
-    example: `1`,
+    example: `b644cec4-0487-4f6f-bac1-c80059a2a4b0`,
+    type: 'UUID',
   })
-  @IsNumber()
-  public readonly show_id: number;
+  @IsUUID()
+  public readonly show_id: string;
 
   @ApiProperty({
     description: `the photo of the product`,
     example: `534f4bac-a095-4fe0-8a35-5220313cd33c`,
+    type: 'UUID',
   })
   @IsUUID()
   public readonly image_id: string;

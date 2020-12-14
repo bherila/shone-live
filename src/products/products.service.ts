@@ -58,7 +58,7 @@ export class ProductsService {
     const stripeProduct = await this.stripeService.createStripeProduct(
       createProductDto,
       show.id,
-      show.date.toString(),
+      show.scheduled_start.toString(),
     );
     const product = this.productRepository.create({
       id: stripeProduct.id,

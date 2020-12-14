@@ -1,4 +1,4 @@
-import { IsDateString, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsDateString, IsOptional, IsString, IsUUID } from 'class-validator';
 
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -12,20 +12,20 @@ export class CreateShowDto {
   readonly user_id: string;
 
   @ApiProperty({
-    description: `this should inclue the time that the show starts at
+    description: `the time that the show is scheduled to start at
     (it's a datetime, format https://en.wikipedia.org/wiki/ISO_8601)`,
     example: `2020-11-22T20:39:12+00:00`,
   })
   @IsDateString()
-  readonly date: string;
+  readonly scheduled_start: string;
 
   @ApiProperty({
-    description: `expected length of the show in seconds.
-    (currently no enforcement of endtime)`,
-    example: `3600`,
+    description: `the time that the show is scheduled to end at
+    (it's a datetime, format https://en.wikipedia.org/wiki/ISO_8601)`,
+    example: `2020-11-22T21:39:12+00:00`,
   })
-  @IsNumber()
-  readonly length: number;
+  @IsDateString()
+  readonly scheduled_end: string;
 
   @ApiProperty({
     description: `the display description for customers,
@@ -45,9 +45,19 @@ export class CreateShowDto {
 
   @ApiProperty({
     description: `the id of the main preview video for the show`,
-    example: `1`,
+    example: `1a0e4ba8-f31c-4ad2-ad5c-8ba6d35b7ce7`,
+    type: 'UUID',
   })
   @IsOptional()
-  @IsNumber()
-  readonly previewId: number;
+  @IsUUID()
+  readonly video_id?: string;
+
+  @ApiProperty({
+    description: `the id of the main preview photo for the show`,
+    example: `b644cec4-0487-4f6f-bac1-c80059a2a4b0`,
+    type: 'UUID',
+  })
+  @IsOptional()
+  @IsUUID()
+  readonly photo_id?: string;
 }

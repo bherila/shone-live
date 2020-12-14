@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { File } from '../files/entities/file.entity';
+import { FilesModule } from '../files/files.module';
 import { Order } from '../orders/entities/order.entity';
 import { Product } from '../products/entities/product.entity';
 import {
@@ -27,6 +28,7 @@ import { ShowsService } from './shows.service';
       File,
     ]),
     StripeModule,
+    FilesModule,
   ],
   controllers: [ShowsController],
   providers: [ShowsService, ShowGateway],

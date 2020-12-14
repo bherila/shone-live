@@ -1,5 +1,6 @@
+import { Exclude } from 'class-transformer';
 import {
-  Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn,
+  Column, Entity, Generated, ManyToOne, OneToMany, PrimaryGeneratedColumn,
 } from 'typeorm';
 
 import { File } from '../../files/entities/file.entity';
@@ -13,15 +14,25 @@ import { User } from '../../users/entities/user.entity';
 
 @Entity()
 export class Show {
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  // ALL DATE-TIME WILL BE STORED IN UTC
-  // TODO: WE MUST TRANSFORM ALL LOCAL TIMEZONE ON THE SERVER
-  @Column({
-    comment: 'datetime that show is scheduled for in eg 2020-12-01T00:00:00',
+  @PrimaryGeneratedColumn({
+    comment: `private internal ID, actual primary key`,
   })
-  date: Date;
+  @Exclude()
+  _id: number;
+
+  @Column({ comment: `public ID, for use by client (is a UUID)` })
+  @Generated('uuid')
+  id: string;
+
+  @Column({
+    comment: 'datetime that show is scheduled to start eg 2020-12-01T00:00:00',
+  })
+  scheduled_start: Date;
+
+  @Column({
+    comment: 'datetime that show is scheduled to end eg 2020-12-01T00:00:00',
+  })
+  scheduled_end: Date;
 
   @Column({
     comment: 'datetime that show actually started in eg 2020-12-01T00:00:00',
@@ -34,11 +45,6 @@ export class Show {
     nullable: true,
   })
   end: Date;
-
-  @Column({
-    comment: 'anticipated/approximate length of show in seconds',
-  })
-  length: number;
 
   @Column({
     comment: 'seller generated description of show',

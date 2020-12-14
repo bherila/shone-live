@@ -4,6 +4,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { File } from '../files/entities/file.entity';
+import { FilesService } from '../files/files.service';
 import { Sku } from '../skus/entities/sku.entity';
 import { StripeService } from '../stripe/stripe.service';
 import { User } from '../users/entities/user.entity';
@@ -24,6 +25,7 @@ export class ShowsService {
     @InjectRepository(File)
     private readonly fileRepository: Repository<File>,
     private readonly stripeService: StripeService,
+    private readonly filesService: FilesService,
   ) {}
 
   // todo add nested route structure for these association lookups
@@ -65,20 +67,34 @@ export class ShowsService {
     return show;
   }
 
-  async create(createShowDto: CreateShowDto) {
-    const show = this.showRepository.create(createShowDto);
-    const preview = await this.fileRepository.findOne(createShowDto.previewId);
-    if (preview) {
-      preview.show = show;
-      this.fileRepository.save(preview);
+  async create(createShowDto: CreateShowDto): Promise<Show> {
+    const user = await this.userRepository.findOne(createShowDto.user_id);
+    if (!user) {
+      throw new NotFoundException(`User #${createShowDto.user_id} not found`);
     }
-    show.user = await this.userRepository.findOne(createShowDto.user_id);
+    const video_file = await this.filesService.findOne(
+      createShowDto.video_id,
+      'Show Preview Video',
+    );
+    video_file.tag = 'video';
+    this.fileRepository.save(video_file);
+    const photo_file = await this.filesService.findOne(
+      createShowDto.photo_id,
+      'Show Preview Photo',
+    );
+    photo_file.tag = 'photo';
+    this.fileRepository.save(photo_file);
+    const show = this.showRepository.create({
+      user: user,
+      files: [video_file, photo_file],
+      ...createShowDto,
+    });
     return this.showRepository.save(show);
   }
 
   async update(id: string, updateShowDto: UpdateShowDto) {
     const show = await this.showRepository.preload({
-      id: +id,
+      id: id,
       ...updateShowDto,
     });
     if (!show) {

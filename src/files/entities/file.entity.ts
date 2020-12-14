@@ -41,9 +41,14 @@ export class File {
 
   @Column({
     comment: `this is the URL generated at the time the file is created in AWS`,
-    nullable: true,
   })
   public url: string;
+
+  @Column({
+    comment: `this is a single string with any metadata about the file`,
+    nullable: true,
+  })
+  public tag?: string;
 
   @ManyToOne(
     type => User,

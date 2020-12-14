@@ -75,12 +75,18 @@ export class FilesService {
     });
   }
 
-  findAll(user_id: string): Promise<File[]> {
+  async findAll(user_id: string): Promise<File[]> {
     return this.fileRepository.find({ where: { user: { id: user_id } } });
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} simpleProduct`;
+  async findOne(id: string, type = 'File'): Promise<File> {
+    const file = await this.fileRepository.findOne({
+      where: { id: id },
+    });
+    if (!file) {
+      throw new NotFoundException(`${type} #${id} not found`);
+    }
+    return file;
   }
 
   async remove(userId: string, fileId: string) {

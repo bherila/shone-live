@@ -9,9 +9,6 @@ import { User } from '../users/entities/user.entity';
 import { CreateSimpleProductDto } from './dto/create-simple-product.dto';
 import { UpdateSimpleProductDto } from './dto/update-simple-product.dto';
 import { SimpleProduct } from './entities/simple-product.entity';
-import {
-  CreateSimpleProductResponse,
-} from './responses/create-simple-product.response';
 
 @Injectable()
 export class SimpleProductsService {
@@ -28,7 +25,7 @@ export class SimpleProductsService {
 
   async create(
     createSimpleProductDto: CreateSimpleProductDto,
-  ): Promise<CreateSimpleProductResponse> {
+  ): Promise<SimpleProduct> {
     // move into services and call the service method for one liner
     const user = await this.userRepository.findOne(
       createSimpleProductDto.user_id,
@@ -38,9 +35,9 @@ export class SimpleProductsService {
         `User #${createSimpleProductDto.user_id} not found`,
       );
     }
-    const show = await this.showRepository.findOne(
-      createSimpleProductDto.show_id,
-    );
+    const show = await this.showRepository.findOne({
+      where: { id: createSimpleProductDto.show_id },
+    });
     if (!show) {
       throw new NotFoundException(
         `Show #${createSimpleProductDto.show_id} not found`,
@@ -60,10 +57,7 @@ export class SimpleProductsService {
       files: [file],
       ...createSimpleProductDto,
     });
-    const savedSimpleProduct = await this.simpleProductRepository.save(
-      simpleProduct,
-    );
-    return new CreateSimpleProductResponse(savedSimpleProduct);
+    return this.simpleProductRepository.save(simpleProduct);
   }
 
   findAll() {

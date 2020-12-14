@@ -1,5 +1,6 @@
 import {
-  Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post, Query,
+  Body, ClassSerializerInterceptor, Controller, Delete, Get, HttpStatus, Param,
+  Patch, Post, Query, UseInterceptors,
 } from '@nestjs/common';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 
@@ -7,9 +8,11 @@ import { CreateShowDto } from './dto/create-show.dto';
 import { ShowsQueryDto } from './dto/shows-query.dto';
 import { UpdateShowDto } from './dto/update-show.dto';
 import { Show } from './entities/show.entity';
+import { CreateShowResponse } from './responses/create-show.response';
 import { ShowsService } from './shows.service';
 
 @Controller('shows')
+@UseInterceptors(ClassSerializerInterceptor) // needed to run @Exclude()
 @ApiTags('shows')
 // @UseGuards(JwtAuthGuard) // TODO check this,
 // but these should show wherever there's auth gaurd on route in swatgger docs
@@ -50,11 +53,14 @@ export class ShowsController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: `created show`,
-    type: Show,
+    type: CreateShowResponse,
   })
   @Post()
-  async create(@Body() createShowDto: CreateShowDto): Promise<Show> {
-    return this.showService.create(createShowDto);
+  async create(
+    @Body() createShowDto: CreateShowDto,
+  ): Promise<CreateShowResponse> {
+    const show = await this.showService.create(createShowDto);
+    return new CreateShowResponse(show);
   }
 
   @ApiOperation({

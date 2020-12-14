@@ -114,7 +114,7 @@ export class StripeService {
 
   async createStripeProduct(
     createProductDto: CreateProductDto,
-    showId: number,
+    showId: string,
     showDate: string,
   ) {
     return this.stripeClient.products.create({
