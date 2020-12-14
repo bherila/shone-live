@@ -31,7 +31,9 @@ export class CreateFileResponse {
   public url: string;
 
   @ApiProperty({
-    description: `all files default to being stored in a private bucket
+    description: `TEMPORARILY FOR TESTING: for ease of the client,
+    we default to a public bucket. this should be changed in production.
+    all files default to being stored in a private bucket
     however, public files can be created by passing {public: true} in the body
     these files will immediately return a persistent public URL
     note there is no authorization these files are exposed to the entire web`,

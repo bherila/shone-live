@@ -32,10 +32,12 @@ export class File {
   public key: string;
 
   @Column({
-    comment: `is the file public or private
+    comment: `TEMPORARILY FOR TESTING: for ease of the client,
+    we default to a public bucket. this should be changed in production.
+    is the file public or private
   - public files have a permanent pubic url with no authorization
   - private files have a URL that requires access authorization`,
-    default: false,
+    default: true,
   })
   public is_public: boolean;
 
