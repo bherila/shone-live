@@ -1,6 +1,6 @@
 import { Exclude } from 'class-transformer';
 import {
-  Column, Entity, Generated, ManyToOne, PrimaryGeneratedColumn,
+  Column, Entity, Generated, Index, ManyToOne, PrimaryGeneratedColumn,
 } from 'typeorm';
 
 import { Product } from '../../products/entities/product.entity';
@@ -19,7 +19,10 @@ export class File {
   @Exclude()
   _id: number;
 
-  @Column({ comment: `public ID, for use by client (is a UUID)` })
+  @Index()
+  @Column({
+    comment: `public ID, for use by client (is a UUID)`,
+  })
   @Generated('uuid')
   id: string;
 

@@ -40,7 +40,11 @@ export class SimpleProductsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.simpleProductsService.findOne(id);
+    return this.simpleProductsService
+      .findOne(id, ['user', 'show', 'files'])
+      .then(simpleProduct => {
+        return new CreateSimpleProductResponse(simpleProduct);
+      });
   }
 
   @Put(':id')
