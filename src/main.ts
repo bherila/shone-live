@@ -1,4 +1,5 @@
 import { config } from 'aws-sdk';
+import { json } from 'body-parser';
 import * as basicAuth from 'express-basic-auth';
 import * as expressListRoutes from 'express-list-routes'; // note package has vulnerabilities
 
@@ -11,6 +12,7 @@ import { SwaggerModule } from '@nestjs/swagger/dist/swagger-module';
 import { AppModule } from './app.module';
 
 const fs = require('fs');
+var cloneBuffer = require('clone-buffer');
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -40,6 +42,19 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options);
 
   fs.writeFileSync('./open-api.json', JSON.stringify(document));
+
+  // https://yanndanthu.github.io/2019/07/04/Checking-Stripe-Webhook-Signatures-from-NestJS.html
+  app.use(
+    json({
+      verify: (req: any, res, buf, encoding) => {
+        // important to store rawBody for Stripe signature verification
+        if (req.headers['stripe-signature'] && Buffer.isBuffer(buf)) {
+          req.rawBody = cloneBuffer(buf);
+        }
+        return true;
+      },
+    }),
+  );
 
   // todo: this works, but we should move the PW to the env at least so it's not in the repo
   app.use(

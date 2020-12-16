@@ -1,6 +1,9 @@
+import { Stripe2Service } from 'src/stripe2/stripe2.service';
 import { Repository } from 'typeorm';
 
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  forwardRef, Inject, Injectable, NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { File } from '../files/entities/file.entity';
@@ -21,6 +24,8 @@ export class SimpleProductsService {
     private readonly showRepository: Repository<Show>,
     @InjectRepository(File)
     private readonly fileRepository: Repository<File>,
+    @Inject(forwardRef(() => Stripe2Service))
+    private readonly stripe2Service: Stripe2Service,
   ) {}
 
   async create(
@@ -57,19 +62,52 @@ export class SimpleProductsService {
       files: [file],
       ...createSimpleProductDto,
     });
-    return this.simpleProductRepository.save(simpleProduct);
+    // need to await this so we have the `id` from our DB for stripe
+    const savedSimpleProduct = await this.simpleProductRepository.save(
+      simpleProduct,
+    );
+
+    this.stripe2Service
+      .createStripeProduct(simpleProduct, [file.url])
+      .then(() => {
+        this.stripe2Service
+          .createStripePrice(simpleProduct)
+          .then(stripePriceResponse => {
+            simpleProduct.stripe_price_id = stripePriceResponse.id;
+            this.simpleProductRepository.save(simpleProduct);
+          });
+      });
+
+    return savedSimpleProduct;
   }
 
   findAll() {
     return `This action returns all simpleProducts`;
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} simpleProduct`;
+  async findOne(id: string, relations: string[] = []): Promise<SimpleProduct> {
+    return this.simpleProductRepository
+      .findOne({
+        where: { id: id },
+        relations: relations,
+      })
+      .then(simpleProduct => {
+        if (!simpleProduct) {
+          new NotFoundException(`SimpleProduct #${id} not found`);
+        }
+        return simpleProduct;
+      });
   }
 
   update(id: string, updateSimpleProductDto: UpdateSimpleProductDto) {
     return `This action updates a #${id} simpleProduct`;
+  }
+
+  updateQuantitySold(id: string, sale_quantity: number) {
+    this.findOne(id).then(product => {
+      product.quantity_sold += sale_quantity;
+      this.simpleProductRepository.save(product);
+    });
   }
 
   remove(id: string) {

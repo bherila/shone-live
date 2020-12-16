@@ -1,6 +1,7 @@
 import { Exclude } from 'class-transformer';
 import {
-  Column, Entity, Generated, ManyToOne, OneToMany, PrimaryGeneratedColumn,
+  Column, Entity, Generated, Index, ManyToOne, OneToMany,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 
 import { File } from '../../files/entities/file.entity';
@@ -15,9 +16,19 @@ export class SimpleProduct {
   @Exclude()
   _id: number;
 
-  @Column({ comment: 'public ID, for use by client (is a UUID)' })
+  @Index()
+  @Column({
+    comment: 'public ID, for use by client (is a UUID)',
+  })
   @Generated('uuid')
   id: string;
+
+  @Column({
+    comment: `the id of the Stripe Price Object needed for checkout
+    https://stripe.com/docs/api/prices`,
+    nullable: true,
+  })
+  stripe_price_id: string;
 
   @Column({
     comment: 'product name',

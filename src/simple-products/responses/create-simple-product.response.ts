@@ -53,6 +53,14 @@ export class CreateSimpleProductResponse {
   public readonly quantity: number;
 
   @ApiProperty({
+    description: `quantity that has been sold.
+    - updated after each successful transaction.
+    - only modified directly by the server`,
+    example: `3`,
+  })
+  public readonly quantity_sold: number;
+
+  @ApiProperty({
     description: `the preview photos for the product are here`,
     isArray: true,
     type: CreateFileResponse,
@@ -61,12 +69,21 @@ export class CreateSimpleProductResponse {
 
   constructor(simpleProduct: SimpleProduct) {
     this.id = simpleProduct.id;
-    this.user_id = simpleProduct.user.id;
-    this.show_id = simpleProduct.show.id;
+    if (simpleProduct.user) {
+      this.user_id = simpleProduct.user.id;
+    }
+    if (simpleProduct.show) {
+      this.show_id = simpleProduct.show.id;
+    }
     this.name = simpleProduct.name;
     this.description = simpleProduct.description;
     this.price = simpleProduct.price;
     this.quantity = simpleProduct.quantity;
-    this.images = simpleProduct.files.map(file => new CreateFileResponse(file));
+    this.quantity_sold = simpleProduct.quantity_sold;
+    if (simpleProduct.files) {
+      this.images = simpleProduct.files.map(
+        file => new CreateFileResponse(file),
+      );
+    }
   }
 }
