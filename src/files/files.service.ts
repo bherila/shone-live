@@ -30,7 +30,10 @@ export class FilesService {
     filename: string,
   ): Promise<File> {
     // AWS interaction
-    const bucket = createFileDto.is_public
+    // temporarily default file create to public
+    const is_public = createFileDto.is_public ?? true;
+    // once we remove default public
+    const bucket = is_public // just put back to createFileDto.is_public
       ? 'AWS_PUBLIC_BUCKET_NAME'
       : 'AWS_PRIVATE_BUCKET_NAME';
     const s3 = new S3();
