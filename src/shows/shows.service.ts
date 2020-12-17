@@ -33,7 +33,7 @@ export class ShowsService {
   // todo for findall on all objects maybe don't return nested
   // todo need better filters and query params for all too
   findAll(getShowDto: ShowsQueryDto) {
-    const { limit, offset, userId, startDate, endDate } = getShowDto;
+    const { limit, offset, user_id, start_date, end_date } = getShowDto;
 
     let baseQuery: any = {
       relations: ['user', 'files', 'products', 'skus'],
@@ -42,11 +42,11 @@ export class ShowsService {
     };
 
     let where: any = {};
-    if (userId) {
-      where.user = userId;
+    if (user_id) {
+      where.user = user_id;
     }
-    if (startDate && endDate) {
-      where.date = Between(startDate, endDate);
+    if (start_date && end_date) {
+      where.date = Between(start_date, end_date);
     }
 
     if (Object.keys(where).length > 0) {

@@ -16,7 +16,7 @@ export class ShowsQueryDto extends PaginationQueryDto {
   })
   @IsOptional()
   @IsString()
-  readonly userId: string;
+  readonly user_id?: string;
 
   // TODO: start date and end date both need validation
   // that if one is present both need to be present
@@ -32,7 +32,7 @@ export class ShowsQueryDto extends PaginationQueryDto {
   })
   @IsOptional()
   @IsDateString()
-  readonly startDate: string;
+  readonly start_date?: string;
 
   // TODO: start date and end date both need validation
   // that if one is present both need to be present
@@ -48,5 +48,5 @@ export class ShowsQueryDto extends PaginationQueryDto {
   })
   @IsOptional()
   @IsDateString()
-  readonly endDate: string;
+  readonly end_date?: string;
 }

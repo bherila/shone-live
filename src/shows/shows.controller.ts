@@ -28,9 +28,9 @@ export class ShowsController {
     type: Show,
     isArray: true,
   })
-  @ApiQuery({ name: 'user_id', type: Number, required: false })
-  @ApiQuery({ name: 'startDate', type: String, required: false })
-  @ApiQuery({ name: 'endDate', type: String, required: false })
+  @ApiQuery({ name: 'user_id', type: String, required: false })
+  @ApiQuery({ name: 'start_date', type: String, required: false })
+  @ApiQuery({ name: 'end_date', type: String, required: false })
   @ApiQuery({ name: 'offset', type: Number, required: false })
   @ApiQuery({ name: 'limit', type: Number, required: false })
   @Get()
