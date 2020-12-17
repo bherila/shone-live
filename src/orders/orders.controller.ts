@@ -24,7 +24,7 @@ export class OrdersController {
     type: Order,
     isArray: true,
   })
-  @ApiQuery({ name: 'show_id', type: Number, required: false })
+  @ApiQuery({ name: 'show_id', type: String, required: false })
   @ApiQuery({ name: 'offset', type: Number, required: false })
   @ApiQuery({ name: 'limit', type: Number, required: false })
   @Get()

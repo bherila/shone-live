@@ -1,4 +1,4 @@
-import { IsNumber, IsOptional } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -10,6 +10,6 @@ export class OrdersQueryDto extends PaginationQueryDto {
     example: `1`,
   })
   @IsOptional()
-  @IsNumber()
-  readonly show_id: number;
+  @IsString()
+  readonly show_id?: string;
 }

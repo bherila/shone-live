@@ -37,11 +37,13 @@ export class OrdersService {
   findAll(getOrderDto: OrdersQueryDto) {
     const { limit, offset, show_id } = getOrderDto;
     if (show_id) {
-      return this.orderRepository.find({
-        where: { show: show_id },
-        relations: ['user', 'address', 'show', 'card'],
-        skip: offset,
-        take: limit,
+      this.showRepository.findOne({ where: { id: show_id } }).then(show => {
+        return this.orderRepository.find({
+          where: { show: show._id },
+          relations: ['user', 'address', 'show', 'card'],
+          skip: offset,
+          take: limit,
+        });
       });
     }
 
