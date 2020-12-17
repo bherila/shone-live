@@ -1,17 +1,12 @@
 import { IsDateString, IsOptional, IsString } from 'class-validator';
 
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, PartialType } from '@nestjs/swagger';
 
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto';
 
-// TODO this should use extends PartialType from nestjs/swagger
-// however if that is used then
-// the class validator breaks on the inherited params
-// so it cannot work
-export class ShowsQueryDto extends PaginationQueryDto {
+export class ShowsQueryDto extends PartialType(PaginationQueryDto) {
   @ApiProperty({
-    description: `this is the user who created the show
-    it is actually optional - seems showed required by bug`,
+    description: `this is the user who created the show`,
     example: `cus_IPqRS333voIGbS`,
   })
   @IsOptional()

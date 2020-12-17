@@ -2,7 +2,7 @@ import {
   Body, ClassSerializerInterceptor, Controller, Delete, Get, HttpStatus, Param,
   Patch, Post, Query, UseInterceptors,
 } from '@nestjs/common';
-import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { CreateShowDto } from './dto/create-show.dto';
 import { ShowsQueryDto } from './dto/shows-query.dto';
@@ -28,11 +28,6 @@ export class ShowsController {
     type: Show,
     isArray: true,
   })
-  @ApiQuery({ name: 'user_id', type: String, required: false })
-  @ApiQuery({ name: 'start_date', type: String, required: false })
-  @ApiQuery({ name: 'end_date', type: String, required: false })
-  @ApiQuery({ name: 'offset', type: Number, required: false })
-  @ApiQuery({ name: 'limit', type: Number, required: false })
   @Get()
   async findAll(@Query() getShowDto: ShowsQueryDto): Promise<Show[]> {
     return this.showService.findAll(getShowDto);
