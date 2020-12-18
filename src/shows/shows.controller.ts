@@ -21,7 +21,10 @@ import { ShowsService } from './shows.service';
 export class ShowsController {
   constructor(private readonly showService: ShowsService) {}
 
-  @ApiOperation({ summary: `returns all shows` })
+  @ApiOperation({
+    summary: `returns all shows
+  filtered by optional query parameters`,
+  })
   @ApiResponse({
     status: HttpStatus.OK,
     description: `success`,
@@ -29,8 +32,14 @@ export class ShowsController {
     isArray: true,
   })
   @Get()
-  async findAll(@Query() getShowDto: ShowsQueryDto): Promise<Show[]> {
-    return this.showService.findAll(getShowDto);
+  async findAll(
+    @Query() showsQueryDto: ShowsQueryDto,
+  ): Promise<CreateShowResponse[]> {
+    return this.showService
+      .findAll(showsQueryDto, ['files', 'simpleProducts'])
+      .then(shows => {
+        return shows.map(show => new CreateShowResponse(show));
+      });
   }
 
   @ApiOperation({ summary: `returns a single show by its id` })
@@ -40,8 +49,10 @@ export class ShowsController {
     type: Show,
   })
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<Show> {
-    return this.showService.findOne(id);
+  async findOne(@Param('id') id: string): Promise<CreateShowResponse> {
+    return this.showService.findOne(id).then(show => {
+      return new CreateShowResponse(show);
+    });
   }
 
   @ApiOperation({ summary: `creates a new show` })
@@ -54,8 +65,9 @@ export class ShowsController {
   async create(
     @Body() createShowDto: CreateShowDto,
   ): Promise<CreateShowResponse> {
-    const show = await this.showService.create(createShowDto);
-    return new CreateShowResponse(show);
+    return this.showService.create(createShowDto).then(show => {
+      return new CreateShowResponse(show);
+    });
   }
 
   @ApiOperation({

@@ -13,35 +13,29 @@ export class ShowsQueryDto extends PaginationQueryDto {
   @IsString()
   readonly user_id?: string;
 
-  // TODO: start date and end date both need validation
-  // that if one is present both need to be present
-  // or update the code to retur all after date or all before date
-  // also there is no logical validation on the dates to show start and end
   @ApiProperty({
     description: `earlierst start date-time of show to query INCLUSIVE
      https://en.wikipedia.org/wiki/ISO_8601
+     can be passed with end as a range,
+     or passed alone to return all records after
      note this currently has no logical validation eg that format is correct
-     that date is reasonable, that start is before end, that is a TODO, so for now please use carefully
-     it is actually optional - seems showed required by bug`,
+     that date is reasonable, that start is before end, that is a TODO, so for now please use carefully`,
     example: `2020-11-22T20:39:12+00:00`,
   })
   @IsOptional()
   @IsDateString()
-  readonly start_date?: string;
+  readonly start?: string;
 
-  // TODO: start date and end date both need validation
-  // that if one is present both need to be present
-  // or update the code to retur all after date or all before date
-  // also there is no logical validation on the dates to show start and end
   @ApiProperty({
     description: `latest start date-time of show to query INCLUSIVE
      https://en.wikipedia.org/wiki/ISO_8601
+     can be passed with start as a range,
+     or passed alone to return all records before
      note this currently has no logical validation eg that format is correct
-     that date is reasonable, that start is before end, that is a TODO, so for now please use carefully
-     it is actually optional - seems showed required by bug`,
+     that date is reasonable, that start is before end, that is a TODO, so for now please use carefully`,
     example: `2020-11-22T20:39:12+00:00`,
   })
   @IsOptional()
   @IsDateString()
-  readonly end_date?: string;
+  readonly end?: string;
 }

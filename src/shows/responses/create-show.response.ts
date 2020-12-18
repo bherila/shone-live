@@ -1,3 +1,7 @@
+import {
+  CreateSimpleProductResponse,
+} from 'src/simple-products/responses/create-simple-product.response';
+
 import { ApiProperty } from '@nestjs/swagger';
 
 import { CreateFileResponse } from '../../files/responses/create-file.response';
@@ -56,6 +60,14 @@ export class CreateShowResponse {
   })
   public files: CreateFileResponse[];
 
+  @ApiProperty({
+    description: `the simpleProducts associated with the show
+    for sale during the show`,
+    isArray: true,
+    type: CreateSimpleProductResponse,
+  })
+  public simpleProducts: CreateSimpleProductResponse[];
+
   constructor(show: Show) {
     this.id = show.id;
     if (show.user) {
@@ -66,5 +78,8 @@ export class CreateShowResponse {
     this.scheduled_start = show.scheduled_start;
     this.scheduled_end = show.scheduled_end;
     this.files = show.files.map(file => new CreateFileResponse(file));
+    this.simpleProducts = show.simpleProducts.map(
+      simpleProduct => new CreateSimpleProductResponse(simpleProduct),
+    );
   }
 }

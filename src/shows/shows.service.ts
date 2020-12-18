@@ -1,4 +1,4 @@
-import { Between, Repository } from 'typeorm';
+import { Between, LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm';
 
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -32,11 +32,14 @@ export class ShowsService {
   // EG todo find all by user id (user/{id}/shows)
   // todo for findall on all objects maybe don't return nested
   // todo need better filters and query params for all too
-  findAll(getShowDto: ShowsQueryDto) {
-    const { limit, offset, user_id, start_date, end_date } = getShowDto;
+  findAll(
+    getShowDto: ShowsQueryDto,
+    relations: string[] = [],
+  ): Promise<Show[]> {
+    const { limit, offset, user_id, start, end } = getShowDto;
 
     let baseQuery: any = {
-      relations: ['user', 'files', 'products', 'skus'],
+      relations: relations,
       skip: offset,
       take: limit,
     };
@@ -45,8 +48,14 @@ export class ShowsService {
     if (user_id) {
       where.user = user_id;
     }
-    if (start_date && end_date) {
-      where.date = Between(start_date, end_date);
+    if (start && end) {
+      where.scheduled_start = Between(start, end);
+    }
+    if (start && !end) {
+      where.scheduled_start = MoreThanOrEqual(start);
+    }
+    if (!start && end) {
+      where.scheduled_start = LessThanOrEqual(end);
     }
 
     if (Object.keys(where).length > 0) {

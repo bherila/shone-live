@@ -34,6 +34,16 @@ export class SimpleProductsController {
     return new CreateSimpleProductResponse(simpleProduct);
   }
 
+  @ApiOperation({
+    summary: `returns all simple products
+    filtered by optional query parameters`,
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: `success`,
+    type: CreateSimpleProductResponse,
+    isArray: true,
+  })
   @Get()
   async findAll(
     @Query() simpleProductsQueryDto: SimpleProductsQueryDto,
