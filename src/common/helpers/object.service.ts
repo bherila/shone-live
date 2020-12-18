@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
+// TODO: Should probably just learn lodash
+// and use it for these object manipulation tasks
 export class ObjService {
-  filteredNoNulls(object: Object, keepKeys: String[]): Object {
-    return this.removeNulls(this.filtered(object, keepKeys));
+  static filteredNoNulls(object: Object, keepKeys: String[]): Object {
+    return ObjService.removeNulls(ObjService.filtered(object, keepKeys));
   }
 
-  filtered(originalObject: Object, keepKeys: String[]): Object {
+  static filtered(originalObject: Object, keepKeys: String[]): Object {
     return Object.keys(originalObject)
       .filter(key => keepKeys.includes(key))
       .reduce((obj, key) => {
@@ -15,7 +17,7 @@ export class ObjService {
       }, {});
   }
 
-  hasMissingValues(object: Object): Boolean {
+  static hasMissingValues(object: Object): Boolean {
     const missingValues: any = [];
     const keys = Object.keys(object);
     keys.forEach(key => object[key] == null && missingValues.push(key));
@@ -23,15 +25,14 @@ export class ObjService {
   }
 
   // https://stackoverflow.com/a/38340730/2422826
-  removeNulls(object: Object): Object {
-    return Object.keys(object)
-      .filter(k => object[k] != null) // Remove undef. and null.
-      .reduce(
-        (newObj, k) =>
-          typeof object[k] === 'object'
-            ? { ...newObj, [k]: this.removeNulls(object[k]) } // Recurse.
-            : { ...newObj, [k]: object[k] }, // Copy value.
-        {},
-      );
+  static removeNulls(obj: Object, recurse: boolean = true): Object {
+    for (var i in obj) {
+      if (obj[i] === null) {
+        delete obj[i];
+      } else if (recurse && typeof obj[i] === 'object') {
+        ObjService.removeNulls(obj[i], recurse);
+      }
+    }
+    return obj;
   }
 }

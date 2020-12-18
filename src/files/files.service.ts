@@ -21,7 +21,6 @@ export class FilesService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
     private readonly configService: ConfigService,
-    private readonly objService: ObjService,
   ) {}
 
   async uploadFile(
@@ -50,7 +49,7 @@ export class FilesService {
     if (!user) {
       throw new NotFoundException(`User #${createFileDto.user_id} not found`);
     }
-    const saveData = this.objService.filteredNoNulls(
+    const saveData = ObjService.filteredNoNulls(
       Object.assign({}, createFileDto),
       [
         'is_public',
