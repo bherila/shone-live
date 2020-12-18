@@ -1,5 +1,4 @@
 import { S3 } from 'aws-sdk';
-import { ObjService } from 'src/common/helpers/object.service';
 import { Repository } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 
@@ -9,6 +8,7 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 
+import { ObjService } from '../common/helpers/object.service';
 import { User } from '../users/entities/user.entity';
 import { CreateFileDto } from './dto/create-file.dto';
 import { File } from './entities/file.entity';

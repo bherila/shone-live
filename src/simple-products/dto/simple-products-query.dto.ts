@@ -1,7 +1,8 @@
 import { IsOptional, IsString } from 'class-validator';
-import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
 
 import { ApiProperty, PartialType } from '@nestjs/swagger';
+
+import { PaginationQueryDto } from '../../common/dto/pagination-query.dto';
 
 export class SimpleProductsQueryDto extends PartialType(PaginationQueryDto) {
   @ApiProperty({

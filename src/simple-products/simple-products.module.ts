@@ -1,10 +1,9 @@
-import { Stripe2Module } from 'src/stripe2/stripe2.module';
-
 import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { File } from '../files/entities/file.entity';
 import { Show } from '../shows/entities/show.entity';
+import { Stripe2Module } from '../stripe2/stripe2.module';
 import { User } from '../users/entities/user.entity';
 import { SimpleProduct } from './entities/simple-product.entity';
 import { SimpleProductsController } from './simple-products.controller';
