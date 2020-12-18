@@ -1,10 +1,11 @@
 import {
   Body, ClassSerializerInterceptor, Controller, Delete, Get, HttpStatus, Param,
-  Post, Put, UseInterceptors,
+  Post, Put, Query, UseInterceptors,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { CreateSimpleProductDto } from './dto/create-simple-product.dto';
+import { SimpleProductsQueryDto } from './dto/simple-products-query.dto';
 import { UpdateSimpleProductDto } from './dto/update-simple-product.dto';
 import {
   CreateSimpleProductResponse,
@@ -34,8 +35,16 @@ export class SimpleProductsController {
   }
 
   @Get()
-  findAll() {
-    return this.simpleProductsService.findAll();
+  async findAll(
+    @Query() simpleProductsQueryDto: SimpleProductsQueryDto,
+  ): Promise<CreateSimpleProductResponse[]> {
+    return this.simpleProductsService
+      .findAll(simpleProductsQueryDto, ['user', 'show', 'files'])
+      .then(simpleProducts => {
+        return simpleProducts.map(
+          simpleProduct => new CreateSimpleProductResponse(simpleProduct),
+        );
+      });
   }
 
   @Get(':id')
@@ -48,11 +57,15 @@ export class SimpleProductsController {
   }
 
   @Put(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateSimpleProductDto: UpdateSimpleProductDto,
-  ) {
-    return this.simpleProductsService.update(id, updateSimpleProductDto);
+  ): Promise<CreateSimpleProductResponse> {
+    return this.simpleProductsService
+      .update(id, updateSimpleProductDto)
+      .then(simpleProduct => {
+        return new CreateSimpleProductResponse(simpleProduct);
+      });
   }
 
   @Delete(':id')

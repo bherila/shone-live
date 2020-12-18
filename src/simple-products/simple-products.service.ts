@@ -1,4 +1,3 @@
-import { Stripe2Service } from 'src/stripe2/stripe2.service';
 import { Repository } from 'typeorm';
 
 import {
@@ -8,8 +7,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 import { File } from '../files/entities/file.entity';
 import { Show } from '../shows/entities/show.entity';
+import { Stripe2Service } from '../stripe2/stripe2.service';
 import { User } from '../users/entities/user.entity';
 import { CreateSimpleProductDto } from './dto/create-simple-product.dto';
+import { SimpleProductsQueryDto } from './dto/simple-products-query.dto';
 import { UpdateSimpleProductDto } from './dto/update-simple-product.dto';
 import { SimpleProduct } from './entities/simple-product.entity';
 
@@ -31,44 +32,54 @@ export class SimpleProductsService {
   async create(
     createSimpleProductDto: CreateSimpleProductDto,
   ): Promise<SimpleProduct> {
+    const { show_id, user_id, image_id } = createSimpleProductDto;
+    let simpleProductData = { ...createSimpleProductDto };
+    let queries: Promise<any>[] = [];
+
     // move into services and call the service method for one liner
-    const user = await this.userRepository.findOne(
-      createSimpleProductDto.user_id,
-    );
-    if (!user) {
-      throw new NotFoundException(
-        `User #${createSimpleProductDto.user_id} not found`,
-      );
-    }
-    const show = await this.showRepository.findOne({
-      where: { id: createSimpleProductDto.show_id },
+    const fileQuery = this.fileRepository
+      .findOne({
+        where: { id: image_id },
+      })
+      .then(file => {
+        if (!file) {
+          throw new NotFoundException(`File #${image_id} not found`);
+        }
+        simpleProductData['files'] = [file];
+        return file;
+      });
+    queries.push(fileQuery);
+
+    const userQuery = this.userRepository.findOne(user_id).then(user => {
+      if (!user) {
+        throw new NotFoundException(`User #${user_id} not found`);
+      }
+      simpleProductData['user'] = user;
     });
-    if (!show) {
-      throw new NotFoundException(
-        `Show #${createSimpleProductDto.show_id} not found`,
-      );
+    queries.push(userQuery);
+
+    if (show_id) {
+      const showQuery = this.showRepository
+        .findOne({ where: { id: show_id } })
+        .then(show => {
+          if (!show) {
+            throw new NotFoundException(`Show #${show_id} not found`);
+          }
+          simpleProductData['show'] = show;
+        });
+      queries.push(showQuery);
     }
-    const file = await this.fileRepository.findOne({
-      where: { id: createSimpleProductDto.image_id },
-    });
-    if (!file) {
-      throw new NotFoundException(
-        `Image #${createSimpleProductDto.image_id} not found`,
-      );
-    }
-    const simpleProduct = this.simpleProductRepository.create({
-      user: user,
-      show: show,
-      files: [file],
-      ...createSimpleProductDto,
-    });
     // need to await this so we have the `id` from our DB for stripe
-    const savedSimpleProduct = await this.simpleProductRepository.save(
-      simpleProduct,
-    );
+    let file_url: string; // need to get our file_url for stripe
+    const simpleProduct = await Promise.all(queries).then(values => {
+      file_url = values[0].url; // get file_url for use by StripeProduct
+      return this.simpleProductRepository.save(
+        this.simpleProductRepository.create(simpleProductData),
+      );
+    });
 
     this.stripe2Service
-      .createStripeProduct(simpleProduct, [file.url])
+      .createStripeProduct(simpleProduct, [file_url])
       .then(() => {
         this.stripe2Service
           .createStripePrice(simpleProduct)
@@ -78,11 +89,22 @@ export class SimpleProductsService {
           });
       });
 
-    return savedSimpleProduct;
+    return simpleProduct;
   }
 
-  findAll() {
-    return `This action returns all simpleProducts`;
+  findAll(
+    simpleProductsQueryDto: SimpleProductsQueryDto,
+    relations: string[] = [],
+  ): Promise<SimpleProduct[]> {
+    const { user_id } = simpleProductsQueryDto;
+    let query: any = {};
+    if (user_id) {
+      query['user'] = user_id;
+    }
+    return this.simpleProductRepository.find({
+      where: query,
+      relations: relations,
+    });
   }
 
   async findOne(id: string, relations: string[] = []): Promise<SimpleProduct> {
@@ -99,8 +121,25 @@ export class SimpleProductsService {
       });
   }
 
-  update(id: string, updateSimpleProductDto: UpdateSimpleProductDto) {
-    return `This action updates a #${id} simpleProduct`;
+  async update(id: string, updateSimpleProductDto: UpdateSimpleProductDto) {
+    const { show_id } = updateSimpleProductDto;
+    let simpleProductUpdate = {};
+    if (show_id) {
+      simpleProductUpdate['show'] = await this.showRepository.findOne({
+        where: { id: show_id },
+      });
+    }
+    return this.simpleProductRepository
+      .findOne({ where: { id: id } })
+      .then(simpleProduct => {
+        if (!simpleProduct) {
+          throw new NotFoundException(`simpleProduct #${id} not found`);
+        }
+        return this.simpleProductRepository.save({
+          ...simpleProduct,
+          ...simpleProductUpdate,
+        });
+      });
   }
 
   updateQuantitySold(id: string, sale_quantity: number) {

@@ -1,4 +1,4 @@
-import { IsNumber, IsString, IsUUID } from 'class-validator';
+import { IsNumber, IsOptional, IsString, IsUUID } from 'class-validator';
 
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -15,8 +15,9 @@ export class CreateSimpleProductDto {
     example: `b644cec4-0487-4f6f-bac1-c80059a2a4b0`,
     type: 'UUID',
   })
+  @IsOptional()
   @IsUUID()
-  public readonly show_id: string;
+  public readonly show_id?: string;
 
   @ApiProperty({
     description: `the photo of the product`,
