@@ -36,7 +36,7 @@ export class ShowsController {
     @Query() showsQueryDto: ShowsQueryDto,
   ): Promise<CreateShowResponse[]> {
     return this.showService
-      .findAll(showsQueryDto, ['files', 'simpleProducts'])
+      .findAll(showsQueryDto, ['user', 'files', 'simpleProducts'])
       .then(shows => {
         return shows.map(show => new CreateShowResponse(show));
       });
