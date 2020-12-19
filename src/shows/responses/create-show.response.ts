@@ -78,8 +78,10 @@ export class CreateShowResponse {
     this.scheduled_start = show.scheduled_start;
     this.scheduled_end = show.scheduled_end;
     this.files = show.files.map(file => new CreateFileResponse(file));
-    this.simpleProducts = show.simpleProducts.map(
-      simpleProduct => new CreateSimpleProductResponse(simpleProduct),
-    );
+    if (show.simpleProducts) {
+      this.simpleProducts = show.simpleProducts.map(
+        simpleProduct => new CreateSimpleProductResponse(simpleProduct),
+      );
+    }
   }
 }
