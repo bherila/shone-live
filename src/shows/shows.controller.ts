@@ -50,9 +50,11 @@ export class ShowsController {
   })
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<CreateShowResponse> {
-    return this.showService.findOne(id).then(show => {
-      return new CreateShowResponse(show);
-    });
+    return this.showService
+      .findOne(id, ['user', 'files', 'simpleProducts'])
+      .then(show => {
+        return new CreateShowResponse(show);
+      });
   }
 
   @ApiOperation({ summary: `creates a new show` })

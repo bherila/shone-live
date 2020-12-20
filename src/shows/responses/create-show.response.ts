@@ -5,6 +5,7 @@ import {
 import { ApiProperty } from '@nestjs/swagger';
 
 import { CreateFileResponse } from '../../files/responses/create-file.response';
+import { UserResponse } from '../../users/responses/user.response';
 import { Show } from '../entities/show.entity';
 
 export class CreateShowResponse {
@@ -16,14 +17,6 @@ export class CreateShowResponse {
     type: 'UUID',
   })
   public id: string;
-  @ApiProperty({
-    description: `the id of the user who uploaded this file
-          we need this user id to associate the user so we can
-          1. let only this user delete the file
-          2. be able to return all this users files for them to manage`,
-    example: `cus_IPqRS333voIGbS`,
-  })
-  public user_id: string;
 
   @ApiProperty({
     description: `the display description for customers,
@@ -54,6 +47,12 @@ export class CreateShowResponse {
   public scheduled_end: Date;
 
   @ApiProperty({
+    description: `the user who created the show`,
+    type: UserResponse,
+  })
+  public user: UserResponse;
+
+  @ApiProperty({
     description: `the video and photo preview for the show are here`,
     isArray: true,
     type: CreateFileResponse,
@@ -70,14 +69,12 @@ export class CreateShowResponse {
 
   constructor(show: Show) {
     this.id = show.id;
-    if (show.user) {
-      this.user_id = show.user.id;
-    }
     this.description = show.description;
     this.name = show.name;
     this.scheduled_start = show.scheduled_start;
     this.scheduled_end = show.scheduled_end;
     this.files = show.files.map(file => new CreateFileResponse(file));
+    this.user = new UserResponse(show.user);
     if (show.simpleProducts) {
       this.simpleProducts = show.simpleProducts.map(
         simpleProduct => new CreateSimpleProductResponse(simpleProduct),

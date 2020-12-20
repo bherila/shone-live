@@ -66,10 +66,10 @@ export class ShowsService {
   }
 
   // todo add nested route structure for these association lookups
-  async findOne(id: string) {
+  async findOne(id: string, relations: string[] = []) {
     const show = await this.showRepository.findOne({
       where: { id: id },
-      relations: ['user', 'files', 'products', 'skus'],
+      relations: relations,
     });
     if (!show) {
       throw new NotFoundException(`Show with id ${id} not found`);
