@@ -1,4 +1,8 @@
-import { Module } from '@nestjs/common';
+import {
+  SimpleProductsModule,
+} from 'src/simple-products/simple-products.module';
+
+import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { File } from '../files/entities/file.entity';
@@ -29,6 +33,7 @@ import { ShowsService } from './shows.service';
     ]),
     StripeModule,
     FilesModule,
+    forwardRef(() => SimpleProductsModule),
   ],
   controllers: [ShowsController],
   providers: [ShowsService, ShowGateway],

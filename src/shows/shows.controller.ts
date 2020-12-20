@@ -1,9 +1,19 @@
 import {
+  SimpleProductsService,
+} from 'src/simple-products/simple-products.service';
+
+import {
   Body, ClassSerializerInterceptor, Controller, Delete, Get, HttpStatus, Param,
   Patch, Post, Query, UseInterceptors,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+import {
+  CreateSimpleProductResponse,
+} from '../simple-products/responses/create-simple-product.response';
+import {
+  AddSimpleProductsToShowDto,
+} from './dto/add-simple-products-to-show.dto';
 import { CreateShowDto } from './dto/create-show.dto';
 import { ShowsQueryDto } from './dto/shows-query.dto';
 import { UpdateShowDto } from './dto/update-show.dto';
@@ -19,7 +29,10 @@ import { ShowsService } from './shows.service';
 // and then we should add this everywhere we add gaurd
 // @ApiBearerAuth('JWT')
 export class ShowsController {
-  constructor(private readonly showService: ShowsService) {}
+  constructor(
+    private readonly showService: ShowsService,
+    private readonly simpleProductsService: SimpleProductsService,
+  ) {}
 
   @ApiOperation({
     summary: `returns all shows
@@ -93,5 +106,35 @@ export class ShowsController {
   @Delete(':id')
   async remove(@Param('id') id: string): Promise<Show> {
     return this.showService.remove(id);
+  }
+
+  @ApiOperation({
+    summary: `bulk updates simpleProducts
+  by adding this show id to all of them`,
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: `successfully associated simpleProducts with show`,
+    isArray: true,
+    type: CreateSimpleProductResponse,
+  })
+  @Post(':showId/add_simple_products')
+  async addSimpleProducts(
+    @Param('showId') showId: string,
+    @Body() addSimpleProductsToShowDto: AddSimpleProductsToShowDto,
+  ): Promise<CreateSimpleProductResponse[]> {
+    return this.simpleProductsService
+      .bulkUpdate(
+        'showId',
+        showId,
+        addSimpleProductsToShowDto.simple_product_ids,
+      )
+      .then(simpleProducts => {
+        return Promise.all(simpleProducts).then(simpleProducts => {
+          return simpleProducts.map(simpleProduct => {
+            return new CreateSimpleProductResponse(simpleProduct);
+          });
+        });
+      });
   }
 }

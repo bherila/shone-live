@@ -121,7 +121,10 @@ export class SimpleProductsService {
       });
   }
 
-  async update(id: string, updateSimpleProductDto: UpdateSimpleProductDto) {
+  async update(
+    simpleProductId: string,
+    updateSimpleProductDto: UpdateSimpleProductDto,
+  ): Promise<SimpleProduct> {
     const { show_id } = updateSimpleProductDto;
     let simpleProductUpdate = {};
     if (show_id) {
@@ -129,16 +132,41 @@ export class SimpleProductsService {
         where: { id: show_id },
       });
     }
+    return this.updateHelper(simpleProductId, simpleProductUpdate);
+  }
+
+  async updateHelper(
+    simpleProductId: string,
+    updateObject: SaveOptions,
+  ): Promise<SimpleProduct> {
     return this.simpleProductRepository
-      .findOne({ where: { id: id } })
+      .findOne({ where: { id: simpleProductId } })
       .then(simpleProduct => {
         if (!simpleProduct) {
-          throw new NotFoundException(`simpleProduct #${id} not found`);
+          throw new NotFoundException(
+            `simpleProduct #${simpleProductId} not found`,
+          );
         }
         return this.simpleProductRepository.save({
           ...simpleProduct,
-          ...simpleProductUpdate,
+          ...updateObject,
         });
+      });
+  }
+
+  async bulkUpdate(
+    fieldToUpdate: string,
+    fieldValue: string,
+    simpleProductIds: string[],
+  ): Promise<Promise<SimpleProduct>[]> {
+    let simpleProductUpdate = {};
+    if (fieldToUpdate === 'showId') {
+      simpleProductUpdate['show'] = await this.showRepository.findOne({
+        where: { id: fieldValue },
+      });
+    }
+    return simpleProductIds.map(simpleProductId => {
+      return this.updateHelper(simpleProductId, simpleProductUpdate);
       });
   }
 
