@@ -6,12 +6,12 @@ import {
   WebSocketGateway, WebSocketServer,
 } from '@nestjs/websockets';
 
+import {
+  SimpleProductSaleResponse,
+} from '../simple-products/responses/simple-product-sale.response';
+
 // here follow what was set up in chats to make the show part work
-@WebSocketGateway(3002, {
-  namespace: '/show',
-  path: '/websockets', // defaults to socket.io if you don't specify
-  serveClient: true, // if the client app comes from another server, then false
-})
+@WebSocketGateway({ namespace: '/show' })
 export class ShowGateway
   implements OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit {
   private logger: Logger = new Logger('ShowGateway');
@@ -56,9 +56,13 @@ export class ShowGateway
     this.logger.log(`Client left room ${room}`);
   }
 
-  // add function to emit event for each sale, all the data should be there
-  // this should only be accesible to the seller, they need a specially chanel
-  // inventory updates should be emitted to all users however
-  // for the seller channel for now it can just be their ID+SHOW-ID that's secure enough
-  // the seller gets the full detail of the sale, all other users just get an inventory update push
+  handleShowSales(simpleProductSaleResponse: SimpleProductSaleResponse) {
+    const { showId, simpleProductId, quantityLeft } = simpleProductSaleResponse;
+    const data = {
+      simple_product_id: simpleProductId,
+      quantity_left: quantityLeft,
+    };
+    console.log(`this.wss.to(${showId}).emit('sale', ${data});`);
+    this.wss.to(showId).emit('sale', data);
+  }
 }

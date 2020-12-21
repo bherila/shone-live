@@ -3,13 +3,13 @@ import { Stripe } from 'stripe';
 import { string } from '@hapi/joi';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 
+import { ShowGateway } from '../shows/show.gateway';
 import {
   SimpleProduct,
 } from '../simple-products/entities/simple-product.entity';
 import {
   SimpleProductsService,
 } from '../simple-products/simple-products.service';
-import { UsersService } from '../users/users.service';
 import { CreateCheckoutSessionDto } from './dto/create-checkout-session.dto';
 
 @Injectable()
@@ -28,7 +28,7 @@ export class Stripe2Service {
   public constructor(
     @Inject(forwardRef(() => SimpleProductsService))
     private readonly simpleProductsService: SimpleProductsService,
-    private readonly usersService: UsersService,
+    private readonly showGateway: ShowGateway,
   ) {
     this.stripeClient = new Stripe(process.env.STRIPE_DEV_KEY, {
       apiVersion: '2020-08-27',
@@ -99,13 +99,12 @@ export class Stripe2Service {
   async handleCheckoutSessionCompleted(data: Stripe.Event.Data) {
     this.stripeClient.checkout.sessions
       .listLineItems(data.object['id'])
-      .then(lineItems =>
+      .then(lineItems => {
         lineItems.data.map(item => {
-          this.simpleProductsService.updateQuantitySold(
-            item.price.product.toString(),
-            item.quantity,
-          );
-        }),
-      );
+          this.simpleProductsService
+            .updateQuantitySold(item.price.product.toString(), item.quantity)
+            .then(res => this.showGateway.handleShowSales(res));
+        });
+      });
   }
 }

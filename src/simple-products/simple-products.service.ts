@@ -1,4 +1,4 @@
-import { Repository } from 'typeorm';
+import { Repository, SaveOptions } from 'typeorm';
 
 import {
   forwardRef, Inject, Injectable, NotFoundException,
@@ -13,6 +13,9 @@ import { CreateSimpleProductDto } from './dto/create-simple-product.dto';
 import { SimpleProductsQueryDto } from './dto/simple-products-query.dto';
 import { UpdateSimpleProductDto } from './dto/update-simple-product.dto';
 import { SimpleProduct } from './entities/simple-product.entity';
+import {
+  SimpleProductSaleResponse,
+} from './responses/simple-product-sale.response';
 
 @Injectable()
 export class SimpleProductsService {
@@ -167,13 +170,22 @@ export class SimpleProductsService {
     }
     return simpleProductIds.map(simpleProductId => {
       return this.updateHelper(simpleProductId, simpleProductUpdate);
-      });
+    });
   }
 
-  updateQuantitySold(id: string, sale_quantity: number) {
-    this.findOne(id).then(product => {
+  async updateQuantitySold(
+    simpleProductId: string,
+    sale_quantity: number,
+  ): Promise<SimpleProductSaleResponse> {
+    return this.findOne(simpleProductId, ['show']).then(product => {
       product.quantity_sold += sale_quantity;
-      this.simpleProductRepository.save(product);
+      return this.simpleProductRepository.save(product).then(savedProduct => {
+        return {
+          showId: product.show.id,
+          simpleProductId: simpleProductId,
+          quantityLeft: savedProduct.quantity_sold,
+        };
+      });
     });
   }
 
