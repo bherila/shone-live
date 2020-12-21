@@ -1,4 +1,4 @@
-import { IsDateString, IsString, IsUUID } from 'class-validator';
+import { IsDateString, IsOptional, IsString, IsUUID } from 'class-validator';
 
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -49,7 +49,8 @@ export class CreateShowDto {
     type: 'UUID',
   })
   @IsUUID()
-  readonly video_id?: string;
+  @IsOptional()
+  readonly video_id: string;
 
   @ApiProperty({
     description: `the id of the main preview photo for the show`,
@@ -57,5 +58,6 @@ export class CreateShowDto {
     type: 'UUID',
   })
   @IsUUID()
-  readonly photo_id?: string;
+  @IsOptional()
+  readonly photo_id: string;
 }
