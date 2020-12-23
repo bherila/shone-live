@@ -15,6 +15,7 @@ import {
 import { Sku } from '../skus/entities/sku.entity';
 import { StripeModule } from '../stripe/stripe.module';
 import { User } from '../users/entities/user.entity';
+import { UsersModule } from '../users/users.module';
 import { Show } from './entities/show.entity';
 import { ShowGateway } from './show.gateway';
 import { ShowsController } from './shows.controller';
@@ -33,6 +34,7 @@ import { ShowsService } from './shows.service';
     ]),
     StripeModule,
     FilesModule,
+    UsersModule,
     forwardRef(() => SimpleProductsModule),
   ],
   controllers: [ShowsController],

@@ -7,7 +7,7 @@ import { File } from '../files/entities/file.entity';
 import { FilesService } from '../files/files.service';
 import { Sku } from '../skus/entities/sku.entity';
 import { StripeService } from '../stripe/stripe.service';
-import { User } from '../users/entities/user.entity';
+import { UsersService } from '../users/users.service';
 import { CreateShowDto } from './dto/create-show.dto';
 import { ShowsQueryDto } from './dto/shows-query.dto';
 import { UpdateShowDto } from './dto/update-show.dto';
@@ -20,12 +20,11 @@ export class ShowsService {
     private readonly showRepository: Repository<Show>,
     @InjectRepository(Sku)
     private readonly skuRepository: Repository<Sku>,
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
     @InjectRepository(File)
     private readonly fileRepository: Repository<File>,
     private readonly stripeService: StripeService,
     private readonly filesService: FilesService,
+    private readonly usersService: UsersService,
   ) {}
 
   // todo add nested route structure for these association lookups
@@ -78,35 +77,47 @@ export class ShowsService {
   }
 
   async create(createShowDto: CreateShowDto): Promise<Show> {
-    const user = await this.userRepository.findOne(createShowDto.user_id);
-    if (!user) {
-      throw new NotFoundException(`User #${createShowDto.user_id} not found`);
+    const { user_id, video_id, photo_id } = createShowDto;
+    const files: any[] = [];
+    const user = await this.usersService.findOne(user_id);
+    if (video_id) {
+      const video_file = await this.filesService.findOne(
+        video_id,
+        'Show Preview Video',
+      );
+      files.push(video_file);
+      video_file.tag = 'video';
+      this.fileRepository.save(video_file);
     }
-    const video_file = await this.filesService.findOne(
-      createShowDto.video_id,
-      'Show Preview Video',
-    );
-    video_file.tag = 'video';
-    this.fileRepository.save(video_file);
-    const photo_file = await this.filesService.findOne(
-      createShowDto.photo_id,
-      'Show Preview Photo',
-    );
-    photo_file.tag = 'photo';
-    this.fileRepository.save(photo_file);
+    if (photo_id) {
+      const photo_file = await this.filesService.findOne(
+        photo_id,
+        'Show Preview Photo',
+      );
+      files.push(photo_file);
+      photo_file.tag = 'photo';
+      this.fileRepository.save(photo_file);
+    }
+
     const show = this.showRepository.create({
-      user: user,
-      files: [video_file, photo_file],
       ...createShowDto,
+      user: user,
+      scheduled: !createShowDto.start,
+      files: files,
+      agora_room: JSON.stringify(createShowDto.agora_room),
     });
     return this.showRepository.save(show);
   }
 
   async update(id: string, updateShowDto: UpdateShowDto) {
-    const show = await this.showRepository.preload({
+    let updateData: any = {
       id: id,
       ...updateShowDto,
-    });
+    };
+    if (updateShowDto.agora_room) {
+      updateData['agora_room'] = JSON.stringify(updateShowDto.agora_room);
+    }
+    const show = await this.showRepository.preload(updateData);
     if (!show) {
       throw new NotFoundException(`Show with id ${id} not found`);
     }

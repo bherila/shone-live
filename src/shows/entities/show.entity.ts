@@ -1,6 +1,6 @@
 import { Exclude } from 'class-transformer';
 import {
-  Column, Entity, Generated, Index, ManyToOne, OneToMany,
+  Check, Column, Entity, Generated, Index, ManyToOne, OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -14,6 +14,20 @@ import { Sku } from '../../skus/entities/sku.entity';
 import { User } from '../../users/entities/user.entity';
 
 @Entity()
+@Check(
+  `"scheduled" IS NOT TRUE OR ` +
+    `"scheduled_start" IS NOT NULL AND ` +
+    `"scheduled_end" IS NOT NULL`,
+)
+@Check(
+  `("scheduled" IS NOT TRUE AND ` +
+    `"scheduled_start" IS NULL AND ` +
+    `"scheduled_end" IS NULL)` +
+    `OR` +
+    `("scheduled" IS TRUE AND` +
+    `"scheduled_start" IS NOT NULL AND` +
+    `"scheduled_end" IS NOT NULL)`,
+)
 export class Show {
   @PrimaryGeneratedColumn({
     comment: `private internal ID, actual primary key`,
@@ -29,35 +43,55 @@ export class Show {
   id: string;
 
   @Column({
-    comment: 'datetime that show is scheduled to start eg 2020-12-01T00:00:00',
+    comment: `the room information from agora
+  stored as the JSON string sent from them`,
+    nullable: true,
+  })
+  agora_room: string;
+
+  @Column({
+    comment: `if the show was ever scheduled,
+  (otherwise, livestreaming was started without previously being announced)`,
+    default: true,
+  })
+  scheduled: boolean;
+
+  // TODO: make immutable after `start`
+  @Column({
+    comment: `datetime that show is scheduled to start eg 2020-12-01T00:00:00`,
+    nullable: true,
   })
   scheduled_start: Date;
 
+  // TODO: make immutable after `start`
   @Column({
-    comment: 'datetime that show is scheduled to end eg 2020-12-01T00:00:00',
+    comment: `datetime that show is scheduled to end eg 2020-12-01T00:00:00`,
+    nullable: true,
   })
   scheduled_end: Date;
 
+  // TODO: make immutable after `start`
   @Column({
-    comment: 'datetime that show actually started in eg 2020-12-01T00:00:00',
+    comment: `datetime that show actually started in eg 2020-12-01T00:00:00`,
     nullable: true,
   })
   start: Date;
 
+  // TODO: make immutable after `end`
   @Column({
-    comment: 'datetime that show actually ended in eg 2020-12-01T00:00:00',
+    comment: `datetime that show actually ended in eg 2020-12-01T00:00:00`,
     nullable: true,
   })
   end: Date;
 
   @Column({
-    comment: 'seller generated description of show',
+    comment: `seller generated description of show`,
   })
   description: string;
 
   // todo, may want to allow recurring show names
   @Column({
-    comment: 'seller generated name of show',
+    comment: `seller generated name of show`,
   })
   name: string;
 
