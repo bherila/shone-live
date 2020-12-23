@@ -12,4 +12,12 @@ export class SimpleProductsQueryDto extends PaginationQueryDto {
   @IsOptional()
   @IsString()
   readonly user_id?: string;
+
+  @ApiProperty({
+    description: `this is the show where the SimpleProduct is being sold`,
+    example: `8a942359-d28e-469f-96de-64de6e918b8c`,
+  })
+  @IsOptional()
+  @IsString()
+  readonly show_id?: string;
 }

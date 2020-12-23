@@ -95,14 +95,18 @@ export class SimpleProductsService {
     return simpleProduct;
   }
 
-  findAll(
+  async findAll(
     simpleProductsQueryDto: SimpleProductsQueryDto,
     relations: string[] = [],
   ): Promise<SimpleProduct[]> {
-    const { user_id } = simpleProductsQueryDto;
+    const { user_id, show_id } = simpleProductsQueryDto;
     let query: any = {};
     if (user_id) {
       query['user'] = user_id;
+    }
+    if (show_id) {
+      const _id = await this.showRepository.findOne({ where: { id: show_id } });
+      query['show'] = _id;
     }
     return this.simpleProductRepository.find({
       where: query,
