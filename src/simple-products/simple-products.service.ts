@@ -1,4 +1,4 @@
-import { Repository, SaveOptions } from 'typeorm';
+import { Repository } from 'typeorm';
 
 import {
   forwardRef, Inject, Injectable, NotFoundException,
@@ -133,7 +133,9 @@ export class SimpleProductsService {
     updateSimpleProductDto: UpdateSimpleProductDto,
   ): Promise<SimpleProduct> {
     const { show_id } = updateSimpleProductDto;
-    let simpleProductUpdate = {};
+    let simpleProductUpdate = {
+      ...updateSimpleProductDto,
+    };
     if (show_id) {
       simpleProductUpdate['show'] = await this.showRepository.findOne({
         where: { id: show_id },
@@ -144,7 +146,9 @@ export class SimpleProductsService {
 
   async updateHelper(
     simpleProductId: string,
-    updateObject: SaveOptions,
+    updateObject: any,
+    // figure out how to make work with strict typing
+    // updateObject: SaveOptions,
   ): Promise<SimpleProduct> {
     return this.simpleProductRepository
       .findOne({ where: { id: simpleProductId } })

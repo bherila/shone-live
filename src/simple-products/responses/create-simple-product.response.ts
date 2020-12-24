@@ -39,6 +39,14 @@ export class CreateSimpleProductResponse {
   public readonly description: string;
 
   @ApiProperty({
+    description:
+      `determines if the product should be shown to the customer` +
+      `so they can purchase it` +
+      `defaults to false`,
+  })
+  public readonly available_for_purchase: boolean;
+
+  @ApiProperty({
     description: 'retail price in cents (eg $1.00 should be 100)',
     example: `100`,
   })
@@ -77,6 +85,7 @@ export class CreateSimpleProductResponse {
     }
     this.name = simpleProduct.name;
     this.description = simpleProduct.description;
+    this.available_for_purchase = simpleProduct.available_for_purchase;
     this.price = simpleProduct.price;
     this.quantity = simpleProduct.quantity;
     this.quantity_sold = simpleProduct.quantity_sold;

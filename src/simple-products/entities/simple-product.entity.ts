@@ -60,6 +60,15 @@ export class SimpleProduct {
   })
   quantity_sold: number;
 
+  @Column({
+    comment:
+      `determines if the product should be shown to the customer` +
+      `so they can purchase it` +
+      `defaults to false`,
+    default: false,
+  })
+  available_for_purchase: boolean;
+
   @ManyToOne(
     type => User,
     user => user.simpleProducts,
