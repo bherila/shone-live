@@ -2,6 +2,7 @@ import {
   Check, Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryColumn,
 } from 'typeorm';
 
+import { AgoraRtmToken } from '../../agora/entities/agora-rtm-token.entity';
 import { Auth } from '../../auth/entities/auth.entity';
 import { Card } from '../../cards/entities/card.entity';
 import { File } from '../../files/entities/file.entity';
@@ -107,6 +108,15 @@ export class User {
     },
   )
   simpleProducts: SimpleProduct[];
+
+  @OneToMany(
+    type => AgoraRtmToken,
+    agoraRtmToken => agoraRtmToken.user,
+    {
+      cascade: true,
+    },
+  )
+  agoraRtmTokens: AgoraRtmToken[];
 
   @JoinColumn()
   @OneToOne(() => File, {

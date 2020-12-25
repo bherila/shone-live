@@ -1,10 +1,7 @@
-import {
-  SimpleProductsModule,
-} from 'src/simple-products/simple-products.module';
-
 import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+import { AgoraRtmToken } from '../agora/entities/agora-rtm-token.entity';
 import { File } from '../files/entities/file.entity';
 import { FilesModule } from '../files/files.module';
 import { Order } from '../orders/entities/order.entity';
@@ -12,6 +9,9 @@ import { Product } from '../products/entities/product.entity';
 import {
   SimpleProduct,
 } from '../simple-products/entities/simple-product.entity';
+import {
+  SimpleProductsModule,
+} from '../simple-products/simple-products.module';
 import { Sku } from '../skus/entities/sku.entity';
 import { StripeModule } from '../stripe/stripe.module';
 import { User } from '../users/entities/user.entity';
@@ -25,6 +25,7 @@ import { ShowsService } from './shows.service';
   imports: [
     TypeOrmModule.forFeature([
       Show,
+      AgoraRtmToken,
       User,
       Product,
       SimpleProduct,
@@ -39,6 +40,6 @@ import { ShowsService } from './shows.service';
   ],
   controllers: [ShowsController],
   providers: [ShowsService, ShowGateway],
-  exports: [ShowGateway],
+  exports: [ShowsService, ShowGateway],
 })
 export class ShowsModule {}

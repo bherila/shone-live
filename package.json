@@ -1,5 +1,5 @@
 {
-  "name": "iluvcoffee",
+  "name": "piki-server",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -46,6 +46,7 @@
     "@types/aws-sdk": "^2.7.0",
     "@types/bcrypt": "^3.0.0",
     "@types/uuid": "^8.3.0",
+    "agora-access-token": "^2.0.4",
     "aws-sdk": "^2.807.0",
     "bcryptjs": "^2.4.3",
     "class-transformer": "^0.3.1",

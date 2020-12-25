@@ -4,6 +4,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
+import { AgoraRtmToken } from '../../agora/entities/agora-rtm-token.entity';
 import { File } from '../../files/entities/file.entity';
 import { Order } from '../../orders/entities/order.entity';
 import { Product } from '../../products/entities/product.entity';
@@ -123,6 +124,15 @@ export class Show {
     },
   )
   simpleProducts: SimpleProduct[];
+
+  @OneToMany(
+    type => AgoraRtmToken,
+    agoraRtmToken => agoraRtmToken.show,
+    {
+      cascade: true,
+    },
+  )
+  agoraRtmTokens: AgoraRtmToken[];
 
   @OneToMany(
     type => Sku,

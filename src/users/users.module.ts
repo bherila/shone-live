@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+import { AgoraRtmToken } from '../agora/entities/agora-rtm-token.entity';
 import { Auth } from '../auth/entities/auth.entity';
 import { Card } from '../cards/entities/card.entity';
 import { File } from '../files/entities/file.entity';
@@ -24,6 +25,7 @@ import { UsersService } from './users.service';
   imports: [
     TypeOrmModule.forFeature([
       Auth,
+      AgoraRtmToken,
       Card,
       Order,
       File,
