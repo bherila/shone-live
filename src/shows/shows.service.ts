@@ -1,4 +1,6 @@
-import { Between, LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm';
+import {
+  Between, IsNull, LessThanOrEqual, MoreThanOrEqual, Not, Repository,
+} from 'typeorm';
 
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -35,7 +37,7 @@ export class ShowsService {
     getShowDto: ShowsQueryDto,
     relations: string[] = [],
   ): Promise<Show[]> {
-    const { limit, offset, user_id, start, end } = getShowDto;
+    const { limit, offset, user_id, start, end, is_live } = getShowDto;
 
     let baseQuery: any = {
       relations: relations,
@@ -45,9 +47,11 @@ export class ShowsService {
 
     let where1: any = {};
     let where2: any = {};
+    let where3: any = {};
     if (user_id) {
       where1.user = user_id;
       where2.user = user_id;
+      where3.user = user_id;
     }
     if (start && end) {
       where1.scheduled_start = Between(start, end);
@@ -61,9 +65,20 @@ export class ShowsService {
       where1.scheduled_start = LessThanOrEqual(end);
       where2.start = LessThanOrEqual(end);
     }
+    if (is_live) {
+      where3.start = Not(IsNull());
+      where3.end = IsNull();
+    }
 
+    let where: any[] = [];
     if (Object.keys(where1).length > 0) {
-      baseQuery.where = [where1, where2];
+      where.push(where1, where2);
+    }
+    if (Object.keys(where3).length > 0) {
+      where.push(where3);
+    }
+    if (where.length > 0) {
+      baseQuery.where = where;
     }
 
     return this.showRepository.find(baseQuery);
