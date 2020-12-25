@@ -43,22 +43,27 @@ export class ShowsService {
       take: limit,
     };
 
-    let where: any = {};
+    let where1: any = {};
+    let where2: any = {};
     if (user_id) {
-      where.user = user_id;
+      where1.user = user_id;
+      where2.user = user_id;
     }
     if (start && end) {
-      where.scheduled_start = Between(start, end);
+      where1.scheduled_start = Between(start, end);
+      where2.start = Between(start, end);
     }
     if (start && !end) {
-      where.scheduled_start = MoreThanOrEqual(start);
+      where1.scheduled_start = MoreThanOrEqual(start);
+      where2.start = MoreThanOrEqual(start);
     }
     if (!start && end) {
-      where.scheduled_start = LessThanOrEqual(end);
+      where1.scheduled_start = LessThanOrEqual(end);
+      where2.start = LessThanOrEqual(end);
     }
 
-    if (Object.keys(where).length > 0) {
-      baseQuery.where = where;
+    if (Object.keys(where1).length > 0) {
+      baseQuery.where = [where1, where2];
     }
 
     return this.showRepository.find(baseQuery);
