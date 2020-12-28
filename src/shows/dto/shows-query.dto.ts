@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import { IsBoolean, IsDateString, IsOptional, IsString } from 'class-validator';
 
 import { ApiProperty, PartialType } from '@nestjs/swagger';
@@ -18,6 +19,9 @@ export class ShowsQueryDto extends PartialType(PaginationQueryDto) {
   })
   @IsOptional()
   @IsBoolean()
+  // this type coercion below is a temporary measure to accomodate the client
+  // should be removed later
+  @Type(() => Boolean)
   public readonly is_live: boolean;
 
   @ApiProperty({
