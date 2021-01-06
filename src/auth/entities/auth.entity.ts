@@ -25,6 +25,7 @@ export class Auth {
     user => user.auths,
     {
       cascade: ['insert', 'update'],
+      onDelete: 'CASCADE',
     },
   )
   user: User;
