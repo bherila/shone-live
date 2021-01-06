@@ -36,12 +36,9 @@ export class FilesController {
     @Body() CreateFileDto: CreateFileDto,
     @UploadedFile() file: Express.Multer.File,
   ): Promise<CreateFileResponse> {
-    const newFile = await this.filesService.uploadFile(
-      CreateFileDto,
-      file.buffer,
-      file.originalname,
-    );
-    return new CreateFileResponse(newFile);
+    return this.filesService
+      .uploadFile(CreateFileDto, file.buffer, file.originalname)
+      .then(file => new CreateFileResponse(file));
   }
 
   @Get()
