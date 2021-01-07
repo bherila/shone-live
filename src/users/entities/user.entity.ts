@@ -31,6 +31,15 @@ export class User {
   username: string;
 
   @Column({
+    unique: true,
+    comment:
+      `descriptive bio for use in the app. ` +
+      `target is for sellers to describe themselves`,
+    nullable: true,
+  })
+  bio: string;
+
+  @Column({
     comment: 'users first name',
     nullable: true,
   })

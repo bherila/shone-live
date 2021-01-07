@@ -16,6 +16,17 @@ export class UserResponse {
   public readonly username?: string;
 
   @ApiProperty({
+    description:
+      `descriptive bio for use in the app. ` +
+      `target is for sellers to describe themselves`,
+    example:
+      `My obsession with plants began deep in ` +
+      `the Amazon rainforest 20 years ago.` +
+      `Since then I've been selling some of the worlds most rare orchids.`,
+  })
+  public readonly bio?: string;
+
+  @ApiProperty({
     description: `users first name`,
     example: 'John',
   })
@@ -55,10 +66,11 @@ export class UserResponse {
   constructor(user: User) {
     this.id = user.id;
     this.username = user.username;
+    this.bio = user.bio;
     this.first_name = user.first_name;
     this.last_name = user.last_name;
     this.phone = user.phone;
     this.email = user.email;
-    this.avatar_url = user.avatar?.url;
+    this.avatar_url = user.avatar?.url || null;
   }
 }

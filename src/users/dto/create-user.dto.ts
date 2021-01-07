@@ -21,6 +21,19 @@ export class CreateUserDto {
   readonly username?: string;
 
   @ApiProperty({
+    description:
+      `descriptive bio for use in the app. ` +
+      `target is for sellers to describe themselves`,
+    example:
+      `My obsession with plants began deep in ` +
+      `the Amazon rainforest 20 years ago.` +
+      `Since then I've been selling some of the worlds most rare orchids.`,
+  })
+  @IsOptional()
+  @IsString()
+  readonly bio?: string;
+
+  @ApiProperty({
     description: `used for various authorizations sellers must be validated`,
     example: true,
   })
