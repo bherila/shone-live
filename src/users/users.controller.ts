@@ -102,7 +102,7 @@ export class UsersController {
   // todo get the file part into the docs for these
   // the file part is missing in the request body
   @Post('avatar')
-  @UseInterceptors(FileInterceptor('image'))
+  @UseInterceptors(FileInterceptor('file'))
   async addAvatar(
     @Body() CreateFileDto: CreateFileDto,
     @UploadedFile() file: Express.Multer.File,
