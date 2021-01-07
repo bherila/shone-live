@@ -146,6 +146,7 @@ export class UsersService {
       ...user,
       avatar,
     });
+    return avatar;
   }
 
   async deleteAvatar(userId: string) {

@@ -9,6 +9,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
 import { CreateFileDto } from '../files/dto/create-file.dto';
+import { CreateFileResponse } from '../files/responses/create-file.response';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
@@ -88,6 +89,7 @@ export class UsersController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: `uploaded avatar image`,
+    type: CreateFileResponse,
   })
   // todo get the file part into the docs for these
   // the file part is missing in the request body
@@ -96,8 +98,10 @@ export class UsersController {
   async addAvatar(
     @Body() CreateFileDto: CreateFileDto,
     @UploadedFile() file: Express.Multer.File,
-  ) {
-    this.usersService.addAvatar(CreateFileDto, file.buffer, file.originalname);
+  ): Promise<CreateFileResponse> {
+    return this.usersService
+      .addAvatar(CreateFileDto, file.buffer, file.originalname)
+      .then(file => new CreateFileResponse(file));
   }
 
   @ApiOperation({
