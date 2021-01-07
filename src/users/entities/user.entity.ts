@@ -31,7 +31,6 @@ export class User {
   username: string;
 
   @Column({
-    unique: true,
     comment:
       `descriptive bio for use in the app. ` +
       `target is for sellers to describe themselves`,
