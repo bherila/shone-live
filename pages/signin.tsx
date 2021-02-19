@@ -50,6 +50,7 @@ export const Signin = (): JSX.Element => {
           />
         </div>
         <input type="submit" className="btn btn-block btn-primary" />
+        <br />
         <Link href="/forgotpassword">
           <a>forgot password</a>
         </Link>
