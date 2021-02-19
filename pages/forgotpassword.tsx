@@ -22,15 +22,20 @@ export const ForgotPassword = (): JSX.Element => {
   }
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <input
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          type="email"
-          placeholder="email"
-        />
-        <input type="submit" />
+    <div className="container">
+      <form onSubmit={handleSubmit} className="w-75 m-auto">
+        <div className="form-group">
+          <label htmlFor="email">Email</label>
+          <input
+            id="email"
+            className="form-control"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            type="email"
+            placeholder="email"
+          />
+        </div>
+        <input type="submit" className="btn btn-block btn-primary" />
       </form>
     </div>
   )

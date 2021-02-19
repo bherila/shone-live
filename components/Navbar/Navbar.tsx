@@ -3,20 +3,25 @@ import Link from 'next/link'
 const Navbar = (): JSX.Element => {
   return (
     <div>
-      <ul>
-        <li>
+      <ul className="nav justify-content-end">
+        <li className="nav-item">
           <Link href="/signin">
-            <a>Sign in</a>
+            <a className="nav-link active">Sign in</a>
           </Link>
         </li>
         <li>
           <Link href="/signup">
-            <a>Sign up</a>
+            <a className="nav-link">Sign up</a>
           </Link>
         </li>
         <li>
           <Link href="/account">
-            <a>Account</a>
+            <a className="nav-link">Account</a>
+          </Link>
+        </li>
+        <li>
+          <Link href="/signin">
+            <a className="nav-link">Logout</a>
           </Link>
         </li>
       </ul>

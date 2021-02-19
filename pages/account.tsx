@@ -28,33 +28,53 @@ export const Account = (): JSX.Element => {
   }
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <input
-          onChange={(e) => setFirstName(e.target.value)}
-          type="text"
-          value={firstName}
-          placeholder="change first name"
-        />
-        <input
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-          type="text"
-          placeholder="change last name"
-        />
-        <input
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          type="email"
-          placeholder="change email"
-        />
-        <input
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          type="password"
-          placeholder="change password"
-        />
-        <input type="submit" />
+    <div className="container">
+      <form onSubmit={handleSubmit} className="w-75 m-auto">
+        <div className="form-group">
+          <label htmlFor="firstname">First Name</label>
+          <input
+            id="firstname"
+            className="form-control"
+            onChange={(e) => setFirstName(e.target.value)}
+            type="text"
+            value={firstName}
+            placeholder="change first name"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="lastname">Last Name</label>
+          <input
+            id="lastname"
+            className="form-control"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            type="text"
+            placeholder="change last name"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="email">Email</label>
+          <input
+            id="email"
+            className="form-control"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            type="email"
+            placeholder="change email"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="password">Password</label>
+          <input
+            id="password"
+            className="form-control"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            type="password"
+            placeholder="change password"
+          />
+        </div>
+        <input type="submit" className="btn btn-primary btn-block" />
       </form>
     </div>
   )
