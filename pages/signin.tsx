@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Link from 'next/link'
 // import Head from 'next/head'
 // import Image from 'next/image'
 
@@ -40,6 +41,10 @@ export const Signin = (): JSX.Element => {
         />
         <input type="submit" />
       </form>
+
+      <Link href="/forgotpassword">
+        <a>forgot password</a>
+      </Link>
     </div>
   )
 }
