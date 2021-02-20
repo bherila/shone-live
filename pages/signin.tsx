@@ -15,13 +15,17 @@ export const Signin = (): JSX.Element => {
       password,
     }
 
-    const response = await fetch('http://localhost:3000/api/signin', {
-      method: 'POST',
-      body: JSON.stringify(submitData),
-    })
+    try {
+      const response = await fetch('/api/signin', {
+        method: 'POST',
+        body: JSON.stringify(submitData),
+      })
 
-    const data = await response.json()
-    console.log(data)
+      const data = await response.json()
+      console.info(data)
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   return (
@@ -33,7 +37,7 @@ export const Signin = (): JSX.Element => {
             id="email"
             className="form-control"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.currentTarget.value)}
             type="email"
             placeholder="email"
           />
@@ -44,7 +48,7 @@ export const Signin = (): JSX.Element => {
             id="password"
             className="form-control"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.currentTarget.value)}
             type="password"
             placeholder="password"
           />

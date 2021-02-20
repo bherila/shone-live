@@ -12,13 +12,17 @@ export const ForgotPassword = (): JSX.Element => {
       email,
     }
 
-    const response = await fetch('http://localhost:3000/api/forgotpassword', {
-      method: 'POST',
-      body: JSON.stringify(submitData),
-    })
+    try {
+      const response = await fetch('/api/forgotpassword', {
+        method: 'POST',
+        body: JSON.stringify(submitData),
+      })
 
-    const data = await response.json()
-    console.log(data)
+      const data = await response.json()
+      console.info(data)
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   return (
@@ -30,7 +34,7 @@ export const ForgotPassword = (): JSX.Element => {
             id="email"
             className="form-control"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.currentTarget.value)}
             type="email"
             placeholder="email"
           />

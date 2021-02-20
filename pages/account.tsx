@@ -18,13 +18,17 @@ export const Account = (): JSX.Element => {
       password,
     }
 
-    const response = await fetch('http://localhost:3000/api/account', {
-      method: 'POST',
-      body: JSON.stringify(submitData),
-    })
+    try {
+      const response = await fetch('/api/account', {
+        method: 'POST',
+        body: JSON.stringify(submitData),
+      })
 
-    const data = await response.json()
-    console.log(data)
+      const data = await response.json()
+      console.info(data)
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   return (
@@ -35,7 +39,7 @@ export const Account = (): JSX.Element => {
           <input
             id="firstname"
             className="form-control"
-            onChange={(e) => setFirstName(e.target.value)}
+            onChange={(e) => setFirstName(e.currentTarget.value)}
             type="text"
             value={firstName}
             placeholder="change first name"
@@ -47,7 +51,7 @@ export const Account = (): JSX.Element => {
             id="lastname"
             className="form-control"
             value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
+            onChange={(e) => setLastName(e.currentTarget.value)}
             type="text"
             placeholder="change last name"
           />
@@ -58,7 +62,7 @@ export const Account = (): JSX.Element => {
             id="email"
             className="form-control"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.currentTarget.value)}
             type="email"
             placeholder="change email"
           />
@@ -69,7 +73,7 @@ export const Account = (): JSX.Element => {
             id="password"
             className="form-control"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.currentTarget.value)}
             type="password"
             placeholder="change password"
           />
