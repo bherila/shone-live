@@ -1,26 +1,21 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import 'reflect-metadata'
-import { createConnection } from 'typeorm'
-import { User } from '../../entities/User'
+import Connection from '../../lib/connection';
 
-const handler = (req: NextApiRequest, res: NextApiResponse): any => {
-  createConnection({
-    type: 'mysql',
-    host: process.env.DB_HOST,
-    username: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: 'najam',
-    entities: [User],
-    synchronize: true,
-    logging: false,
-    port: 3306,
-  })
-    .then((connection) => {
-      console.log('CONNECTEDDDDDDDDDDDDDDDD')
-    })
-    .catch((error) => console.log(error))
-  res.status(200).json(req.body)
+async function handler(req: NextApiRequest, res: NextApiResponse):Promise<void> {
+    try {
+        if (await Connection) {
+            console.info('CONNECTEDDDDDDDDDDDDDDDD!!')
+            res.status(200).json(req.body)
+        }
+        else {
+            throw new Error("No connection :(")
+        }
+    }
+    catch (err) {
+        res.status(500).json({error: err});
+    }
 }
 
 export default handler
