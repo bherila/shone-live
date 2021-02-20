@@ -6,16 +6,19 @@ class User {
   id: number
 
   @Column('text')
-  firstname: string
+  firstName: string
 
   @Column('text')
-  lastname: string
+  lastName: string
 
   @Column('text')
   email: string
 
   @Column('text')
-  password: string
+  passwordSalt: string
+
+  @Column('text')
+  passwordHash: string
 }
 
-export default User;
+export default User

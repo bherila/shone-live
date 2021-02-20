@@ -6,6 +6,7 @@ import Link from 'next/link'
 export const Signin = (): JSX.Element => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [message, setMessage] = useState('')
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -22,9 +23,9 @@ export const Signin = (): JSX.Element => {
       })
 
       const data = await response.json()
-      console.info(data)
+      setMessage(data.message)
     } catch (error) {
-      console.error(error)
+      setMessage(error.message)
     }
   }
 
@@ -54,6 +55,8 @@ export const Signin = (): JSX.Element => {
           />
         </div>
         <input type="submit" className="btn btn-block btn-primary" />
+        <br />
+        <p>{message}</p>
         <br />
         <Link href="/forgotpassword">
           <a>forgot password</a>

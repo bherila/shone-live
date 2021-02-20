@@ -7,6 +7,7 @@ export const Signup = (): JSX.Element => {
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [password, setPassword] = useState('')
+  const [message, setMessage] = useState('')
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -25,7 +26,7 @@ export const Signup = (): JSX.Element => {
       })
 
       const data = await response.json()
-      console.info(data)
+      setMessage(data.email)
     } catch (error) {
       console.error(error)
     }
@@ -78,6 +79,7 @@ export const Signup = (): JSX.Element => {
           />
         </div>
         <input type="submit" className="btn btn-block btn-primary" />
+        {message === '' ? null : <p>user created with id: {message}</p>}
       </form>
     </div>
   )
