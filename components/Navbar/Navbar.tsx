@@ -20,7 +20,7 @@ const Navbar = (): JSX.Element => {
           </Link>
         </li>
         <li>
-          <Link href="/signin">
+          <Link href="/api/logout">
             <a className="nav-link">Logout</a>
           </Link>
         </li>

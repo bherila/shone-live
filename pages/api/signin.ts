@@ -3,6 +3,8 @@ import 'reflect-metadata'
 import requireDb from '../../lib/DB'
 import { createHash } from 'crypto'
 import StatusCodes from '../../lib/StatusCodes'
+import jwt from 'jsonwebtoken'
+import { serialize } from 'cookie'
 
 async function handler(
   req: NextApiRequest,
@@ -24,6 +26,21 @@ async function handler(
 
       if (passwordHash === user.passwordHash) {
         response.statusCode = StatusCodes.OK
+        const token = jwt.sign(
+          {
+            id: user.id,
+          },
+          process.env.JWT_SECRET_KEY,
+          {
+            expiresIn: '1d',
+          }
+        )
+        res.setHeader(
+          'Set-Cookie',
+          serialize('jwt', token, {
+            maxAge: Date.now() + Number(process.env.JWT_COOKIE_AGE) * 86400000,
+          })
+        )
         response.message = 'logged in'
       } else {
         response.statusCode = StatusCodes.BAD_REQUEST
