@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import 'reflect-metadata'
 import requireDb from '../../lib/DB'
 import { createHash } from 'crypto'
-import StatusCodes from "../../lib/StatusCodes";
+import StatusCodes from '../../lib/StatusCodes'
 
 async function handler(
   req: NextApiRequest,
@@ -14,23 +14,23 @@ async function handler(
     message: '',
   }
   try {
-    const db = await requireDb;
+    const db = await requireDb
     const user = await db.users.findOne({ email: email })
 
     if (user) {
       const passwordHash = createHash('sha256')
-          .update(user.passwordSalt + password)
-          .digest('hex')
+        .update(user.passwordSalt + password)
+        .digest('hex')
 
       if (passwordHash === user.passwordHash) {
-        response.statusCode = StatusCodes.OK;
+        response.statusCode = StatusCodes.OK
         response.message = 'logged in'
       } else {
-        response.statusCode = StatusCodes.BAD_REQUEST;
+        response.statusCode = StatusCodes.BAD_REQUEST
         response.message = 'wrong password'
       }
     } else {
-      response.statusCode = StatusCodes.BAD_REQUEST;
+      response.statusCode = StatusCodes.BAD_REQUEST
       response.message = 'User not found'
     }
 
