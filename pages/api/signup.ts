@@ -1,11 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import 'reflect-metadata'
-import Connection from '../../lib/connection'
-import User from '../../entities/User'
-
 import { createHash } from 'crypto'
 import { uuid } from 'uuidv4'
+import User from "../../lib/entities/User";
+import requireDb from "../../lib/DB";
 
 async function handler(
   req: NextApiRequest,
@@ -20,22 +19,15 @@ async function handler(
     .digest('hex')
 
   try {
-    if (await Connection) {
-      //Connection.then((connection) => console.log(connection))
-      let user = new User()
-      user.firstName = firstName
-      user.email = email
-      user.lastName = lastName
-      user.passwordSalt = passwordSalt
-      user.passwordHash = passwordHash
-
-      const connection = await Connection
-      const newUser = await connection.manager.save(user)
-
-      res.status(200).json({ email: newUser.email })
-    } else {
-      throw new Error('No connection :(')
-    }
+    const db = await requireDb;
+    const user = new User()
+    user.firstName = firstName
+    user.email = email
+    user.lastName = lastName
+    user.passwordSalt = passwordSalt
+    user.passwordHash = passwordHash
+    const newUser = await db.manager.save(user)
+    res.status(200).json({ email: newUser.email })
   } catch (err) {
     res.status(500).json({ error: err })
   }

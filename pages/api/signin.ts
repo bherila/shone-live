@@ -1,53 +1,42 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import Cookies from 'next-cookies'
-
 import 'reflect-metadata'
-import Connection from '../../lib/connection'
-import User from '../../entities/User'
-
+import requireDb from '../../lib/DB'
 import { createHash } from 'crypto'
-import { uuid } from 'uuidv4'
-import connection from '../../lib/connection'
+import StatusCodes from "../../lib/StatusCodes";
 
 async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> {
   const { email, password } = JSON.parse(req.body)
-  let response = {
+  const response = {
     statusCode: null,
     message: '',
   }
   try {
-    if (await Connection) {
-      const connection = await Connection
-      const repository = await connection.getRepository(User)
+    const db = await requireDb;
+    const user = await db.users.findOne({ email: email })
 
-      const user = await repository.findOne({ email: email })
-
-      if (user) {
-        const passwordHash = createHash('sha256')
+    if (user) {
+      const passwordHash = createHash('sha256')
           .update(user.passwordSalt + password)
           .digest('hex')
 
-        if (passwordHash === user.passwordHash) {
-          response.statusCode = 200
-          response.message = 'logged in'
-        } else {
-          response.statusCode = 400
-          response.message = 'wrong password'
-        }
+      if (passwordHash === user.passwordHash) {
+        response.statusCode = StatusCodes.OK;
+        response.message = 'logged in'
       } else {
-        response.statusCode = 400
-        response.message = 'User not found'
+        response.statusCode = StatusCodes.BAD_REQUEST;
+        response.message = 'wrong password'
       }
-
-      res.status(response.statusCode).json({ message: response.message })
     } else {
-      throw new Error('No connection :(')
+      response.statusCode = StatusCodes.BAD_REQUEST;
+      response.message = 'User not found'
     }
+
+    res.status(response.statusCode).json({ message: response.message })
   } catch (err) {
-    res.status(500).json({ error: err })
+    res.status(StatusCodes.SERVER_ERROR).json({ error: err })
   }
 }
 
