@@ -3,8 +3,8 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import 'reflect-metadata'
 import { createHash } from 'crypto'
 import { uuid } from 'uuidv4'
-import User from "../../lib/entities/User";
-import requireDb from "../../lib/DB";
+import User from '../../lib/entities/User'
+import requireDb from '../../lib/DB'
 
 async function handler(
   req: NextApiRequest,
@@ -19,7 +19,7 @@ async function handler(
     .digest('hex')
 
   try {
-    const db = await requireDb;
+    const db = await requireDb
     const user = new User()
     user.firstName = firstName
     user.email = email
