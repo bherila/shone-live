@@ -1,45 +1,76 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import jwt from 'jsonwebtoken'
+import { createHash } from 'crypto'
 
+import StatusCodes from '../../lib/StatusCodes'
 import requireDb from '../../lib/DB'
 
 const handler = async (
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> => {
-  let data = {}
-  if (req.cookies.jwt !== 'logged-out') {
-    try {
+  let error = false
+
+  try {
+    if (req.cookies.jwt && req.cookies.jwt !== 'logged-out') {
       const jwtData = jwt.verify(req.cookies.jwt, process.env.JWT_SECRET_KEY)
+
+      if (Date.now() >= jwtData.exp * 1000) {
+        error = true
+        res.statusCode = StatusCodes.BAD_REQUEST
+        throw new Error('Session expired! please login again')
+      }
 
       const db = await requireDb
       const user = await db.users.findOne({ id: jwtData.id })
 
-      if (req.method == 'POST' && user.id) {
-        const { firstName, lastName, email } = JSON.parse(req.body)
+      if (!user) {
+        error = true
+        res.statusCode = StatusCodes.BAD_REQUEST
+        throw new Error('User not found! please login again')
+      }
 
-        user.firstName = firstName
-        user.lastName = lastName
-        user.email = email
+      const { firstName, lastName, email, password, newPassword } = JSON.parse(
+        req.body
+      )
 
-        const updatedUser = await db.users.save(user)
+      if (password === '') {
+        error = true
+        res.statusCode = StatusCodes.BAD_REQUEST
+        throw new Error('Please enter your current password to change data')
+      }
 
-        data = updatedUser
+      const passwordHash = createHash('sha256')
+        .update(user.passwordSalt + password)
+        .digest('hex')
+
+      if (passwordHash === user.passwordHash) {
+        if (req.method == 'POST') {
+          if (firstName != '') user.firstName = firstName
+          if (lastName != '') user.lastName = lastName
+          if (email != '') user.email = email
+
+          if (newPassword != '') {
+            const newPasswordSalt = uuid()
+            const newPasswordHash = createHash('sha256')
+              .update(newPasswordSalt + newPassword)
+              .digest('hex')
+          }
+
+          const updatedUser = await db.users.save(user)
+        }
       } else {
-        data = user
-      }
-    } catch (err) {
-      data = {
-        message: 'user not logged in',
+        error = true
+        res.statusCode = StatusCodes.BAD_REQUEST
+        throw new Error('wrong current password!')
       }
     }
-  } else {
-    data = {
-      message: 'user not logged in',
-    }
+  } catch (err) {
+    res.status(error ? res.statusCode : StatusCodes.SERVER_ERROR).json({
+      status: 'error',
+      message: error ? err.message : 'Something went wrong!',
+    })
   }
-
-  res.status(200).json(data)
 }
 
 export default handler
