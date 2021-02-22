@@ -55,13 +55,15 @@ async function handler(
     }
 
     res.status(StatusCodes.OK).json({
+      status: 'success',
       user: {
         firstName: user.firstName,
         lastName: user.lastName,
       },
     })
   } catch (err) {
-    res.status(error ? err.statusCode : StatusCodes.SERVER_ERROR).json({
+    res.status(error ? res.statusCode : StatusCodes.SERVER_ERROR).json({
+      status: 'error',
       message: error ? err.message : 'Something went wrong!',
     })
   }

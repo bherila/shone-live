@@ -27,7 +27,7 @@ export const Signin = (): JSX.Element => {
 
       const data = await response.json()
 
-      if (data.user) {
+      if (data.status === 'success') {
         setIsLoading(false)
         setSuccess(true)
         setMessage(

@@ -4,6 +4,9 @@ import { useState } from 'react'
 
 export const ForgotPassword = (): JSX.Element => {
   const [email, setEmail] = useState('')
+  const [message, setMessage] = useState('')
+  const [success, setSuccess] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -13,15 +16,27 @@ export const ForgotPassword = (): JSX.Element => {
     }
 
     try {
+      setIsLoading(true)
       const response = await fetch('/api/forgotpassword', {
         method: 'POST',
         body: JSON.stringify(submitData),
       })
 
       const data = await response.json()
-      console.info(data)
+
+      if (data.status === 'success') {
+        setIsLoading(false)
+        setSuccess(true)
+        setMessage(data.message)
+      } else {
+        setIsLoading(false)
+        setSuccess(false)
+        setMessage(data.message)
+      }
     } catch (error) {
-      console.error(error)
+      setIsLoading(false)
+      setSuccess(true)
+      setMessage('Something went wrong! please try again later')
     }
   }
 
@@ -39,7 +54,31 @@ export const ForgotPassword = (): JSX.Element => {
             placeholder="email"
           />
         </div>
-        <input type="submit" className="btn btn-block btn-primary" />
+        <div className="container row">
+          <input
+            type="submit"
+            className="btn b-inline-block w-25 col-4 btn-primary"
+          />
+          <br />
+          {isLoading && (
+            <div className="spinner-border text-primary ml-5" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+          )}
+        </div>
+        {message === '' ? null : (
+          <>
+            <br />
+            <div
+              className={`${
+                success ? 'alert alert-success' : 'alert alert-danger'
+              }`}
+              role="alert"
+            >
+              {message}
+            </div>
+          </>
+        )}
       </form>
     </div>
   )

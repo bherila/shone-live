@@ -7,6 +7,7 @@ import User from '../../lib/entities/User'
 import requireDb from '../../lib/DB'
 import jwt from 'jsonwebtoken'
 import { serialize } from 'cookie'
+import StatusCodes from '../../lib/StatusCodes'
 
 async function handler(
   req: NextApiRequest,
@@ -66,16 +67,16 @@ async function handler(
       'Set-Cookie',
       serialize('jwt', token, { maxAge: Date.now() + 86400000 })
     )
-    res.status(200).json({
-      status: 'user created',
+    res.status(StatusCodes.CREATED).json({
+      status: 'success',
       user: {
         firstName: newUser.firstName,
         lastName: newUser.lastName,
-        email: newUser.email,
       },
     })
   } catch (err) {
     res.status(error ? res.statusCode : 500).json({
+      status: 'error',
       message: error ? err.message : 'Something went wrong',
     })
   }
