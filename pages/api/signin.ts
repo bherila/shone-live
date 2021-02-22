@@ -11,11 +11,15 @@ async function handler(
   res: NextApiResponse
 ): Promise<void> {
   const { email, password } = JSON.parse(req.body)
-  const response = {
-    statusCode: null,
-    message: '',
-  }
+  let error = false
+
   try {
+    if (email === '' || password === '') {
+      error = true
+      res.statusCode = StatusCodes.BAD_REQUEST
+      throw new Error('Incomplete data')
+    }
+
     const db = await requireDb
     const user = await db.users.findOne({ email: email })
 
@@ -25,7 +29,6 @@ async function handler(
         .digest('hex')
 
       if (passwordHash === user.passwordHash) {
-        response.statusCode = StatusCodes.OK
         const token = jwt.sign(
           {
             id: user.id,
@@ -41,19 +44,26 @@ async function handler(
             maxAge: Date.now() + Number(process.env.JWT_COOKIE_AGE) * 86400000,
           })
         )
-        response.message = 'logged in'
       } else {
-        response.statusCode = StatusCodes.BAD_REQUEST
-        response.message = 'wrong password'
+        res.statusCode = StatusCodes.BAD_REQUEST
+        throw new Error('email or password is wrong!')
       }
     } else {
-      response.statusCode = StatusCodes.BAD_REQUEST
-      response.message = 'User not found'
+      error = true
+      res.statusCode = StatusCodes.BAD_REQUEST
+      throw new Error('User not found')
     }
 
-    res.status(response.statusCode).json({ message: response.message })
+    res.status(StatusCodes.OK).json({
+      user: {
+        firstName: user.firstName,
+        lastName: user.lastName,
+      },
+    })
   } catch (err) {
-    res.status(StatusCodes.SERVER_ERROR).json({ error: err })
+    res.status(error ? err.statusCode : StatusCodes.SERVER_ERROR).json({
+      message: error ? err.message : 'Something went wrong!',
+    })
   }
 }
 

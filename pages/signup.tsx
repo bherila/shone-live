@@ -9,7 +9,7 @@ export const Signup = (): JSX.Element => {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [message, setMessage] = useState('')
-  const [succes, setSuccess] = useState(false)
+  const [success, setSuccess] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
   const handleSubmit = async (e) => {
@@ -123,7 +123,7 @@ export const Signup = (): JSX.Element => {
             <br />
             <div
               className={`${
-                succes ? 'alert alert-success' : 'alert alert-danger'
+                success ? 'alert alert-success' : 'alert alert-danger'
               }`}
               role="alert"
             >
