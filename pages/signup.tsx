@@ -7,7 +7,10 @@ export const Signup = (): JSX.Element => {
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [message, setMessage] = useState('')
+  const [succes, setSuccess] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -17,18 +20,32 @@ export const Signup = (): JSX.Element => {
       firstName,
       lastName,
       password,
+      confirmPassword,
     }
 
     try {
+      setIsLoading(true)
       const response = await fetch('/api/signup', {
         method: 'POST',
         body: JSON.stringify(submitData),
       })
 
       const data = await response.json()
-      setMessage(data.email)
+      if (data.user) {
+        setIsLoading(false)
+        setSuccess(true)
+        setMessage(
+          `Hi, ${data.user.firstName} ${data.user.lastName} your account has been created succesfully`
+        )
+      } else {
+        setIsLoading(false)
+        setSuccess(false)
+        setMessage(data.message)
+      }
     } catch (error) {
-      console.error(error)
+      setIsLoading(false)
+      setSuccess(false)
+      setMessage('Something went wrong, please try again!')
     }
   }
 
@@ -47,7 +64,7 @@ export const Signup = (): JSX.Element => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="lastname">First Name</label>
+          <label htmlFor="lastname">Last Name</label>
           <input
             id="lastname"
             className="form-control"
@@ -78,8 +95,42 @@ export const Signup = (): JSX.Element => {
             placeholder="password"
           />
         </div>
-        <input type="submit" className="btn btn-block btn-primary" />
-        {message === '' ? null : <p>user created with id: {message}</p>}
+        <div className="form-group">
+          <label htmlFor="confirmpassword">Confirm Password</label>
+          <input
+            id="confirmpassword"
+            className="form-control"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.currentTarget.value)}
+            type="password"
+            placeholder="confirm password"
+          />
+        </div>
+        <div className="container row">
+          <input
+            type="submit"
+            className="btn b-inline-block w-25 col-4 btn-primary"
+          />
+          <br />
+          {isLoading && (
+            <div className="spinner-border text-primary ml-5" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+          )}
+        </div>
+        {message === '' ? null : (
+          <>
+            <br />
+            <div
+              className={`${
+                succes ? 'alert alert-success' : 'alert alert-danger'
+              }`}
+              role="alert"
+            >
+              {message}
+            </div>
+          </>
+        )}
       </form>
     </div>
   )
