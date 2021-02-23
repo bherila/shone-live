@@ -65,7 +65,12 @@ async function handler(
 
     res.setHeader(
       'Set-Cookie',
-      serialize('jwt', token, { maxAge: Date.now() + 86400000 })
+      serialize('jwt', token, {
+        maxAge: Date.now() + 86400000,
+        httpOnly: true,
+        sameSite: 'strict',
+        path: '/',
+      })
     )
     res.status(StatusCodes.CREATED).json({
       status: 'success',

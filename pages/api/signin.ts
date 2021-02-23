@@ -38,10 +38,14 @@ async function handler(
             expiresIn: '1d',
           }
         )
+
         res.setHeader(
           'Set-Cookie',
           serialize('jwt', token, {
             maxAge: Date.now() + Number(process.env.JWT_COOKIE_AGE) * 86400000,
+            httpOnly: true,
+            sameSite: 'strict',
+            path: '/',
           })
         )
       } else {

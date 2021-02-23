@@ -1,7 +1,5 @@
 import Link from 'next/link'
 
-import { useRouter } from 'next/router'
-
 const Navbar = (): JSX.Element => {
   const logout = async (e) => {
     e.preventDefault()
