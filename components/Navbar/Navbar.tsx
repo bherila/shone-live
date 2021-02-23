@@ -1,6 +1,17 @@
 import Link from 'next/link'
 
+import { useRouter } from 'next/router'
+
 const Navbar = (): JSX.Element => {
+  const logout = async (e) => {
+    e.preventDefault()
+    try {
+      await fetch('/api/logout')
+    } catch (error) {
+      console.info('Can not logout')
+    }
+  }
+
   return (
     <div>
       <ul className="nav justify-content-end">
@@ -19,8 +30,8 @@ const Navbar = (): JSX.Element => {
             <a className="nav-link">Account</a>
           </Link>
         </li>
-        <li>
-          <Link href="/api/logout">
+        <li onClick={logout}>
+          <Link href="/">
             <a className="nav-link">Logout</a>
           </Link>
         </li>

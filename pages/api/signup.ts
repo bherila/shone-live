@@ -27,13 +27,13 @@ async function handler(
       confirmPassword === ''
     ) {
       error = true
-      res.statusCode = 400
+      res.statusCode = StatusCodes.BAD_REQUEST
       throw new Error('Incomplete data')
     }
 
     if (password != confirmPassword) {
       error = true
-      res.statusCode = 400
+      res.statusCode = StatusCodes.BAD_REQUEST
       throw new Error('Passwords do not match!')
     }
 
@@ -75,7 +75,7 @@ async function handler(
       },
     })
   } catch (err) {
-    res.status(error ? res.statusCode : 500).json({
+    res.status(error ? res.statusCode : StatusCodes.SERVER_ERROR).json({
       status: 'error',
       message: error ? err.message : 'Something went wrong',
     })
