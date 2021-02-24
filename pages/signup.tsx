@@ -2,9 +2,12 @@ import { useState } from 'react'
 // import Head from 'next/head'
 // import Image from 'next/image'
 
-import Layout from '../components/Layout/Layout'
+import { useRouter } from 'next/router'
 
-export const Signup = (): JSX.Element => {
+import Layout from '../components/Layout/Layout'
+import CheckLogin from '../lib/CheckLogin'
+
+export const Signup = ({ isUserLoggedIn }): JSX.Element => {
   const [email, setEmail] = useState('')
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
@@ -13,6 +16,11 @@ export const Signup = (): JSX.Element => {
   const [message, setMessage] = useState('')
   const [success, setSuccess] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+
+  const router = useRouter()
+  const refreshData = () => {
+    router.replace(router.asPath)
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -34,17 +42,20 @@ export const Signup = (): JSX.Element => {
 
       const data = await response.json()
       if (data.status === 'success') {
+        refreshData()
         setIsLoading(false)
         setSuccess(true)
         setMessage(
           `Hi, ${data.user.firstName} ${data.user.lastName} your account has been created succesfully`
         )
       } else {
+        refreshData()
         setIsLoading(false)
         setSuccess(false)
         setMessage(data.message)
       }
     } catch (error) {
+      refreshData()
       setIsLoading(false)
       setSuccess(false)
       setMessage('Something went wrong, please try again!')
@@ -52,7 +63,7 @@ export const Signup = (): JSX.Element => {
   }
 
   return (
-    <Layout>
+    <Layout isLoggedIn={isUserLoggedIn}>
       <div className="container">
         <form onSubmit={handleSubmit} className="w-75 m-auto">
           <div className="form-group ">
@@ -141,3 +152,11 @@ export const Signup = (): JSX.Element => {
 }
 
 export default Signup
+
+export function getServerSideProps(ctx) {
+  const userInfo = CheckLogin(ctx)
+
+  return {
+    props: { ...userInfo },
+  }
+}

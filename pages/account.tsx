@@ -1,18 +1,23 @@
 import { useState } from 'react'
+import { useRouter } from 'next/router'
 
 import Layout from '../components/Layout/Layout'
+import CheckLogin from '../lib/CheckLogin'
 
-export const Account = (): JSX.Element => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [user, setUser] = useState()
-  const [email, setEmail] = useState('')
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
+export const Account = ({ isUserLoggedIn, loggedInUser }): JSX.Element => {
+  const [email, setEmail] = useState(loggedInUser.email)
+  const [firstName, setFirstName] = useState(loggedInUser.firstName)
+  const [lastName, setLastName] = useState(loggedInUser.lastName)
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [message, setMessage] = useState('')
   const [success, setSuccess] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+
+  const router = useRouter()
+  const refreshData = () => {
+    router.replace(router.asPath)
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -35,15 +40,18 @@ export const Account = (): JSX.Element => {
       const data = await response.json()
 
       if (data.status === 'error') {
+        refreshData()
         setIsLoading(false)
         setSuccess(false)
         setMessage(data.message)
       } else if (data.status === 'success') {
+        refreshData()
         setIsLoading(false)
         setSuccess(true)
         setMessage('Your account info updated successfully!')
       }
     } catch (err) {
+      refreshData()
       setIsLoading(false)
       setSuccess(false)
       setMessage('Something went wrong!')
@@ -52,9 +60,9 @@ export const Account = (): JSX.Element => {
 
   return (
     <>
-      <Layout>
+      <Layout isLoggedIn={isUserLoggedIn}>
         <div className="container">
-          {
+          {isUserLoggedIn && (
             <>
               <form onSubmit={handleSubmit} className="w-75 m-auto">
                 <div className="form-group">
@@ -143,7 +151,7 @@ export const Account = (): JSX.Element => {
                 )}
               </form>
             </>
-          }
+          )}
         </div>
       </Layout>
     </>
@@ -151,3 +159,11 @@ export const Account = (): JSX.Element => {
 }
 
 export default Account
+
+export function getServerSideProps(ctx) {
+  const userInfo = CheckLogin(ctx)
+
+  return {
+    props: { ...userInfo },
+  }
+}

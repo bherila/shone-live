@@ -1,9 +1,9 @@
 import Navbar from '../Navbar/Navbar'
 
-const Layout = ({ children }): JSX.Element => {
+const Layout = ({ children, isLoggedIn }): JSX.Element => {
   return (
     <>
-      <Navbar />
+      <Navbar isLoggedIn={isLoggedIn} />
       {children}
     </>
   )

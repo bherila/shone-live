@@ -3,8 +3,9 @@ import { useState } from 'react'
 // import Image from 'next/image'
 
 import Layout from '../components/Layout/Layout'
+import CheckLogin from '../lib/CheckLogin'
 
-export const ForgotPassword = (): JSX.Element => {
+export const ForgotPassword = ({ isUserLoggedIn }): JSX.Element => {
   const [email, setEmail] = useState('')
   const [message, setMessage] = useState('')
   const [success, setSuccess] = useState(false)
@@ -43,7 +44,7 @@ export const ForgotPassword = (): JSX.Element => {
   }
 
   return (
-    <Layout>
+    <Layout isLoggedIn={isUserLoggedIn}>
       <div className="container">
         <form onSubmit={handleSubmit} className="w-75 m-auto">
           <div className="form-group">
@@ -89,3 +90,11 @@ export const ForgotPassword = (): JSX.Element => {
 }
 
 export default ForgotPassword
+
+export function getServerSideProps(ctx) {
+  const userInfo = CheckLogin(ctx)
+
+  return {
+    props: { ...userInfo },
+  }
+}
