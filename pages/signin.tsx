@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 // import Head from 'next/head'
 // import Image from 'next/image'
@@ -13,6 +13,13 @@ export const Signin = ({ isUserLoggedIn }): JSX.Element => {
   const [message, setMessage] = useState('')
   const [success, setSuccess] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [authToken, setAuthToken] = useState('')
+
+  useEffect(() => {
+    if (typeof window != 'undefined') {
+      document.cookie = `auth=${authToken}; path=/`
+    }
+  }, [authToken])
 
   const router = useRouter()
   const refreshData = () => {
@@ -37,6 +44,7 @@ export const Signin = ({ isUserLoggedIn }): JSX.Element => {
       const data = await response.json()
 
       if (data.status === 'success') {
+        setAuthToken(data.auth)
         refreshData()
         setIsLoading(false)
         setSuccess(true)
