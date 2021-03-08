@@ -31,8 +31,6 @@ export const Home = (): JSX.Element => (
           style={{
             position: 'absolute',
             right: 0,
-            height: 600,
-            width: 800,
             zIndex: -1,
           }}
         />
@@ -41,7 +39,7 @@ export const Home = (): JSX.Element => (
 
     <div className="lg:flex flex-warp lg:px-0 py-10 p-0 items-center">
       <div className="xl:w-1/2 ">
-        <img src="/middleLeft.png" alt="Altas Logo" className="w-100 h-100" />
+        <img src="/middleLeft.png" alt="Logo" className="w-100 h-100" />
       </div>
       <div className="xl:w-1/2 pt-20 lg:pr-40 md:pr-40">
         <span className="block text-5xl font-bold pt-5">

@@ -66,14 +66,12 @@ export default function Footer() {
         <br />
       </div>
 
-      <div className="lg:px-40 mt:30  bg-gray-800">
-        <nav className="flex items-center justify-between flex-wrap p-5 lg:flex-row sm:flex-column sm:justify-center  ">
+      <div className="lg:px-40 mt:30 bg-gray-800">
+        <nav className="flex items-center justify-between flex-wrap py-5 lg:flex-row sm:flex-column sm:justify-center">
           <div className="flex items-center flex-shrink-0 text-white mr-6">
-            <h5>All right reserved by @Shone2021</h5>
+            <h5>&copy; 2021 Shone Live Co. All Rights Reserved.</h5>
           </div>
-
           <div
-
             style={{
               display: 'flex',
               flexDirection: 'row',
@@ -81,7 +79,6 @@ export default function Footer() {
               flexWrap: 'wrap',
             }}
             className="lg:flex-1 sm:flex-0"
-
           >
             <div className="rounded-full flex items-center justify-center... border" style={{height:40,width:40,justifyContent:"center",alignItems:"center",margin:5}}>
               <FaFacebookF size={20} color="#19B5FE" />

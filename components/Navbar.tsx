@@ -5,7 +5,7 @@ export default function Header() {
   const [navLinks, setNavLinks] = useState(['About', 'Features', 'Blogs'])
   return (
     <div className="flex flex-wrap mb-6 p-2 lg:px-40 bg-transparent-800 ">
-      <nav className="flex-1 items-center justify-between flex-wrap bg-transparent-800 p-2 lg:px-10">
+      <nav className="flex-1 items-center justify-between flex-wrap bg-transparent-800 py-5">
         <div className="block lg:hidden">
           <button
             onClick={() => toggleExpansion(!isExpanded)}
