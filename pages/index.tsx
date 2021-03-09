@@ -2,8 +2,12 @@ import Navbar from './../components/Navbar'
 import Footer from './../components/Footer'
 import Image from 'next/image'
 
+interface Props {
+  hasReadPermission?: boolean
+}
+
 // import Logo from '/logo.png'
-export const Home = ({ hasReadPermission }): JSX.Element => {
+export const Home = ({ hasReadPermission }: Props): JSX.Element => {
   if (!hasReadPermission) {
     return (
       <div>
