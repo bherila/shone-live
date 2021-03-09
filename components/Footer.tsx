@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {
   FaFacebookF,
   FaTwitter,
@@ -7,37 +7,37 @@ import {
 } from 'react-icons/fa'
 import Image from 'next/image'
 
-function Icon({children}) {
+function Icon({ children }) {
   return (
-      <div className="rounded-full flex items-center justify-center... border" style={{height:40,width:40,justifyContent:"center",alignItems:"center",margin:5}}>
-        {children}
-      </div>
+    <div
+      className="rounded-full flex items-center justify-center... border"
+      style={{
+        height: 40,
+        width: 40,
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: 5,
+      }}
+    >
+      {children}
+    </div>
   )
 }
 
-const AddressLine = ({children}) => (
-    <div style={{ color: '#222d39' }} className="font-medium pt-2">
-      {children}
-    </div>
+const AddressLine = ({ children }) => (
+  <div style={{ color: '#222d39' }} className="font-medium pt-2">
+    {children}
+  </div>
 )
 
-export default function Footer() {
-  const [isExpanded, toggleExpansion] = useState(false)
-  const [navLinks, setNavLinks] = useState([
-    'Case Studies',
-    'Benefits',
-    'Solutions',
-    'Industries',
-    'Pricing',
-    'Resources',
-    'Contact Us',
-  ])
+export default function Footer(): React.ReactElement {
   return (
     <div>
       <div className="container mx-auto">
         <div className="flex grid  sm:grid-cols-2  md:grid-cols-2 lg:grid-cols-4 gap-1 ">
           <div className="flex-2">
-            <Image src="/logo.png" width={140} height={70} /><br />
+            <Image src="/logo.png" width={140} height={70} />
+            <br />
             Sed ut perspiciatis unde omnis iste natus error sit voluptatem
             accusantium dolor emque laudantium.
           </div>
@@ -90,12 +90,20 @@ export default function Footer() {
             }}
             className="lg:flex-1 sm:flex-0"
           >
-            <Icon><FaFacebookF size={20} color="#19B5FE" /></Icon>
+            <Icon>
+              <FaFacebookF size={20} color="#19B5FE" />
+            </Icon>
 
             {/* <div className="px-2 w-8 h-8 border-2 rounded-full"></div> */}
-            <Icon><FaTwitter size={20} color="#fff" /></Icon>
-            <Icon><FaLinkedinIn size={20} color="#fff" /></Icon>
-            <Icon><FaPinterestP size={20} color="#fff" /></Icon>
+            <Icon>
+              <FaTwitter size={20} color="#fff" />
+            </Icon>
+            <Icon>
+              <FaLinkedinIn size={20} color="#fff" />
+            </Icon>
+            <Icon>
+              <FaPinterestP size={20} color="#fff" />
+            </Icon>
           </div>
         </nav>
       </div>

@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 // import Logo from "./../../images/logo.png"
-export default function Header() {
+export default function Header(): React.ReactElement {
   const [isExpanded, toggleExpansion] = useState(false)
-  const [navLinks, setNavLinks] = useState(['About', 'Features', 'Blogs'])
+  const [navLinks] = useState(['About', 'Features', 'Blogs'])
   return (
     <div className="flex flex-wrap mb-6 p-2 lg:px-40 bg-transparent-800 ">
       <nav className="flex-1 items-center justify-between flex-wrap bg-transparent-800 py-5">
@@ -45,7 +45,11 @@ export default function Header() {
           <div>
             <button
               className="bg-white text-red font-bold py-2 px-4  border-solid"
-              style={{ borderRadius: '0px 20px 20px 20px', color: '#c86bb5',backgroundColor:"white" }}
+              style={{
+                borderRadius: '0px 20px 20px 20px',
+                color: '#c86bb5',
+                backgroundColor: 'white',
+              }}
             >
               Contact now
             </button>{' '}
