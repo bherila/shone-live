@@ -8,7 +8,7 @@ function MyApp({ Component, pageProps }) {
 
 MyApp.getInitialProps = async (appContext) => {
   const appProps = await App.getInitialProps(appContext)
-  const cookies = new Cookies(appContext.ctx.req.headers.cookie)
+  const cookies = new Cookies(appContext.ctx.req?.headers.cookie)
   const password = cookies.get(consts.SiteReadCookie) ?? ''
   if (password === 'letmein') {
     appProps.pageProps.hasReadPermission = true

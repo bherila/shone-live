@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
-// import Logo from "./../../images/logo.png"
+import Image from 'next/image'
+import Link from 'next/link'
+
 export default function Header(): React.ReactElement {
   const [isExpanded, toggleExpansion] = useState(false)
   const [navLinks] = useState(['About', 'Features', 'Blogs'])
@@ -27,7 +29,9 @@ export default function Header(): React.ReactElement {
           } w-full block flex-grow lg:flex lg:items-center lg:w-auto`}
         >
           <div className="flex items-center flex-shrink-0 text-white">
-            <img src={'./logo.png'} alt="Altas Logo" height="30" width="120" />
+            <Link href="/">
+              <Image src="/shone-logo.svg" width={140} height={70} />
+            </Link>
           </div>
           <div className="lg:inline-flex lg:flex-row lg:ml-auto lg:w-auto w-full lg:items-center items-start flex flex-1 justify-end flex-col lg:h-auto">
             {navLinks.map((v, i) => {
