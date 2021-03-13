@@ -34,7 +34,7 @@ export default function Footer(): React.ReactElement {
   return (
     <div>
       <div className="container mx-auto">
-        <div className="flex grid  sm:grid-cols-2  md:grid-cols-2 lg:grid-cols-4 gap-1 ">
+        <div className="flex grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-1">
           <div className="flex-2">
             <Image src="/logo.png" width={140} height={70} />
             <br />
