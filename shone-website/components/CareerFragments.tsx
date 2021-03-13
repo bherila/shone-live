@@ -83,8 +83,8 @@ export const Compensation = (): JSX.Element => (
     <List>
       <ListItem>Competitive cash and equity.</ListItem>
       <ListItem>
-        Company-provided tech setup (Latest MacBook Pro, 4K screen, and a desk &
-        chair if you need one).
+        Company-provided tech setup (Latest MacBook Pro, 4K screen, and a desk
+        &amp; chair if you need one).
       </ListItem>
       <ListItem>Home internet reimbursement and cell phone stipend.</ListItem>
       <ListItem>

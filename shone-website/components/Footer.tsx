@@ -6,6 +6,7 @@ import {
   FaPinterestP,
 } from 'react-icons/fa'
 import Image from 'next/image'
+import Link from 'next/link'
 
 function Icon({ children }) {
   return (
@@ -38,20 +39,19 @@ export default function Footer(): React.ReactElement {
           <div className="flex-2">
             <Image src="/logo.png" width={140} height={70} />
             <br />
-            Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-            accusantium dolor emque laudantium.
+            &copy; 2021 Shone Live Co. All Rights Reserved.
           </div>
           {/* <div className="flex-1 ... flex-row" /> */}
           <div className="flex-1 ...">
             <div style={{ color: '#222d39' }} className="font-bold pt-2">
               Home
             </div>
-            <div style={{ color: '#222d39' }} className="font-medium pt-2">
-              Blogs
-            </div>
-            <div style={{ color: '#222d39' }} className="font-medium pt-2">
-              Features
-            </div>
+            {/*<div style={{ color: '#222d39' }} className="font-medium pt-2">*/}
+            {/*  Blogs*/}
+            {/*</div>*/}
+            {/*<div style={{ color: '#222d39' }} className="font-medium pt-2">*/}
+            {/*  Features*/}
+            {/*</div>*/}
           </div>
           <div className="flex-1 ...">
             <div className="font-bold">Support</div>
@@ -63,6 +63,9 @@ export default function Footer(): React.ReactElement {
             </div>
             <div style={{ color: '#222d39' }} className="font-medium pt-2">
               Contact
+            </div>
+            <div style={{ color: '#222d39' }} className="font-medium pt-2">
+              <Link href="/careers">Careers</Link>
             </div>
           </div>
           <div className="flex-1 ...">
