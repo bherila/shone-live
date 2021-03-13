@@ -1,6 +1,7 @@
 import Navbar from './../components/Navbar'
 import Footer from './../components/Footer'
 import Image from 'next/image'
+import React from 'react'
 
 interface Props {
   hasReadPermission?: boolean
@@ -33,15 +34,15 @@ export const Home = ({ hasReadPermission }: Props): JSX.Element => {
 
           <div className="flex py-5 space-x-4 ">
             <Image
-              src="/app-store-badge.png"
+              src="/app-store-badge.svg"
               width={150}
-              height={150}
+              height={70}
               layout="fixed"
             />
             <Image
-              src="/google-play-badge.png"
-              width={150}
-              height={150}
+              src="/google-play-badge.svg"
+              width={162}
+              height={70}
               layout="fixed"
             />
           </div>
