@@ -1,6 +1,6 @@
 import Navbar from '../../components/Navbar'
 import Footer from '../../components/Footer'
-import MainResponsiveContainer from '../../components/MainContainer'
+import ResponsiveContainer from '../../components/ResponsiveContainer'
 // import Image from 'next/image'
 import React from 'react'
 import {
@@ -15,13 +15,13 @@ export default function CareersPage() {
   return (
     <div>
       <Navbar />
-      <MainResponsiveContainer>
+      <ResponsiveContainer>
         <AboutShone />
         <Opportunity />
         <ReactNativeQualifications />
         <Compensation />
         <Team />
-      </MainResponsiveContainer>
+      </ResponsiveContainer>
       <Footer />
     </div>
   )
