@@ -1,0 +1,96 @@
+# for docker-compose.yml in root directory
+# run with "docker-compose up" to start everything
+# version of docker-compose to use (supports multi-stage build)
+version: '3.7'
+
+# we define 3 services:
+#  - main
+#  - redis (not using yet in our app, kept for example)
+#  - db
+#  - testdb
+
+services:
+  main:
+    container_name: main
+    # the build only runs the Dockerfile up through the development step
+    build:
+      context: .
+      target: development
+    # Dockerfilse has CMD ["node", "dist/main"], but in dev we need to hot reload
+    # Docker wont be able to watch for changes on host machine by default,
+    # thus we need to use volumes to mount a host dir into the container
+    # .:/usr/src/app mounts current dir inside docker container app
+    # and will watch for changes
+    # /usr/src/app/node_modules is used to
+    # prevent override node_modules dir with local one
+    # /usr/src/app/node_modules is an anonymous volume
+    volumes:
+      - .:/usr/src/app
+      # the below line prevents the node modules from being updated to match
+      # what's being used for local development; however, this shouldn't matter
+      # it should be in the dockerfile where the build doesn't copy over the
+      # node modules that are only used for development for prod; this should
+      # be accomplished by making sure to install what is only needed for
+      # development (such as typings) by calling
+      #   `npm install --only=development`
+      # - /usr/src/app/node_modules
+    # Docker container has its own network
+    # we use ports to give host machine access
+    # syntax is HOST_PORT:CONTAINER_PORT.
+    # ${SERVER_PORT} means value retrieved from env
+    # 9229 port for debugging purposes
+    ports:
+      - ${SERVER_PORT}:${SERVER_PORT}
+      - 9229:9229
+    command: npm run start:dev
+    # we load the .env file in our config
+    env_file:
+      - .env
+    # for networks, webnet is so containers can talk
+    # each service has its own network
+    networks:
+      - webnet
+    # depends on makes sure services are running
+    # otherwise the app will crash
+    depends_on:
+      - ${POSTGRES_DOCKER_HOST}
+  #      - redis
+  #  redis:
+  #    container_name: redis
+  #    image: redis:5
+  #    networks:
+  #      - webnet
+  main_db:
+    container_name: ${POSTGRES_DOCKER_HOST}
+    image: postgres:12
+    restart: always
+    networks:
+      - webnet
+    environment:
+      # for dev mode make all env var "piki"
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+      PG_DATA: /var/lib/postgresql/data
+    ports:
+      - '${POSTGRES_PORT}:${POSTGRES_PORT}'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+  testdb:
+    # right now test is still going against a local DB b/c it's set to localhost
+    # so this does nothing
+    # TBD if it's better to run tests in a docker container or just locally
+    # leaving for now until decide to remove
+    # but note it's doing nothing e2e when tests are actually running
+    environment:
+      POSTGRES_DB: ${TEST_POSTGRES_DB}
+      POSTGRES_PASSWORD: ${TEST_POSTGRES_PASSWORD}
+      POSTGRES_USER: ${TEST_POSTGRES_USER}
+    image: postgres
+    ports:
+      - '${TEST_POSTGRES_PORT}:${POSTGRES_PORT}'
+    restart: always
+networks:
+  webnet:
+volumes:
+  pgdata:

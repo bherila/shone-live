@@ -1,0 +1,74 @@
+asyncapi: '2.0.0'
+info:
+  title: Piki Websockets API
+  version: '0.1.0'
+  description: |
+    Websockets enable live chat as well as
+    subscription to live show events such as completed sales
+    or new product additions
+    which will update the inventory levels.
+servers:
+  development:
+    url: http://54.219.183.150:3001/
+    description: Development server
+    protocol: Websockets
+    protocolVersion: '13.0.0'
+    security:
+      - JWT: []
+defaultContentType: application/json
+channels:
+  alert:
+    description: |
+      generic alerts from the server
+      currently there are no business logic alerts
+    subscribe:
+      summary: recieve generic alerts
+      message:
+        payload:
+          type: object
+  chat:
+    description: websocket for chatting in a group or one on one
+    publish:
+      summary: send a real time chat message
+      message:
+        payload:
+          type: object
+    subscribe:
+      summary: recieve a real time chat message
+      message:
+        payload:
+          type: object
+  show:
+    description: |
+      this should be updated to use show/show_id for the channel connection
+      currently it seems it just uses the show_id by itself for the channel
+      websocket for pushlishing updates during shows
+      inventory update each time purchase is completed
+      inventory update each time new products are added
+      todo - updates for when users join or leave the show
+    subscribe:
+      summary: recieve show related alerts
+      message:
+        name: order
+        title: order completed
+        summary: an order for this given show was completed
+        contentType: application/json
+        payload:
+          type: object
+          properties:
+            order:
+              type: object
+              description: |
+                order body is the same as returned by the rest API
+                http://54.219.183.150:3001/api/#/orders/OrdersController_create
+components:
+  securitySchemes:
+    JWT:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    order:
+      type: object
+      description: order body is the same as returned by the rest API
+      url: http://54.219.183.150:3001/api/#/orders/OrdersController_create
