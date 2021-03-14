@@ -136,9 +136,8 @@ export const Team = (): JSX.Element => (
         <b>Ben Herila, CTO.</b> Former CTO and co-founder of YC-backed
         e-commerce startup (Underground Cellar), growing it to $20m in sales. 5
         Years at Microsoft. At Airbnb, invented a new architecture to scale CMS
-        throughput 400X during a global expansion to 32 new countries. Member of
-        WWW tech council at Facebook Reality Labs. B.S, Applied math - Computer
-        Science and B.A. Economics at Brown.
+        throughput 400X during a global expansion to 32 new countries. B.S,
+        Applied math - Computer Science and B.A. Economics at Brown.
       </ListItem>
     </List>
   </Section>

@@ -39,7 +39,7 @@ export default function Footer(): React.ReactElement {
           <div className="flex-2">
             <Image src="/shone-logo.svg" width={140} height={70} />
             <br />
-            &copy; 2021 Shone Live Co. All Rights Reserved.
+            &copy; Shone Live Co. All Rights Reserved.
           </div>
           {/* <div className="flex-1 ... flex-row" /> */}
           <div className="flex-1 ...">
@@ -82,7 +82,7 @@ export default function Footer(): React.ReactElement {
       <div className="lg:px-40 mt:30 bg-gray-800">
         <nav className="flex items-center justify-between flex-wrap py-5 lg:flex-row sm:flex-column sm:justify-center">
           <div className="flex items-center flex-shrink-0 text-white mr-6">
-            <h5>&copy; 2021 Shone Live Co. All Rights Reserved.</h5>
+            <h5>&copy; Shone Live Co. All Rights Reserved.</h5>
           </div>
           <div
             style={{
