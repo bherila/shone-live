@@ -1,10 +1,11 @@
+import NextLink from 'next/link'
 import React from 'react'
 
 export const Section = ({ children }): JSX.Element => (
   <div className="py-2">{children}</div>
 )
 export const Heading = ({ children }): JSX.Element => (
-  <h1 className="text-lg font-bold py-2">{children}</h1>
+  <h2 className="text-lg font-bold py-2">{children}</h2>
 )
 export const List = ({ children }): JSX.Element => (
   <ul className="list-disc ml-5">{children}</ul>
@@ -16,11 +17,36 @@ export const P = ({ children }): JSX.Element => (
   <div className="my-2">{children}</div>
 )
 
+export const SHONE = (): JSX.Element => (
+  <span>
+    SH<i>O</i>NE
+  </span>
+)
+
+export const BlueLink = ({ children, href }): JSX.Element => (
+  <NextLink href={href}>
+    <a className="text-blue-dark underline cursor-pointer">{children}</a>
+  </NextLink>
+)
+
+export const CareerHeading = ({ children, showBreadcrumb }): JSX.Element => (
+  <div className="py-10">
+    {showBreadcrumb && (
+      <div>
+        <BlueLink href="/careers">Back to Careers</BlueLink>
+      </div>
+    )}
+    <h1 className="text-3xl">{children}</h1>
+  </div>
+)
+
 export const AboutShone = (): JSX.Element => (
   <Section>
-    <Heading>About SHONE</Heading>
+    <Heading>
+      About <SHONE />
+    </Heading>
     <P>
-      SHONE is a live video selling marketplace focussed on fashion. Our
+      <SHONE /> is a live video selling marketplace focussed on fashion. Our
       software is tailored entirely to fashion with features such as voting
       about the product design. We are also building a training school to
       empower sellers to deliver an interactive immersive selling experience.

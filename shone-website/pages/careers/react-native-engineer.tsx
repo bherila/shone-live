@@ -5,31 +5,24 @@ import ResponsiveContainer from '../../components/ResponsiveContainer'
 import React from 'react'
 import {
   AboutShone,
-  BlueLink,
+  Opportunity,
+  Compensation,
+  ReactNativeQualifications,
+  Team,
   CareerHeading,
-  Heading,
-  List,
-  ListItem,
-  SHONE,
 } from '../../components/CareerFragments'
 
-export default function CareersPage(): JSX.Element {
+export default function ReactNativeEngineer() {
   return (
     <div>
       <Navbar />
       <ResponsiveContainer>
-        <CareerHeading showBreadcrumb={false}>
-          Careers at <SHONE />
-        </CareerHeading>
-        <Heading>Current Openings</Heading>
-        <List>
-          <ListItem>
-            <BlueLink href="/careers/react-native-engineer">
-              React Native Engineer
-            </BlueLink>
-          </ListItem>
-        </List>
+        <CareerHeading showBreadcrumb>React Native Engineer</CareerHeading>
         <AboutShone />
+        <Opportunity />
+        <ReactNativeQualifications />
+        <Compensation />
+        <Team />
       </ResponsiveContainer>
       <Footer />
     </div>
