@@ -115,7 +115,7 @@ export const Compensation = (): JSX.Element => (
       <ListItem>Home internet reimbursement and cell phone stipend.</ListItem>
       <ListItem>
         Rolling out benefits package including 401(k) and medical/dental/vision
-        coverage over the coming months (we’re that new).
+        coverage over the coming months (we’re *that* new).
       </ListItem>
     </List>
   </Section>
@@ -133,12 +133,12 @@ export const Team = (): JSX.Element => (
         Co-valedictorian of Parsons School of Design. Harvard, HBS
       </ListItem>
       <ListItem>
-        <b>Ben Herila, CTO.</b> Former CTO of YC-backed e-commerce startup
-        (Underground Cellar), growing it to $20m in sales. 5 Years at Microsoft.
-        At Airbnb, invented a new architecture to scale CMS throughput 400X
-        during a global expansion to 32 new countries. Advisor on Facebook’s www
-        tech council. B.S, Applied math - Computer Science and B.A. Economics at
-        Brown.
+        <b>Ben Herila, CTO.</b> Former CTO and co-founder of YC-backed
+        e-commerce startup (Underground Cellar), growing it to $20m in sales. 5
+        Years at Microsoft. At Airbnb, invented a new architecture to scale CMS
+        throughput 400X during a global expansion to 32 new countries. Member of
+        WWW tech council at Facebook Reality Labs. B.S, Applied math - Computer
+        Science and B.A. Economics at Brown.
       </ListItem>
     </List>
   </Section>
