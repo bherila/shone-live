@@ -2,8 +2,6 @@ import * as React from 'react'
 import type { AppProps /*, AppContext */ } from 'next/app'
 import Head from 'next/head'
 
-import Navbar from '../components/Navbar/Navbar'
-
 function MyApp({ Component, pageProps }: AppProps): React.ReactFragment {
   return (
     <>
@@ -15,7 +13,6 @@ function MyApp({ Component, pageProps }: AppProps): React.ReactFragment {
           crossOrigin="anonymous"
         />
       </Head>
-      <Navbar />
       <Component {...pageProps} />
     </>
   )

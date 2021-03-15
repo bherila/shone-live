@@ -5,20 +5,44 @@ import { createHash } from 'crypto'
 import { uuid } from 'uuidv4'
 import User from '../../lib/entities/User'
 import requireDb from '../../lib/DB'
+import jwt from 'jsonwebtoken'
+import { serialize } from 'cookie'
+import StatusCodes from '../../lib/StatusCodes'
 
 async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> {
-  const { firstName, lastName, email, password } = JSON.parse(req.body)
-
-  const passwordSalt = uuid()
-
-  const passwordHash = createHash('sha256')
-    .update(passwordSalt + password)
-    .digest('hex')
+  const { firstName, lastName, email, password, confirmPassword } = JSON.parse(
+    req.body
+  )
+  let error = false
 
   try {
+    if (
+      firstName === '' ||
+      lastName === '' ||
+      email === '' ||
+      password === '' ||
+      confirmPassword === ''
+    ) {
+      error = true
+      res.statusCode = StatusCodes.BAD_REQUEST
+      throw new Error('Incomplete data')
+    }
+
+    if (password != confirmPassword) {
+      error = true
+      res.statusCode = StatusCodes.BAD_REQUEST
+      throw new Error('Passwords do not match!')
+    }
+
+    const passwordSalt = uuid()
+
+    const passwordHash = createHash('sha256')
+      .update(passwordSalt + password)
+      .digest('hex')
+
     const db = await requireDb
     const user = new User()
     user.firstName = firstName
@@ -26,10 +50,40 @@ async function handler(
     user.lastName = lastName
     user.passwordSalt = passwordSalt
     user.passwordHash = passwordHash
+
     const newUser = await db.manager.save(user)
-    res.status(200).json({ email: newUser.email })
+
+    const token = jwt.sign(
+      {
+        id: newUser.id,
+      },
+      process.env.JWT_SECRET_KEY,
+      {
+        expiresIn: '1d',
+      }
+    )
+
+    res.setHeader(
+      'Set-Cookie',
+      serialize('jwt', token, {
+        maxAge: Date.now() + 86400000,
+        httpOnly: true,
+        sameSite: 'strict',
+        path: '/',
+      })
+    )
+    res.status(StatusCodes.CREATED).json({
+      status: 'success',
+      user: {
+        firstName: newUser.firstName,
+        lastName: newUser.lastName,
+      },
+    })
   } catch (err) {
-    res.status(500).json({ error: err })
+    res.status(error ? res.statusCode : StatusCodes.SERVER_ERROR).json({
+      status: 'error',
+      message: error ? err.message : 'Something went wrong',
+    })
   }
 }
 
