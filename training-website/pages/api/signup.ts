@@ -56,6 +56,9 @@ async function handler(
     const token = jwt.sign(
       {
         id: newUser.id,
+        email: newUser.email,
+        firstName: newUser.firstName,
+        lastName: newUser.lastName,
       },
       process.env.JWT_SECRET_KEY,
       {

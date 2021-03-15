@@ -29,9 +29,12 @@ async function handler(
         .digest('hex')
 
       if (passwordHash === user.passwordHash) {
-        const token = jwt.sign(
+        const userToken = jwt.sign(
           {
             id: user.id,
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
           },
           process.env.JWT_SECRET_KEY,
           {
@@ -41,7 +44,7 @@ async function handler(
 
         res.setHeader(
           'Set-Cookie',
-          serialize('jwt', token, {
+          serialize('user', userToken, {
             maxAge: Date.now() + Number(process.env.JWT_COOKIE_AGE) * 86400000,
             httpOnly: true,
             sameSite: 'strict',
@@ -58,8 +61,18 @@ async function handler(
       throw new Error('User not found')
     }
 
+    const authToken = jwt.sign(
+      {
+        username: `${user.firstName} ${user.lastName}`,
+      },
+      process.env.JWT_SECRET_KEY,
+      {
+        expiresIn: '1d',
+      }
+    )
     res.status(StatusCodes.OK).json({
       status: 'success',
+      auth: authToken,
       user: {
         firstName: user.firstName,
         lastName: user.lastName,

@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-const Navbar = (): JSX.Element => {
+const Navbar = ({ isLoggedIn }): JSX.Element => {
   const logout = async (e) => {
     e.preventDefault()
     try {
@@ -13,26 +13,35 @@ const Navbar = (): JSX.Element => {
   return (
     <div>
       <ul className="nav justify-content-end">
-        <li className="nav-item">
-          <Link href="/signin">
-            <a className="nav-link active">Sign in</a>
-          </Link>
-        </li>
-        <li>
-          <Link href="/signup">
-            <a className="nav-link">Sign up</a>
-          </Link>
-        </li>
-        <li>
-          <Link href="/account">
-            <a className="nav-link">Account</a>
-          </Link>
-        </li>
-        <li onClick={logout}>
-          <Link href="/">
-            <a className="nav-link">Logout</a>
-          </Link>
-        </li>
+        {!isLoggedIn && (
+          <li className="nav-item">
+            <Link href="/signin">
+              <a className="nav-link active">Sign in</a>
+            </Link>
+          </li>
+        )}
+        {!isLoggedIn && (
+          <li>
+            <Link href="/signup">
+              <a className="nav-link">Sign up</a>
+            </Link>
+          </li>
+        )}
+        {isLoggedIn && (
+          <li>
+            <Link href="/account">
+              <a className="nav-link">Account</a>
+            </Link>
+          </li>
+        )}
+
+        {isLoggedIn && (
+          <li onClick={logout}>
+            <Link href="/">
+              <a className="nav-link">Logout</a>
+            </Link>
+          </li>
+        )}
       </ul>
     </div>
   )
