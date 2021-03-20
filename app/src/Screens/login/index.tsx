@@ -57,7 +57,8 @@ export default function Login(props) {
               <CardItem>
                 <Body>
                   <Text style={styles._login_desc}>
-                    For the fast and easy login, we'll need your digits, Don't
+                    For fast and easy login, we'll need your digits. Don't
+``
                     worry about remembering your password for later.
                     </Text>
                 </Body>
