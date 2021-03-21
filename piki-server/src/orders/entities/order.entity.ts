@@ -36,7 +36,8 @@ export class Order {
     comment:
       "always comes from stripe via webhook for now, we have enum but dont need to use while stripe makes it. is one of [created, paid, canceled, fulfilled, returned]",
     // nullable: true, // since we send to stripe first not sure if it should be nullable, but also might sometimes want to save failed records in the future w/o status (or maybe add our own status of failed_on_stripe)
-    enum: OrderStatus
+    // enum: OrderStatus,
+    // enumName: 'git puorder_status',
   })
   status: string;
 

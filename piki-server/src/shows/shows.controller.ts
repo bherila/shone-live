@@ -4,7 +4,7 @@ import {
   Controller,
   Delete,
   Get,
-  HttpStatus,
+  HttpStatus, Inject,
   Param,
   Patch,
   Post,
@@ -28,12 +28,14 @@ import { SimpleProduct } from "../simple-products/entities/simple-product.entity
 @UseInterceptors(ClassSerializerInterceptor) // needed to run @Exclude()
 @ApiTags("shows")
 // @UseGuards(JwtAuthGuard) // TODO check this,
-// but these should show wherever there's auth gaurd on route in swatgger docs
+// but these should show wherever there's auth gaurd on route in swagger docs
 // and then we should add this everywhere we add gaurd
 // @ApiBearerAuth('JWT')
 export class ShowsController {
   constructor(
+    @Inject(ShowsService)
     private readonly showService: ShowsService,
+    @Inject(SimpleProductsService)
     private readonly simpleProductsService: SimpleProductsService
   ) {}
 

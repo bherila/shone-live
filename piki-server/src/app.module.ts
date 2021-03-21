@@ -31,15 +31,33 @@ if (process.env.NODE_ENV === "dev") {
   dbLogging = ["error"];
 }
 
+console.log({
+  type: "mariadb",
+  host: process.env.MYSQL_HOST,
+  // host: process.env.POSTGRES_LOCAL_HOST,
+  port: +process.env.MYSQL_PORT,
+  username: process.env.MYSQL_USER,
+  password: process.env.MYSQL_PASS,
+  database: process.env.MYSQL_DB,
+  autoLoadEntities: true,
+  charset: 'utf8mb4_general_ci',
+  insecureAuth: true,
+  synchronize: true, // disable in the production
+  connectTimeout: 30000,
+  acquireTimeout: 30000,
+  // TODO: export migration for prod DB
+  logging: dbLogging // if in dev mode enable db logging
+});
+
 @Module({
   imports: [
     ConfigModule.forRoot({
       validationSchema: Joi.object({
-        POSTGRES_DOCKER_HOST: Joi.required(),
-        POSTGRES_USER: Joi.required(),
-        POSTGRES_PASSWORD: Joi.required(),
-        POSTGRES_DB: Joi.required(),
-        POSTGRES_PORT: Joi.number().default(5432),
+        MYSQL_HOST: Joi.required(),
+        MYSQL_USER: Joi.required(),
+        MYSQL_PASS: Joi.required(),
+        MYSQL_DB: Joi.required(),
+        MYSQL_PORT: Joi.number().default(5432),
         AWS_REGION: Joi.string().required(),
         AWS_ACCESS_KEY_ID: Joi.string().required(),
         AWS_SECRET_ACCESS_KEY: Joi.string().required(),
@@ -59,15 +77,18 @@ if (process.env.NODE_ENV === "dev") {
       rootPath: join(__dirname, "..", "static")
     }),
     TypeOrmModule.forRoot({
-      type: "postgres",
-      host: process.env.POSTGRES_DOCKER_HOST,
+      type: "mysql",
+      host: process.env.MYSQL_HOST,
       // host: process.env.POSTGRES_LOCAL_HOST,
-      port: +process.env.POSTGRES_PORT,
-      username: process.env.POSTGRES_USER,
-      password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DB,
+      port: +process.env.MYSQL_PORT,
+      username: process.env.MYSQL_USER,
+      password: process.env.MYSQL_PASS,
+      database: process.env.MYSQL_DB,
       autoLoadEntities: true,
+      charset: 'utf8mb4_general_ci',
+      insecureAuth: true,
       synchronize: true, // disable in the production
+      connectTimeout: 30000,
       // TODO: export migration for prod DB
       logging: dbLogging // if in dev mode enable db logging
     }),
@@ -95,4 +116,5 @@ if (process.env.NODE_ENV === "dev") {
     }
   ]
 })
+
 export class AppModule {}

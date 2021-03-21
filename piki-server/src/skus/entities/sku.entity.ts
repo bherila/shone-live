@@ -46,7 +46,7 @@ export class Sku {
   @Column({
     comment: `any descriptive details that it permutes on eg {"size": "medium", "gender": "unisex"}`,
     nullable: true,
-    type: "jsonb"
+    type: "text"
   })
   attributes: string;
 
