@@ -1,13 +1,13 @@
-import React from 'react'
-import {
-  FaFacebookF,
-  FaTwitter,
-  FaLinkedinIn,
-  FaPinterestP,
-} from 'react-icons/fa'
 import Image from 'next/image'
 import Link from 'next/link'
 import PropTypes from 'prop-types'
+import React from 'react'
+import {
+  FaFacebookF,
+  FaLinkedinIn,
+  FaPinterestP,
+  FaTwitter,
+} from 'react-icons/fa'
 
 function Icon({ children }) {
   return (

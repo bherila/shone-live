@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import Cookies from 'universal-cookie'
 import React from 'react'
+import Cookies from 'universal-cookie'
+
 import consts from './consts'
 
 interface LoginPageProps {

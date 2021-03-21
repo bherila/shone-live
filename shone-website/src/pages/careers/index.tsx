@@ -1,8 +1,6 @@
-import Navbar from '../../components/Navbar'
-import Footer from '../../components/Footer'
-import ResponsiveContainer from '../../components/ResponsiveContainer'
 // import Image from 'next/image'
 import React from 'react'
+
 import {
   AboutShone,
   BlueLink,
@@ -12,6 +10,9 @@ import {
   ListItem,
   SHONE,
 } from '../../components/CareerFragments'
+import Footer from '../../components/Footer'
+import Navbar from '../../components/Navbar'
+import ResponsiveContainer from '../../components/ResponsiveContainer'
 
 export default function CareersPage(): JSX.Element {
   return (

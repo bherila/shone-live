@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import React, { useState } from 'react'
 
 export default function Header(): React.ReactElement {
   const [isExpanded, toggleExpansion] = useState(false)

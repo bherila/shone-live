@@ -1,9 +1,10 @@
 import Head from 'next/head'
-import Cookies from 'universal-cookie'
-import Login from '../components/login'
 import React from 'react'
-import consts from '../components/consts'
+import Cookies from 'universal-cookie'
+
 import { BasePageProps } from '../BasePageProps'
+import consts from '../components/consts'
+import Login from '../components/login'
 
 export default function LoginPage({
   hasReadPermission,

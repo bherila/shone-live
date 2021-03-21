@@ -1,6 +1,7 @@
-import React from 'react'
-import animationData from './shone-lottie-animation-black.json'
 import Lottie from 'lottie-react'
+import React from 'react'
+
+import animationData from './shone-lottie-animation-black.json'
 
 export default function AnimatedLogo(): JSX.Element {
   return (

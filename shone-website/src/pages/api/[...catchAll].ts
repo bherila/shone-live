@@ -1,5 +1,6 @@
-import * as Backend from '../../backend/main'
 import { NextApiRequest, NextApiResponse } from 'next'
+
+import * as Backend from '../../backend/main'
 
 export default (req: NextApiRequest, res: NextApiResponse) =>
   new Promise((resolve) => {

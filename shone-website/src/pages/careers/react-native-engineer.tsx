@@ -1,16 +1,17 @@
-import Navbar from '../../components/Navbar'
-import Footer from '../../components/Footer'
-import ResponsiveContainer from '../../components/ResponsiveContainer'
 // import Image from 'next/image'
 import React from 'react'
+
 import {
   AboutShone,
-  Opportunity,
+  CareerHeading,
   Compensation,
+  Opportunity,
   ReactNativeQualifications,
   Team,
-  CareerHeading,
 } from '../../components/CareerFragments'
+import Footer from '../../components/Footer'
+import Navbar from '../../components/Navbar'
+import ResponsiveContainer from '../../components/ResponsiveContainer'
 
 export default function ReactNativeEngineer(): JSX.Element {
   return (

@@ -1,9 +1,10 @@
-import Navbar from './../components/Navbar'
-import Footer from './../components/Footer'
 import Image from 'next/image'
 import React from 'react'
 import Cookies from 'universal-cookie'
+
 import consts from '../components/consts'
+import Footer from './../components/Footer'
+import Navbar from './../components/Navbar'
 
 interface Props {
   hasReadPermission?: boolean
