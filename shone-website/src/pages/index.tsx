@@ -2,9 +2,8 @@ import Head from 'next/head'
 import React from 'react'
 import { useState } from 'react'
 import AnimatedLogo from '../components/animated-logo'
-import { BasePageProps } from '../BasePageProps'
 
-export default function Index(_: BasePageProps): JSX.Element {
+export default function Index(): JSX.Element {
   const [email, setEmail] = useState('')
   return (
     <>

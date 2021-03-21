@@ -7,6 +7,7 @@ import {
 } from 'react-icons/fa'
 import Image from 'next/image'
 import Link from 'next/link'
+import PropTypes from 'prop-types'
 
 function Icon({ children }) {
   return (
@@ -30,6 +31,10 @@ const AddressLine = ({ children }) => (
     {children}
   </div>
 )
+
+AddressLine.propTypes = Icon.propTypes = {
+  children: PropTypes.node.isRequired,
+}
 
 export default function Footer(): React.ReactElement {
   return (

@@ -17,7 +17,7 @@ const Providers = ({ children }) => {
 
 const customRender = (
   ui: React.ReactElement,
-  options = {}
+  options = {},
 ): RenderResult<typeof queries, HTMLElement> =>
   render(ui, { wrapper: Providers, ...options })
 

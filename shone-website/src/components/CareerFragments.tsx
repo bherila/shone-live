@@ -27,13 +27,26 @@ export const SHONE = (): JSX.Element => (
   </span>
 )
 
-export const BlueLink = ({ children, href }): JSX.Element => (
+interface BlueLinkProps {
+  children: any
+  href: string
+}
+
+export const BlueLink = ({ children, href }: BlueLinkProps): JSX.Element => (
   <NextLink href={href}>
     <a className="text-blue-dark underline cursor-pointer">{children}</a>
   </NextLink>
 )
 
-export const CareerHeading = ({ children, showBreadcrumb }): JSX.Element => (
+interface CareerHeadingProps {
+  children: any
+  showBreadcrumb?: boolean
+}
+
+export const CareerHeading = ({
+  children,
+  showBreadcrumb,
+}: CareerHeadingProps): JSX.Element => (
   <div className="py-10">
     {showBreadcrumb && (
       <div>
