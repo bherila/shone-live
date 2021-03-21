@@ -1,19 +1,23 @@
 import NextLink from 'next/link'
 import React from 'react'
 
-export const Section = ({ children }): JSX.Element => (
+interface ChildrenOnly {
+  children: any // TODO: Provide correct type here.
+}
+
+export const Section = ({ children }: ChildrenOnly): JSX.Element => (
   <div className="py-2">{children}</div>
 )
-export const Heading = ({ children }): JSX.Element => (
+export const Heading = ({ children }: ChildrenOnly): JSX.Element => (
   <h2 className="text-lg font-bold py-2">{children}</h2>
 )
-export const List = ({ children }): JSX.Element => (
+export const List = ({ children }: ChildrenOnly): JSX.Element => (
   <ul className="list-disc ml-5">{children}</ul>
 )
-export const ListItem = ({ children }): JSX.Element => (
+export const ListItem = ({ children }: ChildrenOnly): JSX.Element => (
   <li className="my-1">{children}</li>
 )
-export const P = ({ children }): JSX.Element => (
+export const P = ({ children }: ChildrenOnly): JSX.Element => (
   <div className="my-2">{children}</div>
 )
 

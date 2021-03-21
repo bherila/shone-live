@@ -3,8 +3,11 @@ import Cookies from 'universal-cookie'
 import Login from '../components/login'
 import React from 'react'
 import consts from '../components/consts'
+import { BasePageProps } from '../BasePageProps'
 
-export default function LoginPage({ hasReadPermission }): React.ReactElement {
+export default function LoginPage({
+  hasReadPermission,
+}: BasePageProps): React.ReactElement {
   if (hasReadPermission) {
     return (
       <>
