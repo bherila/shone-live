@@ -26,10 +26,12 @@
     ]
   },
   "dependencies": {
+    "@nestjs/graphql": "^7.10.2",
+    "@nestjs/schematics": "^7.3.0",
     "dotenv": "^8.2.0",
     "lottie-react": "^2.1.0",
     "next": "latest",
-    "react": "16",
+    "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-icons": "^4.2.0",
     "universal-cookie": "^4.0.4"
