@@ -12,7 +12,7 @@ import {
   CareerHeading,
 } from '../../components/CareerFragments'
 
-export default function ReactNativeEngineer() {
+export default function ReactNativeEngineer(): JSX.Element {
   return (
     <div>
       <Navbar />

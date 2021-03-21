@@ -2,7 +2,11 @@ import { useState } from 'react'
 import Cookies from 'universal-cookie'
 import consts from './consts'
 
-const Login = ({ redirectPath }) => {
+interface LoginPageProps {
+  redirectPath: string
+}
+
+const Login = ({ redirectPath }: LoginPageProps) => {
   const [password, setPassword] = useState('')
 
   return (

@@ -1,12 +1,15 @@
 import 'tailwindcss/tailwind.css'
-import App from 'next/app'
+import App, { AppInitialProps } from 'next/app'
 import Cookies from 'universal-cookie'
 import consts from '../components/consts'
-function MyApp({ Component, pageProps }) {
+import { BasePageProps } from '../BasePageProps'
+function MyApp({ Component, pageProps }: any): JSX.Element {
   return <Component {...pageProps} />
 }
 
-MyApp.getInitialProps = async (appContext) => {
+MyApp.getInitialProps = async (
+  appContext
+): Promise<AppInitialProps & BasePageProps> => {
   const appProps = await App.getInitialProps(appContext)
   const cookies = new Cookies(appContext.ctx.req?.headers.cookie)
   const password = cookies.get(consts.SiteReadCookie) ?? ''
