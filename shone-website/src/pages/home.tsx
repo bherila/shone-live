@@ -2,9 +2,28 @@ import Navbar from './../components/Navbar'
 import Footer from './../components/Footer'
 import Image from 'next/image'
 import React from 'react'
+import Cookies from 'universal-cookie'
+import consts from '../components/consts'
 
 interface Props {
   hasReadPermission?: boolean
+}
+
+// TODO: Reuse this.
+export async function getServerSideProps(
+  appContext,
+): Promise<{ props: Props }> {
+  const cookies = new Cookies(appContext.ctx.req?.headers.cookie)
+  const password = cookies.get(consts.SiteReadCookie) ?? ''
+  const pageProps: Props = {
+    hasReadPermission: false,
+  }
+  if (password === 'letmein') {
+    pageProps.hasReadPermission = true
+  }
+  return {
+    props: { ...pageProps },
+  }
 }
 
 // import Logo from '/logo.png'
