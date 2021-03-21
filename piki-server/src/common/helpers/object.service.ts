@@ -1,14 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable } from "@nestjs/common";
 
 @Injectable()
 // TODO: Should probably just learn lodash
 // and use it for these object manipulation tasks
 export class ObjService {
-  static filteredNoNulls(object: Object, keepKeys: String[]): Object {
+  static filteredNoNulls(object: any, keepKeys: string[]): any {
     return ObjService.removeNulls(ObjService.filtered(object, keepKeys));
   }
 
-  static filtered(originalObject: Object, keepKeys: String[]): Object {
+  static filtered(originalObject: any, keepKeys: string[]): any {
     return Object.keys(originalObject)
       .filter(key => keepKeys.includes(key))
       .reduce((obj, key) => {
@@ -17,7 +17,7 @@ export class ObjService {
       }, {});
   }
 
-  static hasMissingValues(object: Object): Boolean {
+  static hasMissingValues(object: any): boolean {
     const missingValues: any = [];
     const keys = Object.keys(object);
     keys.forEach(key => object[key] == null && missingValues.push(key));
@@ -25,11 +25,11 @@ export class ObjService {
   }
 
   // https://stackoverflow.com/a/38340730/2422826
-  static removeNulls(obj: Object, recurse: boolean = true): Object {
-    for (var i in obj) {
+  static removeNulls(obj: any, recurse = true): any {
+    for (const i in obj) {
       if (obj[i] === null) {
         delete obj[i];
-      } else if (recurse && typeof obj[i] === 'object') {
+      } else if (recurse && typeof obj[i] === "object") {
         ObjService.removeNulls(obj[i], recurse);
       }
     }

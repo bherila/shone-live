@@ -1,7 +1,7 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne } from "typeorm";
 
-import { Order } from '../../orders/entities/order.entity';
-import { Sku } from '../../skus/entities/sku.entity';
+import { Order } from "../../orders/entities/order.entity";
+import { Sku } from "../../skus/entities/sku.entity";
 
 @Entity()
 export class OrderSku {
@@ -9,9 +9,9 @@ export class OrderSku {
     type => Order,
     order => order.orderSkus,
     {
-      cascade: ['insert', 'update'],
-      primary: true,
-    },
+      cascade: ["insert", "update"],
+      primary: true
+    }
   )
   order: Order;
 
@@ -19,14 +19,14 @@ export class OrderSku {
     type => Sku,
     sku => sku.orderSkus,
     {
-      cascade: ['insert', 'update'],
-      primary: true,
-    },
+      cascade: ["insert", "update"],
+      primary: true
+    }
   )
   sku: Sku;
 
   @Column({
-    comment: 'number of units purchased',
+    comment: "number of units purchased"
   })
   quantity: number;
 }

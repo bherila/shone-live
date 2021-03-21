@@ -1,10 +1,10 @@
-import { Module } from '@nestjs/common';
+import { Module } from "@nestjs/common";
 
-import { ObjService } from './helpers/object.service';
+import { ObjService } from "./helpers/object.service";
 
 @Module({
   imports: [],
   providers: [ObjService],
-  exports: [ObjService],
+  exports: [ObjService]
 })
 export class CommonModule {}

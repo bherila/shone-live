@@ -1,12 +1,9 @@
-import {
-  CreateSimpleProductResponse,
-} from 'src/simple-products/responses/create-simple-product.response';
+import { ApiProperty } from "@nestjs/swagger";
+import { CreateSimpleProductResponse } from "../../simple-products/responses/create-simple-product.response";
 
-import { ApiProperty } from '@nestjs/swagger';
-
-import { CreateFileResponse } from '../../files/responses/create-file.response';
-import { UserResponse } from '../../users/responses/user.response';
-import { Show } from '../entities/show.entity';
+import { CreateFileResponse } from "../../files/responses/create-file.response";
+import { UserResponse } from "../../users/responses/user.response";
+import { Show } from "../entities/show.entity";
 
 export class CreateShowResponse {
   // @ApiProperty() tags are needed on all attributes for OpenAPI
@@ -14,15 +11,29 @@ export class CreateShowResponse {
   @ApiProperty({
     description: `our id in our database`,
     example: `b644cec4-0487-4f6f-bac1-c80059a2a4b0`,
-    type: 'UUID',
+    type: "UUID"
   })
   public readonly id: string;
 
   @ApiProperty({
     description: `the room information from agora`,
-    example: `{\"appId\":\"f488493d1886435f963dfb3d95984fd4\",\"roomName\":\"Rocky’s Live\",\"roomId\":\"101940351140368384\",\"channelName\":\"30e73c1c99aa8b4c35657778d1056eab\",\"thumbnail\":\"https://twitter.com/explore/test.png\",\"muteAllChat\":0,\"state\":1,\"type\":5,\"currentUsers\":1,\"owner\":{\"uid\":1380625893,\"userId\":\"101244212439158784\"}}"`,
-    type: 'Stringified JSON',
-    required: false,
+    example: `{
+  "appId": "f488493d1886435f963dfb3d95984fd4",
+  "roomName": "Rocky’s Live",
+  "roomId": "101940351140368384",
+  "channelName": "30e73c1c99aa8b4c35657778d1056eab",
+  "thumbnail": "https://twitter.com/explore/test.png",
+  "muteAllChat": 0,
+  "state": 1,
+  "type": 5,
+  "currentUsers": 1,
+  "owner": {
+    "uid": 1380625893,
+    "userId": "101244212439158784"
+  }
+}`,
+    type: "Stringified JSON",
+    required: false
   })
   public readonly agora_room?: string;
 
@@ -31,21 +42,21 @@ export class CreateShowResponse {
     this should entice users to check out the show`,
     example: `The coolest host with the coolest products will show you
     everything you've been dying to purchase this season`,
-    required: true,
+    required: true
   })
   public readonly description: string;
 
   @ApiProperty({
     description: `show name`,
     example: `The Ski Show - New Ski Bindings Edition`,
-    required: true,
+    required: true
   })
   public name: string;
 
   @ApiProperty({
     description:
       `whether the show is scheduled ` +
-      `or just created and went live at the same time`,
+      `or just created and went live at the same time`
   })
   public readonly scheduled?: boolean;
 
@@ -55,7 +66,7 @@ export class CreateShowResponse {
       `(it's a datetime, format https://en.wikipedia.org/wiki/ISO_8601)` +
       `required unless the show is immediately live, ie has a start (time)`,
     example: `2020-11-22T20:39:12+00:00`,
-    required: false,
+    required: false
   })
   public readonly scheduled_start?: Date;
 
@@ -65,7 +76,7 @@ export class CreateShowResponse {
       `(it's a datetime, format https://en.wikipedia.org/wiki/ISO_8601)` +
       `required unless the show is immediately live, ie has a start (time)`,
     example: `2020-11-22T21:39:12+00:00`,
-    required: false,
+    required: false
   })
   public readonly scheduled_end?: Date;
 
@@ -80,7 +91,7 @@ export class CreateShowResponse {
       `however, in that case this must be passed at the time ` +
       `the show actually starts`,
     example: `2020-11-22T20:39:12+00:00`,
-    required: false,
+    required: false
   })
   public readonly start?: Date;
 
@@ -89,14 +100,14 @@ export class CreateShowResponse {
       `time the show actually ended at` +
       `this must be passed at the time the show ends`,
     example: `2020-11-22T20:39:12+00:00`,
-    required: false,
+    required: false
   })
   readonly end?: Date;
 
   @ApiProperty({
     description: `the user who created the show`,
     type: UserResponse,
-    required: true,
+    required: true
   })
   public readonly user: UserResponse;
 
@@ -104,7 +115,7 @@ export class CreateShowResponse {
     description: `the video and photo preview for the show are here`,
     isArray: true,
     type: CreateFileResponse,
-    required: false,
+    required: false
   })
   public readonly files?: CreateFileResponse[];
 
@@ -113,7 +124,7 @@ export class CreateShowResponse {
     for sale during the show`,
     isArray: true,
     type: CreateSimpleProductResponse,
-    required: false,
+    required: false
   })
   public readonly simpleProducts?: CreateSimpleProductResponse[];
 
@@ -130,7 +141,7 @@ export class CreateShowResponse {
     this.files = show.files?.map(file => new CreateFileResponse(file));
     this.user = new UserResponse(show.user);
     this.simpleProducts = show.simpleProducts?.map(
-      simpleProduct => new CreateSimpleProductResponse(simpleProduct),
+      simpleProduct => new CreateSimpleProductResponse(simpleProduct)
     );
   }
 }

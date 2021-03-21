@@ -1,8 +1,8 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
-import { Card } from '../../cards/entities/card.entity';
-import { Order } from '../../orders/entities/order.entity';
-import { UserAddress } from '../../user-addresses/user-address.entity';
+import { Card } from "../../cards/entities/card.entity";
+import { Order } from "../../orders/entities/order.entity";
+import { UserAddress } from "../../user-addresses/user-address.entity";
 
 @Entity()
 export class Address {
@@ -10,49 +10,49 @@ export class Address {
   id: number;
 
   @Column({
-    comment: 'city where address is located',
+    comment: "city where address is located"
   })
   city: string;
 
   @Column({
     comment:
-      '2 character country code https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements',
-    default: 'US',
+      "2 character country code https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements",
+    default: "US"
   })
   country: string;
 
   @Column({
-    comment: 'first line of address, usually number and street name',
+    comment: "first line of address, usually number and street name"
   })
   line1: string;
 
   @Column({
-    comment: 'second line of address, eg appartment or suite etc',
-    nullable: true,
+    comment: "second line of address, eg appartment or suite etc",
+    nullable: true
   })
   line2: string;
 
   @Column({
-    comment: 'for usa is zip code, should be verified against list',
-    nullable: true,
+    comment: "for usa is zip code, should be verified against list",
+    nullable: true
   })
   postal_code: string;
 
   @Column({
-    comment: 'for usa should be 2 character abreviation verified against list',
-    nullable: true,
+    comment: "for usa should be 2 character abreviation verified against list",
+    nullable: true
   })
   state: string;
 
   @Column({
-    comment: 'name of addressee at that address, doesnt have to be customers',
-    nullable: true,
+    comment: "name of addressee at that address, doesnt have to be customers",
+    nullable: true
   })
   name: string;
 
   @Column({
-    comment: 'phone of addressee at that address, doesnt have to be customers',
-    nullable: true,
+    comment: "phone of addressee at that address, doesnt have to be customers",
+    nullable: true
   })
   phone: string;
 
@@ -60,8 +60,8 @@ export class Address {
     type => UserAddress,
     userAddress => userAddress.address,
     {
-      cascade: true,
-    },
+      cascade: true
+    }
   )
   userAddresses: UserAddress[];
 
@@ -70,8 +70,8 @@ export class Address {
     card => card.address,
     {
       cascade: true,
-      nullable: true,
-    },
+      nullable: true
+    }
   )
   cards: Card[];
 
@@ -80,8 +80,8 @@ export class Address {
     order => order.address,
     {
       cascade: true,
-      nullable: true,
-    },
+      nullable: true
+    }
   )
   orders: Order[];
 }

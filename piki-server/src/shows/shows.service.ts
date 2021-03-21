@@ -1,19 +1,23 @@
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
 import {
-  Between, IsNull, LessThanOrEqual, MoreThanOrEqual, Not, Repository,
-} from 'typeorm';
+  Between,
+  IsNull,
+  LessThanOrEqual,
+  MoreThanOrEqual,
+  Not,
+  Repository
+} from "typeorm";
 
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-
-import { File } from '../files/entities/file.entity';
-import { FilesService } from '../files/files.service';
-import { Sku } from '../skus/entities/sku.entity';
-import { StripeService } from '../stripe/stripe.service';
-import { UsersService } from '../users/users.service';
-import { CreateShowDto } from './dto/create-show.dto';
-import { ShowsQueryDto } from './dto/shows-query.dto';
-import { UpdateShowDto } from './dto/update-show.dto';
-import { Show } from './entities/show.entity';
+import { File } from "../files/entities/file.entity";
+import { FilesService } from "../files/files.service";
+import { Sku } from "../skus/entities/sku.entity";
+import { StripeService } from "../stripe/stripe.service";
+import { UsersService } from "../users/users.service";
+import { CreateShowDto } from "./dto/create-show.dto";
+import { ShowsQueryDto } from "./dto/shows-query.dto";
+import { UpdateShowDto } from "./dto/update-show.dto";
+import { Show } from "./entities/show.entity";
 
 @Injectable()
 export class ShowsService {
@@ -26,7 +30,7 @@ export class ShowsService {
     private readonly fileRepository: Repository<File>,
     private readonly stripeService: StripeService,
     private readonly filesService: FilesService,
-    private readonly usersService: UsersService,
+    private readonly usersService: UsersService
   ) {}
 
   // todo add nested route structure for these association lookups
@@ -35,19 +39,19 @@ export class ShowsService {
   // todo need better filters and query params for all too
   findAll(
     getShowDto: ShowsQueryDto,
-    relations: string[] = [],
+    relations: string[] = []
   ): Promise<Show[]> {
     const { limit, offset, user_id, start, end, is_live } = getShowDto;
 
-    let baseQuery: any = {
+    const baseQuery: any = {
       relations: relations,
       skip: offset,
-      take: limit,
+      take: limit
     };
 
-    let where1: any = {};
-    let where2: any = {};
-    let where3: any = {};
+    const where1: any = {};
+    const where2: any = {};
+    const where3: any = {};
     if (user_id) {
       where1.user = user_id;
       where2.user = user_id;
@@ -70,7 +74,7 @@ export class ShowsService {
       where3.end = IsNull();
     }
 
-    let where: any[] = [];
+    const where: any[] = [];
     if (Object.keys(where1).length > 0) {
       where.push(where1, where2);
     }
@@ -88,7 +92,7 @@ export class ShowsService {
   async findOne(id: string, relations: string[] = []) {
     const show = await this.showRepository.findOne({
       where: { id: id },
-      relations: relations,
+      relations: relations
     });
     if (!show) {
       throw new NotFoundException(`Show with id ${id} not found`);
@@ -103,19 +107,19 @@ export class ShowsService {
     if (video_id) {
       const video_file = await this.filesService.findOne(
         video_id,
-        'Show Preview Video',
+        "Show Preview Video"
       );
       files.push(video_file);
-      video_file.tag = 'video';
+      video_file.tag = "video";
       this.fileRepository.save(video_file);
     }
     if (photo_id) {
       const photo_file = await this.filesService.findOne(
         photo_id,
-        'Show Preview Photo',
+        "Show Preview Photo"
       );
       files.push(photo_file);
-      photo_file.tag = 'photo';
+      photo_file.tag = "photo";
       this.fileRepository.save(photo_file);
     }
 
@@ -124,18 +128,18 @@ export class ShowsService {
       user: user,
       scheduled: !createShowDto.start,
       files: files,
-      agora_room: JSON.stringify(createShowDto.agora_room),
+      agora_room: JSON.stringify(createShowDto.agora_room)
     });
     return this.showRepository.save(show);
   }
 
   async update(id: string, updateShowDto: UpdateShowDto) {
-    let updateData: any = {
+    const updateData: any = {
       id: id,
-      ...updateShowDto,
+      ...updateShowDto
     };
     if (updateShowDto.agora_room) {
-      updateData['agora_room'] = JSON.stringify(updateShowDto.agora_room);
+      updateData["agora_room"] = JSON.stringify(updateShowDto.agora_room);
     }
     const show = await this.showRepository.preload(updateData);
     if (!show) {

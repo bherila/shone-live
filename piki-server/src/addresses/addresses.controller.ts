@@ -1,14 +1,14 @@
-import { Body, Controller, HttpStatus, Post } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, HttpStatus, Post } from "@nestjs/common";
+import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 
-import { AddressesService } from './addresses.service';
-import { CreateAddressDto } from './dto/create-address.dto';
-import { Address } from './entities/address.entity';
+import { AddressesService } from "./addresses.service";
+import { CreateAddressDto } from "./dto/create-address.dto";
+import { Address } from "./entities/address.entity";
 
-@ApiTags('addresses')
+@ApiTags("addresses")
 // @UseGuards(JwtAuthGuard)
 // @ApiBearerAuth('JWT')
-@Controller('addresses')
+@Controller("addresses")
 export class AddressesController {
   constructor(private readonly addressService: AddressesService) {}
 
@@ -21,7 +21,7 @@ export class AddressesController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: `created an address independent of stripe`,
-    type: Address,
+    type: Address
   })
   @Post()
   create(@Body() createAddressDto: CreateAddressDto): Promise<Address> {

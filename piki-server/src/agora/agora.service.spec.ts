@@ -1,19 +1,19 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import { Test, TestingModule } from "@nestjs/testing";
 
-import { AgoraRtmTokenService } from './agora-rtm-token.service';
+import { AgoraRtmTokenService } from "./agora-rtm-token.service";
 
-describe('AgoraService', () => {
+describe("AgoraService", () => {
   let service: AgoraRtmTokenService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [AgoraRtmTokenService],
+      providers: [AgoraRtmTokenService]
     }).compile();
 
     service = module.get<AgoraRtmTokenService>(AgoraRtmTokenService);
   });
 
-  it('should be defined', () => {
+  it("should be defined", () => {
     expect(service).toBeDefined();
   });
 });

@@ -1,20 +1,27 @@
 import {
-  Body, ClassSerializerInterceptor, Controller, Delete, Get, HttpStatus, Param,
-  Post, Put, Query, UseInterceptors,
-} from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+  Body,
+  ClassSerializerInterceptor,
+  Controller,
+  Delete,
+  Get,
+  HttpStatus,
+  Param,
+  Post,
+  Put,
+  Query,
+  UseInterceptors
+} from "@nestjs/common";
+import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 
-import { CreateSimpleProductDto } from './dto/create-simple-product.dto';
-import { SimpleProductsQueryDto } from './dto/simple-products-query.dto';
-import { UpdateSimpleProductDto } from './dto/update-simple-product.dto';
-import {
-  CreateSimpleProductResponse,
-} from './responses/create-simple-product.response';
-import { SimpleProductsService } from './simple-products.service';
+import { CreateSimpleProductDto } from "./dto/create-simple-product.dto";
+import { SimpleProductsQueryDto } from "./dto/simple-products-query.dto";
+import { UpdateSimpleProductDto } from "./dto/update-simple-product.dto";
+import { CreateSimpleProductResponse } from "./responses/create-simple-product.response";
+import { SimpleProductsService } from "./simple-products.service";
 
-@Controller('simple-products')
+@Controller("simple-products")
 @UseInterceptors(ClassSerializerInterceptor) // needed to run @Exclude()
-@ApiTags('simple-products')
+@ApiTags("simple-products")
 export class SimpleProductsController {
   constructor(private readonly simpleProductsService: SimpleProductsService) {}
 
@@ -22,54 +29,54 @@ export class SimpleProductsController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: `created a simple-product`,
-    type: CreateSimpleProductResponse,
+    type: CreateSimpleProductResponse
   })
   @Post()
   async create(
-    @Body() createSimpleProductDto: CreateSimpleProductDto,
+    @Body() createSimpleProductDto: CreateSimpleProductDto
   ): Promise<CreateSimpleProductResponse> {
     const simpleProduct = await this.simpleProductsService.create(
-      createSimpleProductDto,
+      createSimpleProductDto
     );
     return new CreateSimpleProductResponse(simpleProduct);
   }
 
   @ApiOperation({
     summary: `returns all simple products
-    filtered by optional query parameters`,
+    filtered by optional query parameters`
   })
   @ApiResponse({
     status: HttpStatus.OK,
     description: `success`,
     type: CreateSimpleProductResponse,
-    isArray: true,
+    isArray: true
   })
   @Get()
   async findAll(
-    @Query() simpleProductsQueryDto: SimpleProductsQueryDto,
+    @Query() simpleProductsQueryDto: SimpleProductsQueryDto
   ): Promise<CreateSimpleProductResponse[]> {
     return this.simpleProductsService
-      .findAll(simpleProductsQueryDto, ['user', 'show', 'files'])
+      .findAll(simpleProductsQueryDto, ["user", "show", "files"])
       .then(simpleProducts => {
         return simpleProducts.map(
-          simpleProduct => new CreateSimpleProductResponse(simpleProduct),
+          simpleProduct => new CreateSimpleProductResponse(simpleProduct)
         );
       });
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
+  @Get(":id")
+  findOne(@Param("id") id: string) {
     return this.simpleProductsService
-      .findOne(id, ['user', 'show', 'files'])
+      .findOne(id, ["user", "show", "files"])
       .then(simpleProduct => {
         return new CreateSimpleProductResponse(simpleProduct);
       });
   }
 
-  @Put(':id')
+  @Put(":id")
   async update(
-    @Param('id') id: string,
-    @Body() updateSimpleProductDto: UpdateSimpleProductDto,
+    @Param("id") id: string,
+    @Body() updateSimpleProductDto: UpdateSimpleProductDto
   ): Promise<CreateSimpleProductResponse> {
     return this.simpleProductsService
       .update(id, updateSimpleProductDto)
@@ -78,8 +85,8 @@ export class SimpleProductsController {
       });
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
+  @Delete(":id")
+  remove(@Param("id") id: string) {
     return this.simpleProductsService.remove(id);
   }
 }

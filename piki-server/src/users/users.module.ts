@@ -1,23 +1,21 @@
-import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { Module } from "@nestjs/common";
+import { TypeOrmModule } from "@nestjs/typeorm";
 
-import { AgoraRtmToken } from '../agora/entities/agora-rtm-token.entity';
-import { Auth } from '../auth/entities/auth.entity';
-import { Card } from '../cards/entities/card.entity';
-import { File } from '../files/entities/file.entity';
-import { FilesModule } from '../files/files.module';
-import { Order } from '../orders/entities/order.entity';
-import { Product } from '../products/entities/product.entity';
-import { Show } from '../shows/entities/show.entity';
-import {
-  SimpleProduct,
-} from '../simple-products/entities/simple-product.entity';
-import { Sku } from '../skus/entities/sku.entity';
-import { StripeModule } from '../stripe/stripe.module';
-import { UserAddress } from '../user-addresses/user-address.entity';
-import { User } from './entities/user.entity';
-import { UsersController } from './users.controller';
-import { UsersService } from './users.service';
+import { AgoraRtmToken } from "../agora/entities/agora-rtm-token.entity";
+import { Auth } from "../auth/entities/auth.entity";
+import { Card } from "../cards/entities/card.entity";
+import { File } from "../files/entities/file.entity";
+import { FilesModule } from "../files/files.module";
+import { Order } from "../orders/entities/order.entity";
+import { Product } from "../products/entities/product.entity";
+import { Show } from "../shows/entities/show.entity";
+import { SimpleProduct } from "../simple-products/entities/simple-product.entity";
+import { Sku } from "../skus/entities/sku.entity";
+import { StripeModule } from "../stripe/stripe.module";
+import { UserAddress } from "../user-addresses/user-address.entity";
+import { User } from "./entities/user.entity";
+import { UsersController } from "./users.controller";
+import { UsersService } from "./users.service";
 
 @Module({
   controllers: [UsersController],
@@ -34,11 +32,11 @@ import { UsersService } from './users.service';
       SimpleProduct,
       Sku,
       User,
-      UserAddress,
+      UserAddress
     ]),
     FilesModule,
-    StripeModule,
+    StripeModule
   ],
-  providers: [UsersService],
+  providers: [UsersService]
 })
 export class UsersModule {}

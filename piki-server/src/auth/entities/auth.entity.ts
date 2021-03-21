@@ -1,6 +1,6 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
-import { User } from '../../users/entities/user.entity';
+import { User } from "../../users/entities/user.entity";
 
 @Entity()
 export class Auth {
@@ -10,13 +10,13 @@ export class Auth {
   @Column({
     unique: true,
     comment: `unique identifier for authenticatable object.
-      For user its an email address`,
+      For user its an email address`
   })
   identifier: string;
 
   @Column({
     comment:
-      'a secret passcode, for a user its a bcrypt salted user submitted string',
+      "a secret passcode, for a user its a bcrypt salted user submitted string"
   })
   password: string;
 
@@ -24,9 +24,9 @@ export class Auth {
     type => User,
     user => user.auths,
     {
-      cascade: ['insert', 'update'],
-      onDelete: 'CASCADE',
-    },
+      cascade: ["insert", "update"],
+      onDelete: "CASCADE"
+    }
   )
   user: User;
 }

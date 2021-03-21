@@ -1,6 +1,6 @@
-import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
 
-@Index(['name', 'type']) // example of compound index
+@Index(["name", "type"]) // example of compound index
 @Entity()
 export class Event {
   @PrimaryGeneratedColumn()
@@ -13,6 +13,6 @@ export class Event {
   @Column()
   name: string;
 
-  @Column('json')
+  @Column("json")
   payload: Record<string, any>;
 }

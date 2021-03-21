@@ -1,6 +1,6 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty } from "@nestjs/swagger";
 
-import { File } from '../../files/entities/file.entity';
+import { File } from "../../files/entities/file.entity";
 
 export class CreateFileResponse {
   // @ApiProperty() tags are needed on all attributes for OpenAPI
@@ -8,7 +8,7 @@ export class CreateFileResponse {
   @ApiProperty({
     description: `our id in our database`,
     example: `b644cec4-0487-4f6f-bac1-c80059a2a4b0`,
-    type: 'UUID',
+    type: "UUID"
   })
   public id: string;
 
@@ -17,7 +17,7 @@ export class CreateFileResponse {
           we need this user id to associate the user so we can
           1. let only this user delete the file
           2. be able to return all this users files for them to manage`,
-    example: `cus_IPqRS333voIGbS`,
+    example: `cus_IPqRS333voIGbS`
   })
   public user_id: string;
 
@@ -25,8 +25,8 @@ export class CreateFileResponse {
     description: `currently only files with *public* set to *true*
     return a URL upon creation`,
     example: `https://piki-uploads.s3.us-west-1.amazonaws.com/d00b692e-c6d4-44cf-b0ef-6982a5657c55-favicon.ico`,
-    type: 'URL',
-    required: false,
+    type: "URL",
+    required: false
   })
   public url: string;
 
@@ -37,7 +37,7 @@ export class CreateFileResponse {
     however, public files can be created by passing {public: true} in the body
     these files will immediately return a persistent public URL
     note there is no authorization these files are exposed to the entire web`,
-    example: `true`,
+    example: `true`
   })
   public is_public: boolean;
 
@@ -48,7 +48,7 @@ export class CreateFileResponse {
   for example a show has 2 files an image and video preview,
   there are returned with a tag 'image' and 'video' to distinguish them`,
     example: `video`,
-    required: false,
+    required: false
   })
   public tag: string;
 

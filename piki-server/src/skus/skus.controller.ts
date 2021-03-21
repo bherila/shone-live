@@ -1,17 +1,23 @@
 import {
-  Body, Controller, Delete, HttpStatus, Param, Patch, Post,
-} from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+  Body,
+  Controller,
+  Delete,
+  HttpStatus,
+  Param,
+  Patch,
+  Post
+} from "@nestjs/common";
+import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 
-import { CreateSkuDto } from './dto/create-sku.dto';
-import { UpdateSkuDto } from './dto/update-sku.dto';
-import { Sku } from './entities/sku.entity';
-import { SkusService } from './skus.service';
+import { CreateSkuDto } from "./dto/create-sku.dto";
+import { UpdateSkuDto } from "./dto/update-sku.dto";
+import { Sku } from "./entities/sku.entity";
+import { SkusService } from "./skus.service";
 
-@ApiTags('skus')
+@ApiTags("skus")
 // @UseGuards(JwtAuthGuard)
 // @ApiBearerAuth('JWT')
-@Controller('skus')
+@Controller("skus")
 export class SkusController {
   constructor(private readonly skusService: SkusService) {}
 
@@ -19,7 +25,7 @@ export class SkusController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: `creates SKU associated with a product and a show`,
-    type: Sku,
+    type: Sku
   })
   @Post()
   async create(@Body() createSkuDto: CreateSkuDto): Promise<Sku> {
@@ -30,26 +36,26 @@ export class SkusController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: `updated sku`,
-    type: Sku,
+    type: Sku
   })
-  @Patch(':id')
+  @Patch(":id")
   async update(
-    @Param('id') id: string,
-    @Body() updateSkuDto: UpdateSkuDto,
+    @Param("id") id: string,
+    @Body() updateSkuDto: UpdateSkuDto
   ): Promise<Sku> {
     return await this.skusService.update(id, updateSkuDto);
   }
 
   @ApiOperation({
-    summary: `hard deletes a SKU, cascading`,
+    summary: `hard deletes a SKU, cascading`
   })
   @ApiResponse({
     status: HttpStatus.OK,
     description: `deleted sku`,
-    type: Sku,
+    type: Sku
   })
-  @Delete(':id')
-  async remove(@Param('id') id: string): Promise<Sku> {
+  @Delete(":id")
+  async remove(@Param("id") id: string): Promise<Sku> {
     return await this.skusService.remove(id);
   }
 }

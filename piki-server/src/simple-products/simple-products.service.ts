@@ -1,21 +1,21 @@
-import { Repository } from 'typeorm';
-
 import {
-  forwardRef, Inject, Injectable, NotFoundException,
-} from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+  forwardRef,
+  Inject,
+  Injectable,
+  NotFoundException
+} from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
 
-import { File } from '../files/entities/file.entity';
-import { Show } from '../shows/entities/show.entity';
-import { Stripe2Service } from '../stripe2/stripe2.service';
-import { User } from '../users/entities/user.entity';
-import { CreateSimpleProductDto } from './dto/create-simple-product.dto';
-import { SimpleProductsQueryDto } from './dto/simple-products-query.dto';
-import { UpdateSimpleProductDto } from './dto/update-simple-product.dto';
-import { SimpleProduct } from './entities/simple-product.entity';
-import {
-  SimpleProductSaleResponse,
-} from './responses/simple-product-sale.response';
+import { File } from "../files/entities/file.entity";
+import { Show } from "../shows/entities/show.entity";
+import { Stripe2Service } from "../stripe2/stripe2.service";
+import { User } from "../users/entities/user.entity";
+import { CreateSimpleProductDto } from "./dto/create-simple-product.dto";
+import { SimpleProductsQueryDto } from "./dto/simple-products-query.dto";
+import { UpdateSimpleProductDto } from "./dto/update-simple-product.dto";
+import { SimpleProduct } from "./entities/simple-product.entity";
+import { SimpleProductSaleResponse } from "./responses/simple-product-sale.response";
 
 @Injectable()
 export class SimpleProductsService {
@@ -29,26 +29,26 @@ export class SimpleProductsService {
     @InjectRepository(File)
     private readonly fileRepository: Repository<File>,
     @Inject(forwardRef(() => Stripe2Service))
-    private readonly stripe2Service: Stripe2Service,
+    private readonly stripe2Service: Stripe2Service
   ) {}
 
   async create(
-    createSimpleProductDto: CreateSimpleProductDto,
+    createSimpleProductDto: CreateSimpleProductDto
   ): Promise<SimpleProduct> {
     const { show_id, user_id, image_id } = createSimpleProductDto;
-    let simpleProductData = { ...createSimpleProductDto };
-    let queries: Promise<any>[] = [];
+    const simpleProductData = { ...createSimpleProductDto };
+    const queries: Promise<any>[] = [];
 
     // move into services and call the service method for one liner
     const fileQuery = this.fileRepository
       .findOne({
-        where: { id: image_id },
+        where: { id: image_id }
       })
       .then(file => {
         if (!file) {
           throw new NotFoundException(`File #${image_id} not found`);
         }
-        simpleProductData['files'] = [file];
+        simpleProductData["files"] = [file];
         return file;
       });
     queries.push(fileQuery);
@@ -57,7 +57,7 @@ export class SimpleProductsService {
       if (!user) {
         throw new NotFoundException(`User #${user_id} not found`);
       }
-      simpleProductData['user'] = user;
+      simpleProductData["user"] = user;
     });
     queries.push(userQuery);
 
@@ -68,7 +68,7 @@ export class SimpleProductsService {
           if (!show) {
             throw new NotFoundException(`Show #${show_id} not found`);
           }
-          simpleProductData['show'] = show;
+          simpleProductData["show"] = show;
         });
       queries.push(showQuery);
     }
@@ -77,7 +77,7 @@ export class SimpleProductsService {
     const simpleProduct = await Promise.all(queries).then(values => {
       file_url = values[0].url; // get file_url for use by StripeProduct
       return this.simpleProductRepository.save(
-        this.simpleProductRepository.create(simpleProductData),
+        this.simpleProductRepository.create(simpleProductData)
       );
     });
 
@@ -97,20 +97,20 @@ export class SimpleProductsService {
 
   async findAll(
     simpleProductsQueryDto: SimpleProductsQueryDto,
-    relations: string[] = [],
+    relations: string[] = []
   ): Promise<SimpleProduct[]> {
     const { user_id, show_id } = simpleProductsQueryDto;
-    let query: any = {};
+    const query: any = {};
     if (user_id) {
-      query['user'] = user_id;
+      query["user"] = user_id;
     }
     if (show_id) {
       const _id = await this.showRepository.findOne({ where: { id: show_id } });
-      query['show'] = _id;
+      query["show"] = _id;
     }
     return this.simpleProductRepository.find({
       where: query,
-      relations: relations,
+      relations: relations
     });
   }
 
@@ -118,7 +118,7 @@ export class SimpleProductsService {
     return this.simpleProductRepository
       .findOne({
         where: { id: id },
-        relations: relations,
+        relations: relations
       })
       .then(simpleProduct => {
         if (!simpleProduct) {
@@ -130,15 +130,15 @@ export class SimpleProductsService {
 
   async update(
     simpleProductId: string,
-    updateSimpleProductDto: UpdateSimpleProductDto,
+    updateSimpleProductDto: UpdateSimpleProductDto
   ): Promise<SimpleProduct> {
     const { show_id } = updateSimpleProductDto;
-    let simpleProductUpdate = {
-      ...updateSimpleProductDto,
+    const simpleProductUpdate = {
+      ...updateSimpleProductDto
     };
     if (show_id) {
-      simpleProductUpdate['show'] = await this.showRepository.findOne({
-        where: { id: show_id },
+      simpleProductUpdate["show"] = await this.showRepository.findOne({
+        where: { id: show_id }
       });
     }
     return this.updateHelper(simpleProductId, simpleProductUpdate);
@@ -146,7 +146,7 @@ export class SimpleProductsService {
 
   async updateHelper(
     simpleProductId: string,
-    updateObject: any,
+    updateObject: any
     // figure out how to make work with strict typing
     // updateObject: SaveOptions,
   ): Promise<SimpleProduct> {
@@ -155,12 +155,12 @@ export class SimpleProductsService {
       .then(simpleProduct => {
         if (!simpleProduct) {
           throw new NotFoundException(
-            `simpleProduct #${simpleProductId} not found`,
+            `simpleProduct #${simpleProductId} not found`
           );
         }
         return this.simpleProductRepository.save({
           ...simpleProduct,
-          ...updateObject,
+          ...updateObject
         });
       });
   }
@@ -168,12 +168,12 @@ export class SimpleProductsService {
   async bulkUpdate(
     fieldToUpdate: string,
     fieldValue: string,
-    simpleProductIds: string[],
+    simpleProductIds: string[]
   ): Promise<Promise<SimpleProduct>[]> {
-    let simpleProductUpdate = {};
-    if (fieldToUpdate === 'showId') {
-      simpleProductUpdate['show'] = await this.showRepository.findOne({
-        where: { id: fieldValue },
+    const simpleProductUpdate = {};
+    if (fieldToUpdate === "showId") {
+      simpleProductUpdate["show"] = await this.showRepository.findOne({
+        where: { id: fieldValue }
       });
     }
     return simpleProductIds.map(simpleProductId => {
@@ -183,15 +183,15 @@ export class SimpleProductsService {
 
   async updateQuantitySold(
     simpleProductId: string,
-    sale_quantity: number,
+    sale_quantity: number
   ): Promise<SimpleProductSaleResponse> {
-    return this.findOne(simpleProductId, ['show']).then(product => {
+    return this.findOne(simpleProductId, ["show"]).then(product => {
       product.quantity_sold += sale_quantity;
       return this.simpleProductRepository.save(product).then(savedProduct => {
         return {
           showId: product.show.id,
           simpleProductId: simpleProductId,
-          quantityLeft: savedProduct.quantity_sold,
+          quantityLeft: savedProduct.quantity_sold
         };
       });
     });

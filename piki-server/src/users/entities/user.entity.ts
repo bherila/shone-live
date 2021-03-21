@@ -1,32 +1,36 @@
 import {
-  Check, Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryColumn,
-} from 'typeorm';
+  Check,
+  Column,
+  Entity,
+  JoinColumn,
+  OneToMany,
+  OneToOne,
+  PrimaryColumn
+} from "typeorm";
 
-import { AgoraRtmToken } from '../../agora/entities/agora-rtm-token.entity';
-import { Auth } from '../../auth/entities/auth.entity';
-import { Card } from '../../cards/entities/card.entity';
-import { File } from '../../files/entities/file.entity';
-import { Order } from '../../orders/entities/order.entity';
-import { Product } from '../../products/entities/product.entity';
-import { Show } from '../../shows/entities/show.entity';
-import {
-  SimpleProduct,
-} from '../../simple-products/entities/simple-product.entity';
-import { Sku } from '../../skus/entities/sku.entity';
-import { UserAddress } from '../../user-addresses/user-address.entity';
+import { AgoraRtmToken } from "../../agora/entities/agora-rtm-token.entity";
+import { Auth } from "../../auth/entities/auth.entity";
+import { Card } from "../../cards/entities/card.entity";
+import { File } from "../../files/entities/file.entity";
+import { Order } from "../../orders/entities/order.entity";
+import { Product } from "../../products/entities/product.entity";
+import { Show } from "../../shows/entities/show.entity";
+import { SimpleProduct } from "../../simple-products/entities/simple-product.entity";
+import { Sku } from "../../skus/entities/sku.entity";
+import { UserAddress } from "../../user-addresses/user-address.entity";
 
 @Check(`"email" IS NOT NULL OR "phone" IS NOT NULL`)
 @Entity() // sql table === 'user'
 export class User {
   @PrimaryColumn({
-    comment: 'stripe id is used to match 1 to 1',
+    comment: "stripe id is used to match 1 to 1"
   })
   id: string;
 
   @Column({
     unique: true,
-    comment: 'display username for use in the app',
-    nullable: true,
+    comment: "display username for use in the app",
+    nullable: true
   })
   username: string;
 
@@ -34,39 +38,39 @@ export class User {
     comment:
       `descriptive bio for use in the app. ` +
       `target is for sellers to describe themselves`,
-    nullable: true,
+    nullable: true
   })
   bio: string;
 
   @Column({
-    comment: 'users first name',
-    nullable: true,
+    comment: "users first name",
+    nullable: true
   })
   first_name: string;
 
   @Column({
-    comment: 'users last name',
-    nullable: true,
+    comment: "users last name",
+    nullable: true
   })
   last_name: string;
 
   @Column({
     unique: true,
-    comment: 'users phone number',
-    nullable: true,
+    comment: "users phone number",
+    nullable: true
   })
   phone: string;
 
   @Column({
-    comment: 'used for various authorizations sellers must be validated',
-    nullable: true,
+    comment: "used for various authorizations sellers must be validated",
+    nullable: true
   })
   seller: boolean;
 
   @Column({
     unique: true,
-    comment: 'email used for unique user identification',
-    nullable: true,
+    comment: "email used for unique user identification",
+    nullable: true
   })
   email: string;
 
@@ -76,8 +80,8 @@ export class User {
     type => Card,
     card => card.user,
     {
-      cascade: true,
-    },
+      cascade: true
+    }
   )
   cards: Card[];
 
@@ -85,8 +89,8 @@ export class User {
     type => Show,
     show => show.user,
     {
-      cascade: true,
-    },
+      cascade: true
+    }
   )
   shows: Show[];
 
@@ -94,8 +98,8 @@ export class User {
     type => Auth,
     auth => auth.user,
     {
-      cascade: true,
-    },
+      cascade: true
+    }
   )
   auths: Auth[];
 
@@ -103,8 +107,8 @@ export class User {
     type => Product,
     product => product.user,
     {
-      cascade: true,
-    },
+      cascade: true
+    }
   )
   products: Product[];
 
@@ -112,8 +116,8 @@ export class User {
     type => SimpleProduct,
     simpleProduct => simpleProduct.user,
     {
-      cascade: true,
-    },
+      cascade: true
+    }
   )
   simpleProducts: SimpleProduct[];
 
@@ -121,27 +125,27 @@ export class User {
     type => AgoraRtmToken,
     agoraRtmToken => agoraRtmToken.user,
     {
-      cascade: true,
-    },
+      cascade: true
+    }
   )
   agoraRtmTokens: AgoraRtmToken[];
 
   @JoinColumn()
   @OneToOne(() => File, {
     eager: true,
-    nullable: true,
+    nullable: true
   })
   public avatar?: File;
 
   @OneToMany(
     () => File,
-    (file: File) => file.user,
+    (file: File) => file.user
   )
   public files: File[];
 
   @OneToMany(
     order => Order,
-    order => order.user,
+    order => order.user
   )
   orders: Order[];
 
@@ -149,7 +153,7 @@ export class User {
   @OneToMany(
     type => Sku,
     sku => sku.user,
-    { cascade: true },
+    { cascade: true }
   )
   skus: Sku[];
 
@@ -157,8 +161,8 @@ export class User {
     type => UserAddress,
     userAddress => userAddress.user,
     {
-      cascade: true,
-    },
+      cascade: true
+    }
   )
   userAddresses: UserAddress[];
 }

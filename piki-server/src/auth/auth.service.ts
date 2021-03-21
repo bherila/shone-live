@@ -1,14 +1,13 @@
-import * as bcrypt from 'bcryptjs';
-import { Repository } from 'typeorm';
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
+import { InjectRepository } from "@nestjs/typeorm";
+import * as bcrypt from "bcryptjs";
+import { Repository } from "typeorm";
 
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { InjectRepository } from '@nestjs/typeorm';
-
-import { User } from '../users/entities/user.entity';
-import { UsersService } from '../users/users.service';
-import { RegisterDto } from './dto/register.dto';
-import { Auth } from './entities/auth.entity';
+import { User } from "../users/entities/user.entity";
+import { UsersService } from "../users/users.service";
+import { RegisterDto } from "./dto/register.dto";
+import { Auth } from "./entities/auth.entity";
 
 @Injectable()
 export class AuthService {
@@ -18,20 +17,20 @@ export class AuthService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
     private jwtService: JwtService,
-    private usersService: UsersService,
+    private usersService: UsersService
   ) {}
 
   async login(email: string) {
     const user = await this.userRepository.findOne({
-      where: { email },
+      where: { email }
     });
 
     return {
       access_token: this.jwtService.sign({
         id: user.id,
-        username: user.username,
+        username: user.username
       }),
-      user: user,
+      user: user
     };
   }
 
@@ -41,15 +40,15 @@ export class AuthService {
     const auth = await this.authRepository.create({
       identifier: user.email,
       password: hashedPassword,
-      user: user,
+      user: user
     });
     this.authRepository.save(auth);
     return {
       access_token: this.jwtService.sign({
         id: user.id,
-        username: user.username,
+        username: user.username
       }),
-      user: user,
+      user: user
     };
   }
 
@@ -62,13 +61,13 @@ export class AuthService {
       // set on all tables and also figure out how to make records
       // immutable in typeorm/make sure code doesn't try to modify
       const auth = await this.authRepository.findOne({
-        where: { identifier: email },
+        where: { identifier: email }
       });
       const pw_good = await bcrypt.compare(password, auth.password);
 
       return pw_good;
     } catch (error) {
-      throw new HttpException('user not found', HttpStatus.BAD_REQUEST);
+      throw new HttpException("user not found", HttpStatus.BAD_REQUEST);
     }
   }
 }

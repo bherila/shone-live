@@ -1,41 +1,41 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from "typeorm";
 
-import { File } from '../../files/entities/file.entity';
-import { OrderSku } from '../../order-skus/entities/order-sku.entity';
-import { Product } from '../../products/entities/product.entity';
-import { Show } from '../../shows/entities/show.entity';
-import { User } from '../../users/entities/user.entity';
+import { File } from "../../files/entities/file.entity";
+import { OrderSku } from "../../order-skus/entities/order-sku.entity";
+import { Product } from "../../products/entities/product.entity";
+import { Show } from "../../shows/entities/show.entity";
+import { User } from "../../users/entities/user.entity";
 
 @Entity()
 export class Sku {
   @PrimaryColumn({
-    comment: 'stripe id is used to match 1 to 1',
+    comment: "stripe id is used to match 1 to 1"
   })
   id: string;
 
   @Column({
     comment:
-      'price (in cents) is kept on SKU instead of products in case variants are priced differently, this is also to mirror Stripe ',
+      "price (in cents) is kept on SKU instead of products in case variants are priced differently, this is also to mirror Stripe "
   })
   price: number;
 
   @Column({
-    comment: 'the currency for the price, now all prices in usd',
-    default: 'usd',
+    comment: "the currency for the price, now all prices in usd",
+    default: "usd"
   })
   currency: string;
 
   @Column({
     comment:
-      'time it starts being available for purchase, SKUs should exist from start of show until end of show (note a SKU can be still active, but sold out)',
-    nullable: true,
+      "time it starts being available for purchase, SKUs should exist from start of show until end of show (note a SKU can be still active, but sold out)",
+    nullable: true
   })
   active_at: Date;
 
   @Column({
     comment:
-      'time it ends being available for purchase, SKUs should exist from start of show until end of show (note a SKU can be still active, but sold out)',
-    nullable: true,
+      "time it ends being available for purchase, SKUs should exist from start of show until end of show (note a SKU can be still active, but sold out)",
+    nullable: true
   })
   inactive_at: Date;
 
@@ -46,7 +46,7 @@ export class Sku {
   @Column({
     comment: `any descriptive details that it permutes on eg {"size": "medium", "gender": "unisex"}`,
     nullable: true,
-    type: 'jsonb',
+    type: "jsonb"
   })
   attributes: string;
 
@@ -62,13 +62,13 @@ export class Sku {
   //     inventory_type: string;
 
   @Column({
-    comment: 'how many of this SKU are available at show start',
+    comment: "how many of this SKU are available at show start"
   })
   quantity: number;
 
   @Column({
     comment:
-      'currently available quantity. updated after each successful transaction',
+      "currently available quantity. updated after each successful transaction"
   })
   current_quantity: number;
 
@@ -76,8 +76,8 @@ export class Sku {
     type => Product,
     product => product.skus,
     {
-      cascade: ['insert', 'update'],
-    },
+      cascade: ["insert", "update"]
+    }
   )
   product: Product;
 
@@ -85,8 +85,8 @@ export class Sku {
     type => File,
     file => file.show,
     {
-      cascade: true,
-    },
+      cascade: true
+    }
   )
   files: File[];
 
@@ -95,8 +95,8 @@ export class Sku {
     type => OrderSku,
     orderSku => orderSku.sku,
     {
-      cascade: true,
-    },
+      cascade: true
+    }
   )
   orderSkus: OrderSku[];
 
@@ -104,7 +104,7 @@ export class Sku {
   @ManyToOne(
     type => User,
     user => user.skus,
-    { cascade: ['insert', 'update'] },
+    { cascade: ["insert", "update"] }
   )
   user: User;
 
@@ -116,8 +116,8 @@ export class Sku {
     type => Show,
     show => show.skus,
     {
-      cascade: ['insert', 'update'],
-    },
+      cascade: ["insert", "update"]
+    }
   )
   show: Show;
 }

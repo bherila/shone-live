@@ -1,5 +1,5 @@
-import { HttpStatus } from '@nestjs/common';
-import { HttpException } from '@nestjs/common/exceptions/http.exception';
+import { HttpStatus } from "@nestjs/common";
+import { HttpException } from "@nestjs/common/exceptions/http.exception";
 
 /**
  * Defines an HTTP exception for *Uniqueness Constraint* type errors.
@@ -31,16 +31,16 @@ export class UniquenessConstraintException extends HttpException {
    * @param description a short description of the HTTP error.
    */
   constructor(
-    objectOrError?: string | object | any,
-    description = `Field in Entity Violates Uniqueness Constraint in Database`,
+    objectOrError?: string | Error,
+    description = `Field in Entity Violates Uniqueness Constraint in Database`
   ) {
     super(
       HttpException.createBody(
         objectOrError,
         description,
-        HttpStatus.UNPROCESSABLE_ENTITY,
+        HttpStatus.UNPROCESSABLE_ENTITY
       ),
-      HttpStatus.UNPROCESSABLE_ENTITY,
+      HttpStatus.UNPROCESSABLE_ENTITY
     );
   }
 }

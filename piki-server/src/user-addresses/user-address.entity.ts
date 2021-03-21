@@ -1,7 +1,7 @@
-import { Entity, ManyToOne } from 'typeorm';
+import { Entity, ManyToOne } from "typeorm";
 
-import { Address } from '../addresses/entities/address.entity';
-import { User } from '../users/entities/user.entity';
+import { Address } from "../addresses/entities/address.entity";
+import { User } from "../users/entities/user.entity";
 
 // TODO if we keep address model we should move this in there
 // and reference it from there inside stripe
@@ -11,9 +11,9 @@ export class UserAddress {
     type => User,
     user => user.userAddresses,
     {
-      cascade: ['insert', 'update'],
-      primary: true,
-    },
+      cascade: ["insert", "update"],
+      primary: true
+    }
   )
   user: User;
 
@@ -21,9 +21,9 @@ export class UserAddress {
     type => Address,
     address => address.userAddresses,
     {
-      cascade: ['insert', 'update'],
-      primary: true,
-    },
+      cascade: ["insert", "update"],
+      primary: true
+    }
   )
   address: Address;
 }

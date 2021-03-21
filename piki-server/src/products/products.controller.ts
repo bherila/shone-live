@@ -1,18 +1,26 @@
 import {
-  Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post, Query,
-} from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpStatus,
+  Param,
+  Patch,
+  Post,
+  Query
+} from "@nestjs/common";
+import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 
-import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
-import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
-import { Product } from './entities/product.entity';
-import { ProductsService } from './products.service';
+import { PaginationQueryDto } from "../common/dto/pagination-query.dto";
+import { CreateProductDto } from "./dto/create-product.dto";
+import { UpdateProductDto } from "./dto/update-product.dto";
+import { Product } from "./entities/product.entity";
+import { ProductsService } from "./products.service";
 
-@ApiTags('products')
+@ApiTags("products")
 // @UseGuards(JwtAuthGuard)
 // @ApiBearerAuth('JWT')
-@Controller('products')
+@Controller("products")
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
@@ -21,11 +29,11 @@ export class ProductsController {
     status: HttpStatus.OK,
     description: `success`,
     type: Product,
-    isArray: true,
+    isArray: true
   })
   @Get()
   async findAll(
-    @Query() paginationQuery: PaginationQueryDto,
+    @Query() paginationQuery: PaginationQueryDto
   ): Promise<Product[]> {
     const { limit, offset } = paginationQuery;
     return this.productsService.findAll(paginationQuery);
@@ -35,10 +43,10 @@ export class ProductsController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: `success`,
-    type: Product,
+    type: Product
   })
-  @Get(':id')
-  async findOne(@Param('id') id: string): Promise<Product> {
+  @Get(":id")
+  async findOne(@Param("id") id: string): Promise<Product> {
     return this.productsService.findOne(id);
   }
 
@@ -46,7 +54,7 @@ export class ProductsController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: `create product`,
-    type: Product,
+    type: Product
   })
   @Post()
   async create(@Body() createProductDto: CreateProductDto): Promise<Product> {
@@ -57,27 +65,27 @@ export class ProductsController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: `updated product`,
-    type: Product,
+    type: Product
   })
-  @Patch(':id')
+  @Patch(":id")
   async update(
-    @Param('id') id: string,
-    @Body() updateProductDto: UpdateProductDto,
+    @Param("id") id: string,
+    @Body() updateProductDto: UpdateProductDto
   ): Promise<Product> {
     return this.productsService.update(id, updateProductDto);
   }
 
   // todo make sure product cannot be deleted after show starts
   @ApiOperation({
-    summary: `hard deletes a product, cascading`,
+    summary: `hard deletes a product, cascading`
   })
   @ApiResponse({
     status: HttpStatus.OK,
     description: `deleted product`,
-    type: Product,
+    type: Product
   })
-  @Delete(':id')
-  async remove(@Param('id') id: string): Promise<Product> {
+  @Delete(":id")
+  async remove(@Param("id") id: string): Promise<Product> {
     return this.productsService.remove(id);
   }
 }

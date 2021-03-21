@@ -1,24 +1,24 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from "typeorm";
 
-import { File } from '../../files/entities/file.entity';
-import { Show } from '../../shows/entities/show.entity';
-import { Sku } from '../../skus/entities/sku.entity';
-import { User } from '../../users/entities/user.entity';
+import { File } from "../../files/entities/file.entity";
+import { Show } from "../../shows/entities/show.entity";
+import { Sku } from "../../skus/entities/sku.entity";
+import { User } from "../../users/entities/user.entity";
 
 @Entity()
 export class Product {
   @PrimaryColumn({
-    comment: 'stripe id is used to match 1 to 1',
+    comment: "stripe id is used to match 1 to 1"
   })
   id: string;
 
   @Column({
-    comment: 'product name',
+    comment: "product name"
   })
   name: string;
 
   @Column({
-    comment: 'product description',
+    comment: "product description"
   })
   description: string;
 
@@ -43,8 +43,8 @@ export class Product {
     type => User,
     user => user.products, // what is "product" within the User Entity
     {
-      cascade: ['insert', 'update'],
-    },
+      cascade: ["insert", "update"]
+    }
   )
   user: User;
 
@@ -52,8 +52,8 @@ export class Product {
     type => Show,
     show => show.products,
     {
-      cascade: ['insert', 'update'],
-    },
+      cascade: ["insert", "update"]
+    }
   )
   show: Show;
 
@@ -61,8 +61,8 @@ export class Product {
     type => File,
     file => file.show,
     {
-      cascade: true,
-    },
+      cascade: true
+    }
   )
   files: File[];
 
@@ -70,8 +70,8 @@ export class Product {
     type => Sku,
     sku => sku.product,
     {
-      cascade: true,
-    },
+      cascade: true
+    }
   )
   skus: Sku[];
 }

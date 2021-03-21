@@ -1,15 +1,14 @@
-import Stripe from 'stripe';
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import Stripe from "stripe";
 
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-
-import { CreateAddressDto } from '../addresses/dto/create-address.dto';
-import { CreateOrderDto } from '../orders/dto/create-order.dto';
-import { CreateProductDto } from '../products/dto/create-product.dto';
-import { CreateSkuDto } from '../skus/dto/create-sku.dto';
-import { Sku } from '../skus/entities/sku.entity';
-import { CreateUserDto } from '../users/dto/create-user.dto';
-import { UpdateUserDto } from '../users/dto/update-user.dto';
-import { User } from '../users/entities/user.entity';
+import { CreateAddressDto } from "../addresses/dto/create-address.dto";
+import { CreateOrderDto } from "../orders/dto/create-order.dto";
+import { CreateProductDto } from "../products/dto/create-product.dto";
+import { CreateSkuDto } from "../skus/dto/create-sku.dto";
+import { Sku } from "../skus/entities/sku.entity";
+import { CreateUserDto } from "../users/dto/create-user.dto";
+import { UpdateUserDto } from "../users/dto/update-user.dto";
+import { User } from "../users/entities/user.entity";
 
 @Injectable()
 export class StripeService {
@@ -17,12 +16,12 @@ export class StripeService {
 
   public constructor() {
     this.stripeClient = new Stripe(process.env.STRIPE_DEV_KEY, {
-      apiVersion: '2020-08-27',
+      apiVersion: "2020-08-27"
     });
-    if (process.env.NODE_ENV === 'dev') {
+    if (process.env.NODE_ENV === "dev") {
       console.info(
-        'you are in DEV mode: Stripe client was loaded',
-        this.stripeClient['_api'],
+        "you are in DEV mode: Stripe client was loaded",
+        this.stripeClient["_api"]
       );
     }
   }
@@ -47,7 +46,7 @@ export class StripeService {
       country: stripeCard.address_country,
       line1: stripeCard.address_line1,
       state: stripeCard.address_state,
-      postal_code: stripeCard.address_zip,
+      postal_code: stripeCard.address_zip
     };
     if (stripeCard.address_line2) {
       data.line2 = stripeCard.address_line2;
@@ -60,7 +59,7 @@ export class StripeService {
     if (missingValues.length > 0) {
       throw new HttpException(
         `Cannot save card info missing address data. Missing fields: ${missingValues}`,
-        HttpStatus.BAD_REQUEST,
+        HttpStatus.BAD_REQUEST
       );
     }
 
@@ -74,7 +73,7 @@ export class StripeService {
       country: stripeOrder.shipping.address.country,
       line1: stripeOrder.shipping.address.line1,
       state: stripeOrder.shipping.address.state,
-      postal_code: stripeOrder.shipping.address.postal_code,
+      postal_code: stripeOrder.shipping.address.postal_code
     };
     if (stripeOrder.shipping.address.line2) {
       data.line2 = stripeOrder.shipping.address.line2;
@@ -108,30 +107,30 @@ export class StripeService {
 
   async createStripeCard(user: string, cardToken: string) {
     return this.stripeClient.customers.createSource(user, {
-      source: cardToken,
+      source: cardToken
     });
   }
 
   async createStripeProduct(
     createProductDto: CreateProductDto,
     showId: string,
-    showDate: string,
+    showDate: string
   ) {
     return this.stripeClient.products.create({
       name: createProductDto.name,
       active: true, // todo: update to false after show is done
       description: createProductDto.description,
-      type: 'good',
+      type: "good",
       shippable: true,
       // images: ["some urls here"], // file path ...todo once files are saving path not just name // dummy data
       images: [
-        'https://cdn.shopify.com/s/files/1/2143/3217/products/500_3f527d72-404b-4db7-a96c-471d1f97256e.png?v=1595523310',
+        "https://cdn.shopify.com/s/files/1/2143/3217/products/500_3f527d72-404b-4db7-a96c-471d1f97256e.png?v=1595523310"
       ], // dummy data
       metadata: {
         product_creator_user_id: createProductDto.user_id,
         show_id: showId,
-        show_date: showDate,
-      },
+        show_date: showDate
+      }
     });
   }
 
@@ -153,28 +152,28 @@ export class StripeService {
       //   gender: "Unisex"
       // },
       price: createSkuDto.price,
-      currency: 'usd',
+      currency: "usd",
       // // image: "one url here",
       image:
-        'https://cdn.shopify.com/s/files/1/2143/3217/products/500_3f527d72-404b-4db7-a96c-471d1f97256e.png?v=1595523310', // dummy data
+        "https://cdn.shopify.com/s/files/1/2143/3217/products/500_3f527d72-404b-4db7-a96c-471d1f97256e.png?v=1595523310", // dummy data
       inventory: {
-        type: 'finite',
-        quantity: createSkuDto.quantity,
-      },
+        type: "finite",
+        quantity: createSkuDto.quantity
+      }
     });
   }
 
   async activateStripeSku(sku: Sku) {
     // made blocking for now because not sure how to do each loop await
     return await this.stripeClient.skus.update(sku.id, {
-      active: true,
+      active: true
     });
   }
 
   async deactivateStripeSku(sku: Sku) {
     // made blocking for now because not sure how to do each loop await
     return await this.stripeClient.skus.update(sku.id, {
-      active: false,
+      active: false
     });
   }
 
@@ -183,14 +182,14 @@ export class StripeService {
       ? createOrderDto.shipping_name
       : `${user.first_name} ${user.last_name}`;
     const data: any = {
-      currency: 'usd',
+      currency: "usd",
       customer: createOrderDto.user_id,
       items: [
         {
-          type: 'sku',
+          type: "sku",
           parent: createOrderDto.sku,
-          quantity: createOrderDto.quantity,
-        },
+          quantity: createOrderDto.quantity
+        }
       ],
       // even tho stripe docs say if customer is attached the customer address
       // is used by default, so shipping address is optional,
@@ -200,12 +199,12 @@ export class StripeService {
           city: createOrderDto.shipping.city,
           country: createOrderDto.shipping.country,
           line1: createOrderDto.shipping.line1,
-          line2: '' || createOrderDto.shipping.line2,
+          line2: "" || createOrderDto.shipping.line2,
           postal_code: createOrderDto.shipping.postal_code,
-          state: createOrderDto.shipping.state,
+          state: createOrderDto.shipping.state
         },
-        name: shippingName,
-      },
+        name: shippingName
+      }
     };
     if (createOrderDto.email) {
       data.email = createOrderDto.email;
