@@ -7,33 +7,44 @@ import {
   Dimensions,
   SafeAreaView,
   KeyboardAvoidingView,
+  RecyclerViewBackedScrollViewComponent,
 } from "react-native";
 import theme from "./../../utils/colors";
 import styles from "./styles";
 import { Item, Input } from "native-base";
 import { Header, Left, Button, Icon, Right, Body, Title } from "native-base";
 import Text from "./../../components/Text";
-const windowWidth = Dimensions.get("window").width;
-const windowHeight = Dimensions.get("window").height;
+import OTPTextInput from 'react-native-otp-textinput';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
+import { useNavigation } from "@react-navigation/native"; 
 
+export default function ConfirmSms() {
+  const navigation = useNavigation();
 
-export default function ConfirmSms(props) {
   const [otp, setOTP] = useState("");
 
   useEffect(() => {
     if (otp.length === 6) {
-      props.navigation.navigate("NewAccount")
+      navigation.navigate("NewAccount")
     }
-
   }, [otp]);
-  
+
+  const onConfirm =() => {
+    if (otp.length === 6) {
+    navigation.navigate("NewAccount")
+    }else{
+      alert('Enter valid otp')
+    }
+  }
+
   return (
     <View style={styles.container}>
-      <KeyboardAvoidingView behavior="position" style={styles.form}>
+      <KeyboardAwareScrollView contentContainerStyle={{
+        justifyContent: "center",}}>
 
         <Header style={{ elevation: 0, backgroundColor: "transparent" }}>
           <Left style={{ flex: 1 }}>
-            <Button transparent onPress={() => props.navigation.goBack()}>
+            <Button transparent onPress={() => navigation.goBack()}>
               <Icon name="arrow-back" style={{ color: "black" }} />
             </Button>
           </Left>
@@ -59,25 +70,21 @@ export default function ConfirmSms(props) {
           <Text style={styles._desc}>
             We just texted you a code to confirm your identity
           </Text>
-
-          <Item regular style={styles._codeInput}>
-            <Input
-              placeholder="Enter your code"
-              keyboardType="number-pad"
-              maxLength={6}
-              value={otp}
-              onChangeText={text => { setOTP(text) }}
-
-            />
-          </Item>
+          <View style={{ alignItems: 'center', justifyContent: 'center', width: '100%' }}>
+ 
+            <OTPTextInput
+              textInputStyle={{ borderWidth: 1, borderRadius: 5, }}
+              inputCount={6}
+              handleTextChange={(text) => { setOTP(text) }} />
+          </View>
           <TouchableOpacity
             style={[styles._confirmBtn, theme.bg]}
-            onPress={() => props.navigation.navigate("NewAccount")}
+            onPress={() => onConfirm()}
           >
             <Text style={styles._confirmBtn_text}>Confirm</Text>
           </TouchableOpacity>
         </View>
-      </KeyboardAvoidingView>
+      </KeyboardAwareScrollView>
     </View>
   );
 }

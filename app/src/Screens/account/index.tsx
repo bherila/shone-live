@@ -20,14 +20,16 @@ import { AntDesign } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import Text from "./../../components/Text";
+import { useNavigation } from "@react-navigation/native"; 
 
-export default function Account(props) {
+export default function Account() {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
 
       <Header style={{ elevation: 0, backgroundColor: "transparent" }}>
         <Left style={{ flex: 1 }}>
-          <Button transparent onPress={() => props.navigation.goBack()}>
+          <Button transparent onPress={() => navigation.goBack()}>
             <Icon name="arrow-back" style={{ color: "black" }} />
           </Button>
         </Left>
@@ -46,7 +48,7 @@ export default function Account(props) {
         <Right style={{ flex: 1 }}>
           <TouchableOpacity
             style={styles._userAvatar}
-            onPress={() => props.navigation.navigate("Login")}
+            onPress={() => navigation.navigate("Login")}
           >
             <Image
               source={require("./../../../assets/exist.jpg")}

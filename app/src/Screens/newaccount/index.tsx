@@ -1,10 +1,8 @@
-import React from "react";
+import React, { createRef, useEffect, useRef, useState } from "react";
 import { View, TouchableOpacity, Image, KeyboardAvoidingView } from "react-native";
 import theme from "./../../utils/colors";
 import styles from "./styles";
 import {
-  Card,
-  CardItem,
   Body,
   Item,
   Icon,
@@ -15,55 +13,109 @@ import {
   Right,
 } from "native-base";
 import Text from "./../../components/Text";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
+import { useNavigation } from "@react-navigation/native";
 
-export default function ConfirmSms(props) {
+export default function NewAccount() {
+  const navigation = useNavigation();
+
+  const [fname, setFname] = useState('');
+  const [lname, setLname] = useState('');
+  const [email, setEmail] = useState('');
+
+  // const fnameRef = useRef(null);
+  // const lnameRef = useRef(null);
+  // const emailRef = useRef(null);
+
+
+
+  useEffect(() => {
+      // fnameRef.current.focus();
+  },[]) 
+
+  const onGo = () => {
+
+    if (fname !== "" && lname !== "" && email !== "") {
+      const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+      if (reg.test(email) === true) {
+        navigation.navigate("ProfilePhoto")
+      } else {
+        alert("Enter right email")
+      }
+    } else {
+      alert("Fill up details");
+    }
+
+  }
+
   return (
-    <View style={styles.container}>
-      <Header style={{ elevation: 0, backgroundColor: "transparent" }}>
-        <Left style={{ flex: 1 }}>
-          <Button transparent onPress={() => props.navigation.goBack()}>
-            <Icon name="arrow-back" style={{ color: "black" }} />
-          </Button>
-        </Left>
-        <Body
-          style={{
-            flex: 3,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Image
-            source={require("./../../../assets/logo.png")}
-            style={{ height: 60, width: 120 }}
-          />
-        </Body>
-        <Right style={{ flex: 1 }}></Right>
-      </Header>
+    <KeyboardAwareScrollView>
+      <View style={styles.container}>
+        <Header style={{ elevation: 0, backgroundColor: "transparent" }}>
+          <Left style={{ flex: 1 }}>
+            <Button transparent onPress={() => navigation.goBack()}>
+              <Icon name="arrow-back" style={{ color: "black" }} />
+            </Button>
+          </Left>
+          <Body
+            style={{
+              flex: 3,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Image
+              source={require("./../../../assets/logo.png")}
+              style={{ height: 60, width: 120 }}
+            />
+          </Body>
+          <Right style={{ flex: 1 }}></Right>
+        </Header>
         <View style={styles._innerView}>
-      <KeyboardAvoidingView>
-          <Text style={styles._desc}>
-            We haven’t seen you before. Create a new account.
+          <KeyboardAvoidingView>
+            <Text style={styles._desc}>
+              We haven’t seen you before. Create a new account.
           </Text>
 
-          <Item regular style={styles._codeInput}>
-            <Input placeholder="First name" />
-          </Item>
+            <Item regular style={styles._codeInput}>
+              <Input 
+              // ref = {fnameRef}
+              placeholder="First name"
+                onChangeText={(text) => { setFname(text) }}
+                keyboardType={'default'}
+                returnKeyType={'next'}
+                // onSubmitEditing={() => { lnameRef.current.focus() }}
+              />
+            </Item>
 
-          <Item regular style={styles._codeInput}>
-            <Input placeholder="Last name" />
-          </Item>
+            <Item regular style={styles._codeInput}>
+              <Input
+                // ref={lnameRef}
+                placeholder="Last name"
+                onChangeText={(text) => { setLname(text) }}
+                keyboardType={'default'}
+                returnKeyType={'next'}
+                // onSubmitEditing={() => { emailRef.current.focus() }} 
+                />
+            </Item>
 
-          <Item regular style={styles._codeInput}>
-            <Input placeholder="Email address" keyboardType="email-address" />
-          </Item>
+            <Item regular style={styles._codeInput}>
+              <Input
+                // ref={emailRef}
+                placeholder="Email address"
+                keyboardType="email-address"
+                onChangeText={(text) => { setEmail(text) }} 
+                returnKeyType = {"done"}/>
+            </Item>
           </KeyboardAvoidingView>
         </View>
         <TouchableOpacity
           style={[styles._confirmBtn, theme.bg]}
-          onPress={() => props.navigation.navigate("ProfilePhoto")}
+          onPress={() => onGo()}
         >
           <Text style={styles._confirmBtn_text}>Go</Text>
         </TouchableOpacity>
-    </View>
+      </View>
+    </KeyboardAwareScrollView>
   );
 }
