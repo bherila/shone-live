@@ -27,12 +27,12 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   _codeInput: {
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderRightWidth: 1,
-    borderLeftWidth: 1,
+    // borderTopWidth: 1,
+    // borderBottomWidth: 1,
+    // borderRightWidth: 1,
+    // borderLeftWidth: 1,
     padding: 2,
-    borderRadius: 10,
+    // borderRadius: 10,
   },
   _confirmBtn: {
     // width: 350,

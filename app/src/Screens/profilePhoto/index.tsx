@@ -18,7 +18,11 @@ import {
 } from "native-base";
 import Text from "./../../components/Text";
 import Camera from "./../../components/camera";
-export default function ProfilePhoto(props) {
+import { useNavigation } from "@react-navigation/native"; 
+
+export default function ProfilePhoto() {
+  const navigation = useNavigation();
+
   const [image, setImage] = useState(null);
 
   const [openCamera, setOpenCamera] = useState(true);
@@ -66,7 +70,7 @@ export default function ProfilePhoto(props) {
         <>
           <Header style={{ elevation: 0, backgroundColor: "transparent" }}>
             <Left style={{ flex: 1 }}>
-              <Button transparent onPress={() => props.navigation.goBack()}>
+              <Button transparent onPress={() => navigation.goBack()}>
                 <Icon name="arrow-back" style={{ color: "black" }} />
               </Button>
             </Left>
@@ -84,7 +88,7 @@ export default function ProfilePhoto(props) {
             </Body>
             <Right style={{ flex: 1 }}>
               <TouchableOpacity
-                onPress={() => props.navigation.navigate("MainScreen")}
+                onPress={() => navigation.navigate("MainScreen")}
               >
                 <Text style={theme.textColor}>Next</Text>
               </TouchableOpacity>

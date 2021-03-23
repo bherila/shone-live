@@ -18,8 +18,11 @@ import {
 } from "native-base";
 import Menu, { MenuItem, MenuDivider } from "react-native-material-menu";
 import Text from "./../../components/Text";
+import { useNavigation } from "@react-navigation/native"; 
 
-export default function MainScreen(props) {
+export default function MainScreen() {
+  const navigation = useNavigation();
+
   const [modalVisible, setModalVisible] = useState(false);
 
   let newArr = [
@@ -55,19 +58,19 @@ export default function MainScreen(props) {
   };
 
   const ViewProfile = () => {
-    props.navigation.navigate("Account");
+    navigation.navigate("Account");
     hideMenu();
   };
 
   const Logout = () => {
-    props.navigation.navigate("Login");
+    navigation.navigate("Login");
     hideMenu();
   };
   return (
     <View style={styles.container}>
       <Header style={{ elevation: 0, backgroundColor: "transparent" }}>
         <Left style={{ flex: 1 }}>
-          <Button transparent onPress={() => props.navigation.goBack()}>
+          <Button transparent onPress={() => navigation.goBack()}>
             <Icon name="arrow-back" style={{ color: "black" }} />
           </Button>
         </Left>
@@ -163,8 +166,7 @@ export default function MainScreen(props) {
         visible={modalVisible}
         onRequestClose={() => {
           alert("Modal has been closed.");
-        }}
-      >
+        }}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <TouchableOpacity

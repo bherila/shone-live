@@ -3,9 +3,7 @@ import {
   Image,
   View,
   TouchableOpacity,
-  ScrollView,
-  SafeAreaView,
-  KeyboardAvoidingView,
+  Keyboard,
 } from "react-native";
 import theme from "./../../utils/colors";
 import styles from "./styles";
@@ -13,16 +11,14 @@ import { Card, CardItem, Body, Item, Icon, Input, Button } from "native-base";
 import { EvilIcons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import Text from "./../../components/Text";
-import { Dimensions } from "react-native";
-import PhoneInput from "react-native-phone-number-input";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
 import { TextInputMask } from 'react-native-masked-text';
+import { useNavigation } from "@react-navigation/native"; 
 
 
-const windowWidth = Dimensions.get("window").width;
-const windowHeight = Dimensions.get("window").height;
+export default function Login() {
+  const navigation = useNavigation();
 
-export default function Login(props) {
   const [mobile, setMobile] = useState("");
   const [formattedValue, setFormattedValue] = useState("");
   const [valid, setValid] = useState(false);
@@ -30,17 +26,18 @@ export default function Login(props) {
 
 
   useEffect(() => {
-    setFormattedValue(mobile.replaceAll("-",""));
-    console.log("formatted", formattedValue);
-    
     if (mobile.length === 12) {
-      setFormattedValue(mobile.replaceAll("-",""));
-    console.log("formatted", formattedValue);
-      // props.navigation.navigate("ConfirmSms");
+      Keyboard.dismiss();
     }
   }, [mobile])
 
-
+  const onContinue = () => {
+    if(mobile.replaceAll("-", "").length === 10){
+      navigation.navigate("ConfirmSms");
+    }else{
+      alert('Please enter correct mobile number')
+    }
+  }
 
   return (
     <KeyboardAwareScrollView contentContainerStyle={styles.container} >
@@ -68,7 +65,6 @@ export default function Login(props) {
                 <Text style={{ fontWeight: "bold", fontSize: 18, color: "grey" }}>+1 </Text>
 
                 <TextInputMask
-
                   style={styles._input}
                   type={'cel-phone'}
                   options={{
@@ -85,19 +81,12 @@ export default function Login(props) {
                   autoCorrect={false}
                   keyboardType={'number-pad'}
                 />
-                {/* <TextInputMask
-                  onChangeText={(formatted, extracted) => {
-                    console.log(formatted) // +1 (123) 456-78-90
-                    console.log(extracted) // 1234567890
-                  }}
-                  mask={"+1 ([000]) [000] [00] [00]"}
-                /> */}
 
               </Item>
               <Button
                 style={[styles._continue_btn, theme.bg]}
-                onPress={() => props.navigation.navigate("ConfirmSms")}
-              >
+                keyboardShouldPersistTaps={true}
+                onPress={() => onContinue()}>
                 <Text style={styles._btn_text}>Continue</Text>
               </Button>
             </Card>
