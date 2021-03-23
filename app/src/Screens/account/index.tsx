@@ -1,57 +1,51 @@
-import React from "react";
-import { Image, View, TouchableOpacity, ScrollView } from "react-native";
-import theme from "./../../utils/colors";
-import styles from "./styles";
-import { MaterialIcons } from "@expo/vector-icons";
+import React from 'react'
+import { Image, View, TouchableOpacity, ScrollView } from 'react-native'
+import theme from './../../utils/colors'
+import styles from './styles'
+import { MaterialIcons, AntDesign, Entypo, SimpleLineIcons } from '@expo/vector-icons'
 import {
-  Card,
-  CardItem,
   Body,
-  Item,
   Icon,
-  Input,
   Button,
   Header,
   Left,
   Right,
-  ListItem,
-} from "native-base";
-import { AntDesign } from "@expo/vector-icons";
-import { Entypo } from "@expo/vector-icons";
-import { SimpleLineIcons } from "@expo/vector-icons";
-import Text from "./../../components/Text";
-import { useNavigation } from "@react-navigation/native"; 
+  ListItem
+} from 'native-base'
 
-export default function Account() {
-  const navigation = useNavigation();
+import Text from './../../components/Text'
+import { useNavigation } from '@react-navigation/native'
+
+export default function Account () {
+  const navigation = useNavigation()
   return (
     <View style={styles.container}>
 
-      <Header style={{ elevation: 0, backgroundColor: "transparent" }}>
+      <Header style={{ elevation: 0, backgroundColor: 'transparent' }}>
         <Left style={{ flex: 1 }}>
           <Button transparent onPress={() => navigation.goBack()}>
-            <Icon name="arrow-back" style={{ color: "black" }} />
+            <Icon name="arrow-back" style={{ color: 'black' }} />
           </Button>
         </Left>
         <Body
           style={{
             flex: 3,
-            justifyContent: "center",
-            alignItems: "center",
+            justifyContent: 'center',
+            alignItems: 'center'
           }}
         >
           <Image
-            source={require("./../../../assets/logo.png")}
+            source={require('./../../../assets/logo.png')}
             style={{ height: 60, width: 120 }}
           />
         </Body>
         <Right style={{ flex: 1 }}>
           <TouchableOpacity
             style={styles._userAvatar}
-            onPress={() => navigation.navigate("Login")}
+            onPress={() => navigation.navigate('Login')}
           >
             <Image
-              source={require("./../../../assets/exist.jpg")}
+              source={require('./../../../assets/exist.jpg')}
               style={styles._profilePic}
             />
           </TouchableOpacity>
@@ -61,7 +55,7 @@ export default function Account() {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles._circle}>
           <Image
-            source={require("./../../../assets/avatar.jpg")}
+            source={require('./../../../assets/avatar.jpg')}
             style={styles._avatarImg}
           />
 
@@ -73,14 +67,14 @@ export default function Account() {
         <ListItem icon style={styles._list}>
           <Left>
             <Image
-              source={require("./../../../assets/ordersicon.png")}
+              source={require('./../../../assets/ordersicon.png')}
               style={styles._list_icon}
             />
           </Left>
           <Body style={{ borderBottomWidth: 0 }}>
             <Text style={styles._pages}>Orders</Text>
           </Body>
-          <Right style={{borderBottomWidth:0}}>
+          <Right style={{ borderBottomWidth: 0 }}>
             <MaterialIcons name="keyboard-arrow-right" size={24} color="grey" />
           </Right>
         </ListItem>
@@ -97,7 +91,7 @@ export default function Account() {
           <Body style={{ borderBottomWidth: 0 }}>
             <Text style={styles._pages}>Reviews</Text>
           </Body>
-          <Right style={{borderBottomWidth:0}}>
+          <Right style={{ borderBottomWidth: 0 }}>
             <MaterialIcons name="keyboard-arrow-right" size={24} color="grey" />
           </Right>
         </ListItem>
@@ -114,7 +108,7 @@ export default function Account() {
           <Body style={{ borderBottomWidth: 0 }}>
             <Text style={styles._pages}>Payment Methods</Text>
           </Body>
-          <Right style={{borderBottomWidth:0}}>
+          <Right style={{ borderBottomWidth: 0 }}>
             <MaterialIcons name="keyboard-arrow-right" size={24} color="grey" />
           </Right>
         </ListItem>
@@ -131,7 +125,7 @@ export default function Account() {
           <Body style={{ borderBottomWidth: 0 }}>
             <Text style={styles._pages}>Addresses</Text>
           </Body>
-          <Right style={{borderBottomWidth:0}}>
+          <Right style={{ borderBottomWidth: 0 }}>
             <MaterialIcons name="keyboard-arrow-right" size={24} color="grey" />
           </Right>
         </ListItem>
@@ -148,7 +142,7 @@ export default function Account() {
           <Body style={{ borderBottomWidth: 0 }}>
             <Text style={styles._pages}>Who I’m Following</Text>
           </Body>
-          <Right style={{borderBottomWidth:0}}>
+          <Right style={{ borderBottomWidth: 0 }}>
             <MaterialIcons name="keyboard-arrow-right" size={24} color="grey" />
           </Right>
         </ListItem>
@@ -165,7 +159,7 @@ export default function Account() {
           <Body style={{ borderBottomWidth: 0 }}>
             <Text style={styles._pages}>Notifications</Text>
           </Body>
-          <Right style={{borderBottomWidth:0}}>
+          <Right style={{ borderBottomWidth: 0 }}>
             <MaterialIcons name="keyboard-arrow-right" size={24} color="grey" />
           </Right>
         </ListItem>
@@ -173,19 +167,19 @@ export default function Account() {
         <ListItem icon style={styles._list}>
           <Left>
             <Image
-              source={require("./../../../assets/sellericon.png")}
+              source={require('./../../../assets/sellericon.png')}
               style={styles._list_icon}
             />
           </Left>
           <Body style={{ borderBottomWidth: 0 }}>
             <Text style={styles._pages}>Become a Seller</Text>
           </Body>
-    
-          <Right style={{borderBottomWidth:0}}>
+
+          <Right style={{ borderBottomWidth: 0 }}>
             <MaterialIcons name="keyboard-arrow-right" size={24} color="grey" />
           </Right>
         </ListItem>
       </ScrollView>
     </View>
-  );
+  )
 }

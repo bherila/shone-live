@@ -1,88 +1,80 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Image, View, TouchableOpacity, ScrollView, Modal } from "react-native";
-import theme from "./../../utils/colors";
-import styles from "./styles";
-import { Feather } from "@expo/vector-icons";
-import { Entypo } from "@expo/vector-icons";
+/* eslint-disable no-use-before-define */
+import React, { useState, useEffect, useRef } from 'react'
+import { Image, View, TouchableOpacity, ScrollView, Modal } from 'react-native'
+import theme from './../../utils/colors'
+import styles from './styles'
+import { Feather, Entypo } from '@expo/vector-icons'
 import {
-  Card,
-  CardItem,
   Body,
-  Item,
   Icon,
-  Input,
   Button,
   Header,
   Left,
-  Right,
-} from "native-base";
-import Menu, { MenuItem, MenuDivider } from "react-native-material-menu";
-import Text from "./../../components/Text";
-import { useNavigation } from "@react-navigation/native"; 
+  Right
+} from 'native-base'
+import Menu, { MenuItem } from 'react-native-material-menu'
+import Text from './../../components/Text'
+import { useNavigation } from '@react-navigation/native'
 
-export default function MainScreen() {
-  const navigation = useNavigation();
+export default function MainScreen () {
+  const navigation = useNavigation()
 
-  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false)
 
-  let newArr = [
-    { img: require("./../../../assets/newone.png") },
-    { img: require("./../../../assets/newtwo.png") },
-    { img: require("./../../../assets/newthree.png") },
-  ];
+  const newArr = [
+    { img: require('./../../../assets/newone.png') },
+    { img: require('./../../../assets/newtwo.png') },
+    { img: require('./../../../assets/newthree.png') }
+  ]
 
-  let commingSoon = [
-    { img: require("./../../../assets/comingone.png") },
-    { img: require("./../../../assets/comingtwo.png") },
-    { img: require("./../../../assets/comingthree.png") },
-  ];
+  const commingSoon = [
+    { img: require('./../../../assets/comingone.png') },
+    { img: require('./../../../assets/comingtwo.png') },
+    { img: require('./../../../assets/comingthree.png') }
+  ]
 
-  let moreShows = [
-    { img: require("../../../assets/moreone.png") },
-    { img: require("../../../assets/moretwo.png") },
-    { img: require("../../../assets/morethree.png") },
-  ];
+  const moreShows = [
+    { img: require('../../../assets/moreone.png') },
+    { img: require('../../../assets/moretwo.png') },
+    { img: require('../../../assets/morethree.png') }
+  ]
 
   useEffect(() => {
-    setModalVisible(true);
-  }, []);
+    setModalVisible(true)
+  }, [])
 
-  const menu = useRef();
+  const menu = useRef()
 
   const hideMenu = () => {
-    menu.current.hide();
-  };
+    menu.current.hide()
+  }
 
   const showMenu = () => {
-    menu.current.show();
-  };
+    menu.current.show()
+  }
 
   const ViewProfile = () => {
-    navigation.navigate("Account");
-    hideMenu();
-  };
+    navigation.navigate('Account')
+    hideMenu()
+  }
 
   const Logout = () => {
-    navigation.navigate("Login");
-    hideMenu();
-  };
+    navigation.navigate('Login')
+    hideMenu()
+  }
   return (
     <View style={styles.container}>
-      <Header style={{ elevation: 0, backgroundColor: "transparent" }}>
-        <Left style={{ flex: 1 }}>
-          <Button transparent onPress={() => navigation.goBack()}>
-            <Icon name="arrow-back" style={{ color: "black" }} />
-          </Button>
-        </Left>
+      <Header style={{ elevation: 0, backgroundColor: 'transparent' }}>
+        <Left />
         <Body
           style={{
             flex: 3,
-            justifyContent: "center",
-            alignItems: "center",
+            justifyContent: 'center',
+            alignItems: 'center'
           }}
         >
           <Image
-            source={require("./../../../assets/logo.png")}
+            source={require('./../../../assets/logo.png')}
             style={{ height: 60, width: 120 }}
           />
         </Body>
@@ -92,7 +84,7 @@ export default function MainScreen() {
             button={
               <TouchableOpacity style={styles._userAvatar} onPress={showMenu}>
                 <Image
-                  source={require("./../../../assets/avatar.jpg")}
+                  source={require('./../../../assets/avatar.jpg')}
                   style={styles._profilePic}
                 />
               </TouchableOpacity>
@@ -112,9 +104,11 @@ export default function MainScreen() {
             {newArr.map((val, i) => {
               return (
                 <View key={i} style={styles._imageView}>
-                  <Image source={val.img} style={styles._image} />
+                  <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+                    <Image source={val.img} style={styles._image} />
+                  </TouchableOpacity>
                 </View>
-              );
+              )
             })}
           </ScrollView>
         </View>
@@ -134,7 +128,7 @@ export default function MainScreen() {
                     />
                   </TouchableOpacity>
                 </View>
-              );
+              )
             })}
           </ScrollView>
         </View>
@@ -146,7 +140,7 @@ export default function MainScreen() {
               return (
                 <View key={i} style={styles._imageView}>
                   <Image source={val.img} style={styles._image} />
-                  <TouchableOpacity style={styles._circle}>
+                  <TouchableOpacity style={styles._circle} onPress={() => navigation.navigate('Home')}>
                     <Feather
                       name="user-plus"
                       size={20}
@@ -154,7 +148,7 @@ export default function MainScreen() {
                     />
                   </TouchableOpacity>
                 </View>
-              );
+              )
             })}
           </ScrollView>
         </View>
@@ -165,20 +159,20 @@ export default function MainScreen() {
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-          alert("Modal has been closed.");
+          alert('Modal has been closed.')
         }}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <TouchableOpacity
               style={styles._crossCircle}
               onPress={() => {
-                setModalVisible(!modalVisible);
+                setModalVisible(!modalVisible)
               }}
             >
               <Entypo name="cross" size={24} color="black" />
             </TouchableOpacity>
             <Image
-              source={require("../../../assets/notificationimage.png")}
+              source={require('../../../assets/notificationimage.png')}
               style={styles._notificationImage}
             />
             <Text style={styles._screenHeading}>Can we notify you?</Text>
@@ -191,10 +185,10 @@ export default function MainScreen() {
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={[styles._confirmBtn, { backgroundColor: "#e4e4e4" }]}
+              style={[styles._confirmBtn, { backgroundColor: '#e4e4e4' }]}
               onPress={() => setModalVisible(false)}
             >
-              <Text style={[styles._confirmBtn_text, { color: "#525252" }]}>
+              <Text style={[styles._confirmBtn_text, { color: '#525252' }]}>
                 Dismiss
               </Text>
             </TouchableOpacity>
@@ -202,5 +196,5 @@ export default function MainScreen() {
         </View>
       </Modal>
     </View>
-  );
+  )
 }

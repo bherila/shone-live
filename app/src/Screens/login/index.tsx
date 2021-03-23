@@ -1,40 +1,36 @@
-import React, { useState, useRef, useEffect } from "react";
+// eslint-disable-next-line no-use-before-define
+import React, { useState, useEffect } from 'react'
 import {
   Image,
   View,
   TouchableOpacity,
-  Keyboard,
-} from "react-native";
-import theme from "./../../utils/colors";
-import styles from "./styles";
-import { Card, CardItem, Body, Item, Icon, Input, Button } from "native-base";
-import { EvilIcons } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
-import Text from "./../../components/Text";
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
-import { TextInputMask } from 'react-native-masked-text';
-import { useNavigation } from "@react-navigation/native"; 
+  Keyboard
+} from 'react-native'
+import theme from './../../utils/colors'
+import styles from './styles'
+import { Card, CardItem, Body, Item, Icon, Button } from 'native-base'
+import { EvilIcons, FontAwesome } from '@expo/vector-icons'
 
+import Text from './../../components/Text'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
+import { TextInputMask } from 'react-native-masked-text'
+import { useNavigation } from '@react-navigation/native'
 
-export default function Login() {
-  const navigation = useNavigation();
+export default function Login () {
+  const navigation = useNavigation()
 
-  const [mobile, setMobile] = useState("");
-  const [formattedValue, setFormattedValue] = useState("");
-  const [valid, setValid] = useState(false);
-  const [showMessage, setShowMessage] = useState(false);
-
+  const [mobile, setMobile] = useState('')
 
   useEffect(() => {
     if (mobile.length === 12) {
-      Keyboard.dismiss();
+      Keyboard.dismiss()
     }
   }, [mobile])
 
   const onContinue = () => {
-    if(mobile.replaceAll("-", "").length === 10){
-      navigation.navigate("ConfirmSms");
-    }else{
+    if (mobile.replaceAll('-', '').length === 10) {
+      navigation.navigate('ConfirmSms')
+    } else {
       alert('Please enter correct mobile number')
     }
   }
@@ -44,7 +40,7 @@ export default function Login() {
       <View style={{ flex: 1 }}>
         <View style={styles._logView}>
           <Image
-            source={require("../../../assets/logo.png")}
+            source={require('../../../assets/logo.png')}
             style={styles._logo}
           />
         </View>
@@ -62,18 +58,18 @@ export default function Login() {
               </CardItem>
               <Item style={[styles._inputFiled, theme.borderColor]}>
                 <Icon active name="call" style={theme.iconColor} />
-                <Text style={{ fontWeight: "bold", fontSize: 18, color: "grey" }}>+1 </Text>
+                <Text style={{ fontWeight: 'bold', fontSize: 18, color: 'grey' }}>+1 </Text>
 
                 <TextInputMask
                   style={styles._input}
                   type={'cel-phone'}
                   options={{
-                    maskType: 'BRL',//for international set it -&amp;nbsp;INTERNATIONAL type masking
+                    maskType: 'BRL', // for international set it -&amp;nbsp;INTERNATIONAL type masking
                     withDDD: true,
-                    dddMask: '999-999-9999'//this is a your define formatting you use according to your requirment
+                    dddMask: '999-999-9999'// this is a your define formatting you use according to your requirment
                   }}
 
-                  maxLength={12}//set length according to your input requirment
+                  maxLength={12}// set length according to your input requirment
                   onChangeText={text => { setMobile(text) }}
                   value={mobile}
                   placeholder={'###-###-####'}
@@ -114,5 +110,5 @@ export default function Login() {
       </View>
     </KeyboardAwareScrollView>
 
-  );
+  )
 }
