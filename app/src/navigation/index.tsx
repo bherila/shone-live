@@ -1,19 +1,21 @@
+/* eslint-disable no-use-before-define */
 // In App.js in a new project
 
-import * as React from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import * as React from 'react'
+import { NavigationContainer } from '@react-navigation/native'
+import { createStackNavigator } from '@react-navigation/stack'
 
-import Login from "./../Screens/login";
-import ConfirmSms from "./../Screens/confirmsms";
-import NewAccount from "./../Screens/newaccount";
-import ProfilePhoto from "./../Screens/profilePhoto";
-import MainScreen from "./../Screens/mainScreen";
-import Account from "./../Screens/account";
+import Login from './../Screens/login'
+import ConfirmSms from './../Screens/confirmsms'
+import NewAccount from './../Screens/newaccount'
+import ProfilePhoto from './../Screens/profilePhoto'
+import MainScreen from './../Screens/mainScreen'
+import Account from './../Screens/account'
+import Home from '../Screens/Home'
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator()
 
-function Navigation() {
+function Navigation () {
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -47,9 +49,14 @@ function Navigation() {
           component={Account}
           options={{ headerShown: false }}
         />
+         <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
-  );
+  )
 }
 
-export default Navigation;
+export default Navigation

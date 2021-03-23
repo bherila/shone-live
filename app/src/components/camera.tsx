@@ -1,76 +1,53 @@
-import React, { useState, useEffect } from "react";
+/* eslint-disable no-use-before-define */
+import React, { useState, useEffect } from 'react'
 import {
   SafeAreaView,
   View,
   Text,
-  Dimensions,
-  Image,
   TouchableOpacity,
   StyleSheet,
-  StatusBar,
-} from "react-native";
-import { Camera } from "expo-camera";
-import {
-  Entypo,
-  Ionicons,
-  MaterialIcons,
-  EvilIcons,
-  SimpleLineIcons,
-  MaterialCommunityIcons,
-  FontAwesome5,
-} from "@expo/vector-icons";
+  StatusBar
+} from 'react-native'
+import { Camera } from 'expo-camera'
+import { Entypo } from '@expo/vector-icons'
 
-import * as ImagePicker from "expo-image-picker";
-
-const { width, height } = Dimensions.get("window");
-
-let calTime;
-let cameraRef;
-
-const options = {
-  title: "Select Avatar",
-  customButtons: [{ name: "fb", title: "Choose Photo from Facebook" }],
-  storageOptions: {
-    skipBackup: true,
-    path: "images",
-  },
-};
+let cameraRef: Camera | null
 
 const TakePhoto = (props) => {
-  const [hasPermission, setHasPermission] = useState(null);
-  const [type, setType] = useState(Camera.Constants.Type.back);
-  const [isCameraUiOn, setIsCameraUiOn] = useState(false);
-  const [isCapturing, setIsCapturing] = useState(false);
-  const [flashMode, setFlashMode] = useState(true);
-  const [capturePhoto, setCapturePhoto] = useState(null);
-  const [showeffect, setshoweffect] = useState(false);
+  const [hasPermission, setHasPermission] = useState(null)
+  const [type] = useState(Camera.Constants.Type.back)
+  const [, setIsCameraUiOn] = useState(false)
+  const [, setIsCapturing] = useState(false)
+  const [flashMode] = useState(true)
+  const [, setCapturePhoto] = useState(null)
+
 
   const snap = async () => {
     if (cameraRef) {
-      let photo = await cameraRef.takePictureAsync({
-        quality: 0.5,
-      });
-      setCapturePhoto(photo.uri);
-      setIsCapturing(false);
-      setIsCameraUiOn(false);
+      const photo = await cameraRef.takePictureAsync({
+        quality: 0.5
+      })
+      setCapturePhoto(photo.uri)
+      setIsCapturing(false)
+      setIsCameraUiOn(false)
       props.func(photo.uri)
     }
-  };
+  }
 
   const getCameraPermission = async () => {
-    const { status } = await Camera.requestPermissionsAsync();
-    setHasPermission(status === "granted");
-  };
+    const { status } = await Camera.requestPermissionsAsync()
+    setHasPermission(status === 'granted')
+  }
 
   useEffect(() => {
-    getCameraPermission();
-  }, []);
+    getCameraPermission()
+  }, [])
 
   if (hasPermission === null) {
-    return <View />;
+    return <View />
   }
   if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
+    return <Text>No access to camera</Text>
   }
 
   return (
@@ -97,8 +74,8 @@ const TakePhoto = (props) => {
           <View style={styles._bottom_tab_2}>
             <TouchableOpacity
               onPress={() => {
-                setIsCapturing(true);
-                snap();
+                setIsCapturing(true)
+                snap()
               }}
               style={styles._circle}
             >
@@ -112,34 +89,34 @@ const TakePhoto = (props) => {
         </Camera>
       </View>
     </SafeAreaView>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   _bottom_tab_2: {
-    position: "absolute",
+    position: 'absolute',
     bottom: 40,
-    flexDirection: "row",
-    width: "90%",
+    flexDirection: 'row',
+    width: '90%',
     margin: 20,
-    alignItems: "center",
-    alignSelf: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    alignSelf: 'center',
+    justifyContent: 'center'
 
   },
   _video_recorder: {
     height: 94,
-    width: 94,
+    width: 94
   },
-  _circle:{
+  _circle: {
     height: 70,
     width: 70,
-    backgroundColor:"white",
-    elevation:10,
-    borderRadius:35,
-    justifyContent:"center",
-    alignItems:"center"
+    backgroundColor: 'white',
+    elevation: 10,
+    borderRadius: 35,
+    justifyContent: 'center',
+    alignItems: 'center'
   }
-});
+})
 
-export default TakePhoto;
+export default TakePhoto

@@ -57,35 +57,23 @@
 //     fontFamily: "BAHNSCHRIFT",
 //   },
 // });
-import * as React from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { useFonts } from "expo-font";
-import Navigator from "./src/navigation/index";
+// eslint-disable-next-line no-use-before-define
+import * as React from 'react'
+import { useFonts } from 'expo-font'
+import Navigator from './src/navigation/index'
 
-export default function App() {
+export default function App () {
   const [loaded] = useFonts({
-    bahnscift: require("./src/utils/Fonts/Bahnschrift-Font-Family/BAHNSCHRIFT1.ttf"),
-  });
+    bahnscift: require('./src/utils/Fonts/Bahnschrift-Font-Family/BAHNSCHRIFT1.ttf')
+  })
 
   if (!loaded) {
-    return null;
+    return null
   }
 
   return (
-    // <View style={styles.container}>
+  // <View style={styles.container}>
       <Navigator />
-    // </View>
-  );
+  // </View>
+  )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  _text: {
-    // fontFamily: "bahnscift",
-  },
-});

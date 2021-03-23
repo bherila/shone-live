@@ -1,23 +1,23 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     // justifyContent: "center",
     // alignItems: "center",
-    padding: 10,
+    padding: 10
   },
   _screenHeading: {
     fontSize: 20,
-    color: "#525252",
-    fontWeight: "bold",
-    paddingVertical: 10,
+    color: '#525252',
+    fontWeight: 'bold',
+    paddingVertical: 10
     // textAlign: "center",
   },
   _image: {
     width: 150,
     height: 200,
-    borderRadius: 6,
+    borderRadius: 6
     // flex:1
   },
   _imageView: {
@@ -26,106 +26,106 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 6,
     margin: 5,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   _newArrView: {
-    flexDirection: "row",
-    flexWrap: "nowrap",
+    flexDirection: 'row',
+    flexWrap: 'nowrap'
   },
   _circle: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     height: 40,
     width: 40,
     borderRadius: 20,
-    position: "absolute",
+    position: 'absolute',
     bottom: 10,
     right: 10,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center'
 
   },
   centeredView: {
     flex: 1,
-    backgroundColor:"rgba(43,43,43,0.4)"
+    backgroundColor: 'rgba(43,43,43,0.4)'
 
   },
   modalView: {
     margin: 20,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 20,
     padding: 15,
-    alignItems: "center",
-    shadowColor: "#000",
+    alignItems: 'center',
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 2
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
     marginTop: 100,
-    borderStartColor: "red",
+    borderStartColor: 'red'
   },
   openButton: {
     borderRadius: 20,
     padding: 10,
-    elevation: 2,
+    elevation: 2
   },
 
   modalText: {
     marginBottom: 15,
-    textAlign: "center",
+    textAlign: 'center'
   },
   _notificationImage: {
     height: 200,
-    width: 200,
+    width: 200
   },
   _desc: {
-    color: "#525252",
-    fontWeight: "300",
-    textAlign: "center",
+    color: '#525252',
+    fontWeight: '300',
+    textAlign: 'center',
     fontSize: 18,
-    marginVertical: 20,
+    marginVertical: 20
   },
   _confirmBtn: {
-    width: "100%",
+    width: '100%',
     padding: 8,
     borderRadius: 5,
-    marginVertical: 12,
+    marginVertical: 12
   },
   _confirmBtn_text: {
-    textAlign: "center",
-    fontWeight: "bold",
+    textAlign: 'center',
+    fontWeight: 'bold',
     padding: 5,
-    color: "white",
-    fontSize: 18,
+    color: 'white',
+    fontSize: 18
   },
   _crossCircle: {
     height: 30,
     width: 30,
     borderRadius: 15,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "white",
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
     elevation: 10,
-    position: "absolute",
+    position: 'absolute',
     right: -5,
-    top: -5,
+    top: -5
   },
   _userAvatar: {
     height: 40,
     width: 40,
     borderRadius: 20,
-    justifyContent: "center",
-    alignItems: "center",
-    elevation: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 5
   },
   _profilePic: {
     height: 40,
     width: 40,
-    borderRadius: 20,
-  },
-});
+    borderRadius: 20
+  }
+})
 
-export default styles;
+export default styles
