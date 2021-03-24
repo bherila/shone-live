@@ -1,7 +1,7 @@
 /* eslint-disable react/react-in-jsx-scope */
 import * as React from 'react'
 import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import colors from '../utils/colors'
+import theme from '../utils/colors'
 
 export default function Productbuydialog () {
   return (
@@ -14,7 +14,7 @@ export default function Productbuydialog () {
           <Text style={styles._textdesc}>{'\nWhich are the most \ninsanely beautiful \nwatches you could \naffored?'}</Text>
           </View>
         </View>
-      <TouchableOpacity style={{ marginTop: 15, backgroundColor: '#3B48EE', width: '100%', height: 40, borderRadius: 10, justifyContent: 'center' }}>
+      <TouchableOpacity style={[styles._buttonview, theme.buttonColor]}>
         <Text style={{ fontSize: 16, textAlign: 'center', color: '#fff' }}>Add to Cart $320</Text>
       </TouchableOpacity>
     </View>
@@ -23,7 +23,7 @@ export default function Productbuydialog () {
 
 const styles = StyleSheet.create({
   _mainview: {
-    backgroundColor: colors.white,
+    backgroundColor: '#fff',
     margin: 20,
     padding: 20,
     borderRadius: 25
@@ -46,7 +46,6 @@ const styles = StyleSheet.create({
   },
   _buttonview: {
     marginTop: 15,
-    backgroundColor: colors.buttonColor,
     width: '100%',
     height: 40,
     borderRadius: 10,
