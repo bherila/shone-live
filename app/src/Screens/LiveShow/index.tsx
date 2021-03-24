@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 // eslint-disable-next-line no-use-before-define
 import React, { Component } from 'react'
 import {
@@ -7,18 +8,20 @@ import {
   TouchableOpacity,
   TextInput,
   KeyboardAvoidingView,
-  Platform
+  Platform,
+  ImageBackground
 } from 'react-native'
 import { Video } from 'expo-av'
 // css
 import styles from './styles'
 // icons
-import { FontAwesome, Entypo } from '@expo/vector-icons'
 // components
-import { Header, Poll } from '../../components'
+import { Poll } from '../../components'
+import { LinearGradient } from 'expo-linear-gradient'
+
 // purchased component is available but right now its not used
-export default class LiveShow extends Component {
-  render () {
+export default class Home extends Component {
+  render() {
     interface Product {
       id: string;
       qtyLeft: number;
@@ -48,7 +51,7 @@ export default class LiveShow extends Component {
     }
 
     const exampleShow: LiveShow = {
-      name: "Anna's Accessories",
+      name: 'Show title',
       handle: '@annasaccessories',
       featuredProductId: 'prodct1',
       products: [
@@ -62,19 +65,23 @@ export default class LiveShow extends Component {
       ],
       chats: [
         {
-          name: 'Mike A.',
-          message: 'DOPE!!!',
+          name: 'iglit',
+          message: 'comment',
           profileImage: 'TODO'
         },
         {
-          name: 'Allison H.',
-          message: 'YAAASSSSS!!!',
+          name: 'iglit',
+          message: 'comment',
           profileImage: 'TODO'
         },
         {
-          name: 'Sarah M.',
-          message:
-            "This makes me so happy to see. I've always wanted something like this in Platinum. Bling... bling...",
+          name: 'iglit',
+          message: 'comment',
+          profileImage: 'TODO'
+        },
+        {
+          name: 'iglit',
+          message: 'comment',
           profileImage: 'TODO'
         }
       ],
@@ -87,8 +94,7 @@ export default class LiveShow extends Component {
     return (
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.container}
-      >
+        style={styles.container}>
         <Video
           source={{
             uri:
@@ -105,13 +111,21 @@ export default class LiveShow extends Component {
         <View style={styles._body_section}>
           {/* <<<<<<<<<<<<<< SCREEN HEADER >>>>>>>>>>>> */}
           <View style={styles._header}>
-            <Header data={exampleShow} props={this.props} />
+            <Text style={styles._title}>{exampleShow.name}</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <TouchableOpacity style={styles._shop_all}>
+                <Text style={styles.shop_btn_text}>LIVE</Text>
+              </TouchableOpacity>
+              <Image style={{ width: 25, height: 25, marginLeft: 10, tintColor: 'white' }}
+                source={require('../../../assets/view.png')} />
+              <Text style={{ textAlign: 'center', marginLeft: 3, fontSize: 12, color: 'white' }}>29.1K</Text>
+            </View>
           </View>
           {/* <<<<<<<<<<<<<< ACTIVE POLL>>>>>>>>>>>> */}
 
           {exampleShow.activePoll === null
             ? (
-            <Poll data={exampleShow.activePoll} />
+              <Poll data={exampleShow.activePoll} />
               )
             : null}
           {/* <<<<<<<<<<<<<< FOOTER >>>>>>>>>>>> */}
@@ -137,41 +151,52 @@ export default class LiveShow extends Component {
               <View style={styles._footer_right_secttion}>
                 {exampleShow.products.map((val, i) => {
                   return (
-                    <TouchableOpacity style={styles._left_box} key={i}>
-                      <Text style={styles._heading}>{val.qtyLeft} LEFT</Text>
-                      <Image
-                        source={require('../../../assets/product.jpg')}
-                        style={{ height: 40, width: 40 }}
-                      />
-                    </TouchableOpacity>
+                    <>
+                      <ImageBackground
+                        source={require('../../../assets/morethree.png')}
+                        resizeMode={'cover'}
+                        style={styles._footerproductimage}>
+                        <LinearGradient colors={['transparent', '#fff']}
+                          style={{ height: 140, width: 110 }}>
+                          <View style={{ justifyContent: 'flex-end', alignItems: 'center', flex: 1 }}>
+                            <Text style={{ fontSize: 10, fontWeight: '200' }}>PRODUCT NAME</Text>
+                            <View style={{ flexDirection: 'row', paddingVertical: 6 }}>
+                              <Text style={{ fontSize: 12, fontWeight: '600' }}>$560</Text>
+                              <View style={styles._viewbuy}>
+                                <Text style={styles._textbuy}>@buy</Text>
+                              </View>
+                            </View>
+                          </View>
+                        </LinearGradient>
+
+                      </ImageBackground>
+                      <Text style={styles._textbrand}>{'brand name'}</Text>
+                    </>
                   )
                 })}
-                <TouchableOpacity style={styles._shop_all}>
-                  <Text style={styles.shop_btn_text}>Shop All</Text>
-                </TouchableOpacity>
               </View>
             </View>
             {/* <<<<<<<<<<<<<< CHAT SECTION >>>>>>>>>>>> */}
             <View style={styles._footer_chat_row}>
               <TextInput
                 style={styles._text_input}
-                placeholder="Say Something.."
+                placeholder="Add comment..."
                 placeholderTextColor="rgb(209,205,205)"
               />
               <View style={styles.footer_btns_row}>
                 <TouchableOpacity style={styles._footer_icon_circle}>
-                  <Entypo
-                    name="share-alternative"
-                    size={20}
-                    color="rgb(249,160,63)"
-                  />
+                  {/* <Entypo
+                                        name="share-alternative"
+                                        size={20}
+                                        color="rgb(249,160,63)"
+                                    /> */}
                 </TouchableOpacity>
                 <TouchableOpacity style={styles._footer_icon_circle}>
-                  <FontAwesome
-                    name="diamond"
-                    size={20}
-                    color="rgb(249,160,63)"
-                  />
+                  {/* <FontAwesome
+                                        name="diamond"
+                                        size={20}
+                                        color="rgb(249,160,63)"
+                                    /> */}
                 </TouchableOpacity>
               </View>
             </View>
