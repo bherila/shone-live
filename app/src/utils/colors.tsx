@@ -1,21 +1,10 @@
-import { StyleSheet } from 'react-native'
+const colors = {
+  bg: '#fcb345',
+  white: '#FFFFFF',
+  borderColor: '#fcb345',
+  iconColor: '#fcb345',
+  textColor: '#fcb345',
+  buttonColor: '#3B48EE'
+}
 
-const theme = StyleSheet.create({
-  bg: {
-    backgroundColor: '#fcb345'
-  },
-  color: {
-    color: 'white'
-  },
-  borderColor: {
-    borderColor: '#fcb345'
-  },
-  iconColor: {
-    color: '#fcb345'
-  },
-  textColor: {
-    color: '#fcb345'
-  }
-})
-
-export default theme
+export default colors
