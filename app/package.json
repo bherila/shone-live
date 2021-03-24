@@ -3,6 +3,8 @@
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
+    "format": "prettier --write .",
+    "lint": "eslint . --ext ts --ext tsx --ext js",
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject"
@@ -41,6 +43,10 @@
     "@types/react-dom": "~16.9.8",
     "@types/react-native": "~0.63.2",
     "@types/react-native-material-menu": "^1.0.4",
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "jest": "26.0.1",
+    "prettier": "^1.19.1",
     "@typescript-eslint/eslint-plugin": "^4.19.0",
     "@typescript-eslint/parser": "^4.19.0",
     "eslint": "^7.22.0",
