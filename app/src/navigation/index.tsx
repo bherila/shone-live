@@ -20,7 +20,7 @@ function Navigation () {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {/* <Stack.Screen
+        <Stack.Screen
           name="Login"
           component={Login}
           options={{ headerShown: false }}
@@ -54,7 +54,7 @@ function Navigation () {
           name="Home"
           component={Home}
           options={{ headerShown: false }}
-        /> */}
+        />
           <Stack.Screen
           name="LiveShow"
           component={LiveShow}
