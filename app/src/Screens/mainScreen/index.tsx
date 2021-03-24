@@ -140,7 +140,7 @@ export default function MainScreen () {
               return (
                 <View key={i} style={styles._imageView}>
                   <Image source={val.img} style={styles._image} />
-                  <TouchableOpacity style={styles._circle} onPress={() => navigation.navigate('Home')}>
+                  <TouchableOpacity style={styles._circle} onPress={() => navigation.navigate('LiveShow')}>
                     <Feather
                       name="user-plus"
                       size={20}
