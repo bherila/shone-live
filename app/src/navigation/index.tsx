@@ -12,6 +12,7 @@ import ProfilePhoto from './../Screens/profilePhoto'
 import MainScreen from './../Screens/mainScreen'
 import Account from './../Screens/account'
 import Home from '../Screens/Home'
+import LiveShow from '../Screens/LiveShow'
 
 const Stack = createStackNavigator()
 
@@ -19,7 +20,7 @@ function Navigation () {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen
+        {/* <Stack.Screen
           name="Login"
           component={Login}
           options={{ headerShown: false }}
@@ -52,6 +53,11 @@ function Navigation () {
          <Stack.Screen
           name="Home"
           component={Home}
+          options={{ headerShown: false }}
+        /> */}
+          <Stack.Screen
+          name="LiveShow"
+          component={LiveShow}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
