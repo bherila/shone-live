@@ -3,7 +3,7 @@ import * as React from 'react'
 import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import theme from '../utils/colors'
 
-export default function Productbuydialog () {
+export default function ProductBuyDialogLight () {
   return (
         <View style={styles._mainview}>
         <View style={{ justifyContent: 'space-around', flexDirection: 'row' }}>
