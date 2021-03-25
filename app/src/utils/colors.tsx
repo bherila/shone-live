@@ -15,6 +15,9 @@ const theme = StyleSheet.create({
   },
   textColor: {
     color: '#fcb345'
+  },
+  buttonColor: {
+    backgroundColor: '#3B48EE'
   }
 })
 

@@ -18,10 +18,12 @@ import styles from './styles'
 // components
 import { Poll } from '../../components'
 import { LinearGradient } from 'expo-linear-gradient'
+import ProductBuyDialog from '../../components/ProductBuyDialog'
+import Productbuydialoglight from '../../components/Productbuydialoglight'
 
 // purchased component is available but right now its not used
 export default class Home extends Component {
-  render() {
+  render () {
     interface Product {
       id: string;
       qtyLeft: number;
@@ -200,6 +202,7 @@ export default class Home extends Component {
                 </TouchableOpacity>
               </View>
             </View>
+            <Productbuydialoglight />
           </View>
         </View>
       </KeyboardAvoidingView>

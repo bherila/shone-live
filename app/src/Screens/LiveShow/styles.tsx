@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   _footer: {
-  // backgroundColor: '#00000069'
+    backgroundColor: '#00000069'
   },
   _footerproductimage: {
     height: 140,
