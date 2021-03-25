@@ -1,3 +1,4 @@
+import 'tailwindcss/tailwind.css'
 import * as React from 'react'
 import type { AppProps /*, AppContext */ } from 'next/app'
 import Head from 'next/head'
