@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   TextInput,
   KeyboardAvoidingView,
-  Platform
+  Platform,
 } from 'react-native'
 import { Video } from 'expo-av'
 // css
@@ -18,33 +18,33 @@ import { FontAwesome, Entypo } from '@expo/vector-icons'
 import { Header, Poll } from '../../components'
 // purchased component is available but right now its not used
 export default class LiveShow extends Component {
-  render () {
+  render() {
     interface Product {
-      id: string;
-      qtyLeft: number;
-      imageUrl: string;
-      price: number;
-      currency: string;
+      id: string
+      qtyLeft: number
+      imageUrl: string
+      price: number
+      currency: string
     }
 
     interface ChatMessage {
-      name: string;
-      profileImage: string;
-      message: string;
+      name: string
+      profileImage: string
+      message: string
     }
 
     interface Poll {
-      question: string;
-      options: string[];
+      question: string
+      options: string[]
     }
 
     interface LiveShow {
-      name: string;
-      handle: string;
-      featuredProductId: string; // corresponds to one of the IDs of products array
-      products: Product[];
-      chats: ChatMessage[];
-      activePoll?: Poll | null; // if activePoll != null then the poll can be rendered as an overlay
+      name: string
+      handle: string
+      featuredProductId: string // corresponds to one of the IDs of products array
+      products: Product[]
+      chats: ChatMessage[]
+      activePoll?: Poll | null // if activePoll != null then the poll can be rendered as an overlay
     }
 
     const exampleShow: LiveShow = {
@@ -57,31 +57,31 @@ export default class LiveShow extends Component {
           qtyLeft: 2,
           imageUrl: 'TODO',
           price: 129,
-          currency: 'USD'
-        }
+          currency: 'USD',
+        },
       ],
       chats: [
         {
           name: 'Mike A.',
           message: 'DOPE!!!',
-          profileImage: 'TODO'
+          profileImage: 'TODO',
         },
         {
           name: 'Allison H.',
           message: 'YAAASSSSS!!!',
-          profileImage: 'TODO'
+          profileImage: 'TODO',
         },
         {
           name: 'Sarah M.',
           message:
             "This makes me so happy to see. I've always wanted something like this in Platinum. Bling... bling...",
-          profileImage: 'TODO'
-        }
+          profileImage: 'TODO',
+        },
       ],
       activePoll: {
         question: 'What metal should I use next?',
-        options: ['Rose Gold', 'Platinum', 'Silver']
-      }
+        options: ['Rose Gold', 'Platinum', 'Silver'],
+      },
     }
 
     return (
@@ -92,7 +92,7 @@ export default class LiveShow extends Component {
         <Video
           source={{
             uri:
-              'https://s3-eu-west-1.amazonaws.com/video.gallereplay.com/artistarea/Lighthouse%20stands%20in%20Istanbul%E2%80%99s%20harbour_0554659b-5dc1-43d6-8a93-b31ec6b67f63/Cinemagraph_plain/1920x1080/cinemagraph.mp4'
+              'https://s3-eu-west-1.amazonaws.com/video.gallereplay.com/artistarea/Lighthouse%20stands%20in%20Istanbul%E2%80%99s%20harbour_0554659b-5dc1-43d6-8a93-b31ec6b67f63/Cinemagraph_plain/1920x1080/cinemagraph.mp4',
           }}
           style={styles.backgroundVideo}
           rate={1}
@@ -109,11 +109,9 @@ export default class LiveShow extends Component {
           </View>
           {/* <<<<<<<<<<<<<< ACTIVE POLL>>>>>>>>>>>> */}
 
-          {exampleShow.activePoll === null
-            ? (
+          {exampleShow.activePoll === null ? (
             <Poll data={exampleShow.activePoll} />
-              )
-            : null}
+          ) : null}
           {/* <<<<<<<<<<<<<< FOOTER >>>>>>>>>>>> */}
           <View style={styles._footer}>
             <View style={styles._footer_inner_section}>

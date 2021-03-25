@@ -2,25 +2,21 @@ import React from 'react'
 import { Image, View, TouchableOpacity, ScrollView } from 'react-native'
 import theme from './../../utils/colors'
 import styles from './styles'
-import { MaterialIcons, AntDesign, Entypo, SimpleLineIcons } from '@expo/vector-icons'
 import {
-  Body,
-  Icon,
-  Button,
-  Header,
-  Left,
-  Right,
-  ListItem
-} from 'native-base'
+  MaterialIcons,
+  AntDesign,
+  Entypo,
+  SimpleLineIcons,
+} from '@expo/vector-icons'
+import { Body, Icon, Button, Header, Left, Right, ListItem } from 'native-base'
 
 import Text from './../../components/Text'
 import { useNavigation } from '@react-navigation/native'
 
-export default function Account () {
+export default function Account() {
   const navigation = useNavigation()
   return (
     <View style={styles.container}>
-
       <Header style={{ elevation: 0, backgroundColor: 'transparent' }}>
         <Left style={{ flex: 1 }}>
           <Button transparent onPress={() => navigation.goBack()}>
@@ -31,7 +27,7 @@ export default function Account () {
           style={{
             flex: 3,
             justifyContent: 'center',
-            alignItems: 'center'
+            alignItems: 'center',
           }}
         >
           <Image

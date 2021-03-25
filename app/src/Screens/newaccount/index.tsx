@@ -1,6 +1,11 @@
 // eslint-disable-next-line no-use-before-define
 import React, { useState } from 'react'
-import { View, TouchableOpacity, Image, KeyboardAvoidingView } from 'react-native'
+import {
+  View,
+  TouchableOpacity,
+  Image,
+  KeyboardAvoidingView,
+} from 'react-native'
 import theme from './../../utils/colors'
 import styles from './styles'
 import {
@@ -11,7 +16,7 @@ import {
   Button,
   Header,
   Left,
-  Right
+  Right,
 } from 'native-base'
 import Text from './../../components/Text'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
@@ -50,7 +55,7 @@ export default function NewAccount() {
             style={{
               flex: 3,
               justifyContent: 'center',
-              alignItems: 'center'
+              alignItems: 'center',
             }}
           >
             <Image
@@ -61,15 +66,14 @@ export default function NewAccount() {
           <Right style={{ flex: 1 }}></Right>
         </Header>
         <View style={styles._innerView}>
-
-          <Text style={styles._desc}>
-            Welcome. Create a new account.
-          </Text>
+          <Text style={styles._desc}>Welcome. Create a new account.</Text>
 
           <Item regular style={styles._codeInput}>
             <Input
               placeholder="First name"
-              onChangeText={(text) => { setFname(text) }}
+              onChangeText={(text) => {
+                setFname(text)
+              }}
               keyboardType={'default'}
               returnKeyType={'next'}
             />
@@ -78,7 +82,9 @@ export default function NewAccount() {
           <Item regular style={styles._codeInput}>
             <Input
               placeholder="Last name"
-              onChangeText={(text) => { setLname(text) }}
+              onChangeText={(text) => {
+                setLname(text)
+              }}
               keyboardType={'default'}
               returnKeyType={'next'}
             />
@@ -88,8 +94,11 @@ export default function NewAccount() {
             <Input
               placeholder="Email address"
               keyboardType="email-address"
-              onChangeText={(text) => { setEmail(text) }}
-              returnKeyType={'done'} />
+              onChangeText={(text) => {
+                setEmail(text)
+              }}
+              returnKeyType={'done'}
+            />
           </Item>
 
           <TouchableOpacity

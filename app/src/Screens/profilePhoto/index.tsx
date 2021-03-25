@@ -14,13 +14,13 @@ import {
   Button,
   Header,
   Left,
-  Right
+  Right,
 } from 'native-base'
 import Text from './../../components/Text'
 import Camera from './../../components/camera'
 import { useNavigation } from '@react-navigation/native'
 
-export default function ProfilePhoto () {
+export default function ProfilePhoto() {
   const navigation = useNavigation()
 
   const [image, setImage] = useState(null)
@@ -30,9 +30,7 @@ export default function ProfilePhoto () {
 
   const getPermition = async () => {
     if (Platform.OS !== 'web') {
-      const {
-        status
-      } = await ImagePicker.requestMediaLibraryPermissionsAsync()
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync()
       if (status !== 'granted') {
         alert('Sorry, we need camera roll permissions to make this work!')
       }
@@ -46,7 +44,7 @@ export default function ProfilePhoto () {
         mediaTypes: ImagePicker.MediaTypeOptions.All,
         allowsEditing: true,
         aspect: [4, 4],
-        quality: 1
+        quality: 1,
       })
 
       console.log(result)
@@ -66,8 +64,7 @@ export default function ProfilePhoto () {
   }
   return (
     <View style={styles.container}>
-      {openCamera
-        ? (
+      {openCamera ? (
         <>
           <Header style={{ elevation: 0, backgroundColor: 'transparent' }}>
             <Left style={{ flex: 1 }}>
@@ -79,7 +76,7 @@ export default function ProfilePhoto () {
               style={{
                 flex: 3,
                 justifyContent: 'center',
-                alignItems: 'center'
+                alignItems: 'center',
               }}
             >
               <Image
@@ -103,20 +100,18 @@ export default function ProfilePhoto () {
               your best photo!
             </Text>
             <View style={styles._circle}>
-              {image
-                ? (
+              {image ? (
                 <>
                   {image && (
                     <Image source={{ uri: image }} style={styles._avatarImg} />
                   )}
                 </>
-                  )
-                : (
+              ) : (
                 <Image
                   source={require('./../../../assets/avatar.jpg')}
                   style={styles._avatarImg}
                 />
-                  )}
+              )}
 
               <TouchableOpacity style={[styles._editView, theme.bg]}>
                 <MaterialIcons name="mode-edit" size={20} color="white" />
@@ -127,7 +122,7 @@ export default function ProfilePhoto () {
             style={{
               justifyContent: 'center',
               alignItems: 'center',
-              padding: 15
+              padding: 15,
             }}
           >
             <TouchableOpacity
@@ -151,10 +146,9 @@ export default function ProfilePhoto () {
             </TouchableOpacity>
           </View>
         </>
-          )
-        : (
+      ) : (
         <Camera func={capture} />
-          )}
+      )}
     </View>
   )
 }

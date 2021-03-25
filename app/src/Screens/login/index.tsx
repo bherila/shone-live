@@ -1,11 +1,6 @@
 // eslint-disable-next-line no-use-before-define
 import React, { useState, useEffect } from 'react'
-import {
-  Image,
-  View,
-  TouchableOpacity,
-  Keyboard
-} from 'react-native'
+import { Image, View, TouchableOpacity, Keyboard } from 'react-native'
 import theme from './../../utils/colors'
 import styles from './styles'
 import { Card, CardItem, Body, Item, Icon, Button } from 'native-base'
@@ -16,7 +11,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
 import { TextInputMask } from 'react-native-masked-text'
 import { useNavigation } from '@react-navigation/native'
 
-export default function Login () {
+export default function Login() {
   const navigation = useNavigation()
 
   const [mobile, setMobile] = useState('')
@@ -36,7 +31,7 @@ export default function Login () {
   }
 
   return (
-    <KeyboardAwareScrollView contentContainerStyle={styles.container} >
+    <KeyboardAwareScrollView contentContainerStyle={styles.container}>
       <View style={{ flex: 1 }}>
         <View style={styles._logView}>
           <Image
@@ -50,15 +45,18 @@ export default function Login () {
               <CardItem>
                 <Body>
                   <Text style={styles._login_desc}>
-                    For fast and easy login, we'll need your digits. Don't
-``
+                    For fast and easy login, we'll need your digits. Don't ``
                     worry about remembering your password for later.
-                    </Text>
+                  </Text>
                 </Body>
               </CardItem>
               <Item style={[styles._inputFiled, theme.borderColor]}>
                 <Icon active name="call" style={theme.iconColor} />
-                <Text style={{ fontWeight: 'bold', fontSize: 18, color: 'grey' }}>+1 </Text>
+                <Text
+                  style={{ fontWeight: 'bold', fontSize: 18, color: 'grey' }}
+                >
+                  +1{' '}
+                </Text>
 
                 <TextInputMask
                   style={styles._input}
@@ -66,23 +64,24 @@ export default function Login () {
                   options={{
                     maskType: 'BRL', // for international set it -&amp;nbsp;INTERNATIONAL type masking
                     withDDD: true,
-                    dddMask: '999-999-9999'// this is a your define formatting you use according to your requirment
+                    dddMask: '999-999-9999', // this is a your define formatting you use according to your requirment
                   }}
-
-                  maxLength={12}// set length according to your input requirment
-                  onChangeText={text => { setMobile(text) }}
+                  maxLength={12} // set length according to your input requirment
+                  onChangeText={(text) => {
+                    setMobile(text)
+                  }}
                   value={mobile}
                   placeholder={'###-###-####'}
                   autoCapitalize={'none'}
                   autoCorrect={false}
                   keyboardType={'number-pad'}
                 />
-
               </Item>
               <Button
                 style={[styles._continue_btn, theme.bg]}
                 keyboardShouldPersistTaps={true}
-                onPress={() => onContinue()}>
+                onPress={() => onContinue()}
+              >
                 <Text style={styles._btn_text}>Continue</Text>
               </Button>
             </Card>
@@ -103,12 +102,11 @@ export default function Login () {
               <Text style={styles._box_text}>
                 By clicking send, you accept our terms of service and privacy
                 policy.
-                </Text>
+              </Text>
             </View>
           </View>
         </View>
       </View>
     </KeyboardAwareScrollView>
-
   )
 }

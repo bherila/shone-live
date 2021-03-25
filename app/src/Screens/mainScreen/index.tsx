@@ -4,19 +4,12 @@ import { Image, View, TouchableOpacity, ScrollView, Modal } from 'react-native'
 import theme from './../../utils/colors'
 import styles from './styles'
 import { Feather, Entypo } from '@expo/vector-icons'
-import {
-  Body,
-  Icon,
-  Button,
-  Header,
-  Left,
-  Right
-} from 'native-base'
+import { Body, Icon, Button, Header, Left, Right } from 'native-base'
 import Menu, { MenuItem } from 'react-native-material-menu'
 import Text from './../../components/Text'
 import { useNavigation } from '@react-navigation/native'
 
-export default function MainScreen () {
+export default function MainScreen() {
   const navigation = useNavigation()
 
   const [modalVisible, setModalVisible] = useState(false)
@@ -24,19 +17,19 @@ export default function MainScreen () {
   const newArr = [
     { img: require('./../../../assets/newone.png') },
     { img: require('./../../../assets/newtwo.png') },
-    { img: require('./../../../assets/newthree.png') }
+    { img: require('./../../../assets/newthree.png') },
   ]
 
   const commingSoon = [
     { img: require('./../../../assets/comingone.png') },
     { img: require('./../../../assets/comingtwo.png') },
-    { img: require('./../../../assets/comingthree.png') }
+    { img: require('./../../../assets/comingthree.png') },
   ]
 
   const moreShows = [
     { img: require('../../../assets/moreone.png') },
     { img: require('../../../assets/moretwo.png') },
-    { img: require('../../../assets/morethree.png') }
+    { img: require('../../../assets/morethree.png') },
   ]
 
   useEffect(() => {
@@ -70,7 +63,7 @@ export default function MainScreen () {
           style={{
             flex: 3,
             justifyContent: 'center',
-            alignItems: 'center'
+            alignItems: 'center',
           }}
         >
           <Image
@@ -119,15 +112,17 @@ export default function MainScreen () {
             {commingSoon.map((val, i) => {
               return (
                 <View key={i} style={styles._imageView}>
-                   <TouchableOpacity onPress={() => navigation.navigate('LiveShow')}>
-                  <Image source={val.img} style={styles._image} />
-                  <TouchableOpacity style={styles._circle}>
-                    <Feather
-                      name="user-plus"
-                      size={20}
-                      style={[theme.iconColor]}
-                    />
-                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('LiveShow')}
+                  >
+                    <Image source={val.img} style={styles._image} />
+                    <TouchableOpacity style={styles._circle}>
+                      <Feather
+                        name="user-plus"
+                        size={20}
+                        style={[theme.iconColor]}
+                      />
+                    </TouchableOpacity>
                   </TouchableOpacity>
                 </View>
               )
@@ -142,7 +137,10 @@ export default function MainScreen () {
               return (
                 <View key={i} style={styles._imageView}>
                   <Image source={val.img} style={styles._image} />
-                  <TouchableOpacity style={styles._circle} onPress={() => navigation.navigate('LiveShow')}>
+                  <TouchableOpacity
+                    style={styles._circle}
+                    onPress={() => navigation.navigate('LiveShow')}
+                  >
                     <Feather
                       name="user-plus"
                       size={20}
@@ -162,7 +160,8 @@ export default function MainScreen () {
         visible={modalVisible}
         onRequestClose={() => {
           alert('Modal has been closed.')
-        }}>
+        }}
+      >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <TouchableOpacity
