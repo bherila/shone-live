@@ -162,6 +162,36 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  _viewmodal: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+  },
+  _textmodal: {
+    color: '#fff',
+    alignSelf: 'center',
+    textAlign: 'center',
+  },
+  _textmodalname: {
+    color: '#fff',
+    textAlign: 'center',
+    alignSelf: 'center',
+    marginRight: 30,
+    marginVertical: 5,
+    fontWeight: '200',
+  },
+  _viewmodallike: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 30,
+  },
+  _iconlike: {
+    height: 18,
+    width: 18,
+    marginRight: 5,
+  },
 })
 
 export default styles
