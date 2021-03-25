@@ -6,7 +6,7 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  StatusBar
+  StatusBar,
 } from 'react-native'
 import { Camera } from 'expo-camera'
 import { Entypo } from '@expo/vector-icons'
@@ -21,11 +21,10 @@ const TakePhoto = (props) => {
   const [flashMode] = useState(true)
   const [, setCapturePhoto] = useState(null)
 
-
   const snap = async () => {
     if (cameraRef) {
       const photo = await cameraRef.takePictureAsync({
-        quality: 0.5
+        quality: 0.5,
       })
       setCapturePhoto(photo.uri)
       setIsCapturing(false)
@@ -101,12 +100,11 @@ const styles = StyleSheet.create({
     margin: 20,
     alignItems: 'center',
     alignSelf: 'center',
-    justifyContent: 'center'
-
+    justifyContent: 'center',
   },
   _video_recorder: {
     height: 94,
-    width: 94
+    width: 94,
   },
   _circle: {
     height: 70,
@@ -115,8 +113,8 @@ const styles = StyleSheet.create({
     elevation: 10,
     borderRadius: 35,
     justifyContent: 'center',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 })
 
 export default TakePhoto

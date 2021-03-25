@@ -16,7 +16,7 @@ import LiveShow from '../Screens/LiveShow'
 
 const Stack = createStackNavigator()
 
-function Navigation () {
+function Navigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -50,12 +50,12 @@ function Navigation () {
           component={Account}
           options={{ headerShown: false }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name="Home"
           component={Home}
           options={{ headerShown: false }}
         />
-          <Stack.Screen
+        <Stack.Screen
           name="LiveShow"
           component={LiveShow}
           options={{ headerShown: false }}

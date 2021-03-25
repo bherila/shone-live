@@ -62,9 +62,9 @@ import * as React from 'react'
 import { useFonts } from 'expo-font'
 import Navigator from './src/navigation/index'
 
-export default function App () {
+export default function App() {
   const [loaded] = useFonts({
-    bahnscift: require('./src/utils/Fonts/Bahnschrift-Font-Family/BAHNSCHRIFT1.ttf')
+    bahnscift: require('./src/utils/Fonts/Bahnschrift-Font-Family/BAHNSCHRIFT1.ttf'),
   })
 
   if (!loaded) {
@@ -72,8 +72,8 @@ export default function App () {
   }
 
   return (
-  // <View style={styles.container}>
-      <Navigator />
-  // </View>
+    // <View style={styles.container}>
+    <Navigator />
+    // </View>
   )
 }

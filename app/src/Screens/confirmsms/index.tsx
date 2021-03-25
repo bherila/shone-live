@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {
-  Image,
-  View,
-  TouchableOpacity
-} from 'react-native'
+import { Image, View, TouchableOpacity } from 'react-native'
 import theme from './../../utils/colors'
 import styles from './styles'
 import { Header, Left, Button, Icon, Right, Body } from 'native-base'
@@ -12,7 +8,7 @@ import OTPTextInput from 'react-native-otp-textinput'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
 import { useNavigation } from '@react-navigation/native'
 
-export default function ConfirmSms () {
+export default function ConfirmSms() {
   const navigation = useNavigation()
 
   const [otp, setOTP] = useState('')
@@ -33,8 +29,9 @@ export default function ConfirmSms () {
 
   return (
     <View style={styles.container}>
-      <KeyboardAwareScrollView contentContainerStyle={{ justifyContent: 'center' }}>
-
+      <KeyboardAwareScrollView
+        contentContainerStyle={{ justifyContent: 'center' }}
+      >
         <Header style={{ elevation: 0, backgroundColor: 'transparent' }}>
           <Left style={{ flex: 1 }}>
             <Button transparent onPress={() => navigation.goBack()}>
@@ -45,7 +42,7 @@ export default function ConfirmSms () {
             style={{
               flex: 3,
               justifyContent: 'center',
-              alignItems: 'center'
+              alignItems: 'center',
             }}
           >
             <Image
@@ -63,12 +60,20 @@ export default function ConfirmSms () {
           <Text style={styles._desc}>
             We just texted you a code to confirm your identity
           </Text>
-          <View style={{ alignItems: 'center', justifyContent: 'center', width: '100%' }}>
-
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '100%',
+            }}
+          >
             <OTPTextInput
               textInputStyle={{ borderWidth: 1, borderRadius: 5 }}
               inputCount={6}
-              handleTextChange={(text) => { setOTP(text) }} />
+              handleTextChange={(text) => {
+                setOTP(text)
+              }}
+            />
           </View>
           <TouchableOpacity
             style={[styles._confirmBtn, theme.bg]}
