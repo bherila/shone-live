@@ -1,6 +1,15 @@
 import jwt from 'jsonwebtoken'
+import { GetServerSidePropsContext } from 'next'
+import { ParsedUrlQuery } from 'querystring'
 
-function CheckLogin(ctx) {
+export interface CheckLoginResult {
+  loggedInUser: string
+  isUserLoggedIn: boolean
+}
+
+function CheckLogin(
+  ctx: GetServerSidePropsContext<ParsedUrlQuery>
+): CheckLoginResult {
   if (ctx.req.cookies.jwt) {
     const jwtToken = ctx.req.cookies.jwt
     const jwtData = jwt.verify(jwtToken, process.env.JWT_SECRET_KEY)

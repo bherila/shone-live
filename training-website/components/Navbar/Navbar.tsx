@@ -1,6 +1,10 @@
 import Link from 'next/link'
 
-const Navbar = ({ isLoggedIn }): JSX.Element => {
+interface NavbarProps {
+  isLoggedIn: boolean
+}
+
+const Navbar = ({ isLoggedIn }: NavbarProps): JSX.Element => {
   const logout = async (e) => {
     e.preventDefault()
     try {

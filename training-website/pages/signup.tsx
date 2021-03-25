@@ -6,6 +6,7 @@ import { useRouter } from 'next/router'
 
 import Layout from '../components/Layout/Layout'
 import CheckLogin from '../lib/CheckLogin'
+import { GetServerSideProps } from 'next'
 
 export const Signup = ({ isUserLoggedIn }): JSX.Element => {
   const [email, setEmail] = useState('')
@@ -153,7 +154,8 @@ export const Signup = ({ isUserLoggedIn }): JSX.Element => {
 
 export default Signup
 
-export function getServerSideProps(ctx) {
+// noinspection JSUnusedGlobalSymbols
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const userInfo = CheckLogin(ctx)
 
   return {
