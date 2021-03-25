@@ -1,27 +1,27 @@
-# NextJS Typescript Boilerplate
+# Frontend readme
 
-Bootstrap a developer-friendly NextJS app configured with:
+* Packages
+    * Run `yarn install` (please use yarn instead of npm) in the folder with package.json to install your dependencies
+    * To add a new package `yarn add foo` 
+    * Commit yarn-generated changes to package.json and yarn.lock with your PR
+* Pages
+    * Do all your work in the `pages` subfolder
+    * The file name is automatically the route. For example, 
+        * `index.tsx` is /
+        * foo.tsx is /foo
+        * bar/index.tsx is /bar
+        * bar/mango.tsx is /bar/mango
+* Run local (Development)
+    * `yarn dev` 
+    * When you run yarn dev it will run automatically on [http://localhost:3000](http://localhost:3000/) 
+    * Changes to /pages while `yarn dev` is running are automatically reloaded, you don’t need to restart the server
+* Pull request
+    * Do all  your work on a  new branch using git ~ `git checkout -b my_work`
+    * Make sure to `yarn format` to make sure that any code style issues can be autofixed
+        * tip: you can use the provided `.editorconfig` file to automatically configure your editor style settings *just for this project* without having to change them normally. check your editor’s plugins repo for the .editorconfig support. VS code supports this!
+    * Please start your pr title with [training-website]
+        * Example: `[training-website] fix issue #32 which resolves a bug`
+    * Make sure your branch contains all the fixes from `main` branch so there won’t be any merge conflict
 
-- [Typescript](https://www.typescriptlang.org/)
-- Linting with [ESLint](https://eslint.org/)
-- Formatting with [Prettier](https://prettier.io/)
-- Linting, typechecking and formatting on by default using [`husky`](https://github.com/typicode/husky) for commit hooks
-- Testing with [Jest](https://jestjs.io/) and [`react-testing-library`](https://testing-library.com/docs/react-testing-library/intro)
 
-## Deploy your own
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example):
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-typescript-eslint-jest&project-name=with-typescript-eslint-jest&repository-name=with-typescript-eslint-jest)
-
-## How to use
-
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init) or [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) to bootstrap the example:
-
-```bash
-npx create-next-app --example with-typescript-eslint-jest with-typescript-eslint-jest-app
-# or
-yarn create next-app --example with-typescript-eslint-jest with-typescript-eslint-jest-app
-```
-
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
