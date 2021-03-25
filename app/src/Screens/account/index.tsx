@@ -14,7 +14,6 @@ import Text from './../../components/Text'
 import { useNavigation } from '@react-navigation/native'
 
 export default function Account() {
-  
   const navigation = useNavigation()
 
   return (
@@ -108,11 +107,15 @@ export default function Account() {
           </Body>
           <TouchableOpacity onPress={() => navigation.navigate('Payment')}>
             <Right style={{ borderBottomWidth: 0 }}>
-              <MaterialIcons name="keyboard-arrow-right" size={24} color="grey" />
+              <MaterialIcons
+                name="keyboard-arrow-right"
+                size={24}
+                color="grey"
+              />
             </Right>
           </TouchableOpacity>
         </ListItem>
-        
+
         <ListItem icon style={styles._list}>
           <Left>
             <Entypo
@@ -126,9 +129,13 @@ export default function Account() {
             <Text style={styles._pages}>Addresses</Text>
           </Body>
           <TouchableOpacity onPress={() => navigation.navigate('Address')}>
-          <Right style={{ borderBottomWidth: 0 }}>
-            <MaterialIcons name="keyboard-arrow-right" size={24} color="grey" />
-          </Right>
+            <Right style={{ borderBottomWidth: 0 }}>
+              <MaterialIcons
+                name="keyboard-arrow-right"
+                size={24}
+                color="grey"
+              />
+            </Right>
           </TouchableOpacity>
         </ListItem>
 

@@ -16,7 +16,7 @@ export default function Address() {
       city: 'New Castle',
       mo_no: '19032-2013',
       state: 'DE(Delaware)',
-      no: '(302)687-6775'
+      no: '(302)687-6775',
     },
     {
       name: 'Jessica',
@@ -25,8 +25,8 @@ export default function Address() {
       city: 'New Castle',
       mo_no: '19032-2013',
       state: 'DE(Delaware)',
-      no: '(302)687-6775'
-    }
+      no: '(302)687-6775',
+    },
   ]
 
   const renderItem = ({ item }: any) => {
@@ -42,7 +42,7 @@ export default function Address() {
                   item.type === 'Default delivery address'
                     ? null
                     : { color: 'blue' },
-                  styles._texttype
+                  styles._texttype,
                 ]}
               >
                 {item.type}
@@ -67,7 +67,7 @@ export default function Address() {
           style={{
             borderWidth: 0.5,
             marginHorizontal: 10,
-            borderColor: '#DCDCDC'
+            borderColor: '#DCDCDC',
           }}
         />
       </>
@@ -93,7 +93,7 @@ export default function Address() {
             flex: 6,
             justifyContent: 'center',
             alignItems: 'center',
-            marginRight: 20
+            marginRight: 20,
           }}
         >
           <Title style={{ fontSize: 20, alignSelf: 'center' }}>Addresses</Title>

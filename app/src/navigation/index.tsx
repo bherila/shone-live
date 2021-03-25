@@ -68,9 +68,9 @@ function Navigation() {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-        name="Address"
-        component={Address}
-        options={{ headerShown: false }}
+          name="Address"
+          component={Address}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>
