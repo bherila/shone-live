@@ -104,11 +104,13 @@ export default function Account() {
           <Body style={{ borderBottomWidth: 0 }}>
             <Text style={styles._pages}>Payment Methods</Text>
           </Body>
-          <Right style={{ borderBottomWidth: 0 }}>
-            <MaterialIcons name="keyboard-arrow-right" size={24} color="grey" />
-          </Right>
+          <TouchableOpacity onPress={() => navigation.navigate('Payment')}>
+            <Right style={{ borderBottomWidth: 0 }}>
+              <MaterialIcons name="keyboard-arrow-right" size={24} color="grey" />
+            </Right>
+          </TouchableOpacity>
         </ListItem>
-
+        
         <ListItem icon style={styles._list}>
           <Left>
             <Entypo
