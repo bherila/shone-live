@@ -41,7 +41,7 @@ export default function Payment() {
           <View>
             <Text style={styles._textname}>{item.card}</Text>
             <Text style={styles._textname}>{item.name}</Text>
-            <Text style={styles._textname}>Exp :{item.exp}</Text>
+            <Text style={styles._textname}>Exp: {item.exp}</Text>
           </View>
           <Image style={styles._imagecard}
             source={require('../../../assets/mastercard.png')}
@@ -74,7 +74,7 @@ export default function Payment() {
         data={details}
         renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()} />
-        
+
       <Button style={{ alignSelf: 'center', justifyContent: 'flex-end' }}>
         <Text>Add New Payment Method</Text>
       </Button>

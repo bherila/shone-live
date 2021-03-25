@@ -14,6 +14,7 @@ import Account from './../Screens/account'
 import Home from '../Screens/Home'
 import LiveShow from '../Screens/LiveShow'
 import Payment from '../Screens/Payments'
+import Address from '../Screens/Address'
 
 const Stack = createStackNavigator()
 
@@ -65,6 +66,11 @@ function Navigation() {
           name="Payment"
           component={Payment}
           options={{ headerShown: false }}
+        />
+        <Stack.Screen
+        name="Address"
+        component={Address}
+        options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>

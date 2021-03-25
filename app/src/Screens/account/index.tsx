@@ -14,7 +14,9 @@ import Text from './../../components/Text'
 import { useNavigation } from '@react-navigation/native'
 
 export default function Account() {
+  
   const navigation = useNavigation()
+
   return (
     <View style={styles.container}>
       <Header style={{ elevation: 0, backgroundColor: 'transparent' }}>
@@ -123,9 +125,11 @@ export default function Account() {
           <Body style={{ borderBottomWidth: 0 }}>
             <Text style={styles._pages}>Addresses</Text>
           </Body>
+          <TouchableOpacity onPress={() => navigation.navigate('Address')}>
           <Right style={{ borderBottomWidth: 0 }}>
             <MaterialIcons name="keyboard-arrow-right" size={24} color="grey" />
           </Right>
+          </TouchableOpacity>
         </ListItem>
 
         <ListItem icon style={styles._list}>
