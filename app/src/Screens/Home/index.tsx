@@ -17,7 +17,7 @@ import { FontAwesome, Entypo } from '@expo/vector-icons'
 // components
 import { Header, Poll } from '../../components'
 // purchased component is available but right now its not used
-export default class Home extends Component {
+export default class LiveShow extends Component {
   render () {
     interface Product {
       id: string;

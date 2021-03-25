@@ -119,6 +119,7 @@ export default function MainScreen () {
             {commingSoon.map((val, i) => {
               return (
                 <View key={i} style={styles._imageView}>
+                   <TouchableOpacity onPress={() => navigation.navigate('LiveShow')}>
                   <Image source={val.img} style={styles._image} />
                   <TouchableOpacity style={styles._circle}>
                     <Feather
@@ -126,6 +127,7 @@ export default function MainScreen () {
                       size={20}
                       style={[theme.iconColor]}
                     />
+                  </TouchableOpacity>
                   </TouchableOpacity>
                 </View>
               )
