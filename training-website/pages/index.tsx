@@ -4,6 +4,7 @@
 import CheckLogin from '../lib/CheckLogin'
 
 import Layout from '../components/Layout/Layout'
+import { GetServerSideProps } from 'next'
 
 export const Home = ({ isUserLoggedIn }): JSX.Element => {
   return (
@@ -14,7 +15,8 @@ export const Home = ({ isUserLoggedIn }): JSX.Element => {
 }
 export default Home
 
-export function getServerSideProps(ctx) {
+// noinspection JSUnusedGlobalSymbols
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const userInfo = CheckLogin(ctx)
 
   return {

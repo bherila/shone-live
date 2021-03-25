@@ -1,9 +1,7 @@
 import { useState } from 'react'
-// import Head from 'next/head'
-// import Image from 'next/image'
-
 import Layout from '../components/Layout/Layout'
 import CheckLogin from '../lib/CheckLogin'
+import { GetServerSideProps } from 'next'
 
 export const ForgotPassword = ({ isUserLoggedIn }): JSX.Element => {
   const [email, setEmail] = useState('')
@@ -91,7 +89,8 @@ export const ForgotPassword = ({ isUserLoggedIn }): JSX.Element => {
 
 export default ForgotPassword
 
-export function getServerSideProps(ctx) {
+// noinspection JSUnusedGlobalSymbols
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const userInfo = CheckLogin(ctx)
 
   return {

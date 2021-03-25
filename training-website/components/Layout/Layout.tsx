@@ -1,6 +1,11 @@
 import Navbar from '../Navbar/Navbar'
 
-const Layout = ({ children, isLoggedIn }): JSX.Element => {
+interface LayoutProps {
+  children: any
+  isLoggedIn: boolean
+}
+
+const Layout = ({ children, isLoggedIn }: LayoutProps): JSX.Element => {
   return (
     <>
       <Navbar isLoggedIn={isLoggedIn} />

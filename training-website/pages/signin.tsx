@@ -5,9 +5,12 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 import Layout from '../components/Layout/Layout'
-import CheckLogin from '../lib/CheckLogin'
+import CheckLogin, { CheckLoginResult } from '../lib/CheckLogin'
+import { GetServerSideProps } from 'next'
 
-export const Signin = ({ isUserLoggedIn }): JSX.Element => {
+type SigninProps = CheckLoginResult
+
+export const Signin = ({ isUserLoggedIn }: SigninProps): JSX.Element => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [message, setMessage] = useState('')
@@ -129,8 +132,9 @@ export const Signin = ({ isUserLoggedIn }): JSX.Element => {
 
 export default Signin
 
-export function getServerSideProps(ctx) {
-  const userInfo = CheckLogin(ctx)
+// noinspection JSUnusedGlobalSymbols
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const userInfo: CheckLoginResult = CheckLogin(ctx)
 
   return {
     props: { ...userInfo },
