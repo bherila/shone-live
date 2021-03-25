@@ -2,7 +2,7 @@
 import React from 'react'
 import { Text, View, StyleSheet, Image } from 'react-native'
 // <<<<<<<<<<<<<<<<<<< ACTIVE POLL COMPONENT >>>>>>>>>>>>>>>>>>>
-export default function Poll(props) {
+export default function PurchasedItems(props) {
   return (
         <View style={styles.container}>
             <View style={styles._profile_view}>
