@@ -67,7 +67,7 @@ import LottieView from 'lottie-react-native'
 export default function App() {
   const [isReady, setIsReady] = useState(false)
   const [loaded] = useFonts({
-    bahnscift: require('./src/utils/Fonts/Bahnschrift-Font-Family/BAHNSCHRIFT1.ttf')
+    bahnscift: require('./src/utils/Fonts/Bahnschrift-Font-Family/BAHNSCHRIFT1.ttf'),
   })
 
   if (!loaded) {
@@ -86,11 +86,11 @@ export default function App() {
         <View style={styles.animationContainer}>
           <LottieView
             autoPlay={true}
-            loop = {false}
+            loop={false}
             style={{
               width: '100%',
               // height: 100,
-              backgroundColor: '#fff'
+              backgroundColor: '#fff',
             }}
             source={require('./assets/shone-lottie-animation-black.json')}
           />
@@ -105,9 +105,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    flex: 1
+    flex: 1,
   },
   buttonContainer: {
-    paddingTop: 20
-  }
+    paddingTop: 20,
+  },
 })
