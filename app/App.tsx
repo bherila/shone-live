@@ -58,22 +58,56 @@
 //   },
 // });
 // eslint-disable-next-line no-use-before-define
-import * as React from 'react'
+import React, { useState } from 'react'
 import { useFonts } from 'expo-font'
 import Navigator from './src/navigation/index'
+import { StyleSheet, View } from 'react-native'
+import LottieView from 'lottie-react-native'
 
 export default function App() {
+  const [isReady, setIsReady] = useState(false)
   const [loaded] = useFonts({
-    bahnscift: require('./src/utils/Fonts/Bahnschrift-Font-Family/BAHNSCHRIFT1.ttf'),
+    bahnscift: require('./src/utils/Fonts/Bahnschrift-Font-Family/BAHNSCHRIFT1.ttf')
   })
 
   if (!loaded) {
     return null
   }
 
+  setTimeout(() => {
+    setIsReady(true)
+  }, 3500)
+
   return (
-    // <View style={styles.container}>
-    <Navigator />
-    // </View>
+    <>
+      {isReady ? (
+        <Navigator />
+      ) : (
+        <View style={styles.animationContainer}>
+          <LottieView
+            autoPlay={true}
+            loop = {false}
+            style={{
+              width: '100%',
+              // height: 100,
+              backgroundColor: '#fff'
+            }}
+            source={require('./assets/shone-lottie-animation-black.json')}
+          />
+        </View>
+      )}
+    </>
   )
 }
+
+const styles = StyleSheet.create({
+  animationContainer: {
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1
+  },
+  buttonContainer: {
+    paddingTop: 20
+  }
+})
