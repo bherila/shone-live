@@ -61,13 +61,14 @@ export default function Login() {
                 <TextInputMask
                   style={styles._input}
                   type={'cel-phone'}
+                  autoFocus={true}
                   options={{
                     maskType: 'BRL', // for international set it -&amp;nbsp;INTERNATIONAL type masking
                     withDDD: true,
-                    dddMask: '999-999-9999', // this is a your define formatting you use according to your requirment
+                    dddMask: '999-999-9999' // this is a your define formatting you use according to your requirment
                   }}
                   maxLength={12} // set length according to your input requirment
-                  onChangeText={(text) => {
+                  onChangeText={text => {
                     setMobile(text)
                   }}
                   value={mobile}
