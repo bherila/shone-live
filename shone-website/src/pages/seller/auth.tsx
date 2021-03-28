@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react'
 import { useState } from 'react'
+
 import SellerLayout from '../../components/SellerLayout'
 export default () => {
   const [mode, setMode] = useState('number')
@@ -33,7 +34,7 @@ function renderConfirm() {
   )
 }
 
-function renderEntry(isLoading: boolean) {
+function renderEntry(isLoading?: boolean) {
   return (
     <SellerLayout>
       <h1>Authenticate</h1>
