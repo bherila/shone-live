@@ -5,7 +5,15 @@ import Layout from '../components/Layout/Layout'
 import CheckLogin from '../lib/CheckLogin'
 import { GetServerSideProps } from 'next'
 
-export const Account = ({ isUserLoggedIn, loggedInUser }): JSX.Element => {
+interface AccountType {
+  isUserLoggedIn: boolean
+  loggedInUser: any
+}
+
+export const Account = ({
+  isUserLoggedIn,
+  loggedInUser,
+}: AccountType): JSX.Element => {
   const [email, setEmail] = useState(loggedInUser.email)
   const [firstName, setFirstName] = useState(loggedInUser.firstName)
   const [lastName, setLastName] = useState(loggedInUser.lastName)
