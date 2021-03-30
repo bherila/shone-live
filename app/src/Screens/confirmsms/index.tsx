@@ -7,21 +7,37 @@ import Text from './../../components/Text'
 import OTPTextInput from 'react-native-otp-textinput'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
 import { useNavigation } from '@react-navigation/native'
+import * as SecureStore from 'expo-secure-store'
+import StorageKeys from '../../utils/StorageKeys'
+import { useSecureStore } from '../../hooks/useSecureStore'
 
 export default function ConfirmSms() {
   const navigation = useNavigation()
-
   const [otp, setOTP] = useState('')
 
+  const { setItem, error } = useSecureStore()
+
   useEffect(() => {
-    if (otp.length === 6) {
-      navigation.navigate('NewAccount')
+    if (otp.length === 6 && !error) {
+      navigateToMainScreen()
     }
   }, [otp])
 
+  const navigateToMainScreen = async () => {
+    await setItem(StorageKeys.AUTH_TOKEN, 'fake_token')
+    navigation.reset({
+      index: 0,
+      routes: [
+        {
+          name: 'Home'
+        }
+      ]
+    })
+  }
+
   const onConfirm = () => {
-    if (otp.length === 6) {
-      navigation.navigate('NewAccount')
+    if (otp.length === 6 && !error) {
+      navigateToMainScreen()
     } else {
       alert('Enter valid otp')
     }
