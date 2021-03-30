@@ -17,33 +17,33 @@ export default function MainScreen() {
   const newArr = [
     { img: require('./../../../assets/newone.png') },
     { img: require('./../../../assets/newtwo.png') },
-    { img: require('./../../../assets/newthree.png') },
+    { img: require('./../../../assets/newthree.png') }
   ]
 
   const commingSoon = [
     { img: require('./../../../assets/comingone.png') },
     { img: require('./../../../assets/comingtwo.png') },
-    { img: require('./../../../assets/comingthree.png') },
+    { img: require('./../../../assets/comingthree.png') }
   ]
 
   const moreShows = [
     { img: require('../../../assets/moreone.png') },
     { img: require('../../../assets/moretwo.png') },
-    { img: require('../../../assets/morethree.png') },
+    { img: require('../../../assets/morethree.png') }
   ]
 
   useEffect(() => {
     setModalVisible(true)
   }, [])
 
-  const menu = useRef()
+  const menu = useRef<any>()
 
   const hideMenu = () => {
-    menu.current.hide()
+    menu?.current?.hide()
   }
 
   const showMenu = () => {
-    menu.current.show()
+    menu?.current?.show()
   }
 
   const ViewProfile = () => {
@@ -63,7 +63,7 @@ export default function MainScreen() {
           style={{
             flex: 3,
             justifyContent: 'center',
-            alignItems: 'center',
+            alignItems: 'center'
           }}
         >
           <Image
