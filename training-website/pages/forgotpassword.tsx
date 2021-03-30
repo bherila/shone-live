@@ -3,7 +3,13 @@ import Layout from '../components/Layout/Layout'
 import CheckLogin from '../lib/CheckLogin'
 import { GetServerSideProps } from 'next'
 
-export const ForgotPassword = ({ isUserLoggedIn }): JSX.Element => {
+interface AccountType {
+  isUserLoggedIn: boolean
+}
+
+export const ForgotPassword = ({
+  isUserLoggedIn,
+}: AccountType): JSX.Element => {
   const [email, setEmail] = useState('')
   const [message, setMessage] = useState('')
   const [success, setSuccess] = useState(false)

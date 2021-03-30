@@ -42,7 +42,7 @@ export default function ConfirmSms() {
             style={{
               flex: 3,
               justifyContent: 'center',
-              alignItems: 'center',
+              alignItems: 'center'
             }}
           >
             <Image
@@ -64,13 +64,14 @@ export default function ConfirmSms() {
             style={{
               alignItems: 'center',
               justifyContent: 'center',
-              width: '100%',
+              width: '100%'
             }}
           >
             <OTPTextInput
               textInputStyle={{ borderWidth: 1, borderRadius: 5 }}
               inputCount={6}
-              handleTextChange={(text) => {
+              autoFocus={true}
+              handleTextChange={text => {
                 setOTP(text)
               }}
             />

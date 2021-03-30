@@ -1,26 +1,24 @@
 // eslint-disable-next-line no-use-before-define
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import {
   View,
   TouchableOpacity,
-  Image,
-  KeyboardAvoidingView,
-} from 'react-native'
+  Image} from 'react-native'
 import theme from './../../utils/colors'
 import styles from './styles'
 import {
   Body,
   Item,
   Icon,
-  Input,
   Button,
   Header,
   Left,
-  Right,
+  Right
 } from 'native-base'
 import Text from './../../components/Text'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
 import { useNavigation } from '@react-navigation/native'
+import { TextInput } from 'react-native-gesture-handler'
 
 export default function NewAccount() {
   const navigation = useNavigation()
@@ -28,6 +26,9 @@ export default function NewAccount() {
   const [fname, setFname] = useState('')
   const [lname, setLname] = useState('')
   const [email, setEmail] = useState('')
+
+  let lnameRef = useRef(null)
+  let emailRef = useRef(null)
 
   const onGo = () => {
     if (fname !== '' && lname !== '' && email !== '') {
@@ -55,7 +56,7 @@ export default function NewAccount() {
             style={{
               flex: 3,
               justifyContent: 'center',
-              alignItems: 'center',
+              alignItems: 'center'
             }}
           >
             <Image
@@ -69,35 +70,57 @@ export default function NewAccount() {
           <Text style={styles._desc}>Welcome. Create a new account.</Text>
 
           <Item regular style={styles._codeInput}>
-            <Input
+            <TextInput
+              autoFocus={true}
               placeholder="First name"
-              onChangeText={(text) => {
+              placeholderTextColor={'grey'}
+              style={styles._textinput}
+              onChangeText={text => {
                 setFname(text)
               }}
               keyboardType={'default'}
               returnKeyType={'next'}
+              onSubmitEditing={() => {
+                lnameRef.focus()
+              }}
             />
           </Item>
 
           <Item regular style={styles._codeInput}>
-            <Input
+            <TextInput
+              ref={input => {
+                lnameRef = input
+              }}
               placeholder="Last name"
-              onChangeText={(text) => {
+              placeholderTextColor={'grey'}
+              style={styles._textinput}
+              onChangeText={text => {
                 setLname(text)
               }}
               keyboardType={'default'}
               returnKeyType={'next'}
+              onSubmitEditing={() => {
+                emailRef.focus()
+              }}
             />
           </Item>
 
           <Item regular style={styles._codeInput}>
-            <Input
+            <TextInput
+              ref={input => {
+                emailRef = input
+              }}
               placeholder="Email address"
+              placeholderTextColor={'grey'}
+              style={styles._textinput}
               keyboardType="email-address"
-              onChangeText={(text) => {
+              onChangeText={text => {
                 setEmail(text)
               }}
               returnKeyType={'done'}
+              onSubmitEditing={() => {
+                onGo()
+              }}
             />
           </Item>
 
