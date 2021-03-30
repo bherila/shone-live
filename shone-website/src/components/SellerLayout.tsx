@@ -2,4 +2,7 @@ import React from 'react'
 interface Props {
   children: any
 }
-export default ({ children }: Props) => <div>{children}</div>
+
+export default function SellerLayout({ children }: Props) {
+  return <div>{children}</div>
+}
