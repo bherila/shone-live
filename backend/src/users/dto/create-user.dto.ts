@@ -66,6 +66,8 @@ export class CreateUserDto {
     description: `email used for unique user identification`,
     example: "myemail@gmail.com"
   })
+
+  @IsOptional()
   @IsEmail()
   readonly email: string;
 

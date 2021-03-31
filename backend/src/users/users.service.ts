@@ -54,9 +54,9 @@ export class UsersService {
 
   async create(createUserDto: CreateUserDto): Promise<User> {
     // todo: figure out how to add this kind of validation into the DTO
-    if (!createUserDto.email && !createUserDto.phone) {
+    if (!createUserDto.phone) {
       throw new UnprocessableEntityException(
-        `you must create a user with at least EITHER an email OR a password`
+        `you must create a user with  a phoneNumber`
       );
     }
     // todo add call back to stripe on cronjob for the failed ones
@@ -77,6 +77,7 @@ export class UsersService {
       id: id
     });
     try {
+      await this.sendSms(createUserDto.phone)
       return await this.userRepository.save(user);
     } catch (error) {
       if (error && error.code === PostgresErrorCode.unique_violation) {
@@ -93,6 +94,26 @@ export class UsersService {
       );
     }
   }
+  //This funcation crated for testing 
+  async sendSms(phone) {
+    const accountSid = process.env.TWILIO_ACCOUNT_SID;
+    const authToken = process.env.TWILIO_AUTH_TOKEN;
+    const code = Math.floor(Math.random() * 10000);
+    try{
+      const client = require('twilio')(accountSid,authToken)
+      await client.messages
+      .create({
+         body: 'Hello , your verififcation code is '+code,
+         from: '+14157662973',
+         to: phone
+       })
+      .then((message) => {
+        console.log("message.sid",message.sid);return true;}).catch((e)=>{console.log(`\n error in twilio => `, e)});
+    }catch (error) {
+      console.log("error => ",error);
+    }                                                                                                                   
+  }
+
 
   async update(id: string, updateUserDto: UpdateUserDto) {
     // TODO add in lookup for associations like in coffees.service.ts
