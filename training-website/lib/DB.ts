@@ -1,8 +1,10 @@
-import { createConnection } from 'typeorm'
+import { createConnection, useContainer } from 'typeorm'
 import User from './entities/User'
+import {Container} from "typedi";
 
 // this needs to be a singleton because there can only be 1 connection per node process (see: "AlreadyHasActiveConnectionError")
 async function db() {
+  useContainer(Container);
   const connection = await createConnection({
     type: 'mysql',
     host: process.env.DB_HOST,
