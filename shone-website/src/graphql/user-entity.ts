@@ -16,16 +16,29 @@ export class User {
   @Column()
   phone: string
 
-  @Field({ nullable: true })
+  @Field()
+  @Column()
+  username: string
+
   @Column({ nullable: true })
-  nickname?: string
+  verificationCode!: number
 
+  @Field()
   @Column()
-  password: string
+  verificationCodeTimeSent: string
 
-  @Column()
-  verificationCode: string
+}
 
-  @Column()
-  verificationCodeTimeSent: Date
+export class NewUser {
+  verificationCode: number
+  phone: string
+  id: number
+  verificationCodeTimeSent: string
+}
+
+@ObjectType()
+@Entity()
+export class UserWithToken {
+  @Field()
+  token: string
 }
