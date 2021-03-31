@@ -32,11 +32,11 @@ import { UsersService } from "./users.service";
       SimpleProduct,
       Sku,
       User,
-      UserAddress
+      UserAddress,
     ]),
     FilesModule,
-    StripeModule
+    StripeModule,
   ],
-  providers: [UsersService]
+  providers: [UsersService],
 })
 export class UsersModule {}

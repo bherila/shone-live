@@ -20,16 +20,16 @@ import { LocalStrategy } from "./local.strategy";
     UsersModule,
     ConfigModule.forRoot({
       validationSchema: Joi.object({
-        JWT_SECRET_KEY: Joi.required()
-      })
+        JWT_SECRET_KEY: Joi.required(),
+      }),
     }),
     PassportModule.register({ defaultStrategy: "jwt" }),
     TypeOrmModule.forFeature([User, Auth]),
     JwtModule.register({
       secret: process.env.JWT_SECRET_KEY,
-      signOptions: { expiresIn: process.env.JWT_TIMEOUT }
-    })
+      signOptions: { expiresIn: process.env.JWT_TIMEOUT },
+    }),
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy]
+  providers: [AuthService, LocalStrategy, JwtStrategy],
 })
 export class AuthModule {}

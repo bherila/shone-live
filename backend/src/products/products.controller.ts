@@ -7,7 +7,7 @@ import {
   Param,
   Patch,
   Post,
-  Query
+  Query,
 } from "@nestjs/common";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 
@@ -29,7 +29,7 @@ export class ProductsController {
     status: HttpStatus.OK,
     description: `success`,
     type: Product,
-    isArray: true
+    isArray: true,
   })
   @Get()
   async findAll(
@@ -43,7 +43,7 @@ export class ProductsController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: `success`,
-    type: Product
+    type: Product,
   })
   @Get(":id")
   async findOne(@Param("id") id: string): Promise<Product> {
@@ -54,7 +54,7 @@ export class ProductsController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: `create product`,
-    type: Product
+    type: Product,
   })
   @Post()
   async create(@Body() createProductDto: CreateProductDto): Promise<Product> {
@@ -65,7 +65,7 @@ export class ProductsController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: `updated product`,
-    type: Product
+    type: Product,
   })
   @Patch(":id")
   async update(
@@ -77,12 +77,12 @@ export class ProductsController {
 
   // todo make sure product cannot be deleted after show starts
   @ApiOperation({
-    summary: `hard deletes a product, cascading`
+    summary: `hard deletes a product, cascading`,
   })
   @ApiResponse({
     status: HttpStatus.OK,
     description: `deleted product`,
-    type: Product
+    type: Product,
   })
   @Delete(":id")
   async remove(@Param("id") id: string): Promise<Product> {

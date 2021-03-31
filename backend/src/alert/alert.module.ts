@@ -5,6 +5,6 @@ import { AlertGateway } from "./alert.gateway";
 
 @Module({
   providers: [AlertGateway],
-  controllers: [AlertController]
+  controllers: [AlertController],
 })
 export class AlertModule {}

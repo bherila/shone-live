@@ -1,7 +1,7 @@
 import {
   Injectable,
   NotFoundException,
-  UnauthorizedException
+  UnauthorizedException,
 } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -41,7 +41,7 @@ export class FilesService {
       .upload({
         Bucket: this.configService.get(bucket),
         Body: dataBuffer,
-        Key: `${uuid()}-${filename}`
+        Key: `${uuid()}-${filename}`,
       })
       .promise();
 
@@ -58,7 +58,7 @@ export class FilesService {
         "show_id",
         "simple_product_id",
         "sku_id",
-        "type"
+        "type",
       ]
     );
     saveData["url"] = uploadResult.Location;
@@ -74,7 +74,7 @@ export class FilesService {
     return s3.getSignedUrlPromise("getObject", {
       Bucket: this.configService.get("AWS_PRIVATE_BUCKET_NAME"),
       Key: key,
-      Expires: 86400
+      Expires: 86400,
     });
   }
 
@@ -84,7 +84,7 @@ export class FilesService {
 
   async findOne(id: string, type = "File"): Promise<File> {
     const file = await this.fileRepository.findOne({
-      where: { id: id }
+      where: { id: id },
     });
     if (!file) {
       throw new NotFoundException(`${type} #${id} not found`);
@@ -106,7 +106,7 @@ export class FilesService {
     await s3
       .deleteObject({
         Bucket: this.configService.get("AWS_PRIVATE_BUCKET_NAME"),
-        Key: file.key
+        Key: file.key,
       })
       .promise();
     await this.fileRepository.delete(fileId);
@@ -118,7 +118,7 @@ export class FilesService {
     await s3
       .deleteObject({
         Bucket: this.configService.get("AWS_PUBLIC_BUCKET_NAME"),
-        Key: file.key
+        Key: file.key,
       })
       .promise();
     await this.fileRepository.delete(file._id);

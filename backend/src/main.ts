@@ -26,8 +26,8 @@ async function bootstrap() {
       transform: true,
       forbidNonWhitelisted: true,
       transformOptions: {
-        enableImplicitConversion: true
-      }
+        enableImplicitConversion: true,
+      },
     })
   );
 
@@ -50,7 +50,7 @@ async function bootstrap() {
           req.rawBody = cloneBuffer(buf);
         }
         return true;
-      }
+      },
     })
   );
 
@@ -59,21 +59,21 @@ async function bootstrap() {
     "/api",
     basicAuth({
       challenge: true,
-      users: { ["admin"]: "admin" }
+      users: { ["admin"]: "admin" },
     })
   );
   SwaggerModule.setup("/api", app, document, {
     swaggerOptions: {
       tagsSorter: "alpha",
-      operationsSorter: "alpha"
-    }
+      operationsSorter: "alpha",
+    },
   });
 
   const configService = app.get(ConfigService);
   config.update({
     accessKeyId: configService.get("AWS_ACCESS_KEY_ID"),
     secretAccessKey: configService.get("AWS_SECRET_ACCESS_KEY"),
-    region: configService.get("AWS_REGION")
+    region: configService.get("AWS_REGION"),
   });
 
   await app.listen(process.env.SERVER_PORT); // set to 3001 for localhost...figure out how it works in deployment to pick up correct port on AWS

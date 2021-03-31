@@ -15,17 +15,17 @@ export class AuthController {
   @Post("/login")
   @ApiOperation({
     summary: `returns JWT token if vaid username and password,
-    includes user object for client convenience`
+    includes user object for client convenience`,
   })
   @ApiResponse({
     status: HttpStatus.UNAUTHORIZED,
-    description: "Unauthorized if not valid credentials."
+    description: "Unauthorized if not valid credentials.",
   })
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: `returns "created" after making new JWT if valid credentials.
     Token valid for ${process.env.JWT_TIMEOUT}`,
-    type: JwtResponseWithUser
+    type: JwtResponseWithUser,
   })
   @UseGuards(LocalAuthGuard)
   async login(@Body() loginDto: LoginDto): Promise<JwtResponseWithUser> {
@@ -36,13 +36,13 @@ export class AuthController {
   @Post("/register")
   @ApiOperation({
     summary: `returns JWT token if vaid username and password,
-  also returns the user object with the parameters passed in`
+  also returns the user object with the parameters passed in`,
   })
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: `creates a user record and an auth record, returns JWT.
     Token valid for ${process.env.JWT_TIMEOUT}`,
-    type: JwtResponseWithUser
+    type: JwtResponseWithUser,
   })
   async create(
     @Body() createAuthDto: RegisterDto

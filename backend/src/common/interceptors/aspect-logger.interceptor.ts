@@ -2,7 +2,7 @@ import {
   CallHandler,
   ExecutionContext,
   Injectable,
-  NestInterceptor
+  NestInterceptor,
 } from "@nestjs/common";
 import { tap } from "rxjs/operators";
 
@@ -13,6 +13,6 @@ export class AspectLogger implements NestInterceptor {
     const { statusCode } = context.switchToHttp().getResponse();
     const { originalUrl, method, params, query, body } = req;
     console.log({ originalUrl, method, params, query, body });
-    return next.handle().pipe(tap(data => console.log({ statusCode, data })));
+    return next.handle().pipe(tap((data) => console.log({ statusCode, data })));
   }
 }

@@ -22,15 +22,15 @@ export class AuthService {
 
   async login(email: string) {
     const user = await this.userRepository.findOne({
-      where: { email }
+      where: { email },
     });
 
     return {
       access_token: this.jwtService.sign({
         id: user.id,
-        username: user.username
+        username: user.username,
       }),
-      user: user
+      user: user,
     };
   }
 
@@ -40,15 +40,15 @@ export class AuthService {
     const auth = await this.authRepository.create({
       identifier: user.email,
       password: hashedPassword,
-      user: user
+      user: user,
     });
     this.authRepository.save(auth);
     return {
       access_token: this.jwtService.sign({
         id: user.id,
-        username: user.username
+        username: user.username,
       }),
-      user: user
+      user: user,
     };
   }
 
@@ -61,7 +61,7 @@ export class AuthService {
       // set on all tables and also figure out how to make records
       // immutable in typeorm/make sure code doesn't try to modify
       const auth = await this.authRepository.findOne({
-        where: { identifier: email }
+        where: { identifier: email },
       });
       const pw_good = await bcrypt.compare(password, auth.password);
 

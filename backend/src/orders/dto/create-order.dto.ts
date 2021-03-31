@@ -5,7 +5,7 @@ import {
   IsNumber,
   IsOptional,
   IsString,
-  ValidateNested
+  ValidateNested,
 } from "class-validator";
 
 import { StripeAddress } from "../../stripe/dto/stripe-address.dto";
@@ -15,7 +15,7 @@ export class CreateOrderDto {
   // client should also manage this as well
   @ApiProperty({
     description: `the number of units the customer would like to order`,
-    example: `5`
+    example: `5`,
   })
   @IsNumber()
   quantity: number;
@@ -29,9 +29,9 @@ export class CreateOrderDto {
       line1: "1 Broadway",
       line2: "Suite 1000",
       postal_code: "10004",
-      state: "NY"
+      state: "NY",
     },
-    type: StripeAddress
+    type: StripeAddress,
   })
   @IsNotEmpty()
   @ValidateNested()
@@ -43,7 +43,7 @@ export class CreateOrderDto {
     originally users could not be created without receipt
     so this was marked optional,
     for now we just need to make sure it's passed and can deal with caching`,
-    example: `myemail@gmail.com`
+    example: `myemail@gmail.com`,
   })
   @IsOptional()
   @IsString()
@@ -52,7 +52,7 @@ export class CreateOrderDto {
   @ApiProperty({
     description: `the name of the recipient of the order
     also optional, if not passed user name is used`,
-    example: `John Smith`
+    example: `John Smith`,
   })
   @IsOptional()
   @IsString()
@@ -60,21 +60,21 @@ export class CreateOrderDto {
 
   @ApiProperty({
     description: `right now one sku can be passed at a time`,
-    example: `sku_IRMW5E3niKt154`
+    example: `sku_IRMW5E3niKt154`,
   })
   @IsString()
   sku: string;
 
   @ApiProperty({
     description: `the id of the stripe card being used to pay for the order`,
-    example: `card_1HqnEC2eZvKYlo2Cs3wf41sM`
+    example: `card_1HqnEC2eZvKYlo2Cs3wf41sM`,
   })
   @IsString()
   card_id: string;
 
   @ApiProperty({
     description: `the id of the user making the purchase`,
-    example: `cus_IPqRS333voIGbS`
+    example: `cus_IPqRS333voIGbS`,
   })
   @IsString()
   user_id: string;
@@ -82,7 +82,7 @@ export class CreateOrderDto {
   @ApiProperty({
     description: `id of the show which the order is being made from
     will be used in the future as a sanity check that the sku is right`,
-    example: `1`
+    example: `1`,
   })
   @IsNumber()
   show_id: number;

@@ -12,10 +12,10 @@ import { SimpleProductsService } from "./simple-products.service";
 @Module({
   imports: [
     TypeOrmModule.forFeature([SimpleProduct, User, File, Show]),
-    forwardRef(() => Stripe2Module)
+    forwardRef(() => Stripe2Module),
   ],
   controllers: [SimpleProductsController],
   providers: [SimpleProductsService],
-  exports: [SimpleProductsService]
+  exports: [SimpleProductsService],
 })
 export class SimpleProductsModule {}

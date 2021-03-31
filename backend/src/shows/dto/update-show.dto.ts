@@ -8,7 +8,7 @@ export class UpdateShowDto extends PartialType(CreateShowDto) {
     description:
       `time the show actually ended at` +
       `this must be passed at the time the show ends`,
-    example: `2020-11-22T20:39:12+00:00`
+    example: `2020-11-22T20:39:12+00:00`,
   })
   @IsOptional()
   @IsDateString()

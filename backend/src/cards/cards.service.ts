@@ -47,7 +47,7 @@ export class CardsService {
         fingerprint: (stripeCard as any).fingerprint,
         funding: (stripeCard as any).funding,
         last4: (stripeCard as any).last4,
-        name: (stripeCard as any).name
+        name: (stripeCard as any).name,
       });
       return await this.cardRepository.save(card);
     } catch (error) {

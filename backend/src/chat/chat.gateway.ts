@@ -5,7 +5,7 @@ import {
   OnGatewayInit,
   SubscribeMessage,
   WebSocketGateway,
-  WebSocketServer
+  WebSocketServer,
 } from "@nestjs/websockets";
 import { Server, Socket } from "socket.io";
 
@@ -13,7 +13,7 @@ import { Server, Socket } from "socket.io";
 @WebSocketGateway(3002, {
   namespace: "/chat",
   path: "/websockets", // defaults to socket.io if you don't specify
-  serveClient: true // if the client app comes from another server, then false
+  serveClient: true, // if the client app comes from another server, then false
 })
 export class ChatGateway
   implements OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit {

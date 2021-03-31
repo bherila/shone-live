@@ -21,7 +21,7 @@ export class AddressesController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: `created an address independent of stripe`,
-    type: Address
+    type: Address,
   })
   @Post()
   create(@Body() createAddressDto: CreateAddressDto): Promise<Address> {

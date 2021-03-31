@@ -27,13 +27,13 @@ export class ProductsService {
     return this.productRepository.find({
       relations: ["user", "show", "files"],
       skip: offset,
-      take: limit
+      take: limit,
     });
   }
 
   async findOne(id: string) {
     const product = await this.productRepository.findOne(id, {
-      relations: ["user", "show", "files"]
+      relations: ["user", "show", "files"],
     });
     if (!product) {
       throw new NotFoundException(`Product id: ${id} not found`);
@@ -64,7 +64,7 @@ export class ProductsService {
       show: show,
       user: user,
       // current_quantity: createProductDto.quantity,
-      ...createProductDto
+      ...createProductDto,
     });
     const savedProduct = await this.productRepository.save(product);
     // this.stripeService.createStripePrice(savedProduct);
@@ -90,7 +90,7 @@ export class ProductsService {
       id: id,
       user: user,
       show: show,
-      ...updateProductDto
+      ...updateProductDto,
     });
     if (!product) {
       throw new NotFoundException(`Product id: ${id} not found`);

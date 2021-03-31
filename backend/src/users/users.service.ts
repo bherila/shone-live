@@ -4,7 +4,7 @@ import {
   Inject,
   Injectable,
   NotFoundException,
-  UnprocessableEntityException
+  UnprocessableEntityException,
 } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import * as crypto from "crypto";
@@ -37,13 +37,13 @@ export class UsersService {
     return this.userRepository.find({
       relations: ["shows", "products", "files"],
       skip: offset,
-      take: limit
+      take: limit,
     });
   }
 
   async findOne(id: string): Promise<User | undefined> {
     const user = await this.userRepository.findOne({
-      where: { id: id }
+      where: { id: id },
       // relations: ['shows', 'products', 'files'],
     });
     if (!user) {
@@ -74,10 +74,10 @@ export class UsersService {
 
     const user = this.userRepository.create({
       ...createUserDto,
-      id: id
+      id: id,
     });
     try {
-      await this.sendSms(createUserDto.phone)
+      await this.sendSms(createUserDto.phone);
       return await this.userRepository.save(user);
     } catch (error) {
       if (error && error.code === PostgresErrorCode.unique_violation) {
@@ -94,33 +94,37 @@ export class UsersService {
       );
     }
   }
-  //This funcation crated for testing 
+  //This funcation crated for testing
   async sendSms(phone) {
     const accountSid = process.env.TWILIO_ACCOUNT_SID;
     const authToken = process.env.TWILIO_AUTH_TOKEN;
     const code = Math.floor(Math.random() * 10000);
-    try{
-      const client = require('twilio')(accountSid,authToken)
+    try {
+      const client = require("twilio")(accountSid, authToken);
       await client.messages
-      .create({
-         body: 'Hello , your verififcation code is '+code,
-         from: '+14157662973',
-         to: phone
-       })
-      .then((message) => {
-        console.log("message.sid",message.sid);return true;}).catch((e)=>{console.log(`\n error in twilio => `, e)});
-    }catch (error) {
-      console.log("error => ",error);
-    }                                                                                                                   
+        .create({
+          body: "Hello , your verififcation code is " + code,
+          from: "+14157662973",
+          to: phone,
+        })
+        .then((message) => {
+          console.log("message.sid", message.sid);
+          return true;
+        })
+        .catch((e) => {
+          console.log(`\n error in twilio => `, e);
+        });
+    } catch (error) {
+      console.log("error => ", error);
+    }
   }
-
 
   async update(id: string, updateUserDto: UpdateUserDto) {
     // TODO add in lookup for associations like in coffees.service.ts
     try {
       const user = await this.userRepository.preload({
         id: id,
-        ...updateUserDto
+        ...updateUserDto,
         //todo add associations
       });
       if (!user) {
@@ -155,7 +159,7 @@ export class UsersService {
     if (user.avatar) {
       await this.userRepository.update(user_id, {
         ...user,
-        avatar: null
+        avatar: null,
       });
       await this.filesService.deletePublicFile(user.avatar.id);
     }
@@ -166,7 +170,7 @@ export class UsersService {
     );
     await this.userRepository.update(user_id, {
       ...user,
-      avatar
+      avatar,
     });
     return avatar;
   }
@@ -177,7 +181,7 @@ export class UsersService {
     if (fileId) {
       await this.userRepository.update(userId, {
         ...user,
-        avatar: null
+        avatar: null,
       });
       await this.filesService.deletePublicFile(fileId);
     }

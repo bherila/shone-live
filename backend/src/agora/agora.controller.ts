@@ -11,12 +11,12 @@ export class AgoraController {
   constructor(private readonly agoraService: AgoraRtmTokenService) {}
 
   @ApiOperation({
-    summary: `generates a new access token (RTM) for a single agora channel`
+    summary: `generates a new access token (RTM) for a single agora channel`,
   })
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: `request a token from agora and return it`,
-    type: CreateAgoraRtmTokenResponse
+    type: CreateAgoraRtmTokenResponse,
   })
   @Post("/rtm_token")
   async create(
@@ -24,7 +24,7 @@ export class AgoraController {
   ): Promise<CreateAgoraRtmTokenResponse> {
     return this.agoraService
       .create(createAgoraRtmTokenDto)
-      .then(agoraRtmToken => {
+      .then((agoraRtmToken) => {
         return new CreateAgoraRtmTokenResponse(agoraRtmToken);
       });
   }

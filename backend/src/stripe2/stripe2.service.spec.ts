@@ -7,7 +7,7 @@ describe("Stripe2Service", () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [Stripe2Service]
+      providers: [Stripe2Service],
     }).compile();
 
     service = module.get<Stripe2Service>(Stripe2Service);

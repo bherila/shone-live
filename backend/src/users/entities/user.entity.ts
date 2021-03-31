@@ -5,7 +5,7 @@ import {
   JoinColumn,
   OneToMany,
   OneToOne,
-  PrimaryColumn
+  PrimaryColumn,
 } from "typeorm";
 
 import { AgoraRtmToken } from "../../agora/entities/agora-rtm-token.entity";
@@ -23,14 +23,14 @@ import { UserAddress } from "../../user-addresses/user-address.entity";
 @Entity() // sql table === 'user'
 export class User {
   @PrimaryColumn({
-    comment: "stripe id is used to match 1 to 1"
+    comment: "stripe id is used to match 1 to 1",
   })
   id: string;
 
   @Column({
     unique: true,
     comment: "display username for use in the app",
-    nullable: true
+    nullable: true,
   })
   username: string;
 
@@ -38,131 +38,93 @@ export class User {
     comment:
       `descriptive bio for use in the app. ` +
       `target is for sellers to describe themselves`,
-    nullable: true
+    nullable: true,
   })
   bio: string;
 
   @Column({
     comment: "users first name",
-    nullable: true
+    nullable: true,
   })
   first_name: string;
 
   @Column({
     comment: "users last name",
-    nullable: true
+    nullable: true,
   })
   last_name: string;
 
   @Column({
     unique: true,
     comment: "users phone number",
-    nullable: true
+    nullable: true,
   })
   phone: string;
 
   @Column({
     comment: "used for various authorizations sellers must be validated",
-    nullable: true
+    nullable: true,
   })
   seller: boolean;
 
   @Column({
     unique: true,
     comment: "email used for unique user identification",
-    nullable: true
+    nullable: true,
   })
   email: string;
 
   // TODO: add address and then address association
 
-  @OneToMany(
-    type => Card,
-    card => card.user,
-    {
-      cascade: true
-    }
-  )
+  @OneToMany((type) => Card, (card) => card.user, {
+    cascade: true,
+  })
   cards: Card[];
 
-  @OneToMany(
-    type => Show,
-    show => show.user,
-    {
-      cascade: true
-    }
-  )
+  @OneToMany((type) => Show, (show) => show.user, {
+    cascade: true,
+  })
   shows: Show[];
 
-  @OneToMany(
-    type => Auth,
-    auth => auth.user,
-    {
-      cascade: true
-    }
-  )
+  @OneToMany((type) => Auth, (auth) => auth.user, {
+    cascade: true,
+  })
   auths: Auth[];
 
-  @OneToMany(
-    type => Product,
-    product => product.user,
-    {
-      cascade: true
-    }
-  )
+  @OneToMany((type) => Product, (product) => product.user, {
+    cascade: true,
+  })
   products: Product[];
 
-  @OneToMany(
-    type => SimpleProduct,
-    simpleProduct => simpleProduct.user,
-    {
-      cascade: true
-    }
-  )
+  @OneToMany((type) => SimpleProduct, (simpleProduct) => simpleProduct.user, {
+    cascade: true,
+  })
   simpleProducts: SimpleProduct[];
 
-  @OneToMany(
-    type => AgoraRtmToken,
-    agoraRtmToken => agoraRtmToken.user,
-    {
-      cascade: true
-    }
-  )
+  @OneToMany((type) => AgoraRtmToken, (agoraRtmToken) => agoraRtmToken.user, {
+    cascade: true,
+  })
   agoraRtmTokens: AgoraRtmToken[];
 
   @JoinColumn()
   @OneToOne(() => File, {
     eager: true,
-    nullable: true
+    nullable: true,
   })
   public avatar?: File;
 
-  @OneToMany(
-    () => File,
-    (file: File) => file.user
-  )
+  @OneToMany(() => File, (file: File) => file.user)
   public files: File[];
 
-  @OneToMany(
-    order => Order,
-    order => order.user
-  )
+  @OneToMany((order) => Order, (order) => order.user)
   orders: Order[];
 
   // these are SKUs a seller added
-  @OneToMany(
-    type => Sku,
-    sku => sku.user,
-    { cascade: true }
-  )
+  @OneToMany((type) => Sku, (sku) => sku.user, { cascade: true })
   skus: Sku[];
 
-  @OneToMany(
-    type => UserAddress,
-    userAddress => userAddress.user,
-    {
-      cascade: true
-    }
-  )
+  @OneToMany((type) => UserAddress, (userAddress) => userAddress.user, {
+    cascade: true,
+  })
   userAddresses: UserAddress[];
 }
