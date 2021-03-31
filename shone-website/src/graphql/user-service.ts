@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common'
-import { InjectRepository } from 'typeorm-typedi-extensions'
-import { NewUser, User } from './user-entity'
-import { Repository } from 'typeorm'
+import Twilio from 'twilio'
 import { Service } from 'typedi'
+import { Repository } from 'typeorm'
+import { InjectRepository } from 'typeorm-typedi-extensions'
+
+import { NewUser, User } from './user-entity'
 
 @Service()
 @Injectable()
@@ -22,13 +24,13 @@ export class UserService {
 
   async sendVerificationCode(code, phone) {
     try {
-      const client = require('twilio')(
+      const client = Twilio(
         process.env.TWILIO_ACCOUNT_SID,
         process.env.TWILIO_AUTH_TOKEN,
       )
       client.messages
         .create({
-          body: 'Hello , Your verififcation code is ' + code,
+          body: 'Hello, Your verification code is ' + code,
           from: process.env.TWILIO_PHONE_NUMBER,
           to: phone,
         })

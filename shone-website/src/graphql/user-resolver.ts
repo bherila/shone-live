@@ -1,10 +1,11 @@
+import { sign } from 'jsonwebtoken'
 import { Arg, Int, Mutation, Query, Resolver } from 'type-graphql'
 import { Service } from 'typedi'
 import { Repository } from 'typeorm'
 import { InjectRepository } from 'typeorm-typedi-extensions'
-import { UserService } from './user-service'
+
 import { User, UserWithToken } from './user-entity'
-import { sign } from 'jsonwebtoken'
+import { UserService } from './user-service'
 @Service()
 @Resolver(() => User)
 export class UserResolver {
