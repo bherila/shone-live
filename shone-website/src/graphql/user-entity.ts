@@ -4,7 +4,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 @ObjectType()
 @Entity()
 export class User {
-  @Field((type) => ID)
+  @Field(() => ID)
   @PrimaryGeneratedColumn()
   readonly id: number
 
@@ -26,7 +26,6 @@ export class User {
   @Field()
   @Column()
   verificationCodeTimeSent: string
-
 }
 
 export class NewUser {
