@@ -51,7 +51,8 @@
     "typedi": "^0.10.0",
     "typeorm": "^0.2.31",
     "typeorm-typedi-extensions": "^0.4.1",
-    "universal-cookie": "^4.0.4"
+    "universal-cookie": "^4.0.4",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@nestjs/cli": "^7.5.6",
