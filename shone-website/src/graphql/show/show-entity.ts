@@ -1,23 +1,12 @@
 import { Field, ID, ObjectType } from 'type-graphql'
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 
-/* 
-  # Query for the list of shows
-  query {
-      shows {
-          id
-          title
-          image_url
-          start_date
-          end_date
-      }
-  }
-*/
+import { MessageEntity } from '../message/message-entity'
 
 @ObjectType()
 @Entity()
 export class Show {
-  @Field((type) => ID)
+  @Field(() => ID)
   @PrimaryGeneratedColumn()
   readonly id: number
 
@@ -40,4 +29,8 @@ export class Show {
   @Field({ name: 'end_date' })
   @Column({ name: 'end_date' })
   endDate: Date
+
+  @Field(() => [MessageEntity], { nullable: true })
+  @OneToMany(() => MessageEntity, (message) => message.show)
+  chatMessages: MessageEntity[]
 }

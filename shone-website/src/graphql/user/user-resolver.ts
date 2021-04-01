@@ -1,4 +1,3 @@
-import { sign } from 'jsonwebtoken'
 import { Arg, Int, Mutation, Query, Resolver } from 'type-graphql'
 import { Service } from 'typedi'
 import { Repository } from 'typeorm'
@@ -15,7 +14,7 @@ export class UserResolver {
   ) {}
 
   @Query(() => User, { nullable: true })
-  user(@Arg('userId', (type) => Int) userId: number) {
+  user(@Arg('userId', () => Int) userId: number) {
     return this.userRepository.findOne(userId)
   }
 
@@ -33,26 +32,6 @@ export class UserResolver {
 
   @Query(() => UserWithToken)
   async verifyCode(@Arg('userId') userId: number, @Arg('code') code: number) {
-    const {
-      verificationCodeTimeSent,
-      verificationCode,
-      phone,
-    } = await this.userRepository.findOne(userId)
-    const cuerrntTime = new Date().toUTCString()
-    const findDiff =
-      (new Date(cuerrntTime).getTime() -
-        new Date(verificationCodeTimeSent).getTime()) /
-      60000
-    if (findDiff > 5) throw new Error('this code is expried')
-    if (code !== verificationCode) throw new Error('Worng code')
-    const payload = {
-      userId,
-      phone,
-    }
-    const token = sign(payload, process.env.SECRET_ACCESS_KEY, {
-      algorithm: 'HS256',
-    })
-    console.log(`token`, token)
-    return { token }
+    return this.usersService.verifycode(userId, code)
   }
 }

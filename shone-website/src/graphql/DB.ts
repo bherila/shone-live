@@ -2,8 +2,9 @@ import { Container } from 'typedi'
 import { createConnection, getConnectionManager, useContainer } from 'typeorm'
 import { Connection } from 'typeorm/connection/Connection'
 
-import { User } from './user-entity'
-
+import { MessageEntity } from './message/message-entity'
+import { Show } from './show/show-entity'
+import { User } from './user/user-entity'
 // this needs to be a singleton because there can only be 1 connection per node process (see: "AlreadyHasActiveConnectionError")
 async function db() {
   // register 3rd party IOC container
@@ -24,7 +25,7 @@ async function db() {
     username: process.env.MYSQL_USER,
     password: process.env.MYSQL_PASS,
     database: process.env.MYSQL_DB,
-    entities: [User],
+    entities: [User, Show, MessageEntity],
     synchronize: true,
     logging: false,
     port: 3306,
@@ -35,6 +36,8 @@ async function db() {
   return {
     ...connection,
     users: connection.getRepository(User),
+    shows: connection.getRepository(Show),
+    message: connection.getRepository(MessageEntity),
   }
 }
 

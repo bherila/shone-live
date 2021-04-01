@@ -26,6 +26,10 @@ export class User {
   @Field()
   @Column()
   verificationCodeTimeSent: string
+
+  @Field()
+  @Column()
+  token: string
 }
 
 export class NewUser {
