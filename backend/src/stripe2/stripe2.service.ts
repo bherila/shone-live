@@ -16,7 +16,7 @@ export class Stripe2Service {
     payment_method_types: ["card"],
     success_url: "https://example.com/success",
     cancel_url: "https://example.com/cancel",
-    shipping_address_collection: { allowed_countries: ["US"] }
+    shipping_address_collection: { allowed_countries: ["US"] },
   };
 
   // TODO we need a DB table to save all webhooks data
@@ -26,7 +26,7 @@ export class Stripe2Service {
     private readonly showGateway: ShowGateway
   ) {
     this.stripeClient = new Stripe(process.env.STRIPE_DEV_KEY, {
-      apiVersion: "2020-08-27"
+      apiVersion: "2020-08-27",
     });
   }
 
@@ -37,7 +37,7 @@ export class Stripe2Service {
     return this.stripeClient.products.create({
       id: simpleProduct.id,
       name: simpleProduct.name,
-      images: images
+      images: images,
     });
   }
 
@@ -47,7 +47,7 @@ export class Stripe2Service {
     return this.stripeClient.prices.create({
       currency: "USD",
       unit_amount: simpleProduct.price,
-      product: simpleProduct.id
+      product: simpleProduct.id,
     });
   }
 
@@ -59,16 +59,16 @@ export class Stripe2Service {
       .create({
         line_items: [await this.stripeLineItem(simple_product_id, quantity)],
         customer: user_id,
-        ...this.CHECKOUT_CONFIGURATION
+        ...this.CHECKOUT_CONFIGURATION,
       })
-      .then(checkoutSession => checkoutSession.id);
+      .then((checkoutSession) => checkoutSession.id);
   }
 
   async stripeLineItem(simple_product_id: string, quantity: number) {
     const item: any = { price: string, quantity: quantity };
     return this.simpleProductsService
       .findOne(simple_product_id)
-      .then(simpleProduct => {
+      .then((simpleProduct) => {
         item.price = simpleProduct.stripe_price_id;
         return item;
       });
@@ -94,11 +94,11 @@ export class Stripe2Service {
   async handleCheckoutSessionCompleted(data: Stripe.Event.Data) {
     this.stripeClient.checkout.sessions
       .listLineItems(data.object["id"])
-      .then(lineItems => {
-        lineItems.data.map(item => {
+      .then((lineItems) => {
+        lineItems.data.map((item) => {
           this.simpleProductsService
             .updateQuantitySold(item.price.product.toString(), item.quantity)
-            .then(res => this.showGateway.handleShowSales(res));
+            .then((res) => this.showGateway.handleShowSales(res));
         });
       });
   }

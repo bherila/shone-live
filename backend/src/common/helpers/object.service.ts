@@ -10,7 +10,7 @@ export class ObjService {
 
   static filtered(originalObject: any, keepKeys: string[]): any {
     return Object.keys(originalObject)
-      .filter(key => keepKeys.includes(key))
+      .filter((key) => keepKeys.includes(key))
       .reduce((obj, key) => {
         obj[key] = originalObject[key];
         return obj;
@@ -20,7 +20,7 @@ export class ObjService {
   static hasMissingValues(object: any): boolean {
     const missingValues: any = [];
     const keys = Object.keys(object);
-    keys.forEach(key => object[key] == null && missingValues.push(key));
+    keys.forEach((key) => object[key] == null && missingValues.push(key));
     return missingValues.length > 0;
   }
 

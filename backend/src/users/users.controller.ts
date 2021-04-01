@@ -10,7 +10,7 @@ import {
   Post,
   Query,
   UploadedFile,
-  UseInterceptors
+  UseInterceptors,
 } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express/multer";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
@@ -36,7 +36,7 @@ export class UsersController {
     status: HttpStatus.OK,
     description: `success`,
     type: UserResponse,
-    isArray: true
+    isArray: true,
   })
   @Get()
   async findAll(
@@ -44,31 +44,31 @@ export class UsersController {
   ): Promise<UserResponse[]> {
     return this.usersService
       .findAll(paginationQuery)
-      .then(users => users.map(user => new UserResponse(user)));
+      .then((users) => users.map((user) => new UserResponse(user)));
   }
 
   @ApiOperation({ summary: `returns a single user by their id` })
   @ApiResponse({
     status: HttpStatus.OK,
     description: `success`,
-    type: UserResponse
+    type: UserResponse,
   })
   @Get(":id")
   async findOne(@Param("id") id: string): Promise<UserResponse> {
-    return this.usersService.findOne(id).then(user => new UserResponse(user));
+    return this.usersService.findOne(id).then((user) => new UserResponse(user));
   }
 
   @ApiOperation({ summary: `creates a new user given unique fields` })
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: `created user and any associated addresses passed`,
-    type: UserResponse
+    type: UserResponse,
   })
   @Post()
   async create(@Body() createUserDto: CreateUserDto): Promise<UserResponse> {
     return this.usersService
       .create(createUserDto)
-      .then(user => new UserResponse(user));
+      .then((user) => new UserResponse(user));
   }
 
   // todo: should we make username immutable?
@@ -76,37 +76,37 @@ export class UsersController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: `updated user`,
-    type: UserResponse
+    type: UserResponse,
   })
   @Patch(":id")
   async update(@Param("id") id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService
       .update(id, updateUserDto)
-      .then(user => new UserResponse(user));
+      .then((user) => new UserResponse(user));
   }
 
   @ApiOperation({
     summary: `hard deletes a user, cascading...probably should never use in
-    production; will switch to soft delete`
+    production; will switch to soft delete`,
   })
   @ApiResponse({
     status: HttpStatus.OK,
     description: `deleted user`,
-    type: UserResponse
+    type: UserResponse,
   })
   @Delete(":id")
   async remove(@Param("id") id: string): Promise<UserResponse> {
-    return this.usersService.remove(id).then(user => new UserResponse(user));
+    return this.usersService.remove(id).then((user) => new UserResponse(user));
   }
 
   @ApiOperation({
     summary: `adds the single profile image for the user
-  will override if a new avatar image uploaded`
+  will override if a new avatar image uploaded`,
   })
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: `uploaded avatar image`,
-    type: CreateFileResponse
+    type: CreateFileResponse,
   })
   // todo get the file part into the docs for these
   // the file part is missing in the request body
@@ -118,16 +118,16 @@ export class UsersController {
   ): Promise<CreateFileResponse> {
     return this.usersService
       .addAvatar(CreateFileDto, file.buffer, file.originalname)
-      .then(file => new CreateFileResponse(file));
+      .then((file) => new CreateFileResponse(file));
   }
 
   @ApiOperation({
     summary: `removes the single profile image for the user
-  (profile image is optional)`
+  (profile image is optional)`,
   })
   @ApiResponse({
     status: HttpStatus.NO_CONTENT,
-    description: `deleted avatar image`
+    description: `deleted avatar image`,
   })
   @Delete(":userId/avatar")
   @HttpCode(204)

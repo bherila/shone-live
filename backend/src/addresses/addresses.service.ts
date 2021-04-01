@@ -30,12 +30,12 @@ export class AddressesService {
       throw new HttpException("user not found", HttpStatus.BAD_REQUEST);
     }
     const address = this.addressRepository.create({
-      ...createAddressDto
+      ...createAddressDto,
     });
     const savedAddress = await this.addressRepository.save(address);
     const userAddress = this.userAddressRepository.create({
       user: find_user,
-      address: savedAddress
+      address: savedAddress,
     });
 
     await this.userAddressRepository.save(userAddress);

@@ -18,9 +18,9 @@ import { OrdersService } from "./orders.service";
     TypeOrmModule.forFeature([Order, OrderSku, Sku, Card, User, Show]),
     StripeModule,
     AddressesModule,
-    ShowsModule
+    ShowsModule,
   ],
   providers: [OrdersService],
-  controllers: [OrdersController]
+  controllers: [OrdersController],
 })
 export class OrdersModule {}

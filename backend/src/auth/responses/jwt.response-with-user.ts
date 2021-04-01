@@ -17,7 +17,7 @@ export class JwtResponseWithUser extends UserResponse {
   see https://jwt.io/introduction/`,
     example: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImN1c19JWVVwb1RrUXV6bHU3ayIsInVzZXJuYW1lIjpudWxsLCJpYXQiOjE2MDc3NDAwOTIsImV4cCI6MTYwODk0OTY5Mn0.IOdxnz73Ru1wLBqFlSTcg00AhyU0Lz6tmQsKoEbxj7A`,
     type: `JWT`,
-    required: true
+    required: true,
   })
   public readonly access_token: string;
 

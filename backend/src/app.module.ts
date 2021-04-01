@@ -40,13 +40,13 @@ console.log({
   password: process.env.MYSQL_PASS,
   database: process.env.MYSQL_DB,
   autoLoadEntities: true,
-  charset: 'utf8mb4_general_ci',
+  charset: "utf8mb4_general_ci",
   insecureAuth: true,
   synchronize: true, // disable in the production
   connectTimeout: 30000,
   acquireTimeout: 30000,
   // TODO: export migration for prod DB
-  logging: dbLogging // if in dev mode enable db logging
+  logging: dbLogging, // if in dev mode enable db logging
 });
 
 @Module({
@@ -62,8 +62,8 @@ console.log({
         AWS_ACCESS_KEY_ID: Joi.string().required(),
         AWS_SECRET_ACCESS_KEY: Joi.string().required(),
         AWS_PUBLIC_BUCKET_NAME: Joi.string().required(),
-        AWS_PRIVATE_BUCKET_NAME: Joi.string().required()
-      })
+        AWS_PRIVATE_BUCKET_NAME: Joi.string().required(),
+      }),
     }),
     SentryModule.forRoot({
       dsn:
@@ -71,10 +71,10 @@ console.log({
       debug: true, // true | false,
       environment: process.env.NODE_ENV,
       release: null, // if not null, must create release in sentry.io dashboard
-      logLevel: LogLevel.Debug //based on sentry.io loglevel //
+      logLevel: LogLevel.Debug, //based on sentry.io loglevel //
     }),
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, "..", "static")
+      rootPath: join(__dirname, "..", "static"),
     }),
     TypeOrmModule.forRoot({
       type: "mysql",
@@ -85,12 +85,12 @@ console.log({
       password: process.env.MYSQL_PASS,
       database: process.env.MYSQL_DB,
       autoLoadEntities: true,
-      charset: 'utf8mb4_general_ci',
+      charset: "utf8mb4_general_ci",
       insecureAuth: true,
       synchronize: true, // disable in the production
       connectTimeout: 30000,
       // TODO: export migration for prod DB
-      logging: dbLogging // if in dev mode enable db logging
+      logging: dbLogging, // if in dev mode enable db logging
     }),
     AuthModule,
     ProductsModule,
@@ -107,14 +107,13 @@ console.log({
     CommonModule,
     SimpleProductsModule,
     Stripe2Module,
-    AgoraModule
+    AgoraModule,
   ],
   providers: [
     {
       provide: APP_INTERCEPTOR,
-      useClass: AspectLogger
-    }
-  ]
+      useClass: AspectLogger,
+    },
+  ],
 })
-
 export class AppModule {}

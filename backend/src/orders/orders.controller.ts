@@ -22,7 +22,7 @@ export class OrdersController {
     status: HttpStatus.OK,
     description: `returns all orders`,
     type: Order,
-    isArray: true
+    isArray: true,
   })
   @ApiQuery({ name: "show_id", type: String, required: false })
   @ApiQuery({ name: "offset", type: Number, required: false })
@@ -36,12 +36,12 @@ export class OrdersController {
     summary: `creates an order in stripe
   and then pays the order so it gets completed
   on successful order processing returns the order
-  (if units in stock, payment valid, eventually address validation included)`
+  (if units in stock, payment valid, eventually address validation included)`,
   })
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: `created an order`,
-    type: Order
+    type: Order,
   })
   @Post()
   async create(@Body() createOrderDto: CreateOrderDto): Promise<Order> {

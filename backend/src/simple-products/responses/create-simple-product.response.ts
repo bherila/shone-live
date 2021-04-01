@@ -9,32 +9,32 @@ export class CreateSimpleProductResponse {
   @ApiProperty({
     description: `our id in our database`,
     example: `b644cec4-0487-4f6f-bac1-c80059a2a4b0`,
-    type: "UUID"
+    type: "UUID",
   })
   public readonly id: string;
 
   @ApiProperty({
     description: `the user who added this product to the database`,
-    example: `cus_IPqRS333voIGbS`
+    example: `cus_IPqRS333voIGbS`,
   })
   public readonly user_id: string;
 
   @ApiProperty({
     description: `the show where this product is being sold`,
     example: `b644cec4-0487-4f6f-bac1-c80059a2a4b0`,
-    type: "UUID"
+    type: "UUID",
   })
   public readonly show_id: string;
 
   @ApiProperty({
     description: "product name",
-    example: `Nike: Fluffy Down Jacket`
+    example: `Nike: Fluffy Down Jacket`,
   })
   public readonly name: string;
 
   @ApiProperty({
     description: "product description",
-    example: `Our warmest winter coat designed for outdoor sports like skiing.`
+    example: `Our warmest winter coat designed for outdoor sports like skiing.`,
   })
   public readonly description: string;
 
@@ -42,13 +42,13 @@ export class CreateSimpleProductResponse {
     description:
       `determines if the product should be shown to the customer` +
       `so they can purchase it` +
-      `defaults to false`
+      `defaults to false`,
   })
   public readonly available_for_purchase: boolean;
 
   @ApiProperty({
     description: "retail price in cents (eg $1.00 should be 100)",
-    example: `100`
+    example: `100`,
   })
   public readonly price: number;
 
@@ -56,7 +56,7 @@ export class CreateSimpleProductResponse {
     description: `quantity available to sell for associated show
     - set once at the start of the show
     - cannot update after show starts (see current_quantity for this)`,
-    example: `5`
+    example: `5`,
   })
   public readonly quantity: number;
 
@@ -64,14 +64,14 @@ export class CreateSimpleProductResponse {
     description: `quantity that has been sold.
     - updated after each successful transaction.
     - only modified directly by the server`,
-    example: `3`
+    example: `3`,
   })
   public readonly quantity_sold: number;
 
   @ApiProperty({
     description: `the preview photos for the product are here`,
     isArray: true,
-    type: CreateFileResponse
+    type: CreateFileResponse,
   })
   public images: CreateFileResponse[];
 
@@ -91,7 +91,7 @@ export class CreateSimpleProductResponse {
     this.quantity_sold = simpleProduct.quantity_sold;
     if (simpleProduct.files) {
       this.images = simpleProduct.files.map(
-        file => new CreateFileResponse(file)
+        (file) => new CreateFileResponse(file)
       );
     }
   }

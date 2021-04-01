@@ -5,7 +5,7 @@ import {
   OnGatewayInit,
   SubscribeMessage,
   WebSocketGateway,
-  WebSocketServer
+  WebSocketServer,
 } from "@nestjs/websockets";
 import { Server, Socket } from "socket.io";
 
@@ -61,7 +61,7 @@ export class ShowGateway
     const { showId, simpleProductId, quantityLeft } = simpleProductSaleResponse;
     const data = {
       simple_product_id: simpleProductId,
-      quantity_left: quantityLeft
+      quantity_left: quantityLeft,
     };
     console.log(`this.wss.to(${showId}).emit('sale', ${data});`);
     this.wss.to(showId).emit("sale", data);

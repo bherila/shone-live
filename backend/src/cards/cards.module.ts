@@ -12,9 +12,9 @@ import { Card } from "./entities/card.entity";
 @Module({
   imports: [
     TypeOrmModule.forFeature([User, Card, Order, Address]),
-    StripeModule
+    StripeModule,
   ],
   providers: [CardsService],
-  controllers: [CardsController]
+  controllers: [CardsController],
 })
 export class CardsModule {}

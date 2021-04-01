@@ -4,7 +4,7 @@ import { Server } from "socket.io";
 @WebSocketGateway(3002, {
   namespace: "/alert",
   path: "/websockets", // defaults to socket.io if you don't specify
-  serveClient: true // if the client app comes from another server, then false
+  serveClient: true, // if the client app comes from another server, then false
 })
 export class AlertGateway {
   @WebSocketServer() wss: Server;

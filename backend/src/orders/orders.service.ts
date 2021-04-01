@@ -36,12 +36,12 @@ export class OrdersService {
   findAll(getOrderDto: OrdersQueryDto) {
     const { limit, offset, show_id } = getOrderDto;
     if (show_id) {
-      this.showRepository.findOne({ where: { id: show_id } }).then(show => {
+      this.showRepository.findOne({ where: { id: show_id } }).then((show) => {
         return this.orderRepository.find({
           where: { show: show._id },
           relations: ["user", "address", "show", "card"],
           skip: offset,
-          take: limit
+          take: limit,
         });
       });
     }
@@ -49,7 +49,7 @@ export class OrdersService {
     return this.orderRepository.find({
       relations: ["user", "address", "show", "card"],
       skip: offset,
-      take: limit
+      take: limit,
     });
   }
 
@@ -88,7 +88,7 @@ export class OrdersService {
         stripeOrder.updated
       ),
       total_amount: stripeOrder.amount,
-      card: card
+      card: card,
     });
     if (createOrderDto.email) {
       order.email = createOrderDto.email;
@@ -99,7 +99,7 @@ export class OrdersService {
     const orderSku = await this.orderSkuRepository.create({
       order: savedOrder,
       sku: sku,
-      quantity: createOrderDto.quantity
+      quantity: createOrderDto.quantity,
     });
     this.orderSkuRepository.save(orderSku);
 

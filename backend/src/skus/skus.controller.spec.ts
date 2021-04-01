@@ -7,7 +7,7 @@ describe("Skus Controller", () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [SkusController]
+      controllers: [SkusController],
     }).compile();
 
     controller = module.get<SkusController>(SkusController);

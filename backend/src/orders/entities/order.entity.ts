@@ -10,24 +10,24 @@ import { OrderStatus } from "../enums/order-status.enum";
 @Entity()
 export class Order {
   @PrimaryColumn({
-    comment: "stripe id is used to match 1 to 1"
+    comment: "stripe id is used to match 1 to 1",
   })
   id: string;
 
   @Column({
-    comment: "the order total amount in usd cents"
+    comment: "the order total amount in usd cents",
   })
   total_amount: number;
 
   @Column({
     comment: "currently all orders in usd",
-    default: "usd"
+    default: "usd",
   })
   currency: string;
 
   @Column({
     comment: "email address if different from the customer default email",
-    nullable: true
+    nullable: true,
   })
   email: string;
 
@@ -43,78 +43,62 @@ export class Order {
 
   @Column({
     comment:
-      "datetime that order was created on stripe, in stripe this is just `created` but for us we rename so we save our created time eg 2020-12-01T00:00:00"
+      "datetime that order was created on stripe, in stripe this is just `created` but for us we rename so we save our created time eg 2020-12-01T00:00:00",
   })
   stripe_created: Date;
 
   @Column({
     comment:
-      "datetime that order was updated on stripe, in stripe this is just `updated` but for us we rename so we save our updated time eg 2020-12-01T00:00:00"
+      "datetime that order was updated on stripe, in stripe this is just `updated` but for us we rename so we save our updated time eg 2020-12-01T00:00:00",
   })
   stripe_updated: Date;
 
   @Column({
     comment: "datetime that order was cancelled eg 2020-12-01T00:00:00",
-    nullable: true
+    nullable: true,
   })
   cancelled: Date;
 
   @Column({
     comment: "datetime that order was fulfiled eg 2020-12-01T00:00:00",
-    nullable: true
+    nullable: true,
   })
   fulfiled: Date;
 
   @Column({
     comment: "datetime that order was paid eg 2020-12-01T00:00:00",
-    nullable: true
+    nullable: true,
   })
   paid: Date;
 
   @Column({
     comment: "datetime that order was returned eg 2020-12-01T00:00:00",
-    nullable: true
+    nullable: true,
   })
   returned: Date;
 
   @Column({
     comment:
       "the amount in cents that was returned if it wasnt the total order amount",
-    nullable: true
+    nullable: true,
   })
   amount_returned: number;
 
-  @OneToMany(
-    type => OrderSku,
-    orderSku => orderSku.order,
-    {
-      cascade: true
-    }
-  )
+  @OneToMany((type) => OrderSku, (orderSku) => orderSku.order, {
+    cascade: true,
+  })
   orderSkus: OrderSku[];
 
-  @ManyToOne(
-    type => Address,
-    address => address.orders
-  )
+  @ManyToOne((type) => Address, (address) => address.orders)
   address: Address;
 
-  @ManyToOne(
-    type => Show,
-    show => show.orders
-  )
+  @ManyToOne((type) => Show, (show) => show.orders)
   show: Show;
 
-  @ManyToOne(
-    type => Card,
-    card => card.orders
-  )
+  @ManyToOne((type) => Card, (card) => card.orders)
   card: Card;
 
-  @ManyToOne(
-    type => User,
-    user => user.orders
-  )
+  @ManyToOne((type) => User, (user) => user.orders)
   user: User;
 
   // TODO address

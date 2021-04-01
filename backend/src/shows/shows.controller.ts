@@ -4,12 +4,13 @@ import {
   Controller,
   Delete,
   Get,
-  HttpStatus, Inject,
+  HttpStatus,
+  Inject,
   Param,
   Patch,
   Post,
   Query,
-  UseInterceptors
+  UseInterceptors,
 } from "@nestjs/common";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { SimpleProductsService } from "../simple-products/simple-products.service";
@@ -41,13 +42,13 @@ export class ShowsController {
 
   @ApiOperation({
     summary: `returns all shows
-  filtered by optional query parameters`
+  filtered by optional query parameters`,
   })
   @ApiResponse({
     status: HttpStatus.OK,
     description: `success`,
     type: Show,
-    isArray: true
+    isArray: true,
   })
   @Get()
   async findAll(
@@ -55,8 +56,8 @@ export class ShowsController {
   ): Promise<CreateShowResponse[]> {
     return this.showService
       .findAll(showsQueryDto, ["user", "files", "simpleProducts"])
-      .then(shows => {
-        return shows.map(show => new CreateShowResponse(show));
+      .then((shows) => {
+        return shows.map((show) => new CreateShowResponse(show));
       });
   }
 
@@ -64,13 +65,13 @@ export class ShowsController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: `success`,
-    type: Show
+    type: Show,
   })
   @Get(":id")
   async findOne(@Param("id") id: string): Promise<CreateShowResponse> {
     return this.showService
       .findOne(id, ["user", "files", "simpleProducts"])
-      .then(show => {
+      .then((show) => {
         return new CreateShowResponse(show);
       });
   }
@@ -79,13 +80,13 @@ export class ShowsController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: `created show`,
-    type: CreateShowResponse
+    type: CreateShowResponse,
   })
   @Post()
   async create(
     @Body() createShowDto: CreateShowDto
   ): Promise<CreateShowResponse> {
-    return this.showService.create(createShowDto).then(show => {
+    return this.showService.create(createShowDto).then((show) => {
       return new CreateShowResponse(show);
     });
   }
@@ -93,12 +94,12 @@ export class ShowsController {
   @ApiOperation({
     summary: `updates a show, eg the start date/time
     although request body listed as required, feilds are just example fields
-    any subset can be sent (they aren't all needed)`
+    any subset can be sent (they aren't all needed)`,
   })
   @ApiResponse({
     status: HttpStatus.OK,
     description: `updated show`,
-    type: Show
+    type: Show,
   })
   @Patch(":id")
   async update(
@@ -115,13 +116,13 @@ export class ShowsController {
 
   @ApiOperation({
     summary: `bulk updates simpleProducts
-  by adding this show id to all of them`
+  by adding this show id to all of them`,
   })
   @ApiResponse({
     status: HttpStatus.OK,
     description: `successfully associated simpleProducts with show`,
     isArray: true,
-    type: CreateSimpleProductResponse
+    type: CreateSimpleProductResponse,
   })
   @Post(":showId/add_simple_products")
   async addSimpleProducts(
@@ -135,8 +136,8 @@ export class ShowsController {
         addSimpleProductsToShowDto.simple_product_ids
       )
       .then((simpleProducts: Promise<SimpleProduct>[]) => {
-        return Promise.all(simpleProducts).then(simpleProducts => {
-          return simpleProducts.map(simpleProduct => {
+        return Promise.all(simpleProducts).then((simpleProducts) => {
+          return simpleProducts.map((simpleProduct) => {
             return new CreateSimpleProductResponse(simpleProduct);
           });
         });

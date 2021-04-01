@@ -4,7 +4,7 @@ import {
   Headers,
   HttpStatus,
   Post,
-  Req
+  Req,
 } from "@nestjs/common";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 
@@ -29,7 +29,7 @@ export class Stripe2Controller {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: `created a stripe checkout session`,
-    type: CreateCheckoutSessionResponse
+    type: CreateCheckoutSessionResponse,
   })
   @Post("/create-checkout-session")
   async createCheckoutSession(
@@ -37,6 +37,6 @@ export class Stripe2Controller {
   ): Promise<CreateCheckoutSessionResponse> {
     return this.stripe2Service
       .createCheckoutSession(createCheckoutSessionDto)
-      .then(id => new CreateCheckoutSessionResponse(id));
+      .then((id) => new CreateCheckoutSessionResponse(id));
   }
 }

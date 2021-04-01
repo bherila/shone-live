@@ -9,7 +9,7 @@ import {
   Post,
   Put,
   Query,
-  UseInterceptors
+  UseInterceptors,
 } from "@nestjs/common";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 
@@ -29,7 +29,7 @@ export class SimpleProductsController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: `created a simple-product`,
-    type: CreateSimpleProductResponse
+    type: CreateSimpleProductResponse,
   })
   @Post()
   async create(
@@ -43,13 +43,13 @@ export class SimpleProductsController {
 
   @ApiOperation({
     summary: `returns all simple products
-    filtered by optional query parameters`
+    filtered by optional query parameters`,
   })
   @ApiResponse({
     status: HttpStatus.OK,
     description: `success`,
     type: CreateSimpleProductResponse,
-    isArray: true
+    isArray: true,
   })
   @Get()
   async findAll(
@@ -57,9 +57,9 @@ export class SimpleProductsController {
   ): Promise<CreateSimpleProductResponse[]> {
     return this.simpleProductsService
       .findAll(simpleProductsQueryDto, ["user", "show", "files"])
-      .then(simpleProducts => {
+      .then((simpleProducts) => {
         return simpleProducts.map(
-          simpleProduct => new CreateSimpleProductResponse(simpleProduct)
+          (simpleProduct) => new CreateSimpleProductResponse(simpleProduct)
         );
       });
   }
@@ -68,7 +68,7 @@ export class SimpleProductsController {
   findOne(@Param("id") id: string) {
     return this.simpleProductsService
       .findOne(id, ["user", "show", "files"])
-      .then(simpleProduct => {
+      .then((simpleProduct) => {
         return new CreateSimpleProductResponse(simpleProduct);
       });
   }
@@ -80,7 +80,7 @@ export class SimpleProductsController {
   ): Promise<CreateSimpleProductResponse> {
     return this.simpleProductsService
       .update(id, updateSimpleProductDto)
-      .then(simpleProduct => {
+      .then((simpleProduct) => {
         return new CreateSimpleProductResponse(simpleProduct);
       });
   }

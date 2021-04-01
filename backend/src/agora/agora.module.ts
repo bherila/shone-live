@@ -13,9 +13,9 @@ import { AgoraRtmToken } from "./entities/agora-rtm-token.entity";
   imports: [
     TypeOrmModule.forFeature([User, Show, AgoraRtmToken]),
     ShowsModule,
-    UsersModule
+    UsersModule,
   ],
   controllers: [AgoraController],
-  providers: [AgoraRtmTokenService]
+  providers: [AgoraRtmTokenService],
 })
 export class AgoraModule {}

@@ -10,10 +10,10 @@ import { Stripe2Service } from "./stripe2.service";
   imports: [
     forwardRef(() => SimpleProductsModule),
     forwardRef(() => ShowsModule),
-    UsersModule
+    UsersModule,
   ],
   controllers: [Stripe2Controller],
   providers: [Stripe2Service],
-  exports: [Stripe2Service]
+  exports: [Stripe2Service],
 })
 export class Stripe2Module {}

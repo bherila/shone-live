@@ -9,7 +9,7 @@ import {
   Post,
   Query,
   UploadedFile,
-  UseInterceptors
+  UseInterceptors,
 } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express/multer";
 import {
@@ -17,7 +17,7 @@ import {
   ApiOperation,
   ApiQuery,
   ApiResponse,
-  ApiTags
+  ApiTags,
 } from "@nestjs/swagger";
 
 import { CreateFileDto } from "./dto/create-file.dto";
@@ -35,12 +35,12 @@ export class FilesController {
   @ApiOperation({
     summary: `any file type can be uploaded at this endpoint
     there is no validation on the type of the file
-    files may either be publicly accessible or protected`
+    files may either be publicly accessible or protected`,
   })
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: `uploaded file`,
-    type: CreateFileResponse
+    type: CreateFileResponse,
   })
   @Post()
   @UseInterceptors(FileInterceptor("file"))
@@ -51,7 +51,7 @@ export class FilesController {
   ): Promise<CreateFileResponse> {
     return this.filesService
       .uploadFile(CreateFileDto, file.buffer, file.originalname)
-      .then(file => new CreateFileResponse(file));
+      .then((file) => new CreateFileResponse(file));
   }
 
   @Get()
