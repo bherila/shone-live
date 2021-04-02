@@ -1,6 +1,13 @@
 /* eslint-disable no-use-before-define */
 import React, { useState, useEffect, useRef } from 'react'
-import { Image, View, TouchableOpacity, ScrollView, Modal } from 'react-native'
+import {
+  Image,
+  View,
+  TouchableOpacity,
+  ScrollView,
+  Modal,
+  Alert
+} from 'react-native'
 import theme from './../../utils/colors'
 import styles from './styles'
 import { Feather, Entypo } from '@expo/vector-icons'
@@ -97,7 +104,22 @@ export default function MainScreen() {
             {newArr.map((val, i) => {
               return (
                 <View key={i} style={styles._imageView}>
-                  <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      Alert.alert('Open Liveshow', '', [
+                        {
+                          text: 'Start',
+                          onPress: () =>
+                            navigation.navigate('Home', { type: 'create' })
+                        },
+                        {
+                          text: 'Join a live stream',
+                          onPress: () =>
+                            navigation.navigate('Home', { type: 'join' })
+                        }
+                      ])
+                    }}
+                  >
                     <Image source={val.img} style={styles._image} />
                   </TouchableOpacity>
                 </View>

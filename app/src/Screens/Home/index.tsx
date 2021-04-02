@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-use-before-define
-import React, { Component } from 'react'
+import React from 'react'
 import {
   View,
   Image,
@@ -8,8 +8,9 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Platform,
+  Keyboard,
+  TouchableWithoutFeedback
 } from 'react-native'
-import { Video } from 'expo-av'
 // css
 import styles from './styles'
 // icons
@@ -17,95 +18,99 @@ import { FontAwesome, Entypo } from '@expo/vector-icons'
 // components
 import { Header, Poll } from '../../components'
 // purchased component is available but right now its not used
-export default class LiveShow extends Component {
-  render() {
-    interface Product {
-      id: string
-      qtyLeft: number
-      imageUrl: string
-      price: number
-      currency: string
-    }
 
-    interface ChatMessage {
-      name: string
-      profileImage: string
-      message: string
-    }
+import { useRoute } from '@react-navigation/core'
+import LiveStream from '../../components/LiveStream/LiveStream'
+import { agoraToken } from '../../utils/environment'
 
-    interface Poll {
-      question: string
-      options: string[]
-    }
+interface Product {
+  id: string
+  qtyLeft: number
+  imageUrl: string
+  price: number
+  currency: string
+}
 
-    interface LiveShow {
-      name: string
-      handle: string
-      featuredProductId: string // corresponds to one of the IDs of products array
-      products: Product[]
-      chats: ChatMessage[]
-      activePoll?: Poll | null // if activePoll != null then the poll can be rendered as an overlay
-    }
+interface ChatMessage {
+  name: string
+  profileImage: string
+  message: string
+}
 
-    const exampleShow: LiveShow = {
-      name: "Anna's Accessories",
-      handle: '@annasaccessories',
-      featuredProductId: 'prodct1',
-      products: [
-        {
-          id: 'prodct1',
-          qtyLeft: 2,
-          imageUrl: 'TODO',
-          price: 129,
-          currency: 'USD',
-        },
-      ],
-      chats: [
-        {
-          name: 'Mike A.',
-          message: 'DOPE!!!',
-          profileImage: 'TODO',
-        },
-        {
-          name: 'Allison H.',
-          message: 'YAAASSSSS!!!',
-          profileImage: 'TODO',
-        },
-        {
-          name: 'Sarah M.',
-          message:
-            "This makes me so happy to see. I've always wanted something like this in Platinum. Bling... bling...",
-          profileImage: 'TODO',
-        },
-      ],
-      activePoll: {
-        question: 'What metal should I use next?',
-        options: ['Rose Gold', 'Platinum', 'Silver'],
-      },
-    }
+interface Poll {
+  question: string
+  options: string[]
+}
 
-    return (
+interface ILiveShow {
+  name: string
+  handle: string
+  featuredProductId: string // corresponds to one of the IDs of products array
+  products: Product[]
+  chats: ChatMessage[]
+  activePoll?: Poll | null // if activePoll != null then the poll can be rendered as an overlay
+}
+
+const exampleShow: ILiveShow = {
+  name: "Anna's Accessories",
+  handle: '@annasaccessories',
+  featuredProductId: 'prodct1',
+  products: [
+    {
+      id: 'prodct1',
+      qtyLeft: 2,
+      imageUrl: 'TODO',
+      price: 129,
+      currency: 'USD'
+    }
+  ],
+  chats: [
+    {
+      name: 'Mike A.',
+      message: 'DOPE!!!',
+      profileImage: 'TODO'
+    },
+    {
+      name: 'Allison H.',
+      message: 'YAAASSSSS!!!',
+      profileImage: 'TODO'
+    },
+    {
+      name: 'Sarah M.',
+      message:
+        "This makes me so happy to see. I've always wanted something like this in Platinum. Bling... bling...",
+      profileImage: 'TODO'
+    }
+  ],
+  activePoll: {
+    question: 'What metal should I use next?',
+    options: ['Rose Gold', 'Platinum', 'Silver']
+  }
+}
+
+const LiveShow = (props: any) => {
+  const route: any = useRoute()
+
+  return (
+    <TouchableWithoutFeedback
+      style={{ height: '100%' }}
+      onPress={() => Keyboard.dismiss()}
+    >
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.container}
       >
-        <Video
-          source={{
-            uri:
-              'https://s3-eu-west-1.amazonaws.com/video.gallereplay.com/artistarea/Lighthouse%20stands%20in%20Istanbul%E2%80%99s%20harbour_0554659b-5dc1-43d6-8a93-b31ec6b67f63/Cinemagraph_plain/1920x1080/cinemagraph.mp4',
-          }}
-          style={styles.backgroundVideo}
-          rate={1}
-          shouldPlay={true}
-          isLooping={true}
-          volume={1}
-          muted={true}
-          resizeMode="cover"
+        {/* Agora Live Streaming Component */}
+        <LiveStream
+          isHost={route.params?.type === 'create'}
+          token={agoraToken}
+          channelID="demo"
         />
+
         <View style={styles._body_section}>
           {/* <<<<<<<<<<<<<< SCREEN HEADER >>>>>>>>>>>> */}
           <View style={styles._header}>
-            <Header data={exampleShow} props={this.props} />
+            <Header data={exampleShow} props={props} />
           </View>
           {/* <<<<<<<<<<<<<< ACTIVE POLL>>>>>>>>>>>> */}
 
@@ -176,6 +181,8 @@ export default class LiveShow extends Component {
           </View>
         </View>
       </KeyboardAvoidingView>
-    )
-  }
+    </TouchableWithoutFeedback>
+  )
 }
+
+export default LiveShow
