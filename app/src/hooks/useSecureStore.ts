@@ -1,5 +1,4 @@
 import React from 'react'
-import StorageKeys from '../utils/StorageKeys'
 import * as SecureStore from 'expo-secure-store'
 
 export const useSecureStore = (key?: string) => {

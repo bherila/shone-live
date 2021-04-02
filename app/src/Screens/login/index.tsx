@@ -23,7 +23,7 @@ export default function Login() {
   }, [mobile])
 
   const onContinue = () => {
-    if (mobile.replaceAll('-', '').length === 10) {
+    if (mobile.replace(/-/g, '')?.length === 10) {
       navigation.navigate('ConfirmSms')
     } else {
       alert('Please enter correct mobile number')

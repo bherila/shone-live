@@ -29,7 +29,7 @@ export default function ConfirmSms() {
       index: 0,
       routes: [
         {
-          name: 'Home'
+          name: 'MainScreen'
         }
       ]
     })
