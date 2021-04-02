@@ -11,9 +11,8 @@ let app: INestApplication
 
 export async function getApp() {
   if (!app) {
-    app = await NestFactory.create(AppModule, { bodyParser: false })
+    app = await NestFactory.create(AppModule, { bodyParser: true })
     app.setGlobalPrefix('api')
-
     await app.init()
   }
 
