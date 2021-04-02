@@ -2,9 +2,9 @@ import { Field, Int, ObjectType } from '@nestjs/graphql'
 
 @ObjectType()
 export class Hello {
-  @Field((type) => Int)
+  @Field(() => Int)
   id: number
 
-  @Field((type) => String)
+  @Field(() => String)
   message: string
 }

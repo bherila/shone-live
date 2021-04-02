@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common'
+import { ArgsType, Field, InputType, Int } from '@nestjs/graphql'
+import { Max, MaxLength, Min } from 'class-validator'
+
 import { Hello } from './models/hello.model'
-import { Field, InputType, ArgsType, Int } from '@nestjs/graphql'
-import { Max, Min, MaxLength } from 'class-validator'
 
 @Injectable()
 export class HelloService {

@@ -1,13 +1,14 @@
-import { Hello } from './models/hello.model'
-import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql'
 import { NotFoundException } from '@nestjs/common'
-import { HelloArgs, HelloInput, HelloService } from './hello.service'
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 
-@Resolver((of) => Hello)
+import { HelloArgs, HelloInput, HelloService } from './hello.service'
+import { Hello } from './models/hello.model'
+
+@Resolver(() => Hello)
 export class HelloResolver {
   constructor(private readonly helloService: HelloService) {}
 
-  @Query((returns) => Hello)
+  @Query(() => Hello)
   async hello(@Args('id') id: number): Promise<Hello> {
     const hello = await this.helloService.findOneById(id)
     if (!hello) {
@@ -16,12 +17,12 @@ export class HelloResolver {
     return hello
   }
 
-  @Query((returns) => [Hello])
+  @Query(() => [Hello])
   hellos(@Args() helloArgs: HelloArgs): Promise<Hello[]> {
     return this.helloService.findAll(helloArgs)
   }
 
-  @Mutation((returns) => Hello)
+  @Mutation(() => Hello)
   async addHello(
     @Args('newHelloData') newHelloData: HelloInput,
   ): Promise<Hello> {
@@ -30,7 +31,7 @@ export class HelloResolver {
     return hello
   }
 
-  @Mutation((returns) => Boolean)
+  @Mutation(() => Boolean)
   async removeHello(@Args('id') id: number) {
     return this.helloService.remove(id)
   }
