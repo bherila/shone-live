@@ -24,7 +24,7 @@ import { LogLevel } from '@sentry/types'
     GraphQLModule.forRoot({
       path: '/api/graphql',
       installSubscriptionHandlers: false,
-      autoSchemaFile: join('public/schema.gql'),
+      autoSchemaFile: process.env.VERCEL ? '/tmp/schema.gql' : join('public/schema.gql'),
     }),
   ],
   controllers: [AppController],

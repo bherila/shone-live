@@ -30,6 +30,7 @@
     "@nestjs/schematics": "^7.3.0",
     "@ntegral/nestjs-sentry": "^2.0.6",
     "@sentry/browser": "^6.2.5",
+    "@sentry/node": "^6.2.5",
     "@sentry/tracing": "^6.2.5",
     "apollo-server-express": "^2.22.2",
     "apollo-server-micro": "^2.22.2",
