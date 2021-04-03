@@ -3,7 +3,7 @@ import { StyleSheet, Dimensions } from 'react-native'
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
   },
 
   backgroundVideo: {
@@ -13,8 +13,8 @@ const styles = StyleSheet.create({
     right: 0,
     top: 0,
     bottom: 0,
-    height: Dimensions.get('screen').height
-  }
+    height: Dimensions.get('screen').height,
+  },
 })
 
 export default styles

@@ -1,20 +1,9 @@
 // eslint-disable-next-line no-use-before-define
 import React, { useRef, useState } from 'react'
-import {
-  View,
-  TouchableOpacity,
-  Image} from 'react-native'
+import { View, TouchableOpacity, Image } from 'react-native'
 import theme from './../../utils/colors'
 import styles from './styles'
-import {
-  Body,
-  Item,
-  Icon,
-  Button,
-  Header,
-  Left,
-  Right
-} from 'native-base'
+import { Body, Item, Icon, Button, Header, Left, Right } from 'native-base'
 import Text from './../../components/Text'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
 import { useNavigation } from '@react-navigation/native'
@@ -56,7 +45,7 @@ export default function NewAccount() {
             style={{
               flex: 3,
               justifyContent: 'center',
-              alignItems: 'center'
+              alignItems: 'center',
             }}
           >
             <Image
@@ -75,7 +64,7 @@ export default function NewAccount() {
               placeholder="First name"
               placeholderTextColor={'grey'}
               style={styles._textinput}
-              onChangeText={text => {
+              onChangeText={(text) => {
                 setFname(text)
               }}
               keyboardType={'default'}
@@ -88,13 +77,13 @@ export default function NewAccount() {
 
           <Item regular style={styles._codeInput}>
             <TextInput
-              ref={input => {
+              ref={(input) => {
                 lnameRef = input
               }}
               placeholder="Last name"
               placeholderTextColor={'grey'}
               style={styles._textinput}
-              onChangeText={text => {
+              onChangeText={(text) => {
                 setLname(text)
               }}
               keyboardType={'default'}
@@ -107,14 +96,14 @@ export default function NewAccount() {
 
           <Item regular style={styles._codeInput}>
             <TextInput
-              ref={input => {
+              ref={(input) => {
                 emailRef = input
               }}
               placeholder="Email address"
               placeholderTextColor={'grey'}
               style={styles._textinput}
               keyboardType="email-address"
-              onChangeText={text => {
+              onChangeText={(text) => {
                 setEmail(text)
               }}
               returnKeyType={'done'}

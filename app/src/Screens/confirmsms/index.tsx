@@ -29,9 +29,9 @@ export default function ConfirmSms() {
       index: 0,
       routes: [
         {
-          name: 'MainScreen'
-        }
-      ]
+          name: 'MainScreen',
+        },
+      ],
     })
   }
 
@@ -58,7 +58,7 @@ export default function ConfirmSms() {
             style={{
               flex: 3,
               justifyContent: 'center',
-              alignItems: 'center'
+              alignItems: 'center',
             }}
           >
             <Image
@@ -80,14 +80,14 @@ export default function ConfirmSms() {
             style={{
               alignItems: 'center',
               justifyContent: 'center',
-              width: '100%'
+              width: '100%',
             }}
           >
             <OTPTextInput
               textInputStyle={{ borderWidth: 1, borderRadius: 5 }}
               inputCount={6}
               autoFocus={true}
-              handleTextChange={text => {
+              handleTextChange={(text) => {
                 setOTP(text)
               }}
             />

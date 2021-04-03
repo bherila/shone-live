@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Modal,
-  Alert
+  Alert,
 } from 'react-native'
 import theme from './../../utils/colors'
 import styles from './styles'
@@ -24,19 +24,19 @@ export default function MainScreen() {
   const newArr = [
     { img: require('./../../../assets/newone.png') },
     { img: require('./../../../assets/newtwo.png') },
-    { img: require('./../../../assets/newthree.png') }
+    { img: require('./../../../assets/newthree.png') },
   ]
 
   const commingSoon = [
     { img: require('./../../../assets/comingone.png') },
     { img: require('./../../../assets/comingtwo.png') },
-    { img: require('./../../../assets/comingthree.png') }
+    { img: require('./../../../assets/comingthree.png') },
   ]
 
   const moreShows = [
     { img: require('../../../assets/moreone.png') },
     { img: require('../../../assets/moretwo.png') },
-    { img: require('../../../assets/morethree.png') }
+    { img: require('../../../assets/morethree.png') },
   ]
 
   useEffect(() => {
@@ -70,7 +70,7 @@ export default function MainScreen() {
           style={{
             flex: 3,
             justifyContent: 'center',
-            alignItems: 'center'
+            alignItems: 'center',
           }}
         >
           <Image
@@ -110,13 +110,13 @@ export default function MainScreen() {
                         {
                           text: 'Start',
                           onPress: () =>
-                            navigation.navigate('Home', { type: 'create' })
+                            navigation.navigate('Home', { type: 'create' }),
                         },
                         {
                           text: 'Join a live stream',
                           onPress: () =>
-                            navigation.navigate('Home', { type: 'join' })
-                        }
+                            navigation.navigate('Home', { type: 'join' }),
+                        },
                       ])
                     }}
                   >
