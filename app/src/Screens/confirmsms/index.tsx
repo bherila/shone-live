@@ -7,21 +7,37 @@ import Text from './../../components/Text'
 import OTPTextInput from 'react-native-otp-textinput'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
 import { useNavigation } from '@react-navigation/native'
+import * as SecureStore from 'expo-secure-store'
+import StorageKeys from '../../utils/StorageKeys'
+import { useSecureStore } from '../../hooks/useSecureStore'
 
 export default function ConfirmSms() {
   const navigation = useNavigation()
-
   const [otp, setOTP] = useState('')
 
+  const { setItem, error } = useSecureStore()
+
   useEffect(() => {
-    if (otp.length === 6) {
-      navigation.navigate('NewAccount')
+    if (otp.length === 6 && !error) {
+      navigateToMainScreen()
     }
   }, [otp])
 
+  const navigateToMainScreen = async () => {
+    await setItem(StorageKeys.AUTH_TOKEN, 'fake_token')
+    navigation.reset({
+      index: 0,
+      routes: [
+        {
+          name: 'MainScreen',
+        },
+      ],
+    })
+  }
+
   const onConfirm = () => {
-    if (otp.length === 6) {
-      navigation.navigate('NewAccount')
+    if (otp.length === 6 && !error) {
+      navigateToMainScreen()
     } else {
       alert('Enter valid otp')
     }
@@ -42,7 +58,7 @@ export default function ConfirmSms() {
             style={{
               flex: 3,
               justifyContent: 'center',
-              alignItems: 'center'
+              alignItems: 'center',
             }}
           >
             <Image
@@ -64,14 +80,14 @@ export default function ConfirmSms() {
             style={{
               alignItems: 'center',
               justifyContent: 'center',
-              width: '100%'
+              width: '100%',
             }}
           >
             <OTPTextInput
               textInputStyle={{ borderWidth: 1, borderRadius: 5 }}
               inputCount={6}
               autoFocus={true}
-              handleTextChange={text => {
+              handleTextChange={(text) => {
                 setOTP(text)
               }}
             />

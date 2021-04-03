@@ -15,13 +15,20 @@ import Home from '../Screens/Home'
 import LiveShow from '../Screens/LiveShow'
 import Payment from '../Screens/Payments'
 import Address from '../Screens/Address'
+import * as SecureStore from 'expo-secure-store'
+import StorageKeys from '../utils/StorageKeys'
+import { useSecureStore } from '../hooks/useSecureStore'
 
 const Stack = createStackNavigator()
 
 function Navigation() {
+  const { data, isLoading } = useSecureStore(StorageKeys.AUTH_TOKEN)
+
+  if (isLoading) return <></>
+
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName={!data ? 'Login' : 'MainScreen'}>
         <Stack.Screen
           name="Login"
           component={Login}

@@ -23,7 +23,7 @@ export default function Login() {
   }, [mobile])
 
   const onContinue = () => {
-    if (mobile.replaceAll('-', '').length === 10) {
+    if (mobile.replace(/-/g, '')?.length === 10) {
       navigation.navigate('ConfirmSms')
     } else {
       alert('Please enter correct mobile number')
@@ -65,10 +65,10 @@ export default function Login() {
                   options={{
                     maskType: 'BRL', // for international set it -&amp;nbsp;INTERNATIONAL type masking
                     withDDD: true,
-                    dddMask: '999-999-9999' // this is a your define formatting you use according to your requirment
+                    dddMask: '999-999-9999', // this is a your define formatting you use according to your requirment
                   }}
                   maxLength={12} // set length according to your input requirment
-                  onChangeText={text => {
+                  onChangeText={(text) => {
                     setMobile(text)
                   }}
                   value={mobile}
