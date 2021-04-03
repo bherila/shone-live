@@ -28,29 +28,29 @@ export class UserService {
         process.env.TWILIO_AUTH_TOKEN,
       )
       const message = await client.messages.create({
-        body: 'Hello, Your verification code is ' + code,
+        body: `Your SHONE verification code is ${code}`,
         from: process.env.TWILIO_PHONE_NUMBER,
         to: phone,
       })
-      console.log('message.sid', message.sid)
+      console.info('message.sid', message.sid)
     } catch (error) {
-      console.log('error => ', error)
+      console.error('error => ', error)
       return false
     }
   }
 
-  async verifycode(userId, code) {
+  async verifySmsCode(userId, code) {
     const {
       verificationCodeTimeSent,
       verificationCode,
     } = await this.userRepository.findOne(userId)
-    const cuerrntTime = new Date().toUTCString()
+    const currentTime = new Date().toUTCString()
     const findDiff =
-      (new Date(cuerrntTime).getTime() -
+      (new Date(currentTime).getTime() -
         new Date(verificationCodeTimeSent).getTime()) /
       60000
-    if (findDiff > 5) throw new Error('this code is expried')
-    if (verificationCode == code) throw new Error('Worng code')
+    if (findDiff > 5) throw new Error('this code is expired')
+    if (verificationCode == code) throw new Error('wrong code')
     // const Payload = {
     //   userId,
     //   phone,

@@ -33,7 +33,7 @@ export class MessageEntity {
   })
   author: User
 
-  @Index('message-date')
+  @Index('ix_message_date')
   @Field()
   @CreateDateColumn({ type: 'timestamp' })
   readonly timestamp: Date
@@ -45,10 +45,15 @@ export class MessageEntity {
   message: string
 
   /* Copy user alias (nickname) here to avoid having to JOIN user object */
-  @Field()
+  @Field({
+    name: 'author_alias',
+    nullable: false,
+  })
   @Column({
+    name: 'author_alias',
     type: 'nvarchar',
     length: 255,
+    nullable: false,
   })
   alias: string
 }

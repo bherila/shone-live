@@ -27,6 +27,6 @@ export class UserResolver {
 
   @Query(() => UserWithToken)
   async verifyCode(@Arg('userId') userId: number, @Arg('code') code: number) {
-    return this.usersService.verifycode(userId, code)
+    return this.usersService.verifySmsCode(userId, code)
   }
 }
