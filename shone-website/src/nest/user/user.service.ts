@@ -1,19 +1,16 @@
 import { Injectable } from '@nestjs/common'
 import Twilio from 'twilio'
 import { Service } from 'typedi'
-import { Repository } from 'typeorm'
-import { InjectRepository } from 'typeorm-typedi-extensions'
 import { v4 as uuidv4 } from 'uuid'
 
 import { newUser } from './dto/newUserDto'
 import { User } from './entities/user.entity'
+import { UserRepository } from './user.repository'
 
 @Service()
 @Injectable()
 export class UserService {
-  constructor(
-    @InjectRepository(User) private readonly userRepository: Repository<User>,
-  ) {}
+  constructor(private readonly userRepository: UserRepository) {}
 
   async create(phone, code): Promise<newUser> {
     const newUser = new User()
@@ -70,5 +67,12 @@ export class UserService {
     //   await jwt.decode({ secret: process.env.JWT_SECRET, token }),
     // )
     return { token: null }
+  }
+  async findOne(userId) {
+    return this.userRepository.findOne(userId)
+  }
+
+  findAll() {
+    return this.userRepository.find()
   }
 }

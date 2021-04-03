@@ -1,26 +1,21 @@
 import { Arg, Int, Mutation, Query, Resolver } from 'type-graphql'
 import { Service } from 'typedi'
-import { Repository } from 'typeorm'
-import { InjectRepository } from 'typeorm-typedi-extensions'
 
 import { User, UserWithToken } from './entities/user.entity'
 import { UserService } from './user.service'
 @Service()
 @Resolver(() => User)
 export class UserResolver {
-  constructor(
-    @InjectRepository(User) private readonly userRepository: Repository<User>,
-    private readonly usersService: UserService,
-  ) {}
+  constructor(private readonly usersService: UserService) {}
 
   @Query(() => User, { nullable: true })
   user(@Arg('userId', () => Int) userId: number) {
-    return this.userRepository.findOne(userId)
+    return this.usersService.findOne(userId)
   }
 
   @Query(() => [User])
   users(): Promise<User[]> {
-    return this.userRepository.find()
+    return this.usersService.findAll()
   }
 
   @Mutation(() => User)
