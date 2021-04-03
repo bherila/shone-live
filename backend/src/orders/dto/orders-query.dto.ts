@@ -6,7 +6,7 @@ import { PaginationQueryDto } from "../../common/dto/pagination-query.dto";
 export class OrdersQueryDto extends PaginationQueryDto {
   @ApiProperty({
     description: `filter the orders by the show they were placed from`,
-    example: `1`
+    example: `1`,
   })
   @IsOptional()
   @IsString()

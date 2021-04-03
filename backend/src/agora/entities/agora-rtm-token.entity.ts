@@ -9,21 +9,17 @@ export class AgoraRtmToken extends BasicColumns {
   @Column({
     comment:
       `the RTM key returned from the agora server` +
-      `for a unique user/show combination`
+      `for a unique user/show combination`,
   })
   agora_rtm_key: string;
 
-  @ManyToOne(
-    type => User,
-    user => user.agoraRtmTokens,
-    { cascade: ["insert", "update"] }
-  )
+  @ManyToOne((type) => User, (user) => user.agoraRtmTokens, {
+    cascade: ["insert", "update"],
+  })
   user: User;
 
-  @ManyToOne(
-    type => Show,
-    show => show.agoraRtmTokens,
-    { cascade: ["insert", "update"] }
-  )
+  @ManyToOne((type) => Show, (show) => show.agoraRtmTokens, {
+    cascade: ["insert", "update"],
+  })
   show: Show;
 }

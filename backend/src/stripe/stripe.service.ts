@@ -16,7 +16,7 @@ export class StripeService {
 
   public constructor() {
     this.stripeClient = new Stripe(process.env.STRIPE_DEV_KEY, {
-      apiVersion: "2020-08-27"
+      apiVersion: "2020-08-27",
     });
     if (process.env.NODE_ENV === "dev") {
       console.info(
@@ -46,7 +46,7 @@ export class StripeService {
       country: stripeCard.address_country,
       line1: stripeCard.address_line1,
       state: stripeCard.address_state,
-      postal_code: stripeCard.address_zip
+      postal_code: stripeCard.address_zip,
     };
     if (stripeCard.address_line2) {
       data.line2 = stripeCard.address_line2;
@@ -55,7 +55,7 @@ export class StripeService {
     // TODO: refactor to use the ObjService
     const keys = Object.keys(data);
     const missingValues: any = [];
-    keys.forEach(key => data[key] == null && missingValues.push(key));
+    keys.forEach((key) => data[key] == null && missingValues.push(key));
     if (missingValues.length > 0) {
       throw new HttpException(
         `Cannot save card info missing address data. Missing fields: ${missingValues}`,
@@ -73,7 +73,7 @@ export class StripeService {
       country: stripeOrder.shipping.address.country,
       line1: stripeOrder.shipping.address.line1,
       state: stripeOrder.shipping.address.state,
-      postal_code: stripeOrder.shipping.address.postal_code
+      postal_code: stripeOrder.shipping.address.postal_code,
     };
     if (stripeOrder.shipping.address.line2) {
       data.line2 = stripeOrder.shipping.address.line2;
@@ -101,13 +101,13 @@ export class StripeService {
     data.shipping = customerData.shipping;
     // TODO: refactor to use the ObjService
     const keys = Object.keys(data);
-    keys.forEach(key => data[key] == null && delete data[key]);
+    keys.forEach((key) => data[key] == null && delete data[key]);
     return data;
   }
 
   async createStripeCard(user: string, cardToken: string) {
     return this.stripeClient.customers.createSource(user, {
-      source: cardToken
+      source: cardToken,
     });
   }
 
@@ -124,13 +124,13 @@ export class StripeService {
       shippable: true,
       // images: ["some urls here"], // file path ...todo once files are saving path not just name // dummy data
       images: [
-        "https://cdn.shopify.com/s/files/1/2143/3217/products/500_3f527d72-404b-4db7-a96c-471d1f97256e.png?v=1595523310"
+        "https://cdn.shopify.com/s/files/1/2143/3217/products/500_3f527d72-404b-4db7-a96c-471d1f97256e.png?v=1595523310",
       ], // dummy data
       metadata: {
         product_creator_user_id: createProductDto.user_id,
         show_id: showId,
-        show_date: showDate
-      }
+        show_date: showDate,
+      },
     });
   }
 
@@ -158,22 +158,22 @@ export class StripeService {
         "https://cdn.shopify.com/s/files/1/2143/3217/products/500_3f527d72-404b-4db7-a96c-471d1f97256e.png?v=1595523310", // dummy data
       inventory: {
         type: "finite",
-        quantity: createSkuDto.quantity
-      }
+        quantity: createSkuDto.quantity,
+      },
     });
   }
 
   async activateStripeSku(sku: Sku) {
     // made blocking for now because not sure how to do each loop await
     return await this.stripeClient.skus.update(sku.id, {
-      active: true
+      active: true,
     });
   }
 
   async deactivateStripeSku(sku: Sku) {
     // made blocking for now because not sure how to do each loop await
     return await this.stripeClient.skus.update(sku.id, {
-      active: false
+      active: false,
     });
   }
 
@@ -188,8 +188,8 @@ export class StripeService {
         {
           type: "sku",
           parent: createOrderDto.sku,
-          quantity: createOrderDto.quantity
-        }
+          quantity: createOrderDto.quantity,
+        },
       ],
       // even tho stripe docs say if customer is attached the customer address
       // is used by default, so shipping address is optional,
@@ -201,10 +201,10 @@ export class StripeService {
           line1: createOrderDto.shipping.line1,
           line2: "" || createOrderDto.shipping.line2,
           postal_code: createOrderDto.shipping.postal_code,
-          state: createOrderDto.shipping.state
+          state: createOrderDto.shipping.state,
         },
-        name: shippingName
-      }
+        name: shippingName,
+      },
     };
     if (createOrderDto.email) {
       data.email = createOrderDto.email;

@@ -7,12 +7,12 @@ import {
   Index,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-  VersionColumn
+  VersionColumn,
 } from "typeorm";
 
 export class BasicColumns {
   @PrimaryGeneratedColumn({
-    comment: "private internal ID, actual primary key"
+    comment: "private internal ID, actual primary key",
   })
   @Exclude() // must call @UseInterceptors(ClassSerializerInterceptor)
   // on the controller class (or method)
@@ -21,7 +21,7 @@ export class BasicColumns {
 
   @Index()
   @Column({
-    comment: "public ID, for use by client (is a UUID)"
+    comment: "public ID, for use by client (is a UUID)",
   })
   @Generated("uuid")
   id: string;
@@ -31,14 +31,14 @@ export class BasicColumns {
   @CreateDateColumn({
     comment:
       `@CreateDateColumn is a special column ` +
-      `that is automatically set to the entity's insertion date. `
+      `that is automatically set to the entity's insertion date. `,
   })
   public readonly created_at: Date;
 
   @UpdateDateColumn({
     comment:
       `@UpdateDateColumn is a special column ` +
-      `that is automatically set to the entity's update time `
+      `that is automatically set to the entity's update time `,
   })
   public readonly updated_at: Date;
 
@@ -46,7 +46,7 @@ export class BasicColumns {
     comment:
       `@DeleteDateColumn is a special column ` +
       `that is automatically set to the entity's delete time ` +
-      `each time you call soft-delete of entity manager or repository. `
+      `each time you call soft-delete of entity manager or repository. `,
   })
   public readonly deleted_at: Date;
 
@@ -55,7 +55,7 @@ export class BasicColumns {
       `@VersionColumn is a special column ` +
       `that is automatically set to the version of the entity ` +
       `(incremental number) ` +
-      `each time you call save of entity manager or repository. `
+      `each time you call save of entity manager or repository. `,
   })
   public readonly version: number;
 }

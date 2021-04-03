@@ -13,9 +13,9 @@ import { ProductsService } from "./products.service";
 @Module({
   imports: [
     TypeOrmModule.forFeature([Product, User, File, Show, Sku]),
-    StripeModule
+    StripeModule,
   ],
   controllers: [ProductsController],
-  providers: [ProductsService]
+  providers: [ProductsService],
 })
 export class ProductsModule {}

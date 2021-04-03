@@ -9,7 +9,7 @@ describe("Stripe2Controller", () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [Stripe2Controller],
-      providers: [Stripe2Service]
+      providers: [Stripe2Service],
     }).compile();
 
     controller = module.get<Stripe2Controller>(Stripe2Controller);

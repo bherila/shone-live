@@ -5,7 +5,7 @@ import {
   HttpStatus,
   Param,
   Patch,
-  Post
+  Post,
 } from "@nestjs/common";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 
@@ -25,7 +25,7 @@ export class SkusController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: `creates SKU associated with a product and a show`,
-    type: Sku
+    type: Sku,
   })
   @Post()
   async create(@Body() createSkuDto: CreateSkuDto): Promise<Sku> {
@@ -36,7 +36,7 @@ export class SkusController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: `updated sku`,
-    type: Sku
+    type: Sku,
   })
   @Patch(":id")
   async update(
@@ -47,12 +47,12 @@ export class SkusController {
   }
 
   @ApiOperation({
-    summary: `hard deletes a SKU, cascading`
+    summary: `hard deletes a SKU, cascading`,
   })
   @ApiResponse({
     status: HttpStatus.OK,
     description: `deleted sku`,
-    type: Sku
+    type: Sku,
   })
   @Delete(":id")
   async remove(@Param("id") id: string): Promise<Sku> {

@@ -27,15 +27,15 @@ import { ShowsService } from "./shows.service";
       SimpleProduct,
       Sku,
       Order,
-      File
+      File,
     ]),
     StripeModule,
     FilesModule,
     UsersModule,
-    forwardRef(() => SimpleProductsModule)
+    forwardRef(() => SimpleProductsModule),
   ],
   controllers: [ShowsController],
   providers: [ShowsService, ShowGateway],
-  exports: [ShowsService, ShowGateway]
+  exports: [ShowsService, ShowGateway],
 })
 export class ShowsModule {}

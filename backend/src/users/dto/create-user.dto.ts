@@ -6,7 +6,7 @@ import {
   IsOptional,
   IsPhoneNumber,
   IsString,
-  ValidateNested
+  ValidateNested,
 } from "class-validator";
 
 import { StripeAddress } from "../../stripe/dto/stripe-address.dto";
@@ -16,7 +16,7 @@ export class CreateUserDto {
   @ApiProperty({
     description: `display username for use in the app.
     must be unique across users`,
-    example: `my_username_without_spaces`
+    example: `my_username_without_spaces`,
   })
   @IsOptional()
   @IsString()
@@ -29,7 +29,7 @@ export class CreateUserDto {
     example:
       `My obsession with plants began deep in ` +
       `the Amazon rainforest 20 years ago.` +
-      `Since then I've been selling some of the worlds most rare orchids.`
+      `Since then I've been selling some of the worlds most rare orchids.`,
   })
   @IsOptional()
   @IsString()
@@ -37,7 +37,7 @@ export class CreateUserDto {
 
   @ApiProperty({
     description: `used for various authorizations sellers must be validated`,
-    example: true
+    example: true,
   })
   @IsOptional()
   @IsBoolean()
@@ -53,9 +53,9 @@ export class CreateUserDto {
       line1: "1 Broadway",
       line2: "Suite 1000",
       postal_code: "10004",
-      state: "NY"
+      state: "NY",
     },
-    type: StripeAddress
+    type: StripeAddress,
   })
   @IsOptional()
   @ValidateNested()
@@ -64,14 +64,15 @@ export class CreateUserDto {
 
   @ApiProperty({
     description: `email used for unique user identification`,
-    example: "myemail@gmail.com"
+    example: "myemail@gmail.com",
   })
+  @IsOptional()
   @IsEmail()
   readonly email: string;
 
   @ApiProperty({
     description: `users first name`,
-    example: "John"
+    example: "John",
   })
   @IsOptional()
   @IsString()
@@ -79,7 +80,7 @@ export class CreateUserDto {
 
   @ApiProperty({
     description: `users last name`,
-    example: "Smith"
+    example: "Smith",
   })
   @IsOptional()
   @IsString()
@@ -87,7 +88,7 @@ export class CreateUserDto {
 
   @ApiProperty({
     description: `users phone number`,
-    example: "555-555-1234"
+    example: "555-555-1234",
   })
   @IsOptional()
   @IsString()
@@ -104,8 +105,8 @@ export class CreateUserDto {
       line1: "1 Broadway",
       line2: "Suite 1000",
       postal_code: "10004",
-      state: "NY"
-    }
+      state: "NY",
+    },
   })
   @IsOptional()
   @ValidateNested()

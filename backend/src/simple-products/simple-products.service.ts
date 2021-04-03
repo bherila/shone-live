@@ -2,7 +2,7 @@ import {
   forwardRef,
   Inject,
   Injectable,
-  NotFoundException
+  NotFoundException,
 } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
@@ -42,9 +42,9 @@ export class SimpleProductsService {
     // move into services and call the service method for one liner
     const fileQuery = this.fileRepository
       .findOne({
-        where: { id: image_id }
+        where: { id: image_id },
       })
-      .then(file => {
+      .then((file) => {
         if (!file) {
           throw new NotFoundException(`File #${image_id} not found`);
         }
@@ -53,7 +53,7 @@ export class SimpleProductsService {
       });
     queries.push(fileQuery);
 
-    const userQuery = this.userRepository.findOne(user_id).then(user => {
+    const userQuery = this.userRepository.findOne(user_id).then((user) => {
       if (!user) {
         throw new NotFoundException(`User #${user_id} not found`);
       }
@@ -64,7 +64,7 @@ export class SimpleProductsService {
     if (show_id) {
       const showQuery = this.showRepository
         .findOne({ where: { id: show_id } })
-        .then(show => {
+        .then((show) => {
           if (!show) {
             throw new NotFoundException(`Show #${show_id} not found`);
           }
@@ -74,7 +74,7 @@ export class SimpleProductsService {
     }
     // need to await this so we have the `id` from our DB for stripe
     let file_url: string; // need to get our file_url for stripe
-    const simpleProduct = await Promise.all(queries).then(values => {
+    const simpleProduct = await Promise.all(queries).then((values) => {
       file_url = values[0].url; // get file_url for use by StripeProduct
       return this.simpleProductRepository.save(
         this.simpleProductRepository.create(simpleProductData)
@@ -86,7 +86,7 @@ export class SimpleProductsService {
       .then(() => {
         this.stripe2Service
           .createStripePrice(simpleProduct)
-          .then(stripePriceResponse => {
+          .then((stripePriceResponse) => {
             simpleProduct.stripe_price_id = stripePriceResponse.id;
             this.simpleProductRepository.save(simpleProduct);
           });
@@ -110,7 +110,7 @@ export class SimpleProductsService {
     }
     return this.simpleProductRepository.find({
       where: query,
-      relations: relations
+      relations: relations,
     });
   }
 
@@ -118,9 +118,9 @@ export class SimpleProductsService {
     return this.simpleProductRepository
       .findOne({
         where: { id: id },
-        relations: relations
+        relations: relations,
       })
-      .then(simpleProduct => {
+      .then((simpleProduct) => {
         if (!simpleProduct) {
           new NotFoundException(`SimpleProduct #${id} not found`);
         }
@@ -134,11 +134,11 @@ export class SimpleProductsService {
   ): Promise<SimpleProduct> {
     const { show_id } = updateSimpleProductDto;
     const simpleProductUpdate = {
-      ...updateSimpleProductDto
+      ...updateSimpleProductDto,
     };
     if (show_id) {
       simpleProductUpdate["show"] = await this.showRepository.findOne({
-        where: { id: show_id }
+        where: { id: show_id },
       });
     }
     return this.updateHelper(simpleProductId, simpleProductUpdate);
@@ -152,7 +152,7 @@ export class SimpleProductsService {
   ): Promise<SimpleProduct> {
     return this.simpleProductRepository
       .findOne({ where: { id: simpleProductId } })
-      .then(simpleProduct => {
+      .then((simpleProduct) => {
         if (!simpleProduct) {
           throw new NotFoundException(
             `simpleProduct #${simpleProductId} not found`
@@ -160,7 +160,7 @@ export class SimpleProductsService {
         }
         return this.simpleProductRepository.save({
           ...simpleProduct,
-          ...updateObject
+          ...updateObject,
         });
       });
   }
@@ -173,10 +173,10 @@ export class SimpleProductsService {
     const simpleProductUpdate = {};
     if (fieldToUpdate === "showId") {
       simpleProductUpdate["show"] = await this.showRepository.findOne({
-        where: { id: fieldValue }
+        where: { id: fieldValue },
       });
     }
-    return simpleProductIds.map(simpleProductId => {
+    return simpleProductIds.map((simpleProductId) => {
       return this.updateHelper(simpleProductId, simpleProductUpdate);
     });
   }
@@ -185,13 +185,13 @@ export class SimpleProductsService {
     simpleProductId: string,
     sale_quantity: number
   ): Promise<SimpleProductSaleResponse> {
-    return this.findOne(simpleProductId, ["show"]).then(product => {
+    return this.findOne(simpleProductId, ["show"]).then((product) => {
       product.quantity_sold += sale_quantity;
-      return this.simpleProductRepository.save(product).then(savedProduct => {
+      return this.simpleProductRepository.save(product).then((savedProduct) => {
         return {
           showId: product.show.id,
           simpleProductId: simpleProductId,
-          quantityLeft: savedProduct.quantity_sold
+          quantityLeft: savedProduct.quantity_sold,
         };
       });
     });

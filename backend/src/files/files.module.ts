@@ -15,10 +15,10 @@ import { FilesService } from "./files.service";
   imports: [
     TypeOrmModule.forFeature([User, Product, SimpleProduct, Sku, File]),
     ConfigModule,
-    CommonModule
+    CommonModule,
   ],
   providers: [FilesService],
   exports: [FilesService],
-  controllers: [FilesController]
+  controllers: [FilesController],
 })
 export class FilesModule {}

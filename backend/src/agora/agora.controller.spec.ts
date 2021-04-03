@@ -9,7 +9,7 @@ describe("AgoraController", () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [AgoraController],
-      providers: [AgoraRtmTokenService]
+      providers: [AgoraRtmTokenService],
     }).compile();
 
     controller = module.get<AgoraController>(AgoraController);

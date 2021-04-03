@@ -4,7 +4,7 @@ import { IsString } from "class-validator";
 export class CreateCardDto {
   @ApiProperty({
     description: `the user id of the owner of the card in stripe`,
-    example: `cus_IPqRS333voIGbS`
+    example: `cus_IPqRS333voIGbS`,
   })
   @IsString()
   readonly user: string;
@@ -15,7 +15,7 @@ export class CreateCardDto {
     we just take the token, however we also want to save the address
     so that should be passed separately
     or we can add it to this endpoint if that's easier)`,
-    example: `card_1HqnEC2eZvKYlo2Cs3wf41sM`
+    example: `card_1HqnEC2eZvKYlo2Cs3wf41sM`,
   })
   @IsString()
   readonly stripeCardToken: string;

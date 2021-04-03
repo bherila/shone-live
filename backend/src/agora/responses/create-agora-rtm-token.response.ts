@@ -8,7 +8,7 @@ export class CreateAgoraRtmTokenResponse {
       "the token for getting access to a channel when passed with a user_id (uid in Agora) and the show_id (channelName in Agora)",
     example: `0068ee770d944d04be8907796730f55758eIACE8DxqldDyylnHimUHVVxS6pUuYfoFWNdsAj3yIOLeFttiENO0ZiMaIgBxHdbzxmfmXwQAAQDGZ+ZfAgDGZ+ZfAwDGZ+ZfBADGZ+Zf`,
     type: `Agora RTM Token`,
-    required: true
+    required: true,
   })
   public readonly agora_rtm_key: string;
 
@@ -16,7 +16,7 @@ export class CreateAgoraRtmTokenResponse {
     description:
       `the user who wants a token` +
       `to grant access to the agora channel for a show`,
-    example: `cus_IPqRS333voIGbS`
+    example: `cus_IPqRS333voIGbS`,
   })
   public readonly user_id: string;
 
@@ -25,7 +25,7 @@ export class CreateAgoraRtmTokenResponse {
       `the show which this agora channel is being used for` +
       `and which the user wants to join`,
     example: `b644cec4-0487-4f6f-bac1-c80059a2a4b0`,
-    type: "UUID"
+    type: "UUID",
   })
   public readonly show_id: string;
 

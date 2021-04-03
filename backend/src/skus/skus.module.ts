@@ -14,9 +14,9 @@ import { SkusService } from "./skus.service";
 @Module({
   imports: [
     TypeOrmModule.forFeature([OrderSku, File, Sku, Show, Product, User]),
-    StripeModule
+    StripeModule,
   ],
   providers: [SkusService],
-  controllers: [SkusController]
+  controllers: [SkusController],
 })
 export class SkusModule {}

@@ -11,7 +11,7 @@ export class CreateShowResponse {
   @ApiProperty({
     description: `our id in our database`,
     example: `b644cec4-0487-4f6f-bac1-c80059a2a4b0`,
-    type: "UUID"
+    type: "UUID",
   })
   public readonly id: string;
 
@@ -33,7 +33,7 @@ export class CreateShowResponse {
   }
 }`,
     type: "Stringified JSON",
-    required: false
+    required: false,
   })
   public readonly agora_room?: string;
 
@@ -42,21 +42,21 @@ export class CreateShowResponse {
     this should entice users to check out the show`,
     example: `The coolest host with the coolest products will show you
     everything you've been dying to purchase this season`,
-    required: true
+    required: true,
   })
   public readonly description: string;
 
   @ApiProperty({
     description: `show name`,
     example: `The Ski Show - New Ski Bindings Edition`,
-    required: true
+    required: true,
   })
   public name: string;
 
   @ApiProperty({
     description:
       `whether the show is scheduled ` +
-      `or just created and went live at the same time`
+      `or just created and went live at the same time`,
   })
   public readonly scheduled?: boolean;
 
@@ -66,7 +66,7 @@ export class CreateShowResponse {
       `(it's a datetime, format https://en.wikipedia.org/wiki/ISO_8601)` +
       `required unless the show is immediately live, ie has a start (time)`,
     example: `2020-11-22T20:39:12+00:00`,
-    required: false
+    required: false,
   })
   public readonly scheduled_start?: Date;
 
@@ -76,7 +76,7 @@ export class CreateShowResponse {
       `(it's a datetime, format https://en.wikipedia.org/wiki/ISO_8601)` +
       `required unless the show is immediately live, ie has a start (time)`,
     example: `2020-11-22T21:39:12+00:00`,
-    required: false
+    required: false,
   })
   public readonly scheduled_end?: Date;
 
@@ -91,7 +91,7 @@ export class CreateShowResponse {
       `however, in that case this must be passed at the time ` +
       `the show actually starts`,
     example: `2020-11-22T20:39:12+00:00`,
-    required: false
+    required: false,
   })
   public readonly start?: Date;
 
@@ -100,14 +100,14 @@ export class CreateShowResponse {
       `time the show actually ended at` +
       `this must be passed at the time the show ends`,
     example: `2020-11-22T20:39:12+00:00`,
-    required: false
+    required: false,
   })
   readonly end?: Date;
 
   @ApiProperty({
     description: `the user who created the show`,
     type: UserResponse,
-    required: true
+    required: true,
   })
   public readonly user: UserResponse;
 
@@ -115,7 +115,7 @@ export class CreateShowResponse {
     description: `the video and photo preview for the show are here`,
     isArray: true,
     type: CreateFileResponse,
-    required: false
+    required: false,
   })
   public readonly files?: CreateFileResponse[];
 
@@ -124,7 +124,7 @@ export class CreateShowResponse {
     for sale during the show`,
     isArray: true,
     type: CreateSimpleProductResponse,
-    required: false
+    required: false,
   })
   public readonly simpleProducts?: CreateSimpleProductResponse[];
 
@@ -138,10 +138,10 @@ export class CreateShowResponse {
     this.scheduled_end = show.scheduled_end;
     this.start = show.start;
     this.end = show.end;
-    this.files = show.files?.map(file => new CreateFileResponse(file));
+    this.files = show.files?.map((file) => new CreateFileResponse(file));
     this.user = new UserResponse(show.user);
     this.simpleProducts = show.simpleProducts?.map(
-      simpleProduct => new CreateSimpleProductResponse(simpleProduct)
+      (simpleProduct) => new CreateSimpleProductResponse(simpleProduct)
     );
   }
 }

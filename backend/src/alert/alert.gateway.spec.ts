@@ -7,7 +7,7 @@ describe("AlertGateway", () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [AlertGateway]
+      providers: [AlertGateway],
     }).compile();
 
     gateway = module.get<AlertGateway>(AlertGateway);

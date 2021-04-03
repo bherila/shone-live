@@ -7,7 +7,7 @@ describe("Alert Controller", () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [AlertController]
+      controllers: [AlertController],
     }).compile();
 
     controller = module.get<AlertController>(AlertController);

@@ -36,11 +36,11 @@ export class AgoraRtmTokenService {
       this.RTM_ROLE,
       this.getExpirationTime()
     );
-    return Promise.all([user, show]).then(values => {
+    return Promise.all([user, show]).then((values) => {
       const rtm = this.agoraRtmTokenRepository.create({
         user: values[0],
         show: values[1],
-        agora_rtm_key: key
+        agora_rtm_key: key,
       });
       return this.agoraRtmTokenRepository.save(rtm);
     });

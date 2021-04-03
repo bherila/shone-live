@@ -24,17 +24,17 @@ export class SkusService {
   async create(createSkuDto: CreateSkuDto) {
     const stripeSku = await this.stripeService.createStripeSku(createSkuDto);
     const product = await this.productRepository.findOne({
-      where: { id: createSkuDto.product_id }
+      where: { id: createSkuDto.product_id },
     });
     const show = await this.showRepository.findOne({
-      where: { id: createSkuDto.show_id }
+      where: { id: createSkuDto.show_id },
     });
     const sku = this.skuRepository.create({
       ...createSkuDto,
       id: stripeSku.id,
       current_quantity: createSkuDto.quantity,
       product: product,
-      show: show
+      show: show,
     });
     if (createSkuDto.attributes) {
       sku.attributes = JSON.parse(createSkuDto.attributes);
@@ -60,7 +60,7 @@ export class SkusService {
       id: id,
       ...updateSkuDto,
       product,
-      show
+      show,
     });
     if (!sku) {
       throw new NotFoundException(`Sku #${id} not found`);

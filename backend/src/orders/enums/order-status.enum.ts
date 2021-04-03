@@ -3,5 +3,5 @@ export enum OrderStatus {
   paid = "paid",
   canceled = "canceled",
   fulfilled = "fulfilled",
-  returned = "returned"
+  returned = "returned",
 }

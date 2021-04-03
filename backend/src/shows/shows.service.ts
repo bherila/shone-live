@@ -6,7 +6,7 @@ import {
   LessThanOrEqual,
   MoreThanOrEqual,
   Not,
-  Repository
+  Repository,
 } from "typeorm";
 
 import { File } from "../files/entities/file.entity";
@@ -46,7 +46,7 @@ export class ShowsService {
     const baseQuery: any = {
       relations: relations,
       skip: offset,
-      take: limit
+      take: limit,
     };
 
     const where1: any = {};
@@ -92,7 +92,7 @@ export class ShowsService {
   async findOne(id: string, relations: string[] = []) {
     const show = await this.showRepository.findOne({
       where: { id: id },
-      relations: relations
+      relations: relations,
     });
     if (!show) {
       throw new NotFoundException(`Show with id ${id} not found`);
@@ -128,7 +128,7 @@ export class ShowsService {
       user: user,
       scheduled: !createShowDto.start,
       files: files,
-      agora_room: JSON.stringify(createShowDto.agora_room)
+      agora_room: JSON.stringify(createShowDto.agora_room),
     });
     return this.showRepository.save(show);
   }
@@ -136,7 +136,7 @@ export class ShowsService {
   async update(id: string, updateShowDto: UpdateShowDto) {
     const updateData: any = {
       id: id,
-      ...updateShowDto
+      ...updateShowDto,
     };
     if (updateShowDto.agora_room) {
       updateData["agora_room"] = JSON.stringify(updateShowDto.agora_room);
@@ -149,11 +149,11 @@ export class ShowsService {
     if (updateShowDto.start) {
       const skus = await this.skuRepository.find({ where: { show: +id } });
       // probably need error handling to save failed records and skip
-      skus.map(sku => this.stripeService.activateStripeSku(sku));
+      skus.map((sku) => this.stripeService.activateStripeSku(sku));
     } else if (updateShowDto.end) {
       const skus = await this.skuRepository.find({ where: { show: +id } });
       // probably need error handling to save failed records and skip
-      skus.map(sku => this.stripeService.deactivateStripeSku(sku));
+      skus.map((sku) => this.stripeService.deactivateStripeSku(sku));
     }
     return this.showRepository.save(show);
   }

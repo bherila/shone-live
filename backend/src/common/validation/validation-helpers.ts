@@ -5,7 +5,7 @@ import {
   ValidationArguments,
   ValidationOptions,
   ValidatorConstraint,
-  ValidatorConstraintInterface
+  ValidatorConstraintInterface,
 } from "class-validator";
 
 // https://github.com/typestack/class-validator/issues/245
@@ -28,7 +28,7 @@ class IsNotSiblingOfConstraint implements ValidatorConstraintInterface {
   }
 
   getFailedConstraints(args: ValidationArguments) {
-    return args.constraints.filter(prop => isDefined(args.object[prop]));
+    return args.constraints.filter((prop) => isDefined(args.object[prop]));
   }
 }
 
@@ -37,22 +37,22 @@ function IsNotSiblingOf(
   props: string[],
   validationOptions?: ValidationOptions
 ) {
-  return function(object: any, propertyName: string) {
+  return function (object: any, propertyName: string) {
     registerDecorator({
       target: object.constructor,
       propertyName: propertyName,
       options: validationOptions,
       constraints: props,
-      validator: IsNotSiblingOfConstraint
+      validator: IsNotSiblingOfConstraint,
     });
   };
 }
 
 // Helper function for determining if a prop should be validated
 function incompatibleSiblingsNotPresent(incompatibleSiblings: string[]) {
-  return function(o, v) {
+  return function (o, v) {
     return Boolean(
-      isDefined(v) || incompatibleSiblings.every(prop => !isDefined(o[prop]))
+      isDefined(v) || incompatibleSiblings.every((prop) => !isDefined(o[prop]))
       // Validate if prop has value
       // Then, validate if all incompatible siblings are not defined
     );
@@ -64,7 +64,7 @@ export function IncompatableWith(incompatibleSiblings: string[]) {
   const validateIf = ValidateIf(
     incompatibleSiblingsNotPresent(incompatibleSiblings)
   );
-  return function(target: any, key: string) {
+  return function (target: any, key: string) {
     notSibling(target, key);
     validateIf(target, key);
   };
@@ -89,7 +89,7 @@ class RequiredInTheAbsenceOfConstraint implements ValidatorConstraintInterface {
   }
 
   getFailedConstraints(args: ValidationArguments) {
-    return args.constraints.filter(prop => !isDefined(args.object[prop]));
+    return args.constraints.filter((prop) => !isDefined(args.object[prop]));
   }
 }
 
@@ -98,24 +98,24 @@ function RequiredInTheAbsenceOf(
   props: string[],
   validationOptions?: ValidationOptions
 ) {
-  return function(object: any, propertyName: string) {
+  return function (object: any, propertyName: string) {
     registerDecorator({
       target: object.constructor,
       propertyName: propertyName,
       options: validationOptions,
       constraints: props,
-      validator: RequiredInTheAbsenceOfConstraint
+      validator: RequiredInTheAbsenceOfConstraint,
     });
   };
 }
 
 // Helper function for determining if a prop should be validated
 function requiredSiblingsNotPresent(requiredSiblings: string[]) {
-  return function(o, v) {
+  return function (o, v) {
     return Boolean(
       // maybe needs to check if required siblings also not defined
       // !isDefined(v) || requiredSiblings.every(prop => !isDefined(o[prop]))
-      !isDefined(v) || requiredSiblings.every(prop => isDefined(o[prop]))
+      !isDefined(v) || requiredSiblings.every((prop) => isDefined(o[prop]))
       // Validate if prop doed not have value
       // Then, validate if all required siblings are defined
     );
@@ -125,7 +125,7 @@ function requiredSiblingsNotPresent(requiredSiblings: string[]) {
 export function RequiredIfMissing(requiredSiblings: string[]) {
   const notSibling = RequiredInTheAbsenceOf(requiredSiblings);
   const validateIf = ValidateIf(requiredSiblingsNotPresent(requiredSiblings));
-  return function(target: any, key: string) {
+  return function (target: any, key: string) {
     notSibling(target, key);
     validateIf(target, key);
   };

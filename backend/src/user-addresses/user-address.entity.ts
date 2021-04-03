@@ -7,23 +7,15 @@ import { User } from "../users/entities/user.entity";
 // and reference it from there inside stripe
 @Entity()
 export class UserAddress {
-  @ManyToOne(
-    type => User,
-    user => user.userAddresses,
-    {
-      cascade: ["insert", "update"],
-      primary: true
-    }
-  )
+  @ManyToOne((type) => User, (user) => user.userAddresses, {
+    cascade: ["insert", "update"],
+    primary: true,
+  })
   user: User;
 
-  @ManyToOne(
-    type => Address,
-    address => address.userAddresses,
-    {
-      cascade: ["insert", "update"],
-      primary: true
-    }
-  )
+  @ManyToOne((type) => Address, (address) => address.userAddresses, {
+    cascade: ["insert", "update"],
+    primary: true,
+  })
   address: Address;
 }

@@ -8,17 +8,17 @@ import { User } from "../../users/entities/user.entity";
 @Entity()
 export class Product {
   @PrimaryColumn({
-    comment: "stripe id is used to match 1 to 1"
+    comment: "stripe id is used to match 1 to 1",
   })
   id: string;
 
   @Column({
-    comment: "product name"
+    comment: "product name",
   })
   name: string;
 
   @Column({
-    comment: "product description"
+    comment: "product description",
   })
   description: string;
 
@@ -40,38 +40,26 @@ export class Product {
   // if many to many we we use join table and note it on the owner
   // @JoinTable() // 👈 Join the 2 tables - only the OWNER-side does this
   @ManyToOne(
-    type => User,
-    user => user.products, // what is "product" within the User Entity
+    (type) => User,
+    (user) => user.products, // what is "product" within the User Entity
     {
-      cascade: ["insert", "update"]
+      cascade: ["insert", "update"],
     }
   )
   user: User;
 
-  @ManyToOne(
-    type => Show,
-    show => show.products,
-    {
-      cascade: ["insert", "update"]
-    }
-  )
+  @ManyToOne((type) => Show, (show) => show.products, {
+    cascade: ["insert", "update"],
+  })
   show: Show;
 
-  @OneToMany(
-    type => File,
-    file => file.show,
-    {
-      cascade: true
-    }
-  )
+  @OneToMany((type) => File, (file) => file.show, {
+    cascade: true,
+  })
   files: File[];
 
-  @OneToMany(
-    type => Sku,
-    sku => sku.product,
-    {
-      cascade: true
-    }
-  )
+  @OneToMany((type) => Sku, (sku) => sku.product, {
+    cascade: true,
+  })
   skus: Sku[];
 }

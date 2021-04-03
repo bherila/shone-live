@@ -7,14 +7,14 @@ export class CreateFileDto {
     properties: {
       file: {
         type: "string",
-        format: "binary"
-      }
+        format: "binary",
+      },
     },
     description: `a single file sent as multipart/form-data
           server expects this param to be called 'file'
           the format can be any kind we do not validate it or process it
           the file simply goes up to the AWS S3 bucket and is saved there`,
-    example: `'file': <any-kind-of-binary-file>`
+    example: `'file': <any-kind-of-binary-file>`,
   })
   public readonly file: any;
 
@@ -25,7 +25,7 @@ export class CreateFileDto {
     however, public files can be created by passing {public: true} in the body
     these files will immediately return a persistent public URL
     note there is no authorization these files are exposed to the entire web`,
-    example: `true`
+    example: `true`,
   })
   @IsOptional()
   @IsBoolean()
@@ -36,14 +36,14 @@ export class CreateFileDto {
           we need this user id to associate the user so we can
           1. let only this user delete the file
           2. be able to return all this users files for them to manage`,
-    example: `cus_IPqRS333voIGbS`
+    example: `cus_IPqRS333voIGbS`,
   })
   @IsString()
   public readonly user_id: string;
 
   @ApiProperty({
     description: `the id of the product associated with the image`,
-    example: `prod_IRMTtITbqdjXVn`
+    example: `prod_IRMTtITbqdjXVn`,
   })
   @IsOptional()
   @IsString()
@@ -51,7 +51,7 @@ export class CreateFileDto {
 
   @ApiProperty({
     description: `the id of the simple-product associated with the image`,
-    example: `534f4bac-a095-4fe0-8a35-5220313cd33c`
+    example: `534f4bac-a095-4fe0-8a35-5220313cd33c`,
   })
   @IsOptional()
   @IsString()
@@ -59,7 +59,7 @@ export class CreateFileDto {
 
   @ApiProperty({
     description: `the id of the sku associated with the image`,
-    example: `sku_IRMW5E3niKt154`
+    example: `sku_IRMW5E3niKt154`,
   })
   @IsOptional()
   @IsString()
@@ -67,7 +67,7 @@ export class CreateFileDto {
 
   @ApiProperty({
     description: `the id of the show associated with the file`,
-    example: `1`
+    example: `1`,
   })
   @IsOptional()
   @IsNumber()
@@ -76,7 +76,7 @@ export class CreateFileDto {
   @ApiProperty({
     description: `type of object this file is associated with, must be:
     Product, Show or Sku`,
-    example: `Show`
+    example: `Show`,
   })
   @IsOptional()
   @IsString()
