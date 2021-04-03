@@ -348,8 +348,8 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.yourcompany.yourappname;
-				PRODUCT_NAME = yourappname;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.shone";
+				PRODUCT_NAME = shone;
 				SWIFT_OBJC_BRIDGING_HEADER = "Shone-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -375,8 +375,8 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.yourcompany.yourappname;
-				PRODUCT_NAME = yourappname;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.shone";
+				PRODUCT_NAME = shone;
 				SWIFT_OBJC_BRIDGING_HEADER = "Shone-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
