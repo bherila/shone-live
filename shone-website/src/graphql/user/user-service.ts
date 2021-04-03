@@ -54,7 +54,7 @@ export class UserService {
         new Date(verificationCodeTimeSent).getTime()) /
       60000
     if (findDiff > 5) throw new Error('this code is expried')
-    if (verificationCode == code) throw new Error('Worng code')
+    if (verificationCode == code) throw new Error('Wrong code')
     const payload = {
       userId,
       phone,
