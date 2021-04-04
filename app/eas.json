@@ -2,12 +2,14 @@
   "builds": {
     "android": {
       "release": {
-        "workflow": "generic"
+        "workflow": "generic",
+        "autoIncrement": "buildNumber"
       }
     },
     "ios": {
       "release": {
-        "workflow": "generic"
+        "workflow": "generic",
+        "autoIncrement": "buildNumber"
       }
     }
   }
