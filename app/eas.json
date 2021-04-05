@@ -1,0 +1,16 @@
+{
+  "builds": {
+    "android": {
+      "release": {
+        "workflow": "generic",
+        "autoIncrement": "buildNumber"
+      }
+    },
+    "ios": {
+      "release": {
+        "workflow": "generic",
+        "autoIncrement": "buildNumber"
+      }
+    }
+  }
+}
