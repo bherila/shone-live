@@ -1,6 +1,7 @@
-import { Arg, Int, Mutation, Query, Resolver } from 'type-graphql'
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { Service } from 'typedi'
 
+import { newUser } from './dto/newUserDto'
 import { User, UserWithToken } from './entities/user.entity'
 import { UserService } from './user.service'
 @Service()
@@ -9,7 +10,7 @@ export class UserResolver {
   constructor(private readonly usersService: UserService) {}
 
   @Query(() => User, { nullable: true })
-  user(@Arg('userId', () => Int) userId: number) {
+  user(@Args('userId') userId: number) {
     return this.usersService.findOne(userId)
   }
 
@@ -18,15 +19,15 @@ export class UserResolver {
     return this.usersService.findAll()
   }
 
-  @Mutation(() => User)
-  async addUser(@Arg('phone') phone: string) {
+  @Mutation(() => newUser)
+  async addUser(@Args('phone') phone: string) {
     const code = Math.floor(1000 + Math.random() * 9000)
     await this.usersService.sendVerificationCode(phone, code)
     return await this.usersService.create(phone, code)
   }
 
   @Query(() => UserWithToken)
-  async verifyCode(@Arg('userId') userId: number, @Arg('code') code: number) {
+  async verifyCode(@Args('userId') userId: number, @Args('code') code: number) {
     return this.usersService.verifySmsCode(userId, code)
   }
 }

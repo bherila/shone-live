@@ -6,8 +6,11 @@ import { join } from 'path'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { HelloModule } from './hello/hello.module'
+import { MessageEntity } from './message/entities/message.entity'
 import { MessageModule } from './message/message.module'
+import { Show } from './show/entities/show.entity'
 import { ShowModule } from './show/show.module'
+import { User } from './user/entities/user.entity'
 import { UserModule } from './user/user.module'
 @Module({
   imports: [
@@ -22,10 +25,10 @@ import { UserModule } from './user/user.module'
         username: process.env.MYSQL_USER,
         password: process.env.MYSQL_PASS,
         database: process.env.MYSQL_DB,
-        entities: [__dirname + '/**/*.entity{.ts,.js}'],
+        entities: [User, Show, MessageEntity],
         synchronize: true,
         logging: false,
-        port: 3306,
+        keepConnectionAlive: true,
       }),
     }),
     GraphQLModule.forRoot({

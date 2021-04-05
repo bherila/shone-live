@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType } from 'type-graphql'
+import { Field, ID, ObjectType } from '@nestjs/graphql'
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 
 import { MessageEntity } from '../../message/entities/message.entity'
@@ -16,9 +16,11 @@ export class Show {
 
   @Field({
     name: 'image_url',
+    nullable: true,
   })
   @Column({
     name: 'image_url',
+    nullable: true,
   })
   imageUrl: string
 

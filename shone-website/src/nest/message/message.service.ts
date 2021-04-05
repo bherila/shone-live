@@ -1,29 +1,36 @@
 import { Injectable } from '@nestjs/common'
 import { Service } from 'typedi'
-import { Repository } from 'typeorm'
-import { InjectRepository } from 'typeorm-typedi-extensions'
 
-import { Show } from '../show/entities/show.entity'
-import { User } from '../user/entities/user.entity'
+import { ShowRepository } from '../show/show.repository'
+import { UserRepository } from '../user/user.repository'
 import { MessageEntity } from './entities/message.entity'
+import { MessageRepository } from './message.repository'
 @Service()
 @Injectable()
 export class MessageService {
   constructor(
-    @InjectRepository(MessageEntity)
-    private readonly messageEntityRepository: Repository<MessageEntity>,
-    @InjectRepository(Show) private readonly showRepository: Repository<Show>,
-    @InjectRepository(User) private readonly userRepository: Repository<User>,
+    private readonly messageEntityRepository: MessageRepository,
+    private readonly showRepository: ShowRepository,
+    private readonly userRepository: UserRepository,
   ) {}
   async create(show_id, message, user_id): Promise<MessageEntity> {
     const show = await this.showRepository.findOne(show_id)
     const author = await this.userRepository.findOne(user_id)
-    const newMessage = this.messageEntityRepository.create({
+    const newMessage =await this.messageEntityRepository.create({
       show,
       message,
-      alias: 'dsa',
+      alias: 'ABC', //For now we put as static
       author,
     })
-    return await this.messageEntityRepository.save(newMessage)
+    return  await this.messageEntityRepository.save(newMessage)
   }
+  
+  findOne(messageEntityId) {
+    return this.messageEntityRepository.findOne(messageEntityId)
+  }
+
+  findAll() {
+    return this.messageEntityRepository.find()
+  }
+  
 }

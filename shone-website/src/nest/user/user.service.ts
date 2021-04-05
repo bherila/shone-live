@@ -13,11 +13,12 @@ export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
   async create(phone, code): Promise<newUser> {
-    const newUser = new User()
-    newUser.phone = phone
-    newUser.username = uuidv4()
-    newUser.verificationCode = code
-    newUser.verificationCodeTimeSent = new Date().toUTCString()
+    const newUser = this.userRepository.create({
+      phone,
+      username: uuidv4(),
+      verificationCode: code,
+      verificationCodeTimeSent: new Date().toUTCString(),
+    })
     return await this.userRepository.save(newUser)
   }
 
@@ -68,7 +69,8 @@ export class UserService {
     // )
     return { token: null }
   }
-  async findOne(userId) {
+
+  findOne(userId) {
     return this.userRepository.findOne(userId)
   }
 
