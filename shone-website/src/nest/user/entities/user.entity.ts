@@ -26,13 +26,10 @@ export class User {
   @Field()
   @Column()
   verificationCodeTimeSent: string
-}
 
-export class NewUser {
-  verificationCode: number
-  phone: string
-  id: number
-  verificationCodeTimeSent: string
+  @Field()
+  @Column()
+  token: string
 }
 
 @ObjectType()

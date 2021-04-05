@@ -1,6 +1,7 @@
 import { Field, ID, ObjectType } from 'type-graphql'
 import {
   Column,
+  CreateDateColumn,
   Entity,
   Index,
   JoinColumn,
@@ -8,48 +9,51 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm'
 
-import { Show } from './show-entity'
-import { User } from './user-entity'
+import { Show } from '../../show/entities/show.entity'
+import { User } from '../../user/entities/user.entity'
 
 @ObjectType()
 @Entity()
 export class MessageEntity {
-  @Field((type) => ID)
+  @Field(() => ID)
   @PrimaryGeneratedColumn({
     type: 'bigint',
   })
   readonly id: number
 
-  @ManyToOne((type) => Show)
+  @ManyToOne(() => Show)
   @JoinColumn({
     name: 'show_id',
   })
-  readonly show: Show
+  show: Show
 
-  @ManyToOne((type) => User)
+  @ManyToOne(() => User)
   @JoinColumn({
     name: 'author_id',
   })
-  readonly author: User
+  author: User
 
-  @Index('message-date')
+  @Index('ix_message_date')
   @Field()
-  @Column({
-    type: 'datetime',
-  })
+  @CreateDateColumn({ type: 'timestamp' })
   readonly timestamp: Date
 
   @Field()
   @Column({
     type: 'text',
   })
-  readonly message: string
+  message: string
 
   /* Copy user alias (nickname) here to avoid having to JOIN user object */
-  @Field()
+  @Field({
+    name: 'author_alias',
+    nullable: false,
+  })
   @Column({
+    name: 'author_alias',
     type: 'nvarchar',
     length: 255,
+    nullable: false,
   })
-  readonly alias: string
+  alias: string
 }

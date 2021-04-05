@@ -34,7 +34,6 @@ if (process.env.NODE_ENV === "dev") {
 console.log({
   type: "mariadb",
   host: process.env.MYSQL_HOST,
-  // host: process.env.POSTGRES_LOCAL_HOST,
   port: +process.env.MYSQL_PORT,
   username: process.env.MYSQL_USER,
   password: process.env.MYSQL_PASS,
