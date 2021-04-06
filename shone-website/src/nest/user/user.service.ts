@@ -1,23 +1,23 @@
-import { Injectable } from '@nestjs/common'
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import Twilio from 'twilio'
-import { Service } from 'typedi'
+
 import { v4 as uuidv4 } from 'uuid'
 
 import { newUser } from './dto/newUserDto'
-import { User } from './entities/user.entity'
 import { UserRepository } from './user.repository'
+import jwt from 'jsonwebtoken'
 
-@Service()
 @Injectable()
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
-  async create(phone, code): Promise<newUser> {
-    const newUser = new User()
-    newUser.phone = phone
-    newUser.username = uuidv4()
-    newUser.verificationCode = code
-    newUser.verificationCodeTimeSent = new Date().toUTCString()
+  async create(phone: string, code: string): Promise<newUser> {
+    const newUser = this.userRepository.create({
+      phone,
+      username: uuidv4(),
+      verificationCode: code,
+      verificationCodeTimeSent: new Date().toUTCString(),
+    })
     return await this.userRepository.save(newUser)
   }
 
@@ -43,32 +43,26 @@ export class UserService {
     const {
       verificationCodeTimeSent,
       verificationCode,
-    } = await this.userRepository.findOne(userId)
+      phone,
+    } = await this.findOne(userId)
     const currentTime = new Date().toUTCString()
     const findDiff =
       (new Date(currentTime).getTime() -
         new Date(verificationCodeTimeSent).getTime()) /
       60000
-    if (findDiff > 5) throw new Error('this code is expired')
-    if (verificationCode == code) throw new Error('wrong code')
-    // const Payload = {
-    //   userId,
-    //   phone,
-    // }
-    // console.log(`payload`, Payload)
-    // console.log(`jwt`, jwt)
-    // const token = await jwt.encode({
-    //   secret: process.env.JWT_SECRET,
-    //   Payload,
-    // })
-    // console.log(`token`, token)
-    // console.log(
-    //   `jwt.decode()`,
-    //   await jwt.decode({ secret: process.env.JWT_SECRET, token }),
-    // )
-    return { token: null }
+    if (findDiff > 5)
+      throw new HttpException('code expired', HttpStatus.BAD_REQUEST)
+    if (verificationCode == code)
+      throw new HttpException('Wrong code', HttpStatus.BAD_REQUEST)
+    const Payload = {
+      userId,
+      phone,
+    }
+    const token = await jwt.sign(Payload, process.env.JWT_SECRET)
+    return { token }
   }
-  async findOne(userId) {
+
+  findOne(userId) {
     return this.userRepository.findOne(userId)
   }
 

@@ -1,5 +1,5 @@
-import { Field, ID, ObjectType } from 'type-graphql'
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { Field, ID, ObjectType } from '@nestjs/graphql'
+import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm'
 
 @ObjectType()
 @Entity()
@@ -8,27 +8,36 @@ export class User {
   @PrimaryGeneratedColumn()
   readonly id: number
 
-  @Field()
-  @Column()
+  @Index({
+    unique: true,
+  })
+  @Field({ nullable: true })
+  @Column({ nullable: true })
   email: string
 
+  @Index({
+    unique: true,
+  })
   @Field()
   @Column()
   phone: string
 
+  @Index({
+    unique: true,
+  })
   @Field()
   @Column()
   username: string
 
   @Column({ nullable: true })
-  verificationCode!: number
+  verificationCode: string
 
   @Field()
   @Column()
   verificationCodeTimeSent: string
 
-  @Field()
-  @Column()
+  @Field({ nullable: true })
+  @Column({ nullable: true })
   token: string
 }
 

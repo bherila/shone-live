@@ -1,31 +1,25 @@
-import { Arg, Int, Mutation, Query, Resolver } from 'type-graphql'
-import { Service } from 'typedi'
-import { Repository } from 'typeorm'
-import { InjectRepository } from 'typeorm-typedi-extensions'
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 
 import { CreateShowInput } from './entities/createShow.entity'
 import { Show } from './entities/show.entity'
 import { ShowService } from './show.service'
-@Service()
+
 @Resolver(() => Show)
 export class ShowResolver {
-  constructor(
-    @InjectRepository(Show) private readonly showRepository: Repository<Show>,
-    private readonly showsService: ShowService,
-  ) {}
+  constructor(private readonly showsService: ShowService) {}
 
   @Query(() => Show, { nullable: true })
-  show(@Arg('showId', () => Int) showId: number) {
-    return this.showRepository.findOne(showId, { relations: ['chatMessages'] })
+  show(@Args('showId') showId: number) {
+    return this.showsService.findOne(showId)
   }
 
   @Query(() => [Show])
   shows(): Promise<Show[]> {
-    return this.showRepository.find({ relations: ['chatMessages'] })
+    return this.showsService.findAll()
   }
 
   @Mutation(() => Show)
-  async addShow(@Arg('data') data: CreateShowInput) {
+  async addShow(@Args('data') data: CreateShowInput) {
     return await this.showsService.create(data)
   }
 }

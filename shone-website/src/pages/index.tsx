@@ -4,9 +4,9 @@ import React from 'react'
 import { useState } from 'react'
 
 import AnimatedLogo from '../components/animated-logo'
-import * as rainbow from '../components/RainbowGradientContainer.module.css'
+import rainbow from '../components/RainbowGradientContainer.module.css'
 
-export default function Index(): React.Element {
+export default function Index(): JSX.Element {
   const [email, setEmail] = useState('')
   return (
     <>
