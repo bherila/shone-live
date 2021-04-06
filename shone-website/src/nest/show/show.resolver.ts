@@ -1,10 +1,10 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
-import { Service } from 'typedi'
+
 
 import { CreateShowInput } from './entities/createShow.entity'
 import { Show } from './entities/show.entity'
 import { ShowService } from './show.service'
-@Service()
+
 @Resolver(() => Show)
 export class ShowResolver {
   constructor(private readonly showsService: ShowService) {}

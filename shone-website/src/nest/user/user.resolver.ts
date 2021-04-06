@@ -1,12 +1,12 @@
 import { UseGuards } from '@nestjs/common'
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql'
-import { Service } from 'typedi'
+
 import { AuthGuard } from '../common/auth.guards'
 
 import { newUser } from './dto/newUserDto'
 import { User, UserWithToken } from './entities/user.entity'
 import { UserService } from './user.service'
-@Service()
+
 @Resolver(() => User)
 export class UserResolver {
   constructor(private readonly usersService: UserService) {}
@@ -24,13 +24,13 @@ export class UserResolver {
 
   @Mutation(() => newUser)
   async addUser(@Args('phone') phone: string) {
-    const code = Math.floor(1000 + Math.random() * 9000)
+    const code = Math.floor(Math.random() * 999999).toString().padStart(6, '0');
     await this.usersService.sendVerificationCode(phone, code)
     return await this.usersService.create(phone, code)
   }
 
   @Query(() => UserWithToken)
-  async verifyCode(@Args('userId') userId: number, @Args('code') code: number) {
+  async verifyCode(@Args('userId') userId: number, @Args('code') code: string) {
     return this.usersService.verifySmsCode(userId, code)
   }
 }

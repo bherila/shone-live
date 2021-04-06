@@ -1,9 +1,9 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
-import { Service } from 'typedi'
+
 
 import { MessageEntity } from './entities/message.entity'
 import { MessageService } from './message.service'
-@Service()
+
 @Resolver(() => MessageEntity)
 export class MessageResolver {
   constructor(private readonly messageEntitysService: MessageService) {}

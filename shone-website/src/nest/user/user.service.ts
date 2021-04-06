@@ -1,17 +1,17 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import Twilio from 'twilio'
-import { Service } from 'typedi'
+
 import { v4 as uuidv4 } from 'uuid'
 
 import { newUser } from './dto/newUserDto'
 import { UserRepository } from './user.repository'
 import jwt from 'jsonwebtoken'
-@Service()
+
 @Injectable()
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
-  async create(phone, code): Promise<newUser> {
+  async create(phone: string, code: string): Promise<newUser> {
     const newUser = this.userRepository.create({
       phone,
       username: uuidv4(),

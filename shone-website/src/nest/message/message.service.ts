@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common'
-import { Service } from 'typedi'
 
 import { ShowRepository } from '../show/show.repository'
 import { UserRepository } from '../user/user.repository'
 import { MessageEntity } from './entities/message.entity'
 import { MessageRepository } from './message.repository'
-@Service()
+
 @Injectable()
 export class MessageService {
   constructor(

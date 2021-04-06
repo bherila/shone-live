@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common'
-import { Service } from 'typedi'
+
 
 import { CreateShowInput } from './entities/createShow.entity'
 import { Show } from './entities/show.entity'
 import { ShowRepository } from './show.repository'
 
-@Service()
+
 @Injectable()
 export class ShowService {
   constructor(private readonly showRepository: ShowRepository) {}

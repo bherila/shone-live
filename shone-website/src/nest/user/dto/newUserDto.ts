@@ -5,7 +5,7 @@ import { Entity } from 'typeorm'
 @Entity()
 export class newUser {
   @Field()
-  verificationCode!: number
+  verificationCode: string
 
   @Field()
   phone: string
