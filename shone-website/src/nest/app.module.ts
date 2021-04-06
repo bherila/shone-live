@@ -3,6 +3,8 @@ import { GraphQLModule } from '@nestjs/graphql'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { join } from 'path'
 
+import { AddressModule } from './address/address.module'
+import { Address } from './address/entities/address.entity'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { HelloModule } from './hello/hello.module'
@@ -14,10 +16,6 @@ import { User } from './user/entities/user.entity'
 import { UserModule } from './user/user.module'
 @Module({
   imports: [
-    HelloModule,
-    UserModule,
-    ShowModule,
-    MessageModule,
     TypeOrmModule.forRootAsync({
       useFactory: () => ({
         type: 'mysql',
@@ -25,12 +23,17 @@ import { UserModule } from './user/user.module'
         username: process.env.MYSQL_USER,
         password: process.env.MYSQL_PASS,
         database: process.env.MYSQL_DB,
-        entities: [User, Show, MessageEntity],
+        entities: [User, Show, MessageEntity, Address],
         synchronize: true,
         logging: false,
         keepConnectionAlive: true,
       }),
     }),
+    HelloModule,
+    UserModule,
+    ShowModule,
+    MessageModule,
+    AddressModule,
     GraphQLModule.forRoot({
       path: '/api/graphql',
       installSubscriptionHandlers: false,

@@ -1,9 +1,7 @@
-import { UseGuards } from '@nestjs/common'
+import { HttpException, HttpStatus, UseGuards } from '@nestjs/common'
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql'
 
 import { AuthGuard } from '../common/auth.guards'
-
-import { newUser } from './dto/newUserDto'
 import { User, UserWithToken } from './entities/user.entity'
 import { UserService } from './user.service'
 
@@ -19,16 +17,22 @@ export class UserResolver {
   @Query(() => [User])
   @UseGuards(new AuthGuard())
   users(@Context('user') user: User): Promise<User[]> {
+    console.log(`user`, user)
     return this.usersService.findAll()
   }
 
-  @Mutation(() => newUser)
+  @Mutation(() => User)
   async addUser(@Args('phone') phone: string) {
-    const code = Math.floor(Math.random() * 999999)
-      .toString()
-      .padStart(6, '0')
-    await this.usersService.sendVerificationCode(phone, code)
-    return await this.usersService.create(phone, code)
+    try {
+      const code = Math.floor(Math.random() * 999999)
+        .toString()
+        .padStart(6, '0')
+      await this.usersService.sendVerificationCode(phone, code)
+      return await this.usersService.create(phone, code)
+    } catch (error) {
+      console.log(`error`, error)
+      throw new HttpException(JSON.stringify(error), HttpStatus.BAD_REQUEST)
+    }
   }
 
   @Query(() => UserWithToken)

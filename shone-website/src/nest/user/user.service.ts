@@ -1,17 +1,19 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
+import jwt from 'jsonwebtoken'
 import Twilio from 'twilio'
-
 import { v4 as uuidv4 } from 'uuid'
 
 import { newUser } from './dto/newUserDto'
 import { UserRepository } from './user.repository'
-import jwt from 'jsonwebtoken'
 
 @Injectable()
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
   async create(phone: string, code: string): Promise<newUser> {
+    const checkExistUser = await this.userRepository.find({ phone })
+    if (checkExistUser)
+      throw new HttpException('user already exists', HttpStatus.BAD_REQUEST)
     const newUser = this.userRepository.create({
       phone,
       username: uuidv4(),
@@ -35,7 +37,10 @@ export class UserService {
       console.info('message.sid', message.sid)
     } catch (error) {
       console.error('error => ', error)
-      return false
+      throw new HttpException(
+        'send code faild',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      )
     }
   }
 
