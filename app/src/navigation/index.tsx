@@ -28,7 +28,10 @@ function Navigation() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={!data ? 'Login' : 'MainScreen'}>
+      <Stack.Navigator
+        initialRouteName={!data ? 'Login' : 'MainScreen'}
+        screenOptions={{ gestureEnabled: true }}
+      >
         <Stack.Screen
           name="Login"
           component={Login}
