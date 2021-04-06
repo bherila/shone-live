@@ -15,15 +15,15 @@ export class MessageService {
   async create(show_id, message, user_id): Promise<MessageEntity> {
     const show = await this.showRepository.findOne(show_id)
     const author = await this.userRepository.findOne(user_id)
-    const newMessage =await this.messageEntityRepository.create({
+    const newMessage = await this.messageEntityRepository.create({
       show,
       message,
       alias: 'ABC', //For now we put as static
       author,
     })
-    return  await this.messageEntityRepository.save(newMessage)
+    return await this.messageEntityRepository.save(newMessage)
   }
-  
+
   findOne(messageEntityId) {
     return this.messageEntityRepository.findOne(messageEntityId)
   }
@@ -31,5 +31,4 @@ export class MessageService {
   findAll() {
     return this.messageEntityRepository.find()
   }
-  
 }

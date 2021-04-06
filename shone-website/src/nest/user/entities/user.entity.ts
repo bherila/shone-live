@@ -9,21 +9,21 @@ export class User {
   readonly id: number
 
   @Index({
-    unique: true
+    unique: true,
   })
   @Field({ nullable: true })
   @Column({ nullable: true })
   email: string
 
   @Index({
-    unique: true
+    unique: true,
   })
   @Field()
   @Column()
   phone: string
 
   @Index({
-    unique: true
+    unique: true,
   })
   @Field()
   @Column()

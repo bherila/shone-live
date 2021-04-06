@@ -37,7 +37,7 @@ import { UserModule } from './user/user.module'
       autoSchemaFile: process.env.VERCEL
         ? '/tmp/schema.gql'
         : join('public/schema.gql'),
-      context: ({req}) => ({headers: req.headers})
+      context: ({ req }) => ({ headers: req.headers }),
     }),
   ],
   controllers: [AppController],

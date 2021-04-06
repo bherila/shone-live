@@ -1,10 +1,8 @@
 import { Injectable } from '@nestjs/common'
 
-
 import { CreateShowInput } from './entities/createShow.entity'
 import { Show } from './entities/show.entity'
 import { ShowRepository } from './show.repository'
-
 
 @Injectable()
 export class ShowService {
@@ -16,10 +14,10 @@ export class ShowService {
   }
 
   findOne(userId) {
-    return this.showRepository.findOne(userId,{relations: ['chatMessages']})
+    return this.showRepository.findOne(userId, { relations: ['chatMessages'] })
   }
 
   findAll() {
-    return this.showRepository.find({relations: ['chatMessages']})
+    return this.showRepository.find({ relations: ['chatMessages'] })
   }
 }

@@ -8,7 +8,14 @@ import { ShowRepository } from './show.repository'
 import { ShowResolver } from './show.resolver'
 import { ShowService } from './show.service'
 @Module({
-  imports: [TypeOrmModule.forFeature([Show, ShowRepository, MessageEntity, MessageRepository])],
+  imports: [
+    TypeOrmModule.forFeature([
+      Show,
+      ShowRepository,
+      MessageEntity,
+      MessageRepository,
+    ]),
+  ],
   providers: [ShowResolver, ShowService],
 })
 export class ShowModule {}

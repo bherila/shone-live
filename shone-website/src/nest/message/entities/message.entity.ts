@@ -57,5 +57,3 @@ export class MessageEntity {
   })
   alias: string
 }
-
-

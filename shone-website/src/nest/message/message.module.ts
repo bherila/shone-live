@@ -8,7 +8,14 @@ import { MessageRepository } from './message.repository'
 import { MessageResolver } from './message.resolver'
 import { MessageService } from './message.service'
 @Module({
-  imports: [TypeOrmModule.forFeature([ MessageEntity, MessageRepository, UserRepository, ShowRepository])],
+  imports: [
+    TypeOrmModule.forFeature([
+      MessageEntity,
+      MessageRepository,
+      UserRepository,
+      ShowRepository,
+    ]),
+  ],
   providers: [MessageResolver, MessageService],
 })
 export class MessageModule {}

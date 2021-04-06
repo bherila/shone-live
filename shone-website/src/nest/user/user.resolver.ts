@@ -18,13 +18,15 @@ export class UserResolver {
 
   @Query(() => [User])
   @UseGuards(new AuthGuard())
-  users(@Context('user') user:User): Promise<User[]> {
+  users(@Context('user') user: User): Promise<User[]> {
     return this.usersService.findAll()
   }
 
   @Mutation(() => newUser)
   async addUser(@Args('phone') phone: string) {
-    const code = Math.floor(Math.random() * 999999).toString().padStart(6, '0');
+    const code = Math.floor(Math.random() * 999999)
+      .toString()
+      .padStart(6, '0')
     await this.usersService.sendVerificationCode(phone, code)
     return await this.usersService.create(phone, code)
   }

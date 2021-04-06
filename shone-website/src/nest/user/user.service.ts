@@ -43,21 +43,23 @@ export class UserService {
     const {
       verificationCodeTimeSent,
       verificationCode,
-      phone
+      phone,
     } = await this.findOne(userId)
     const currentTime = new Date().toUTCString()
     const findDiff =
       (new Date(currentTime).getTime() -
         new Date(verificationCodeTimeSent).getTime()) /
       60000
-    if (findDiff > 5) throw new HttpException('code expired',HttpStatus.BAD_REQUEST)
-    if (verificationCode == code) throw new HttpException('Wrong code',HttpStatus.BAD_REQUEST)
+    if (findDiff > 5)
+      throw new HttpException('code expired', HttpStatus.BAD_REQUEST)
+    if (verificationCode == code)
+      throw new HttpException('Wrong code', HttpStatus.BAD_REQUEST)
     const Payload = {
       userId,
       phone,
     }
-    const token = await jwt.sign(Payload,process.env.JWT_SECRET)
-    return {token}
+    const token = await jwt.sign(Payload, process.env.JWT_SECRET)
+    return { token }
   }
 
   findOne(userId) {
