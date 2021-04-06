@@ -71,9 +71,9 @@ export class Address {
   })
   phone: string
 
-  // @ManyToOne(() => User, (user) => user.address)
-  // // @JoinColumn({
-  // //   name: 'user_id',
-  // // })
-  // user: User
+  @ManyToOne(() => User)
+  @JoinColumn({
+    name: 'user_id',
+  })
+  user: User
 }

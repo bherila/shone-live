@@ -12,7 +12,7 @@ export class UserService {
 
   async create(phone: string, code: string): Promise<newUser> {
     const checkExistUser = await this.userRepository.find({ phone })
-    if (checkExistUser)
+    if (checkExistUser.length > 0)
       throw new HttpException('user already exists', HttpStatus.BAD_REQUEST)
     const newUser = this.userRepository.create({
       phone,

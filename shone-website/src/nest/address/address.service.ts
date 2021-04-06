@@ -8,14 +8,16 @@ import { Address } from './entities/address.entity'
 @Injectable()
 export class AddressService {
   constructor(
-    private readonly addressRepository: AddressRepository, // private readonly userRepository: UserRepository,
+    private readonly addressRepository: AddressRepository,
+    private readonly userRepository: UserRepository,
   ) {}
 
   async create(addressData: CreateAddressDto): Promise<Address> {
-    // const find_user = await this.userRepository.findOne(addressData.user_id)
+    const user = await this.userRepository.findOne(addressData.user_id)
+    delete addressData.user_id
     const address = this.addressRepository.create({
+      user,
       ...addressData,
-      // user: find_user,
     })
     return await this.addressRepository.save(address)
   }
