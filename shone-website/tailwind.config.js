@@ -6,6 +6,13 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {},
+    fontFamily: {
+      sans: 'Futura BT',
+      serif: 'Futura BT',
+      mono: 'Futura BT',
+      body: 'Futura BT',
+      display: 'Futura BT',
+    },
     container: {
       padding: {
         DEFAULT: '1rem',
