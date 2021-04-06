@@ -1,5 +1,5 @@
 // import 'tailwindcss/tailwind.css'
-import './index.css'
+import './_app.css'
 
 import React, { useEffect } from 'react'
 
