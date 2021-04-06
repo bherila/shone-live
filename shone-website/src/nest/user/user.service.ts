@@ -56,10 +56,7 @@ export class UserService {
       userId,
       phone,
     }
-    const secretKey = process.env.JWT_SECRET
-    const token = await jwt.sign(Payload,secretKey)
-    console.log(`secretKey`, secretKey)
-    console.log(`jwt.verify(token,key)`, jwt.verify(token,secretKey))
+    const token = await jwt.sign(Payload,process.env.JWT_SECRET)
     return {token}
   }
 
