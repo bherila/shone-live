@@ -1,5 +1,7 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
+import { UseGuards } from '@nestjs/common'
+import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { Service } from 'typedi'
+import { AuthGuard } from '../common/auth.guards'
 
 import { newUser } from './dto/newUserDto'
 import { User, UserWithToken } from './entities/user.entity'
@@ -15,7 +17,8 @@ export class UserResolver {
   }
 
   @Query(() => [User])
-  users(): Promise<User[]> {
+  @UseGuards(new AuthGuard())
+  users(@Context('user') user:User): Promise<User[]> {
     return this.usersService.findAll()
   }
 

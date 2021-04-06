@@ -16,8 +16,8 @@ import { UserModule } from './user/user.module'
   imports: [
     HelloModule,
     UserModule,
-    MessageModule,
     ShowModule,
+    MessageModule,
     TypeOrmModule.forRootAsync({
       useFactory: () => ({
         type: 'mysql',
@@ -37,6 +37,7 @@ import { UserModule } from './user/user.module'
       autoSchemaFile: process.env.VERCEL
         ? '/tmp/schema.gql'
         : join('public/schema.gql'),
+      context: ({req}) => ({headers: req.headers})
     }),
   ],
   controllers: [AppController],
