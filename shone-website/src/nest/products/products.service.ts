@@ -50,8 +50,8 @@ export class ProductsService {
       throw new NotFoundException(`Show #${createProductDto.show_id} not found`)
     }
     const product = this.productRepository.create({
-      show: show,
-      user: user,
+      show,
+      user,
       ...createProductDto,
     })
     const savedProduct = await this.productRepository.save(product)
