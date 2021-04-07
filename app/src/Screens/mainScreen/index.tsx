@@ -1,5 +1,5 @@
 /* eslint-disable no-use-before-define */
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import {
   Image,
   View,
@@ -7,6 +7,7 @@ import {
   ScrollView,
   Modal,
   Alert,
+  FlatList
 } from 'react-native'
 import theme from './../../utils/colors'
 import styles from './styles'
@@ -15,28 +16,39 @@ import { Body, Header, Left, Right } from 'native-base'
 import Menu, { MenuItem } from 'react-native-material-menu'
 import Text from './../../components/Text'
 import { useNavigation } from '@react-navigation/native'
+import { useQuery } from '@apollo/client'
+import { GET_SHOWS } from '../../graphql/queries/shows'
+import { GetShows_shows } from '../../graphql/queries/types/GetShows'
+
+interface ListItem {
+  item: GetShows_shows
+  index: number
+}
 
 export default function MainScreen() {
   const navigation = useNavigation()
 
   const [modalVisible, setModalVisible] = useState(false)
 
+  const { data: shows, error: showsError, loading: isShowsLoading } = useQuery(
+    GET_SHOWS
+  )
   const newArr = [
     { img: require('./../../../assets/newone.png') },
     { img: require('./../../../assets/newtwo.png') },
-    { img: require('./../../../assets/newthree.png') },
+    { img: require('./../../../assets/newthree.png') }
   ]
 
   const commingSoon = [
     { img: require('./../../../assets/comingone.png') },
     { img: require('./../../../assets/comingtwo.png') },
-    { img: require('./../../../assets/comingthree.png') },
+    { img: require('./../../../assets/comingthree.png') }
   ]
 
   const moreShows = [
     { img: require('../../../assets/moreone.png') },
     { img: require('../../../assets/moretwo.png') },
-    { img: require('../../../assets/morethree.png') },
+    { img: require('../../../assets/morethree.png') }
   ]
 
   useEffect(() => {
@@ -62,6 +74,38 @@ export default function MainScreen() {
     navigation.navigate('Login')
     hideMenu()
   }
+
+  const renderShowItem = ({ item, index }: ListItem) => {
+    console.log('ITEM', item)
+
+    return (
+      <TouchableOpacity
+        style={styles._imageView}
+        onPress={() => {
+          Alert.alert('Open Liveshow', '', [
+            {
+              text: 'Start',
+              onPress: () => navigation.navigate('Home', { type: 'create' })
+            },
+            {
+              text: 'Join a live stream',
+              onPress: () => navigation.navigate('Home', { type: 'join' })
+            }
+          ])
+        }}
+      >
+        <Image
+          source={{
+            uri: item.image_url
+              ? item.image_url
+              : 'https://picsum.photos/200/300'
+          }}
+          style={styles._image}
+        />
+      </TouchableOpacity>
+    )
+  }
+
   return (
     <View style={styles.container}>
       <Header style={{ elevation: 0, backgroundColor: 'transparent' }}>
@@ -70,7 +114,7 @@ export default function MainScreen() {
           style={{
             flex: 3,
             justifyContent: 'center',
-            alignItems: 'center',
+            alignItems: 'center'
           }}
         >
           <Image
@@ -100,32 +144,12 @@ export default function MainScreen() {
       <ScrollView showsVerticalScrollIndicator={false}>
         <Text style={styles._screenHeading}>What’s on now!</Text>
         <View style={styles._newArrView}>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {newArr.map((val, i) => {
-              return (
-                <View key={i} style={styles._imageView}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      Alert.alert('Open Liveshow', '', [
-                        {
-                          text: 'Start',
-                          onPress: () =>
-                            navigation.navigate('Home', { type: 'create' }),
-                        },
-                        {
-                          text: 'Join a live stream',
-                          onPress: () =>
-                            navigation.navigate('Home', { type: 'join' }),
-                        },
-                      ])
-                    }}
-                  >
-                    <Image source={val.img} style={styles._image} />
-                  </TouchableOpacity>
-                </View>
-              )
-            })}
-          </ScrollView>
+          <FlatList
+            data={shows.shows}
+            extraData={shows}
+            horizontal
+            renderItem={renderShowItem}
+          />
         </View>
 
         <Text style={styles._screenHeading}>Coming up soon</Text>
@@ -179,7 +203,7 @@ export default function MainScreen() {
       <Modal
         animationType="slide"
         transparent={true}
-        visible={modalVisible}
+        visible={false}
         onRequestClose={() => {
           alert('Modal has been closed.')
         }}
