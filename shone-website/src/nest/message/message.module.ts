@@ -10,7 +10,6 @@ import { MessageService } from './message.service'
 @Module({
   imports: [
     TypeOrmModule.forFeature([
-      MessageEntity,
       MessageRepository,
       UserRepository,
       ShowRepository,

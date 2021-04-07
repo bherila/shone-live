@@ -1,0 +1,80 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Hello {
+  id: Int!
+  message: String!
+}
+
+type Show {
+  id: ID!
+  title: String!
+  image_url: String
+  start_date: DateTime!
+  end_date: DateTime!
+  chatMessages: [MessageEntity!]
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type User {
+  id: ID!
+  email: String
+  phone: String!
+  username: String!
+  verificationCodeTimeSent: String!
+  token: String
+}
+
+type UserWithToken {
+  token: String!
+}
+
+type MessageEntity {
+  id: ID!
+  timestamp: DateTime!
+  message: String!
+  author_alias: String!
+}
+
+type newUser {
+  verificationCode: String!
+  phone: String!
+  id: ID!
+  verificationCodeTimeSent: String!
+}
+
+type Query {
+  hello(id: Float!): Hello!
+  hellos(skip: Int = 0, take: Int = 25): [Hello!]!
+  user(userId: Float!): User
+  users: [User!]!
+  verifyCode(code: String!, userId: Float!): UserWithToken!
+  show(showId: Float!): Show
+  shows: [Show!]!
+  messageEntity(messageEntityId: Float!): MessageEntity
+  messageEntities: [MessageEntity!]!
+}
+
+type Mutation {
+  addHello(newHelloData: HelloInput!): Hello!
+  removeHello(id: Float!): Boolean!
+  addUser(phone: String!): newUser!
+  addShow(data: CreateShowInput!): Show!
+  addMessage(user_id: Float!, message: String!, show_id: Float!): MessageEntity!
+}
+
+input HelloInput {
+  message: String!
+}
+
+input CreateShowInput {
+  title: String!
+  imageurl: String
+  startDate: DateTime!
+  endDate: DateTime!
+}
