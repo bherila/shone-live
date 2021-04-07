@@ -1,14 +1,18 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
 import jwt from 'jsonwebtoken'
 import Twilio from 'twilio'
 import { v4 as uuidv4 } from 'uuid'
 
 import { newUser } from './dto/newUserDto'
+import { User } from './entities/user.entity'
 import { UserRepository } from './user.repository'
 
 @Injectable()
 export class UserService {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(
+    @InjectRepository(User) private readonly userRepository: UserRepository,
+  ) {}
 
   async create(phone: string, code: string): Promise<newUser> {
     const checkExistUser = await this.userRepository.find({ phone })
