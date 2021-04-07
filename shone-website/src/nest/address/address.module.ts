@@ -10,10 +10,10 @@ import { Address } from './entities/address.entity'
 @Module({
   imports: [
     TypeOrmModule.forFeature([
-      User,
-      UserRepository,
       Address,
       AddressRepository,
+      User,
+      UserRepository,
     ]),
   ],
   providers: [AddressResolver, AddressService],

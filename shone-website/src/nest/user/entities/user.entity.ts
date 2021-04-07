@@ -23,6 +23,10 @@ export class User {
   @Column({ nullable: true })
   email: string
 
+  // @Field(() => [Address], { nullable: true })
+  // @OneToMany(() => Address, (address) => address.user)
+  // address: Address[]
+
   @Index({
     unique: true,
   })
@@ -47,9 +51,6 @@ export class User {
   @Field({ nullable: true })
   @Column({ nullable: true })
   token: string
-
-  // @OneToMany(() => Address, (address) => address.user)
-  // address: Address[]
 }
 
 @ObjectType()
