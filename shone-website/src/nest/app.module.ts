@@ -39,6 +39,8 @@ import { UserModule } from './user/user.module'
         ? '/tmp/schema.gql'
         : join('public/schema.gql'),
       context: ({ req }) => ({ headers: req.headers }),
+      introspection: true,
+      playground: true,
     }),
   ],
   controllers: [AppController],
