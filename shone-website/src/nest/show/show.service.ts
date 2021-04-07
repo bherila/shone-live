@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
 
 import { CreateShowInput } from './entities/createShow.entity'
 import { Show } from './entities/show.entity'
@@ -6,7 +7,9 @@ import { ShowRepository } from './show.repository'
 
 @Injectable()
 export class ShowService {
-  constructor(private readonly showRepository: ShowRepository) {}
+  constructor(
+    @InjectRepository(Show) private readonly showRepository: ShowRepository,
+  ) {}
 
   async create(data: CreateShowInput): Promise<Show> {
     const newdata = this.showRepository.create(data)

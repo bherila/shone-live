@@ -15,9 +15,6 @@ import { UserModule } from './user/user.module'
 @Module({
   imports: [
     HelloModule,
-    UserModule,
-    ShowModule,
-    MessageModule,
     TypeOrmModule.forRootAsync({
       useFactory: () => ({
         type: 'mysql',
@@ -27,10 +24,14 @@ import { UserModule } from './user/user.module'
         database: process.env.MYSQL_DB,
         entities: [User, Show, MessageEntity],
         synchronize: true,
-        logging: false,
-        keepConnectionAlive: true,
+        logging: true,
+        keepConnectionAlive: false,
+        autoLoadEntities: true,
       }),
     }),
+    UserModule,
+    ShowModule,
+    MessageModule,
     GraphQLModule.forRoot({
       path: '/api/graphql',
       installSubscriptionHandlers: false,

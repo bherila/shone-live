@@ -2,7 +2,6 @@ import { UseGuards } from '@nestjs/common'
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql'
 
 import { AuthGuard } from '../common/auth.guards'
-
 import { newUser } from './dto/newUserDto'
 import { User, UserWithToken } from './entities/user.entity'
 import { UserService } from './user.service'
