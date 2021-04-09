@@ -52,10 +52,3 @@ export class User {
   @Column({ nullable: true })
   token: string
 }
-
-@ObjectType()
-@Entity()
-export class UserWithToken {
-  @Field()
-  token: string
-}

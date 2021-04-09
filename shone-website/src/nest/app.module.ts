@@ -28,6 +28,7 @@ import { UserModule } from './user/user.module'
         password: process.env.MYSQL_PASS,
         database: process.env.MYSQL_DB,
         entities: [User, Address, Show, MessageEntity, Product, Payment],
+        autoLoadEntities: true,
         synchronize: true,
         logging: false,
         keepConnectionAlive: true,
