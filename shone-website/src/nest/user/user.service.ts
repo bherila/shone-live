@@ -35,7 +35,7 @@ export class UserService {
     const code = Math.floor(Math.random() * 999999)
       .toString()
       .padStart(6, '0')
-    this.sendVerificationCode(phone, code)
+    await this.sendVerificationCode(phone, code)
     this.userRepository.update(userDetail.id, {
       verificationCodeTimeSent: new Date().toUTCString(),
       verificationCode: code,
@@ -55,6 +55,7 @@ export class UserService {
         to: phone,
       })
       console.info('message.sid', message.sid)
+      return true
     } catch (error) {
       console.error('error => ', error)
       throw new HttpException(

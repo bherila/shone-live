@@ -37,8 +37,8 @@ export class User {
   @Index({
     unique: true,
   })
-  @Field()
-  @Column()
+  @Field({ nullable: true })
+  @Column({ nullable: true })
   username: string
 
   @Column({ nullable: true })
