@@ -15,10 +15,11 @@ export const useSecureStore = (key?: string) => {
           console.log({ storedItem })
 
           if (storedItem) {
-            const parsedData =
-              typeof storedItem == 'object'
-                ? await JSON.parse(storedItem)
-                : storedItem
+            // const parsedData =
+            //   typeof storedItem == 'object'
+            //     ? await JSON.parse(storedItem)
+            //     : storedItem
+            const parsedData = await JSON.parse(storedItem)
             setData(parsedData)
           }
           setIsLoading(false)

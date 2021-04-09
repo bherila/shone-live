@@ -21,7 +21,11 @@ import { Header, Poll } from '../../components'
 
 import { useRoute } from '@react-navigation/core'
 import LiveStream from '../../components/LiveStream/LiveStream'
-import { agoraToken } from '../../utils/environment'
+
+import { useQuery } from '@apollo/client'
+import { GetShows } from '../../graphql/queries/types/GetShows'
+import { GetShow, GetShowVariables } from '../../graphql/queries/types/GetShow'
+import { GET_SHOW } from '../../graphql/queries/getShow'
 
 interface Product {
   id: string
@@ -91,6 +95,18 @@ const exampleShow: ILiveShow = {
 const LiveShow = (props: any) => {
   const route: any = useRoute()
 
+  const { data: show, error, loading } = useQuery<GetShow, GetShowVariables>(
+    GET_SHOW,
+    {
+      variables: {
+        ID: parseFloat(route.params.showId)
+      }
+    }
+  )
+
+  console.log({ show, error, loading })
+  
+
   return (
     <TouchableWithoutFeedback
       style={{ height: '100%' }}
@@ -103,8 +119,8 @@ const LiveShow = (props: any) => {
         {/* Agora Live Streaming Component */}
         <LiveStream
           isHost={route.params?.type === 'create'}
-          token={agoraToken}
-          channelID="demo"
+          token={''}
+          channelID={route.params.showId}
         />
 
         <View style={styles._body_section}>

@@ -18,7 +18,11 @@ import Text from './../../components/Text'
 import { useNavigation } from '@react-navigation/native'
 import { useQuery } from '@apollo/client'
 import { GET_SHOWS } from '../../graphql/queries/shows'
-import { GetShows_shows } from '../../graphql/queries/types/GetShows'
+import { GetShows, GetShows_shows } from '../../graphql/queries/types/GetShows'
+import { globalStyles } from '../../utils/globalStyles'
+import Loader from '../../components/Loader'
+import StorageKeys from '../../utils/StorageKeys'
+import { useSecureStore } from '../../hooks/useSecureStore'
 
 interface ListItem {
   item: GetShows_shows
@@ -28,11 +32,13 @@ interface ListItem {
 export default function MainScreen() {
   const navigation = useNavigation()
 
+  const { setItem, error } = useSecureStore()
+
   const [modalVisible, setModalVisible] = useState(false)
 
-  const { data: shows, error: showsError, loading: isShowsLoading } = useQuery(
-    GET_SHOWS
-  )
+  const { data: shows, error: showsError, loading: isShowsLoading } = useQuery<
+    GetShows
+  >(GET_SHOWS)
   const newArr = [
     { img: require('./../../../assets/newone.png') },
     { img: require('./../../../assets/newtwo.png') },
@@ -70,8 +76,10 @@ export default function MainScreen() {
     hideMenu()
   }
 
-  const Logout = () => {
+  const Logout = async () => {
+    await setItem(StorageKeys.AUTH_TOKEN, undefined)
     navigation.navigate('Login')
+
     hideMenu()
   }
 
@@ -82,16 +90,7 @@ export default function MainScreen() {
       <TouchableOpacity
         style={styles._imageView}
         onPress={() => {
-          Alert.alert('Open Liveshow', '', [
-            {
-              text: 'Start',
-              onPress: () => navigation.navigate('Home', { type: 'create' })
-            },
-            {
-              text: 'Join a live stream',
-              onPress: () => navigation.navigate('Home', { type: 'join' })
-            }
-          ])
+          navigation.navigate('Home', { type: 'join', showId: item.id })
         }}
       >
         <Image
@@ -106,8 +105,11 @@ export default function MainScreen() {
     )
   }
 
+  console.log({ shows, showsError, isShowsLoading })
+
   return (
-    <View style={styles.container}>
+    <View style={globalStyles.container}>
+      <Loader isLoading={isShowsLoading} />
       <Header style={{ elevation: 0, backgroundColor: 'transparent' }}>
         <Left />
         <Body
@@ -144,12 +146,14 @@ export default function MainScreen() {
       <ScrollView showsVerticalScrollIndicator={false}>
         <Text style={styles._screenHeading}>What’s on now!</Text>
         <View style={styles._newArrView}>
-          <FlatList
-            data={shows.shows}
-            extraData={shows}
-            horizontal
-            renderItem={renderShowItem}
-          />
+          {shows?.shows && (
+            <FlatList
+              data={shows.shows}
+              extraData={shows}
+              horizontal
+              renderItem={renderShowItem}
+            />
+          )}
         </View>
 
         <Text style={styles._screenHeading}>Coming up soon</Text>
