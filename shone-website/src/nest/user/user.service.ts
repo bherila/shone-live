@@ -67,7 +67,7 @@ export class UserService {
 
   async verifySmsCode(phone, code) {
     let userDetail = await this.findOne({ phone })
-    if (userDetail) throw new UnprocessableEntityException(message.userNotExit)
+    if (!userDetail) throw new UnprocessableEntityException(message.userNotExit)
     const currentTime = new Date().toUTCString()
     const findDiff =
       (new Date(currentTime).getTime() -
