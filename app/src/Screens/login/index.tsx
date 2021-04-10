@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-use-before-define
 import React, { useState, useEffect } from 'react'
-import { Image, View, TouchableOpacity, Keyboard } from 'react-native'
+import { Image, View, TouchableOpacity, Keyboard, Alert } from 'react-native'
 import theme from './../../utils/colors'
 import styles from './styles'
 import { Card, CardItem, Body, Item, Icon, Button } from 'native-base'
@@ -30,7 +30,7 @@ export default function Login() {
     AddUserVariables
   >(ADD_USER, {
     variables: {
-      phone: mobile
+      phone: '+1' + mobile
     }
   })
 
@@ -41,7 +41,9 @@ export default function Login() {
   }, [mobile])
 
   useEffect(() => {
-    if (error) return
+    console.log({ data, error, loading })
+
+    if (error) return Alert.alert(error.message)
     if (data?.addUser) {
       navigation.navigate('ConfirmSms', {
         phone: mobile

@@ -23,7 +23,8 @@ const link = onError(({ graphQLErrors, networkError }) => {
 // })
 const httpLink = new HttpLink({
   // uri: API_LOCALHOST
-  uri: 'http://27879b22f36b.ngrok.io/api/graphql'
+  // uri: 'http://27879b22f36b.ngrok.io/api/graphql'
+  uri: 'http://localhost:3000/api/graphql'
 })
 
 const client = new ApolloClient({

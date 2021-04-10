@@ -6,12 +6,13 @@ import {
   MaterialIcons,
   AntDesign,
   Entypo,
-  SimpleLineIcons,
+  SimpleLineIcons
 } from '@expo/vector-icons'
 import { Body, Icon, Button, Header, Left, Right, ListItem } from 'native-base'
 
 import Text from './../../components/Text'
 import { useNavigation } from '@react-navigation/native'
+import { ScreenNames } from '../../utils/ScreenNames'
 
 export default function Account() {
   const navigation = useNavigation()
@@ -28,7 +29,7 @@ export default function Account() {
           style={{
             flex: 3,
             justifyContent: 'center',
-            alignItems: 'center',
+            alignItems: 'center'
           }}
         >
           <Image
@@ -39,7 +40,7 @@ export default function Account() {
         <Right style={{ flex: 1 }}>
           <TouchableOpacity
             style={styles._userAvatar}
-            onPress={() => navigation.navigate('Login')}
+            onPress={() => navigation.navigate(ScreenNames.AuthScreens.LOGIN)}
           >
             <Image
               source={require('./../../../assets/exist.jpg')}
@@ -105,7 +106,9 @@ export default function Account() {
           <Body style={{ borderBottomWidth: 0 }}>
             <Text style={styles._pages}>Payment Methods</Text>
           </Body>
-          <TouchableOpacity onPress={() => navigation.navigate('Payment')}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate(ScreenNames.HomeScreens.PAYMENT)}
+          >
             <Right style={{ borderBottomWidth: 0 }}>
               <MaterialIcons
                 name="keyboard-arrow-right"
@@ -128,7 +131,9 @@ export default function Account() {
           <Body style={{ borderBottomWidth: 0 }}>
             <Text style={styles._pages}>Addresses</Text>
           </Body>
-          <TouchableOpacity onPress={() => navigation.navigate('Address')}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate(ScreenNames.HomeScreens.ADDRESS)}
+          >
             <Right style={{ borderBottomWidth: 0 }}>
               <MaterialIcons
                 name="keyboard-arrow-right"

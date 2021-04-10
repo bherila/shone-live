@@ -23,6 +23,7 @@ import { globalStyles } from '../../utils/globalStyles'
 import Loader from '../../components/Loader'
 import StorageKeys from '../../utils/StorageKeys'
 import { useSecureStore } from '../../hooks/useSecureStore'
+import { ScreenNames } from '../../utils/ScreenNames'
 
 interface ListItem {
   item: GetShows_shows
@@ -72,25 +73,33 @@ export default function MainScreen() {
   }
 
   const ViewProfile = () => {
-    navigation.navigate('Account')
+    navigation.navigate(ScreenNames.HomeScreens.ACCOUNT)
     hideMenu()
   }
 
   const Logout = async () => {
-    await setItem(StorageKeys.AUTH_TOKEN, undefined)
-    navigation.navigate('Login')
+    await setItem(StorageKeys.AUTH_TOKEN, '')
+    navigation.reset({
+      index: 0,
+      routes: [
+        {
+          name: ScreenNames.AuthScreens.LOGIN
+        }
+      ]
+    })
 
     hideMenu()
   }
 
   const renderShowItem = ({ item, index }: ListItem) => {
-    console.log('ITEM', item)
-
     return (
       <TouchableOpacity
         style={styles._imageView}
         onPress={() => {
-          navigation.navigate('Home', { type: 'join', showId: item.id })
+          navigation.navigate(ScreenNames.HomeScreens.HOME, {
+            type: 'join',
+            showId: item.id
+          })
         }}
       >
         <Image
@@ -104,8 +113,6 @@ export default function MainScreen() {
       </TouchableOpacity>
     )
   }
-
-  console.log({ shows, showsError, isShowsLoading })
 
   return (
     <View style={globalStyles.container}>
@@ -163,7 +170,9 @@ export default function MainScreen() {
               return (
                 <View key={i} style={styles._imageView}>
                   <TouchableOpacity
-                    onPress={() => navigation.navigate('LiveShow')}
+                    onPress={() =>
+                      navigation.navigate(ScreenNames.HomeScreens.LIVE_SHOW)
+                    }
                   >
                     <Image source={val.img} style={styles._image} />
                     <TouchableOpacity style={styles._circle}>
@@ -189,7 +198,9 @@ export default function MainScreen() {
                   <Image source={val.img} style={styles._image} />
                   <TouchableOpacity
                     style={styles._circle}
-                    onPress={() => navigation.navigate('LiveShow')}
+                    onPress={() =>
+                      navigation.navigate(ScreenNames.HomeScreens.LIVE_SHOW)
+                    }
                   >
                     <Feather
                       name="user-plus"

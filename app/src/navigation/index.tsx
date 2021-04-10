@@ -15,9 +15,9 @@ import Home from '../Screens/Home'
 import LiveShow from '../Screens/LiveShow'
 import Payment from '../Screens/Payments'
 import Address from '../Screens/Address'
-import * as SecureStore from 'expo-secure-store'
 import StorageKeys from '../utils/StorageKeys'
 import { useSecureStore } from '../hooks/useSecureStore'
+import { ScreenNames } from '../utils/ScreenNames'
 
 const Stack = createStackNavigator()
 
@@ -29,56 +29,60 @@ function Navigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={!data ? 'Login' : 'MainScreen'}
+        initialRouteName={
+          !data
+            ? ScreenNames.AuthScreens.LOGIN
+            : ScreenNames.HomeScreens.MAIN_SCREEN
+        }
         screenOptions={{ gestureEnabled: true }}
       >
         <Stack.Screen
-          name="Login"
+          name={ScreenNames.AuthScreens.LOGIN}
           component={Login}
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="ConfirmSms"
+          name={ScreenNames.AuthScreens.CONFIRM_SMS}
           component={ConfirmSms}
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="NewAccount"
+          name={ScreenNames.AuthScreens.NEW_ACCOUNT}
           component={NewAccount}
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="ProfilePhoto"
+          name={ScreenNames.AuthScreens.PROFILE_PHOTO}
           component={ProfilePhoto}
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="MainScreen"
+          name={ScreenNames.HomeScreens.MAIN_SCREEN}
           component={MainScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="Account"
+          name={ScreenNames.HomeScreens.ACCOUNT}
           component={Account}
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="Home"
+          name={ScreenNames.HomeScreens.HOME}
           component={Home}
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="LiveShow"
+          name={ScreenNames.HomeScreens.LIVE_SHOW}
           component={LiveShow}
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="Payment"
+          name={ScreenNames.HomeScreens.PAYMENT}
           component={Payment}
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="Address"
+          name={ScreenNames.HomeScreens.ADDRESS}
           component={Address}
           options={{ headerShown: false }}
         />

@@ -19,18 +19,25 @@ import {
   VerifyCodeVariables
 } from '../../graphql/queries/types/VerifyCode'
 import { VERIFY_CODE } from '../../graphql/queries/verifyCode'
+import { globalStyles } from '../../utils/globalStyles'
+import Loader from '../../components/Loader'
+import { ScreenNames } from '../../utils/ScreenNames'
 
 export default function ConfirmSms() {
   const navigation = useNavigation()
   const { params } = useRoute<any>()
   const [otp, setOTP] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   const client = useApolloClient()
+
+  console.log({ params })
 
   const { setItem, error } = useSecureStore()
 
   const verifyOTP = async () => {
     try {
+      setIsLoading(true)
       const { data, error, loading } = await client.query<
         VerifyCode,
         VerifyCodeVariables
@@ -38,14 +45,16 @@ export default function ConfirmSms() {
         query: VERIFY_CODE,
         variables: {
           code: otp,
-          phone: params?.mobile
+          phone: '+1' + params?.phone
         }
       })
 
       await setItem(StorageKeys.AUTH_TOKEN, data.verifyCode.token)
-      navigateToMainScreen()
+
+      setIsLoading(false)
+      navigateToMainScreen(data)
     } catch (e) {
-      Alert.alert(JSON.stringify(e))
+      console.log('Confirm OTP Error : ', { e })
     }
   }
 
@@ -55,15 +64,21 @@ export default function ConfirmSms() {
     }
   }, [otp])
 
-  const navigateToMainScreen = async () => {
-    navigation.reset({
-      index: 0,
-      routes: [
-        {
-          name: 'MainScreen'
-        }
-      ]
-    })
+  const navigateToMainScreen = async (data?: VerifyCode) => {
+    if (data?.verifyCode?.username) {
+      navigation.reset({
+        index: 0,
+        routes: [
+          {
+            name: ScreenNames.HomeScreens.MAIN_SCREEN
+          }
+        ]
+      })
+    } else {
+      navigation.navigate(ScreenNames.AuthScreens.NEW_ACCOUNT, {
+        user: data?.verifyCode
+      })
+    }
   }
 
   const onConfirm = () => {
@@ -75,7 +90,8 @@ export default function ConfirmSms() {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={globalStyles.container}>
+      <Loader isLoading={isLoading} />
       <KeyboardAwareScrollView
         contentContainerStyle={{ justifyContent: 'center' }}
       >
@@ -125,7 +141,13 @@ export default function ConfirmSms() {
           </View>
           <TouchableOpacity
             style={[styles._confirmBtn, theme.bg]}
-            onPress={() => onConfirm()}
+            onPress={() => {
+              if (otp.length === 6 && !error) {
+                verifyOTP()
+              } else {
+                alert('Enter valid OTP')
+              }
+            }}
           >
             <Text style={styles._confirmBtn_text}>Confirm</Text>
           </TouchableOpacity>
