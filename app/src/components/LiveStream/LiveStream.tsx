@@ -11,7 +11,7 @@ import RtcEngine, {
 } from 'react-native-agora'
 import { requestCameraAndAudioPermission } from '../../utils/helper'
 import styles from './styles'
-import { agoraAppID } from '../../utils/environment'
+import { APP_ID } from '../../utils/environment'
 
 interface Props {
   isHost: boolean
@@ -85,7 +85,7 @@ const LiveStream = (props: Props) => {
   const init = async () => {
     if (Platform.OS === 'android') await requestCameraAndAudioPermission()
     try {
-      const id = (AgoraEngine.current = await RtcEngine.create(agoraAppID))
+      const id = (AgoraEngine.current = await RtcEngine.create(APP_ID))
       console.log('Engine Initialized')
 
       await AgoraEngine.current.enableVideo()
@@ -129,7 +129,7 @@ const LiveStream = (props: Props) => {
         }
       )
     } catch (e) {
-      console.log('ERROR WHILE CREATING RTC ENGINE')
+      console.log('ERROR WHILE CREATING RTC ENGINE', { e })
     }
   }
 

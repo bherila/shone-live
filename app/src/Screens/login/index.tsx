@@ -1,20 +1,38 @@
 // eslint-disable-next-line no-use-before-define
 import React, { useState, useEffect } from 'react'
-import { Image, View, TouchableOpacity, Keyboard } from 'react-native'
+import { Image, View, TouchableOpacity, Keyboard, Alert } from 'react-native'
 import theme from './../../utils/colors'
 import styles from './styles'
 import { Card, CardItem, Body, Item, Icon, Button } from 'native-base'
 import { EvilIcons, FontAwesome } from '@expo/vector-icons'
 
 import Text from './../../components/Text'
+//@ts-ignore
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
 import { TextInputMask } from 'react-native-masked-text'
 import { useNavigation } from '@react-navigation/native'
+import { useMutation } from '@apollo/client'
+import { ADD_USER } from '../../graphql/mutations/addUser'
+import {
+  AddUser,
+  AddUserVariables,
+} from '../../graphql/mutations/types/AddUser'
+import { globalStyles } from '../../utils/globalStyles'
+import Loader from '../../components/Loader'
 
 export default function Login() {
   const navigation = useNavigation()
 
   const [mobile, setMobile] = useState('')
+
+  const [addUser, { data, error, loading }] = useMutation<
+    AddUser,
+    AddUserVariables
+  >(ADD_USER, {
+    variables: {
+      phone: '+1' + mobile,
+    },
+  })
 
   useEffect(() => {
     if (mobile.length === 12) {
@@ -22,16 +40,29 @@ export default function Login() {
     }
   }, [mobile])
 
+  useEffect(() => {
+    console.log({ data, error, loading })
+
+    if (error) return Alert.alert(error.message)
+    if (data?.addUser) {
+      navigation.navigate('ConfirmSms', {
+        phone: mobile,
+      })
+    }
+  }, [data, error, loading])
+
   const onContinue = () => {
     if (mobile.replace(/-/g, '')?.length === 10) {
-      navigation.navigate('ConfirmSms')
+      addUser()
+      // navigation.navigate('ConfirmSms')
     } else {
       alert('Please enter correct mobile number')
     }
   }
 
   return (
-    <KeyboardAwareScrollView contentContainerStyle={styles.container}>
+    <KeyboardAwareScrollView contentContainerStyle={globalStyles.container}>
+      <Loader isLoading={loading} />
       <View style={{ flex: 1 }}>
         <View style={styles._logView}>
           <Image
@@ -63,6 +94,7 @@ export default function Login() {
                   type={'cel-phone'}
                   autoFocus={true}
                   options={{
+                    //@ts-ignore
                     maskType: 'BRL', // for international set it -&amp;nbsp;INTERNATIONAL type masking
                     withDDD: true,
                     dddMask: '999-999-9999', // this is a your define formatting you use according to your requirment
@@ -80,7 +112,6 @@ export default function Login() {
               </Item>
               <Button
                 style={[styles._continue_btn, theme.bg]}
-                keyboardShouldPersistTaps={true}
                 onPress={() => onContinue()}
               >
                 <Text style={styles._btn_text}>Continue</Text>

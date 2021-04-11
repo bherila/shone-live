@@ -2,6 +2,7 @@
 import React from 'react'
 import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import { AntDesign } from '@expo/vector-icons'
+import { ScreenNames } from '../utils/ScreenNames'
 // <<<<<<<<<<<<<<<<<<< HEADER COMPONENT >>>>>>>>>>>>>>>>>>>
 export default function Headder(props) {
   return (
@@ -17,7 +18,9 @@ export default function Headder(props) {
         </View>
         <TouchableOpacity
           style={styles._shop_all}
-          onPress={() => props.props.navigation.navigate('LiveShow')}
+          onPress={() =>
+            props.props.navigation.navigate(ScreenNames.HomeScreens.LIVE_SHOW)
+          }
         >
           <Text style={styles.shop_btn_text}>LIVE</Text>
         </TouchableOpacity>

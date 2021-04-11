@@ -19,6 +19,7 @@ import {
 import Text from './../../components/Text'
 import Camera from './../../components/camera'
 import { useNavigation } from '@react-navigation/native'
+import { ScreenNames } from '../../utils/ScreenNames'
 
 export default function ProfilePhoto() {
   const navigation = useNavigation()
@@ -86,7 +87,9 @@ export default function ProfilePhoto() {
             </Body>
             <Right style={{ flex: 1 }}>
               <TouchableOpacity
-                onPress={() => navigation.navigate('MainScreen')}
+                onPress={() =>
+                  navigation.navigate(ScreenNames.HomeScreens.MAIN_SCREEN)
+                }
               >
                 <Text style={theme.textColor}>Next</Text>
               </TouchableOpacity>

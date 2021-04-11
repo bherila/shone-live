@@ -1,5 +1,5 @@
 /* eslint-disable no-use-before-define */
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import {
   Image,
   View,
@@ -7,6 +7,7 @@ import {
   ScrollView,
   Modal,
   Alert,
+  FlatList,
 } from 'react-native'
 import theme from './../../utils/colors'
 import styles from './styles'
@@ -15,12 +16,32 @@ import { Body, Header, Left, Right } from 'native-base'
 import Menu, { MenuItem } from 'react-native-material-menu'
 import Text from './../../components/Text'
 import { useNavigation } from '@react-navigation/native'
+import { useQuery } from '@apollo/client'
+import { GET_SHOWS } from '../../graphql/queries/shows'
+import { GetShows, GetShows_shows } from '../../graphql/queries/types/GetShows'
+import { globalStyles } from '../../utils/globalStyles'
+import Loader from '../../components/Loader'
+import StorageKeys from '../../utils/StorageKeys'
+import { useSecureStore } from '../../hooks/useSecureStore'
+import { ScreenNames } from '../../utils/ScreenNames'
+
+interface ListItem {
+  item: GetShows_shows
+  index: number
+}
 
 export default function MainScreen() {
   const navigation = useNavigation()
 
+  const { setItem, error } = useSecureStore()
+
   const [modalVisible, setModalVisible] = useState(false)
 
+  const {
+    data: shows,
+    error: showsError,
+    loading: isShowsLoading,
+  } = useQuery<GetShows>(GET_SHOWS)
   const newArr = [
     { img: require('./../../../assets/newone.png') },
     { img: require('./../../../assets/newtwo.png') },
@@ -54,16 +75,50 @@ export default function MainScreen() {
   }
 
   const ViewProfile = () => {
-    navigation.navigate('Account')
+    navigation.navigate(ScreenNames.HomeScreens.ACCOUNT)
     hideMenu()
   }
 
-  const Logout = () => {
-    navigation.navigate('Login')
+  const Logout = async () => {
+    await setItem(StorageKeys.AUTH_TOKEN, '')
+    navigation.reset({
+      index: 0,
+      routes: [
+        {
+          name: ScreenNames.AuthScreens.LOGIN,
+        },
+      ],
+    })
+
     hideMenu()
   }
+
+  const renderShowItem = ({ item, index }: ListItem) => {
+    return (
+      <TouchableOpacity
+        style={styles._imageView}
+        onPress={() => {
+          navigation.navigate(ScreenNames.HomeScreens.HOME, {
+            type: 'join',
+            showId: item.id,
+          })
+        }}
+      >
+        <Image
+          source={{
+            uri: item.image_url
+              ? item.image_url
+              : 'https://picsum.photos/200/300',
+          }}
+          style={styles._image}
+        />
+      </TouchableOpacity>
+    )
+  }
+
   return (
-    <View style={styles.container}>
+    <View style={globalStyles.container}>
+      <Loader isLoading={isShowsLoading} />
       <Header style={{ elevation: 0, backgroundColor: 'transparent' }}>
         <Left />
         <Body
@@ -100,32 +155,14 @@ export default function MainScreen() {
       <ScrollView showsVerticalScrollIndicator={false}>
         <Text style={styles._screenHeading}>What’s on now!</Text>
         <View style={styles._newArrView}>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {newArr.map((val, i) => {
-              return (
-                <View key={i} style={styles._imageView}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      Alert.alert('Open Liveshow', '', [
-                        {
-                          text: 'Start',
-                          onPress: () =>
-                            navigation.navigate('Home', { type: 'create' }),
-                        },
-                        {
-                          text: 'Join a live stream',
-                          onPress: () =>
-                            navigation.navigate('Home', { type: 'join' }),
-                        },
-                      ])
-                    }}
-                  >
-                    <Image source={val.img} style={styles._image} />
-                  </TouchableOpacity>
-                </View>
-              )
-            })}
-          </ScrollView>
+          {shows?.shows && (
+            <FlatList
+              data={shows.shows}
+              extraData={shows}
+              horizontal
+              renderItem={renderShowItem}
+            />
+          )}
         </View>
 
         <Text style={styles._screenHeading}>Coming up soon</Text>
@@ -135,7 +172,9 @@ export default function MainScreen() {
               return (
                 <View key={i} style={styles._imageView}>
                   <TouchableOpacity
-                    onPress={() => navigation.navigate('LiveShow')}
+                    onPress={() =>
+                      navigation.navigate(ScreenNames.HomeScreens.LIVE_SHOW)
+                    }
                   >
                     <Image source={val.img} style={styles._image} />
                     <TouchableOpacity style={styles._circle}>
@@ -161,7 +200,9 @@ export default function MainScreen() {
                   <Image source={val.img} style={styles._image} />
                   <TouchableOpacity
                     style={styles._circle}
-                    onPress={() => navigation.navigate('LiveShow')}
+                    onPress={() =>
+                      navigation.navigate(ScreenNames.HomeScreens.LIVE_SHOW)
+                    }
                   >
                     <Feather
                       name="user-plus"
@@ -179,7 +220,7 @@ export default function MainScreen() {
       <Modal
         animationType="slide"
         transparent={true}
-        visible={modalVisible}
+        visible={false}
         onRequestClose={() => {
           alert('Modal has been closed.')
         }}
