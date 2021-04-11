@@ -14,7 +14,7 @@ const Loader = ({ isLoading }: Props) => {
       style={[
         globalStyles.absoluteView,
         globalStyles.absolouteCenter,
-        globalStyles.loader
+        globalStyles.loader,
       ]}
       size="large"
       color={theme.textColor.color}

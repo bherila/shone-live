@@ -9,7 +9,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Keyboard,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
 } from 'react-native'
 // css
 import styles from './styles'
@@ -65,31 +65,31 @@ const exampleShow: ILiveShow = {
       qtyLeft: 2,
       imageUrl: 'TODO',
       price: 129,
-      currency: 'USD'
-    }
+      currency: 'USD',
+    },
   ],
   chats: [
     {
       name: 'Mike A.',
       message: 'DOPE!!!',
-      profileImage: 'TODO'
+      profileImage: 'TODO',
     },
     {
       name: 'Allison H.',
       message: 'YAAASSSSS!!!',
-      profileImage: 'TODO'
+      profileImage: 'TODO',
     },
     {
       name: 'Sarah M.',
       message:
         "This makes me so happy to see. I've always wanted something like this in Platinum. Bling... bling...",
-      profileImage: 'TODO'
-    }
+      profileImage: 'TODO',
+    },
   ],
   activePoll: {
     question: 'What metal should I use next?',
-    options: ['Rose Gold', 'Platinum', 'Silver']
-  }
+    options: ['Rose Gold', 'Platinum', 'Silver'],
+  },
 }
 
 const LiveShow = (props: any) => {
@@ -99,13 +99,12 @@ const LiveShow = (props: any) => {
     GET_SHOW,
     {
       variables: {
-        ID: parseFloat(route.params.showId)
-      }
+        ID: parseFloat(route.params.showId),
+      },
     }
   )
 
   console.log({ show, error, loading })
-  
 
   return (
     <TouchableWithoutFeedback

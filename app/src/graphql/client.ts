@@ -2,7 +2,7 @@ import {
   ApolloClient,
   ApolloLink,
   HttpLink,
-  InMemoryCache
+  InMemoryCache,
 } from '@apollo/client'
 import { onError } from 'apollo-link-error'
 import { API_STAGING, API_LOCALHOST } from '../utils/environment'
@@ -24,12 +24,12 @@ const link = onError(({ graphQLErrors, networkError }) => {
 const httpLink = new HttpLink({
   // uri: API_LOCALHOST
   // uri: 'http://27879b22f36b.ngrok.io/api/graphql'
-  uri: 'http://localhost:3000/api/graphql'
+  uri: 'http://localhost:3000/api/graphql',
 })
 
 const client = new ApolloClient({
   link: ApolloLink.from([link as any, httpLink]),
-  cache: new InMemoryCache()
+  cache: new InMemoryCache(),
 })
 
 export default client

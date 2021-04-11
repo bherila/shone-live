@@ -6,7 +6,7 @@ import {
   MaterialIcons,
   AntDesign,
   Entypo,
-  SimpleLineIcons
+  SimpleLineIcons,
 } from '@expo/vector-icons'
 import { Body, Icon, Button, Header, Left, Right, ListItem } from 'native-base'
 
@@ -29,7 +29,7 @@ export default function Account() {
           style={{
             flex: 3,
             justifyContent: 'center',
-            alignItems: 'center'
+            alignItems: 'center',
           }}
         >
           <Image

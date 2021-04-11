@@ -14,7 +14,7 @@ import {
   Button,
   Header,
   Left,
-  Right
+  Right,
 } from 'native-base'
 import Text from './../../components/Text'
 import Camera from './../../components/camera'
@@ -45,7 +45,7 @@ export default function ProfilePhoto() {
         mediaTypes: ImagePicker.MediaTypeOptions.All,
         allowsEditing: true,
         aspect: [4, 4],
-        quality: 1
+        quality: 1,
       })
 
       console.log(result)
@@ -58,7 +58,7 @@ export default function ProfilePhoto() {
     }
   }
 
-  const capture = v => {
+  const capture = (v) => {
     setOpenCamera(true)
     setImage(v)
     console.log('--------------->', v)
@@ -77,7 +77,7 @@ export default function ProfilePhoto() {
               style={{
                 flex: 3,
                 justifyContent: 'center',
-                alignItems: 'center'
+                alignItems: 'center',
               }}
             >
               <Image
@@ -125,7 +125,7 @@ export default function ProfilePhoto() {
             style={{
               justifyContent: 'center',
               alignItems: 'center',
-              padding: 15
+              padding: 15,
             }}
           >
             <TouchableOpacity

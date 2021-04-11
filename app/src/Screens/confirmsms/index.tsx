@@ -16,7 +16,7 @@ import { useSecureStore } from '../../hooks/useSecureStore'
 import { useApolloClient, useQuery } from '@apollo/client'
 import {
   VerifyCode,
-  VerifyCodeVariables
+  VerifyCodeVariables,
 } from '../../graphql/queries/types/VerifyCode'
 import { VERIFY_CODE } from '../../graphql/queries/verifyCode'
 import { globalStyles } from '../../utils/globalStyles'
@@ -45,8 +45,8 @@ export default function ConfirmSms() {
         query: VERIFY_CODE,
         variables: {
           code: otp,
-          phone: '+1' + params?.phone
-        }
+          phone: '+1' + params?.phone,
+        },
       })
 
       await setItem(StorageKeys.AUTH_TOKEN, data.verifyCode.token)
@@ -70,13 +70,13 @@ export default function ConfirmSms() {
         index: 0,
         routes: [
           {
-            name: ScreenNames.HomeScreens.MAIN_SCREEN
-          }
-        ]
+            name: ScreenNames.HomeScreens.MAIN_SCREEN,
+          },
+        ],
       })
     } else {
       navigation.navigate(ScreenNames.AuthScreens.NEW_ACCOUNT, {
-        user: data?.verifyCode
+        user: data?.verifyCode,
       })
     }
   }
@@ -105,7 +105,7 @@ export default function ConfirmSms() {
             style={{
               flex: 3,
               justifyContent: 'center',
-              alignItems: 'center'
+              alignItems: 'center',
             }}
           >
             <Image
@@ -127,7 +127,7 @@ export default function ConfirmSms() {
             style={{
               alignItems: 'center',
               justifyContent: 'center',
-              width: '100%'
+              width: '100%',
             }}
           >
             <OTPTextInput

@@ -3,7 +3,7 @@ export const ScreenNames = {
     LOGIN: 'Login',
     CONFIRM_SMS: 'ConfirmSms',
     NEW_ACCOUNT: 'NewAccount',
-    PROFILE_PHOTO: 'ProfilePhoto'
+    PROFILE_PHOTO: 'ProfilePhoto',
   },
   HomeScreens: {
     MAIN_SCREEN: 'MainScreen',
@@ -11,6 +11,6 @@ export const ScreenNames = {
     LIVE_SHOW: 'LiveShow',
     PAYMENT: 'Payment',
     ADDRESS: 'Address',
-    ACCOUNT: 'Account'
-  }
+    ACCOUNT: 'Account',
+  },
 }
