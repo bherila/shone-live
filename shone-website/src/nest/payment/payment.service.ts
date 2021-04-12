@@ -31,13 +31,17 @@ export class PaymentService {
     return await this.paymentRepository.save(newPayment)
   }
 
-  findOne(paymentId) {
+  findOne(paymentId, userId) {
     return this.paymentRepository.findOne(paymentId, {
       relations: ['user', 'product'],
+      where: { user: { id: userId } },
     })
   }
 
-  findAll() {
-    return this.paymentRepository.find({ relations: ['user', 'product'] })
+  findAll(userId) {
+    return this.paymentRepository.find({
+      relations: ['user', 'product'],
+      where: { user: { id: userId } },
+    })
   }
 }

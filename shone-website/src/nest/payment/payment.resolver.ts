@@ -1,5 +1,7 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
+import { UseGuards } from '@nestjs/common'
+import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql'
 
+import { AuthGuard } from '../common/auth.guards'
 import { Payment } from './entities/payment.entity'
 import { PaymentService } from './payment.service'
 
@@ -8,21 +10,24 @@ export class PaymentResolver {
   constructor(private readonly paymentService: PaymentService) {}
 
   @Query(() => Payment, { nullable: true })
-  payment(@Args('PaymentId') PaymentId: number) {
-    return this.paymentService.findOne(PaymentId)
+  @UseGuards(new AuthGuard())
+  payment(@Context('user') user, @Args('PaymentId') PaymentId: number) {
+    return this.paymentService.findOne(PaymentId, user.id)
   }
 
   @Query(() => [Payment])
-  payments() {
-    return this.paymentService.findAll()
+  @UseGuards(new AuthGuard())
+  payments(@Context('user') user) {
+    return this.paymentService.findAll(user.id)
   }
 
   @Mutation(() => Payment)
-  async addPayment(
+  @UseGuards(new AuthGuard())
+  async add_payment(
+    @Context('user') user,
     @Args('productId') productId: number,
     @Args('quantity') quantity: string,
-    @Args('userId') userId: number,
   ) {
-    return await this.paymentService.create(productId, quantity, userId)
+    return await this.paymentService.create(productId, quantity, user.id)
   }
 }

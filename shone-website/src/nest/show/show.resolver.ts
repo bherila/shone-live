@@ -19,7 +19,7 @@ export class ShowResolver {
   }
 
   @Mutation(() => Show)
-  async addShow(@Args('data') data: CreateShowInput) {
+  async add_show(@Args('data') data: CreateShowInput) {
     return await this.showsService.create(data)
   }
 }

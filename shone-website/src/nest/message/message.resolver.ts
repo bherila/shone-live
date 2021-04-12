@@ -18,7 +18,7 @@ export class MessageResolver {
   }
 
   @Mutation(() => MessageEntity)
-  async addMessage(
+  async add_message(
     @Args('showId') showId: number,
     @Args('message') message: string,
     @Args('userId') userId: number,

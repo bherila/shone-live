@@ -21,7 +21,7 @@ export class ProductResolver {
     return this.productsService.findAll(paginationQuery)
   }
   @Mutation(() => Product)
-  async addProducts(@Args('data') data: CreateProductDto) {
+  async add_products(@Args('data') data: CreateProductDto) {
     return await this.productsService.create(data)
   }
 }

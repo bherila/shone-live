@@ -22,7 +22,7 @@ export class UserResolver {
   }
 
   @Mutation(() => String)
-  addUser(@Args('phone') phone: string) {
+  add_user(@Args('phone') phone: string) {
     try {
       return this.usersService.create(phone)
     } catch (error) {

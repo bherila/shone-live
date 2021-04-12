@@ -26,11 +26,16 @@ export class AddressService {
     return await this.addressRepository.save(address)
   }
 
-  findOne(AddressId) {
-    return this.addressRepository.findOne(AddressId)
+  findOne(AddressId, userId) {
+    return this.addressRepository.findOne(AddressId, {
+      relations: ['user'],
+      where: { user: { id: userId } },
+    })
   }
-
-  findAll() {
-    return this.addressRepository.find()
+  findAll(userId) {
+    return this.addressRepository.find({
+      relations: ['user'],
+      where: { user: { id: userId } },
+    })
   }
 }
