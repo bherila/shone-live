@@ -5,9 +5,21 @@ import { useState } from 'react'
 
 import AnimatedLogo from '../components/animated-logo'
 import rainbow from '../components/RainbowGradientContainer.module.css'
+import { useSubscribeToWaitlistMutation } from '../generated/graphql'
 
 export default function Index(): JSX.Element {
   const [email, setEmail] = useState('')
+  const [createConsumerLead] = useSubscribeToWaitlistMutation()
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    try {
+      await createConsumerLead({
+        variables: { email },
+      })
+    } catch (error) {}
+  }
+
   return (
     <>
       <Head>
@@ -42,6 +54,7 @@ export default function Index(): JSX.Element {
               />
               <button
                 type={'submit'}
+                onClick={handleSubmit}
                 className="rounded-full bg-orange-400 uppercase py-2 px-4 text-white mx-auto flex-grow-0"
                 style={{ background: '#FCB344' }}
               >

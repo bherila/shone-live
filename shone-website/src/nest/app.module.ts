@@ -7,6 +7,8 @@ import { AddressModule } from './address/address.module'
 import { Address } from './address/entities/address.entity'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
+import { ConsumerLeadsModule } from './consumer-leads/consumer-leads.module'
+import { ConsumerLead } from './consumer-leads/entities/consumer-lead.entity'
 import { HelloModule } from './hello/hello.module'
 import { MessageEntity } from './message/entities/message.entity'
 import { MessageModule } from './message/message.module'
@@ -27,20 +29,29 @@ import { UserModule } from './user/user.module'
         username: process.env.MYSQL_USER,
         password: process.env.MYSQL_PASS,
         database: process.env.MYSQL_DB,
-        entities: [User, Address, Show, MessageEntity, Product, Payment],
+        entities: [
+          Address,
+          ConsumerLead,
+          MessageEntity,
+          Product,
+          Payment,
+          Show,
+          User,
+        ],
         autoLoadEntities: true,
         synchronize: true,
         logging: false,
         keepConnectionAlive: true,
       }),
     }),
-    HelloModule,
-    UserModule,
     AddressModule,
-    ShowModule,
+    ConsumerLeadsModule,
+    HelloModule,
     MessageModule,
     ProductsModule,
     PaymentModule,
+    ShowModule,
+    UserModule,
     GraphQLModule.forRoot({
       path: '/api/graphql',
       installSubscriptionHandlers: false,
