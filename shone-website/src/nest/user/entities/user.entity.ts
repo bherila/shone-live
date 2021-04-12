@@ -1,5 +1,13 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql'
-import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm'
+import {
+  Column,
+  Entity,
+  Index,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm'
+
+import { Address } from '../../address/entities/address.entity'
 
 @ObjectType()
 @Entity()
@@ -15,6 +23,10 @@ export class User {
   @Column({ nullable: true })
   email: string
 
+  // @Field(() => [Address], { nullable: true })
+  // @OneToMany(() => Address, (address) => address.user)
+  // address: Address[]
+
   @Index({
     unique: true,
   })
@@ -25,8 +37,8 @@ export class User {
   @Index({
     unique: true,
   })
-  @Field()
-  @Column()
+  @Field({ nullable: true })
+  @Column({ nullable: true })
   username: string
 
   @Column({ nullable: true })
@@ -38,12 +50,5 @@ export class User {
 
   @Field({ nullable: true })
   @Column({ nullable: true })
-  token: string
-}
-
-@ObjectType()
-@Entity()
-export class UserWithToken {
-  @Field()
   token: string
 }

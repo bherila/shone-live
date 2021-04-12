@@ -2,6 +2,7 @@ import { Field, ID, ObjectType } from '@nestjs/graphql'
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 
 import { MessageEntity } from '../../message/entities/message.entity'
+import { Product } from '../../products/entities/product.entity'
 
 @ObjectType()
 @Entity()
