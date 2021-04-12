@@ -18,11 +18,20 @@ import Address from '../Screens/Address'
 import StorageKeys from '../utils/StorageKeys'
 import { useSecureStore } from '../hooks/useSecureStore'
 import { ScreenNames } from '../utils/ScreenNames'
+import { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import { userInit, userInitSuccess } from '../redux/actions/userActions'
 
 const Stack = createStackNavigator()
 
 function Navigation() {
-  const { data, isLoading } = useSecureStore(StorageKeys.AUTH_TOKEN)
+  const { data, isLoading } = useSecureStore(StorageKeys.USER)
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(userInitSuccess(data))
+  }, [data])
 
   if (isLoading) return <></>
 

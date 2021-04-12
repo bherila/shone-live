@@ -7,7 +7,7 @@ import RtcEngine, {
   RtcRemoteView,
   ChannelProfile,
   ClientRole,
-  VideoRenderMode,
+  VideoRenderMode
 } from 'react-native-agora'
 import { requestCameraAndAudioPermission } from '../../utils/helper'
 import styles from './styles'
@@ -25,10 +25,9 @@ const LiveStream = (props: Props) => {
 
   const [peerIds, setPeerIds] = useState<any[]>([])
   const [joined, setJoined] = useState(false)
-  const [
-    broadcasterVideoState,
-    setBroadcasterVideoState,
-  ] = useState<VideoRemoteState>(VideoRemoteState.Starting)
+  const [broadcasterVideoState, setBroadcasterVideoState] = useState<
+    VideoRemoteState
+  >(VideoRemoteState.Starting)
   const [isBroadcaster, setIsBroadcaster] = useState(isHost)
 
   useEffect(() => {
@@ -49,7 +48,7 @@ const LiveStream = (props: Props) => {
           }
         )
       })
-      .catch((e) => console.log('Initialization Error : ', { e }))
+      .catch(e => console.log('Initialization Error : ', { e }))
 
     return () => {
       ;(async () => {
@@ -111,7 +110,7 @@ const LiveStream = (props: Props) => {
       // This callback will triggered when the remote user leaves the channel or drops offline.
       AgoraEngine.current.addListener('UserOffline', (uid, reason) => {
         console.log('UserOffline', uid, reason)
-        const ids = peerIds.filter((id) => id !== uid)
+        const ids = peerIds.filter(id => id !== uid)
         setPeerIds(ids)
       })
 
@@ -132,8 +131,6 @@ const LiveStream = (props: Props) => {
       console.log('ERROR WHILE CREATING RTC ENGINE', { e })
     }
   }
-
-  console.log(peerIds)
 
   return (
     <View style={styles.backgroundVideo}>
@@ -164,7 +161,7 @@ const LiveStream = (props: Props) => {
               <View
                 style={[
                   styles.backgroundVideo,
-                  { alignItems: 'center', justifyContent: 'center' },
+                  { alignItems: 'center', justifyContent: 'center' }
                 ]}
               >
                 <Text>{videoStateMessage(broadcasterVideoState)}</Text>

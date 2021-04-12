@@ -11,22 +11,30 @@ import {
   ParamListBase,
   RouteProp,
   useNavigation,
-  useRoute,
+  useRoute
 } from '@react-navigation/native'
 import { useMutation } from '@apollo/client'
 import {
   UpdateUser,
-  UpdateUserVariables,
+  UpdateUserVariables
 } from '../../graphql/mutations/types/UpdateUser'
 import { UPDATE_USER } from '../../graphql/mutations/updateUser'
 import {
   VerifyCode,
-  VerifyCode_verifyCode,
+  VerifyCode_verifyCode
 } from '../../graphql/queries/types/VerifyCode'
 import { ScreenNames } from '../../utils/ScreenNames'
 import { globalStyles } from '../../utils/globalStyles'
 import Loader from '../../components/Loader'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import StorageKeys from '../../utils/StorageKeys'
+import { useSecureStore } from '../../hooks/useSecureStore'
+import {
+  userInit,
+  userInitFailure,
+  userInitSuccess
+} from '../../redux/actions/userActions'
+import { useDispatch } from 'react-redux'
 
 interface IParams extends ParamListBase {
   NewAccount: {
@@ -42,27 +50,34 @@ export default function NewAccount() {
   const [lname, setLname] = useState('')
   const [email, setEmail] = useState('')
 
+  const { setItem, error } = useSecureStore()
+  const dispatch = useDispatch()
+
   let lnameRef = createRef<TextInput>()
   let emailRef = createRef<TextInput>()
   console.log({ route })
 
   const [
     updateUser,
-    { data: userData, loading, error: userUpdateError },
+    { data: userData, loading, error: userUpdateError }
   ] = useMutation<UpdateUser, UpdateUserVariables>(UPDATE_USER, {
     variables: {
       email: email,
       userID: route.params?.user?.id,
-      username: 'AbhishekTagline1',
-    },
+      username: 'AbhishekTagline5'
+    }
   })
 
   useEffect(() => {
     console.log({ userData, loading, userUpdateError })
 
-    if (userUpdateError) return Alert.alert(userUpdateError.message)
-    if (userData?.updateUser.token) {
-      navigateToProfileScreen()
+    if (userUpdateError) {
+      dispatch(userInitFailure(userUpdateError))
+      return Alert.alert(userUpdateError.message)
+    }
+    if (userData?.updateUser) {
+      dispatch(userInitSuccess(userData.updateUser))
+      navigateToProfileScreen(userData)
     }
   }, [userData, loading, userUpdateError])
 
@@ -70,6 +85,7 @@ export default function NewAccount() {
     if (fname !== '' && lname !== '' && email !== '') {
       const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
       if (reg.test(email) === true) {
+        dispatch(userInit())
         updateUser()
       } else {
         alert('Enter a valid email')
@@ -79,7 +95,9 @@ export default function NewAccount() {
     }
   }
 
-  const navigateToProfileScreen = () => {
+  const navigateToProfileScreen = async (data: UpdateUser) => {
+    await setItem(StorageKeys.AUTH_TOKEN, data.updateUser.token)
+    await setItem(StorageKeys.USER, data.updateUser)
     navigation.navigate(ScreenNames.AuthScreens.PROFILE_PHOTO)
   }
 
@@ -98,7 +116,7 @@ export default function NewAccount() {
               style={{
                 flex: 3,
                 justifyContent: 'center',
-                alignItems: 'center',
+                alignItems: 'center'
               }}
             >
               <Image
@@ -117,7 +135,7 @@ export default function NewAccount() {
                 placeholder="First name"
                 placeholderTextColor={'grey'}
                 style={styles._textinput}
-                onChangeText={(text) => {
+                onChangeText={text => {
                   setFname(text)
                 }}
                 autoCapitalize={'none'}
@@ -135,7 +153,7 @@ export default function NewAccount() {
                 placeholder="Last name"
                 placeholderTextColor={'grey'}
                 style={styles._textinput}
-                onChangeText={(text) => {
+                onChangeText={text => {
                   setLname(text)
                 }}
                 autoCapitalize={'none'}
@@ -155,7 +173,7 @@ export default function NewAccount() {
                 style={styles._textinput}
                 keyboardType="email-address"
                 autoCapitalize={'none'}
-                onChangeText={(text) => {
+                onChangeText={text => {
                   setEmail(text)
                 }}
                 returnKeyType={'done'}
