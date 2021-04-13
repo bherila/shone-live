@@ -1,0 +1,5 @@
+mutation SubscribeToWaitlist($email: String!) {
+  addConsumerLead(email: $email) {
+      email
+  }
+}

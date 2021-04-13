@@ -1,7 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql'
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
 
-import { Payment } from '../../payment/entities/payment.entity'
 import { Show } from '../../show/entities/show.entity'
 import { User } from '../../user/entities/user.entity'
 

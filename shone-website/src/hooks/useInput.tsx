@@ -10,7 +10,7 @@ export default function useInput<T>({
 }: {
   label?: string
   defaultValue?: T
-  name: string
+  name?: string
   validate?: (inputValue) => boolean
   type?: string
 }) {

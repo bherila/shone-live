@@ -1,7 +1,10 @@
 // import 'tailwindcss/tailwind.css'
 import './_app.css'
 
+import { ApolloProvider } from '@apollo/client'
 import React, { useEffect } from 'react'
+
+import createClient from '../apollo-client'
 
 function MyApp({ Component, pageProps }: any): JSX.Element {
   useEffect(() => {
@@ -11,7 +14,11 @@ function MyApp({ Component, pageProps }: any): JSX.Element {
     }
   }, [])
 
-  return <Component {...pageProps} />
+  return (
+    <ApolloProvider client={createClient()}>
+      <Component {...pageProps} />
+    </ApolloProvider>
+  )
 }
 
 export default MyApp
