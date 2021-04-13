@@ -71,6 +71,28 @@ type Payment {
   quantity: Float!
 }
 
+type ShowYourStyleEntry {
+  id: Float!
+  user: User!
+  video_url: String!
+  submitted_timestamp: DateTime!
+}
+
+type ShowYourStyleViewRecord {
+  id: Float!
+  entry: ShowYourStyleEntry!
+  user: User!
+  view_time: DateTime!
+}
+
+type ShowYourStyleVote {
+  id: Float!
+  entry: ShowYourStyleEntry!
+  user: User!
+  vote: Float!
+  view_duration: Float!
+}
+
 type Query {
   address(addressId: Float!): Address
   addresses: [Address!]!
@@ -86,6 +108,13 @@ type Query {
   payments: [Payment!]!
   show(showId: Float!): Show
   shows: [Show!]!
+  showYourStyleEntry(showId: Float!): ShowYourStyleEntry
+  getRandomShowYourStyleEntry: ShowYourStyleEntry
+  showYourStyleEntries(paginationQuery: PaginationQueryDto!): [ShowYourStyleEntry!]!
+  showYourStyle(showId: Float!): ShowYourStyleVote
+  showYourStyleVotes(paginationQuery: PaginationQueryDto!): [ShowYourStyleVote!]!
+  showYourStyleViewRecord(showId: Float!): ShowYourStyleViewRecord
+  showYourStyleViewRecords(paginationQuery: PaginationQueryDto!): [ShowYourStyleViewRecord!]!
   user(userId: Float!): User
   users: [User!]!
   verify_code(code: String!, phone: String!): User!
@@ -105,6 +134,9 @@ type Mutation {
   add_products(data: CreateProductDto!): Product!
   add_payment(quantity: String!, productId: Float!): Payment!
   add_show(data: CreateShowInput!): Show!
+  addShowYourStyleEntry(video_url: String!): ShowYourStyleEntry!
+  addShowYourStyleVotes(entry_id: Float!, view_duration: Float!, vote: Float!): ShowYourStyleVote!
+  addShowYourStyleViewRecord(entry_id: Float!): ShowYourStyleViewRecord!
   add_user(phone: String!): String!
   update_user(userId: String!, username: String!, email: String!, file: Upload!): User!
 }

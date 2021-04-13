@@ -18,6 +18,9 @@ import { Product } from './products/entities/product.entity'
 import { ProductsModule } from './products/products.module'
 import { Show } from './show/entities/show.entity'
 import { ShowModule } from './show/show.module'
+import { ShowYourStylesModule } from './show-your-style/show-your-style.module'
+import { ShowYourStyleViewRecord } from './show-your-style/show-your-style-view-record/entities/show-your-style-view-record.entity'
+import { ShowYourStyleVote } from './show-your-style/show-your-style-vote/entities/show-your-style-vote.entity'
 import { User } from './user/entities/user.entity'
 import { UserModule } from './user/user.module'
 @Module({
@@ -36,11 +39,14 @@ import { UserModule } from './user/user.module'
           Product,
           Payment,
           Show,
+          ShowYourStyleVote,
+          ShowYourStyleViewRecord,
+          ShowYourStyleVote,
           User,
         ],
         autoLoadEntities: true,
         synchronize: true,
-        logging: false,
+        logging: true,
         keepConnectionAlive: true,
       }),
     }),
@@ -51,6 +57,7 @@ import { UserModule } from './user/user.module'
     ProductsModule,
     PaymentModule,
     ShowModule,
+    ShowYourStylesModule,
     UserModule,
     GraphQLModule.forRoot({
       path: '/api/graphql',
