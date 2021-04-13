@@ -45,6 +45,7 @@
     "dotenv": "^8.2.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "graphql": "^15.5.0",
+    "graphql-upload": "^11.0.0",
     "jsonwebtoken": "^8.5.1",
     "lottie-react": "^2.1.0",
     "mysql2": "^2.2.5",

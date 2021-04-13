@@ -99,6 +99,7 @@ export class UserService {
   }
 
   async update(userId, email, username) {
+    //here upload sile and store link
     const checkUserExits = await this.findOne(userId)
     if (!checkUserExits)
       throw new UnprocessableEntityException(message.userNotExit)

@@ -1,5 +1,7 @@
 import { HttpException, HttpStatus, UseGuards } from '@nestjs/common'
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql'
+import { GraphQLUpload } from 'apollo-server-express'
+import { FileUpload } from 'graphql-upload'
 
 import { AuthGuard } from '../common/auth.guards'
 import { User } from './entities/user.entity'
@@ -32,16 +34,19 @@ export class UserResolver {
   }
 
   @Query(() => User)
-  verifyCode(@Args('phone') phone: string, @Args('code') code: string) {
+  verify_code(@Args('phone') phone: string, @Args('code') code: string) {
     return this.usersService.verifySmsCode(phone, code)
   }
 
   @Mutation(() => User)
-  async updateUser(
+  async update_user(
+    @Args({ name: 'file', type: () => GraphQLUpload })
+    { createReadStream, filename }: FileUpload,
     @Args('email') email: string,
     @Args('username') username: string,
     @Args('userId') userId: string,
   ) {
+    console.log(`filename`, filename)
     return this.usersService.update(userId, email, username)
   }
 }
