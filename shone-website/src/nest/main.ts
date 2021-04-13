@@ -1,22 +1,22 @@
 import 'reflect-metadata'
 
-import { INestApplication } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import * as http from 'http'
 import { NextApiHandler } from 'next'
 
+import { GlobalInterface } from '../types/general'
 import { AppModule } from './app.module'
 
-let app: INestApplication
+declare let global: GlobalInterface
 
 export async function getApp() {
-  if (!app) {
-    app = await NestFactory.create(AppModule, { bodyParser: true })
-    app.setGlobalPrefix('api')
-    await app.init()
+  if (!global.app) {
+    global.app = await NestFactory.create(AppModule, { bodyParser: true })
+    global.app.setGlobalPrefix('api')
+    await global.app.init()
   }
 
-  return app
+  return global.app
 }
 
 export async function getListener() {
