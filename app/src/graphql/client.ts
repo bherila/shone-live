@@ -31,15 +31,11 @@ const defaultHeaders = {
 }
 
 const getToken = async () => {
-  const token = await SecureStore.getItemAsync(StorageKeys.AUTH_TOKEN)
-    .then((res) => res && JSON.parse(res))
-    .then((jwt) => {
-      const token = jwt
-      return token
-    })
-    .catch((e) => console.log('Token not found', { e }))
-
-  return token
+  try {
+    await SecureStore.getItemAsync(StorageKeys.AUTH_TOKEN)
+  } catch (err) {
+    console.error('Token not found ' + (err.message || err))
+  }
 }
 
 const authLink = setContext(async (_, { headers }) => {
