@@ -14,12 +14,12 @@ export class ShowYourStyleVotesResolver {
   ) {}
 
   @Query(() => ShowYourStyleVote, { nullable: true })
-  showYourStyle(@Args('showId') showId: number) {
+  show_your_style_vote(@Args('showId') showId: number) {
     return this.showYourStyleVotesService.findOne(showId)
   }
 
   @Query(() => [ShowYourStyleVote])
-  showYourStyleVotes(
+  show_your_style_votes(
     @Args('paginationQuery') paginationQuery: PaginationQueryDto,
   ): Promise<ShowYourStyleVote[]> {
     return this.showYourStyleVotesService.findAll(paginationQuery)
@@ -27,7 +27,7 @@ export class ShowYourStyleVotesResolver {
 
   @Mutation(() => ShowYourStyleVote)
   @UseGuards(new AuthGuard())
-  async addShowYourStyleVote(
+  async add_show_your_style_vote(
     @Context('user') user: User,
     @Args('vote') vote: number,
     @Args('viewDuration') viewDuration: number,

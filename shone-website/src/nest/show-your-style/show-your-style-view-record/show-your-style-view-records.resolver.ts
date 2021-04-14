@@ -14,12 +14,12 @@ export class ShowYourStyleViewRecordsResolver {
   ) {}
 
   @Query(() => ShowYourStyleViewRecord, { nullable: true })
-  showYourStyleViewRecord(@Args('showId') showId: number) {
+  show_your_style_view_record(@Args('showId') showId: number) {
     return this.showYourStyleViewRecordsService.findOne(showId)
   }
 
   @Query(() => [ShowYourStyleViewRecord])
-  showYourStyleViewRecords(
+  show_your_style_view_records(
     @Args('paginationQuery') paginationQuery: PaginationQueryDto,
   ): Promise<ShowYourStyleViewRecord[]> {
     return this.showYourStyleViewRecordsService.findAll(paginationQuery)
@@ -27,7 +27,7 @@ export class ShowYourStyleViewRecordsResolver {
 
   @Mutation(() => ShowYourStyleViewRecord)
   @UseGuards(new AuthGuard())
-  async addShowYourStyleViewRecord(
+  async add_show_your_style_view_record(
     @Context('user') user: User,
     @Args('entryId') entryId: number,
   ) {

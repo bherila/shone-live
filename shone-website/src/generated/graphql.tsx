@@ -93,9 +93,9 @@ export type Mutation = {
   add_products: Product;
   add_payment: Payment;
   add_show: Show;
-  addShowYourStyleEntry: ShowYourStyleEntry;
-  addShowYourStyleVote: ShowYourStyleVote;
-  addShowYourStyleViewRecord: ShowYourStyleViewRecord;
+  add_show_your_style_entry: ShowYourStyleEntry;
+  add_show_your_style_vote: ShowYourStyleVote;
+  add_show_your_style_view_record: ShowYourStyleViewRecord;
   add_user: Scalars['String'];
   update_user: User;
 };
@@ -143,19 +143,19 @@ export type MutationAdd_ShowArgs = {
 };
 
 
-export type MutationAddShowYourStyleEntryArgs = {
+export type MutationAdd_Show_Your_Style_EntryArgs = {
   videoUrl: Scalars['String'];
 };
 
 
-export type MutationAddShowYourStyleVoteArgs = {
+export type MutationAdd_Show_Your_Style_VoteArgs = {
   entryId: Scalars['Float'];
   viewDuration: Scalars['Float'];
   vote: Scalars['Float'];
 };
 
 
-export type MutationAddShowYourStyleViewRecordArgs = {
+export type MutationAdd_Show_Your_Style_View_RecordArgs = {
   entryId: Scalars['Float'];
 };
 
@@ -210,13 +210,13 @@ export type Query = {
   payments: Array<Payment>;
   show?: Maybe<Show>;
   shows: Array<Show>;
-  showYourStyleEntry?: Maybe<ShowYourStyleEntry>;
-  getRandomShowYourStyleEntry?: Maybe<ShowYourStyleEntry>;
-  showYourStyleEntries: Array<ShowYourStyleEntry>;
-  showYourStyle?: Maybe<ShowYourStyleVote>;
-  showYourStyleVotes: Array<ShowYourStyleVote>;
-  showYourStyleViewRecord?: Maybe<ShowYourStyleViewRecord>;
-  showYourStyleViewRecords: Array<ShowYourStyleViewRecord>;
+  show_your_style_Entry?: Maybe<ShowYourStyleEntry>;
+  get_random_show_your_style_entry?: Maybe<ShowYourStyleEntry>;
+  show_your_style_entries: Array<ShowYourStyleEntry>;
+  show_your_style_vote?: Maybe<ShowYourStyleVote>;
+  show_your_style_votes: Array<ShowYourStyleVote>;
+  show_your_style_view_record?: Maybe<ShowYourStyleViewRecord>;
+  show_your_style_view_records: Array<ShowYourStyleViewRecord>;
   user?: Maybe<User>;
   users: Array<User>;
   verify_code: User;
@@ -274,32 +274,32 @@ export type QueryShowArgs = {
 };
 
 
-export type QueryShowYourStyleEntryArgs = {
+export type QueryShow_Your_Style_EntryArgs = {
   showId: Scalars['Float'];
 };
 
 
-export type QueryShowYourStyleEntriesArgs = {
+export type QueryShow_Your_Style_EntriesArgs = {
   paginationQuery: PaginationQueryDto;
 };
 
 
-export type QueryShowYourStyleArgs = {
+export type QueryShow_Your_Style_VoteArgs = {
   showId: Scalars['Float'];
 };
 
 
-export type QueryShowYourStyleVotesArgs = {
+export type QueryShow_Your_Style_VotesArgs = {
   paginationQuery: PaginationQueryDto;
 };
 
 
-export type QueryShowYourStyleViewRecordArgs = {
+export type QueryShow_Your_Style_View_RecordArgs = {
   showId: Scalars['Float'];
 };
 
 
-export type QueryShowYourStyleViewRecordsArgs = {
+export type QueryShow_Your_Style_View_RecordsArgs = {
   paginationQuery: PaginationQueryDto;
 };
 

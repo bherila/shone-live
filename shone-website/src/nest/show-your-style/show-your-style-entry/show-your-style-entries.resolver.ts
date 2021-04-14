@@ -14,18 +14,18 @@ export class ShowYourStyleEntriesResolver {
   ) {}
 
   @Query(() => ShowYourStyleEntry, { nullable: true })
-  showYourStyleEntry(@Args('showId') showId: number) {
+  show_your_style_Entry(@Args('showId') showId: number) {
     return this.showYourStyleEntriesService.findOne(showId)
   }
 
   @Query(() => ShowYourStyleEntry, { nullable: true })
   @UseGuards(new AuthGuard())
-  getRandomShowYourStyleEntry(@Context('user') user: User) {
+  get_random_show_your_style_entry(@Context('user') user: User) {
     return this.showYourStyleEntriesService.findRandomForUser(user.id)
   }
 
   @Query(() => [ShowYourStyleEntry])
-  showYourStyleEntries(
+  show_your_style_entries(
     @Args('paginationQuery') paginationQuery: PaginationQueryDto,
   ): Promise<ShowYourStyleEntry[]> {
     return this.showYourStyleEntriesService.findAll(paginationQuery)
@@ -33,7 +33,7 @@ export class ShowYourStyleEntriesResolver {
 
   @Mutation(() => ShowYourStyleEntry)
   @UseGuards(new AuthGuard())
-  async addShowYourStyleEntry(
+  async add_show_your_style_entry(
     @Context('user') user: User,
     @Args('videoUrl') videoUrl: string,
   ) {
