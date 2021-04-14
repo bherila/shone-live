@@ -20,9 +20,9 @@ export class PaymentService {
     @InjectRepository(User)
     private readonly userRepository: UserRepository,
   ) {}
-  async create(product_id, quantity, user_id): Promise<Payment> {
-    const product = await this.productRepository.findOne(product_id)
-    const user = await this.userRepository.findOne(user_id)
+  async create(productId, quantity, userId): Promise<Payment> {
+    const product = await this.productRepository.findOne(productId)
+    const user = await this.userRepository.findOne(userId)
     const newPayment = await this.paymentRepository.create({
       product,
       user,

@@ -5,7 +5,7 @@ import { IsOptional, IsString } from 'class-validator'
 export class CreateAddressDto {
   @Field()
   @IsString()
-  user_id: string
+  userId: string
 
   @Field()
   @IsString()
@@ -26,7 +26,7 @@ export class CreateAddressDto {
 
   @Field()
   @IsString()
-  postal_code: string
+  postalCode: string
 
   @Field()
   @IsString()

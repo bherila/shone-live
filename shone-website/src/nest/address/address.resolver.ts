@@ -10,12 +10,12 @@ export class AddressResolver {
   constructor(private readonly AddresssService: AddressService) {}
 
   @Query(() => Address, { nullable: true })
-  Address(@Args('addressId') addressId: number) {
+  address(@Args('addressId') addressId: number) {
     return this.AddresssService.findOne(addressId)
   }
 
   @Query(() => [Address])
-  Addresss(): Promise<Address[]> {
+  addresses(): Promise<Address[]> {
     return this.AddresssService.findAll()
   }
 

@@ -43,12 +43,15 @@ export class Address {
   })
   line2: string
 
-  @Field()
+  @Field({
+    name: 'postal_code',
+  })
   @Column({
     comment: 'for usa is zip code, should be verified against list',
     nullable: true,
+    name: 'postal_code',
   })
-  postal_code: string
+  postalCode: string
 
   @Field()
   @Column({

@@ -2,6 +2,38 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type User {
+  id: ID!
+  email: String
+  phone: String!
+  username: String
+  verification_code_time_sent: String!
+  token: String
+}
+
+type Address {
+  id: Float!
+  city: String!
+  country: String!
+  line1: String!
+  line2: String!
+  postal_code: String!
+  state: String!
+  name: String!
+  phone: String!
+}
+
+type ConsumerLead {
+  id: Float!
+  email: String!
+  submitted_timestamp: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type Hello {
   id: Int!
   message: String!
@@ -16,65 +48,92 @@ type Show {
   chatMessages: [MessageEntity!]
 }
 
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
-type User {
-  id: ID!
-  email: String
-  phone: String!
-  username: String!
-  verificationCodeTimeSent: String!
-  token: String
-}
-
-type UserWithToken {
-  token: String!
-}
-
 type MessageEntity {
   id: ID!
   timestamp: DateTime!
   message: String!
-  author_alias: String!
+  alias: String!
 }
 
-type newUser {
-  verificationCode: String!
-  phone: String!
+type Product {
+  id: Float!
+  name: String!
+  description: String!
+  user: User!
+  show: Show!
+}
+
+type Payment {
   id: ID!
-  verificationCodeTimeSent: String!
+  product: Product!
+  user: User!
+  quantity: Float!
 }
 
 type Query {
+  address(addressId: Float!): Address
+  addresses: [Address!]!
+  consumerLead(showId: Float!): ConsumerLead
+  consumerLeads(paginationQuery: PaginationQueryDto!): [ConsumerLead!]!
   hello(id: Float!): Hello!
   hellos(skip: Int = 0, take: Int = 25): [Hello!]!
-  user(userId: Float!): User
-  users: [User!]!
-  verifyCode(code: String!, userId: Float!): UserWithToken!
-  show(showId: Float!): Show
-  shows: [Show!]!
   messageEntity(messageEntityId: Float!): MessageEntity
   messageEntities: [MessageEntity!]!
+  product(showId: Float!): Product
+  products(paginationQuery: PaginationQueryDto!): [Product!]!
+  payment(PaymentId: Float!): Payment
+  payments: [Payment!]!
+  show(showId: Float!): Show
+  shows: [Show!]!
+  user(userId: Float!): User
+  users: [User!]!
+  verifyCode(code: String!, phone: String!): User!
+}
+
+input PaginationQueryDto {
+  limit: Float!
+  offset: Float!
 }
 
 type Mutation {
+  addAddress(data: CreateAddressDto!): Address!
+  addConsumerLead(email: String!): ConsumerLead!
   addHello(newHelloData: HelloInput!): Hello!
   removeHello(id: Float!): Boolean!
-  addUser(phone: String!): newUser!
+  addMessage(userId: Float!, message: String!, showId: Float!): MessageEntity!
+  addProducts(data: CreateProductDto!): Product!
+  addPayment(userId: Float!, quantity: String!, productId: Float!): Payment!
   addShow(data: CreateShowInput!): Show!
-  addMessage(user_id: Float!, message: String!, show_id: Float!): MessageEntity!
+  addUser(phone: String!): String!
+  updateUser(userId: String!, username: String!, email: String!): User!
+}
+
+input CreateAddressDto {
+  userId: String!
+  city: String!
+  country: String!
+  line1: String!
+  line2: String!
+  postalCode: String!
+  state: String!
+  name: String!
+  phone: String!
 }
 
 input HelloInput {
   message: String!
 }
 
+input CreateProductDto {
+  userId: String!
+  showId: Float!
+  name: String!
+  description: String!
+}
+
 input CreateShowInput {
   title: String!
-  imageurl: String
+  image_url: String
   startDate: DateTime!
   endDate: DateTime!
 }

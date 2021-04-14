@@ -20,9 +20,9 @@ export class MessageService {
     @InjectRepository(User)
     private readonly userRepository: UserRepository,
   ) {}
-  async create(show_id, message, user_id): Promise<MessageEntity> {
-    const show = await this.showRepository.findOne(show_id)
-    const author = await this.userRepository.findOne(user_id)
+  async create(showId, message, userId): Promise<MessageEntity> {
+    const show = await this.showRepository.findOne(showId)
+    const author = await this.userRepository.findOne(userId)
     const newMessage = await this.messageEntityRepository.create({
       show,
       message,

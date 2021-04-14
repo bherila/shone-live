@@ -41,13 +41,13 @@ export class ProductsService {
   }
 
   async create(createProductDto: CreateProductDto) {
-    const user = await this.userRepository.findOne(createProductDto.user_id)
+    const user = await this.userRepository.findOne(createProductDto.userId)
     if (!user) {
-      throw new NotFoundException(`User #${createProductDto.user_id} not found`)
+      throw new NotFoundException(`User #${createProductDto.userId} not found`)
     }
-    const show = await this.showRepository.findOne(createProductDto.show_id)
+    const show = await this.showRepository.findOne(createProductDto.showId)
     if (!show) {
-      throw new NotFoundException(`Show #${createProductDto.show_id} not found`)
+      throw new NotFoundException(`Show #${createProductDto.showId} not found`)
     }
     const product = this.productRepository.create({
       show,
