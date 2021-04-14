@@ -8,21 +8,21 @@ export class PaymentResolver {
   constructor(private readonly paymentService: PaymentService) {}
 
   @Query(() => Payment, { nullable: true })
-  Payment(@Args('PaymentId') PaymentId: number) {
+  payment(@Args('PaymentId') PaymentId: number) {
     return this.paymentService.findOne(PaymentId)
   }
 
   @Query(() => [Payment])
-  Payments() {
+  payments() {
     return this.paymentService.findAll()
   }
 
   @Mutation(() => Payment)
   async addPayment(
-    @Args('product_id') product_id: number,
+    @Args('productId') productId: number,
     @Args('quantity') quantity: string,
-    @Args('user_id') user_id: number,
+    @Args('userId') userId: number,
   ) {
-    return await this.paymentService.create(product_id, quantity, user_id)
+    return await this.paymentService.create(productId, quantity, userId)
   }
 }

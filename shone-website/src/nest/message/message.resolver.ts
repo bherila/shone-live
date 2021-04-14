@@ -19,10 +19,10 @@ export class MessageResolver {
 
   @Mutation(() => MessageEntity)
   async addMessage(
-    @Args('show_id') show_id: number,
+    @Args('showId') showId: number,
     @Args('message') message: string,
-    @Args('user_id') user_id: number,
+    @Args('userId') userId: number,
   ) {
-    return await this.messageEntitysService.create(show_id, message, user_id)
+    return await this.messageEntitysService.create(showId, message, userId)
   }
 }

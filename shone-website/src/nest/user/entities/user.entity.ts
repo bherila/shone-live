@@ -36,8 +36,8 @@ export class User {
   @Column({ nullable: true })
   verificationCode: string
 
-  @Field()
-  @Column()
+  @Field({ name: 'verification_code_time_sent' })
+  @Column({ nullable: true, name: 'verification_code_time_sent' })
   verificationCodeTimeSent: string
 
   @Field({ nullable: true })

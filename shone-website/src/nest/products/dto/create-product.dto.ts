@@ -5,11 +5,11 @@ import { IsNumber, IsString } from 'class-validator'
 export class CreateProductDto {
   @Field()
   @IsString()
-  readonly user_id: string
+  readonly userId: string
 
   @Field()
   @IsNumber()
-  readonly show_id: number
+  readonly showId: number
 
   @Field()
   @IsString()

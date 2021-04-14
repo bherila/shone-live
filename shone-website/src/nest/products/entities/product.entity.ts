@@ -1,5 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql'
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
 
 import { Show } from '../../show/entities/show.entity'
 import { User } from '../../user/entities/user.entity'
@@ -40,10 +40,16 @@ export class Product {
 
   @Field()
   @ManyToOne(() => User)
+  @JoinColumn({
+    name: 'user_id',
+  })
   user: User
 
   @Field()
   @ManyToOne(() => Show)
+  @JoinColumn({
+    name: 'show_id',
+  })
   show: Show
 
   // @Field()
