@@ -7,7 +7,7 @@ import {
   ScrollView,
   Modal,
   Alert,
-  FlatList
+  FlatList,
 } from 'react-native'
 import theme from './../../utils/colors'
 import styles from './styles'
@@ -41,25 +41,27 @@ export default function MainScreen() {
 
   const [modalVisible, setModalVisible] = useState(false)
 
-  const { data: shows, error: showsError, loading: isShowsLoading } = useQuery<
-    GetShows
-  >(GET_SHOWS)
+  const {
+    data: shows,
+    error: showsError,
+    loading: isShowsLoading,
+  } = useQuery<GetShows>(GET_SHOWS)
   const newArr = [
     { img: require('./../../../assets/newone.png') },
     { img: require('./../../../assets/newtwo.png') },
-    { img: require('./../../../assets/newthree.png') }
+    { img: require('./../../../assets/newthree.png') },
   ]
 
   const commingSoon = [
     { img: require('./../../../assets/comingone.png') },
     { img: require('./../../../assets/comingtwo.png') },
-    { img: require('./../../../assets/comingthree.png') }
+    { img: require('./../../../assets/comingthree.png') },
   ]
 
   const moreShows = [
     { img: require('../../../assets/moreone.png') },
     { img: require('../../../assets/moretwo.png') },
-    { img: require('../../../assets/morethree.png') }
+    { img: require('../../../assets/morethree.png') },
   ]
 
   useEffect(() => {
@@ -89,9 +91,9 @@ export default function MainScreen() {
       index: 0,
       routes: [
         {
-          name: ScreenNames.AuthScreens.LOGIN
-        }
-      ]
+          name: ScreenNames.AuthScreens.LOGIN,
+        },
+      ],
     })
 
     hideMenu()
@@ -104,7 +106,7 @@ export default function MainScreen() {
         onPress={() => {
           navigation.navigate(ScreenNames.HomeScreens.HOME, {
             type: 'join',
-            showId: item.id
+            showId: item.id,
           })
         }}
       >
@@ -112,7 +114,7 @@ export default function MainScreen() {
           source={{
             uri: item.image_url
               ? item.image_url
-              : 'https://picsum.photos/200/300'
+              : 'https://picsum.photos/200/300',
           }}
           style={styles._image}
         />
@@ -129,7 +131,7 @@ export default function MainScreen() {
           style={{
             flex: 3,
             justifyContent: 'center',
-            alignItems: 'center'
+            alignItems: 'center',
           }}
         >
           <Image

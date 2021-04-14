@@ -1,32 +1,32 @@
 import { User } from '../../../types/models/User'
 import {
   UserActionTypes,
-  UserLogoutAction
+  UserLogoutAction,
 } from '../actionTypes/userActionTypes'
 
 export const userInit = (): UserActionTypes => {
   return {
-    type: 'USER_INIT'
+    type: 'USER_INIT',
   }
 }
 
 export const userInitSuccess = (user: User): UserActionTypes => {
   return {
     type: 'USER_INIT_SUCCESS',
-    user
+    user,
   }
 }
 
 export const userInitFailure = (error: object): UserActionTypes => {
   return {
     type: 'USER_INIT_FAILURE',
-    error
+    error,
   }
 }
 
 export const userLogout = (): UserActionTypes => {
   return {
     type: 'USER_LOGOUT',
-    user: {}
+    user: {},
   }
 }

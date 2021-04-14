@@ -2,7 +2,7 @@ import {
   createStoreHook,
   TypedUseSelectorHook,
   useDispatch,
-  useSelector
+  useSelector,
 } from 'react-redux'
 import { applyMiddleware, createStore } from 'redux'
 import thunk, { ThunkMiddleware } from 'redux-thunk'

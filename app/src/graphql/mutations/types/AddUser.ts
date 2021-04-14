@@ -8,9 +8,9 @@
 // ====================================================
 
 export interface AddUser {
-  add_user: string;
+  add_user: string
 }
 
 export interface AddUserVariables {
-  phone: string;
+  phone: string
 }
