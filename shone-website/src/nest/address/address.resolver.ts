@@ -29,7 +29,7 @@ export class AddressResolver {
     @Args('data') data: CreateAddressDto,
   ) {
     try {
-      return await this.AddresssService.create(data, user)
+      return await this.AddresssService.create(data, user.id)
     } catch (error) {
       console.log(`error`, error)
       throw new HttpException(JSON.stringify(error), HttpStatus.BAD_REQUEST)
