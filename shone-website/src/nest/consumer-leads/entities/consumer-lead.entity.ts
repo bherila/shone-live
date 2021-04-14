@@ -20,7 +20,7 @@ export class ConsumerLead {
   })
   email: string
 
-  @Field()
-  @CreateDateColumn({ type: 'timestamp' })
-  readonly submitted_timestamp: Date
+  @Field({ name: 'submitted_timestamp' })
+  @CreateDateColumn({ type: 'timestamp', name: 'submitted_timestamp' })
+  readonly submittedTimestamp: Date
 }

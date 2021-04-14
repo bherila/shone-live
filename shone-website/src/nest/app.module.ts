@@ -46,7 +46,7 @@ import { UserModule } from './user/user.module'
         ],
         autoLoadEntities: true,
         synchronize: true,
-        logging: true,
+        logging: false,
         keepConnectionAlive: true,
       }),
     }),

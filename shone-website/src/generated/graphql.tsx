@@ -94,7 +94,7 @@ export type Mutation = {
   add_payment: Payment;
   add_show: Show;
   addShowYourStyleEntry: ShowYourStyleEntry;
-  addShowYourStyleVotes: ShowYourStyleVote;
+  addShowYourStyleVote: ShowYourStyleVote;
   addShowYourStyleViewRecord: ShowYourStyleViewRecord;
   add_user: Scalars['String'];
   update_user: User;
@@ -144,19 +144,19 @@ export type MutationAdd_ShowArgs = {
 
 
 export type MutationAddShowYourStyleEntryArgs = {
-  video_url: Scalars['String'];
+  videoUrl: Scalars['String'];
 };
 
 
-export type MutationAddShowYourStyleVotesArgs = {
-  entry_id: Scalars['Float'];
-  view_duration: Scalars['Float'];
+export type MutationAddShowYourStyleVoteArgs = {
+  entryId: Scalars['Float'];
+  viewDuration: Scalars['Float'];
   vote: Scalars['Float'];
 };
 
 
 export type MutationAddShowYourStyleViewRecordArgs = {
-  entry_id: Scalars['Float'];
+  entryId: Scalars['Float'];
 };
 
 
@@ -229,7 +229,7 @@ export type QueryAddressArgs = {
 
 
 export type QueryConsumerLeadArgs = {
-  showId: Scalars['Float'];
+  consumerLeadId: Scalars['Float'];
 };
 
 

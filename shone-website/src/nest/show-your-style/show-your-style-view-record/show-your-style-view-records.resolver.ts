@@ -29,11 +29,11 @@ export class ShowYourStyleViewRecordsResolver {
   @UseGuards(new AuthGuard())
   async addShowYourStyleViewRecord(
     @Context('user') user: User,
-    @Args('entry_id') entry_id: number,
+    @Args('entryId') entryId: number,
   ) {
     return await this.showYourStyleViewRecordsService.create({
-      entry_id,
-      user_id: user.id,
+      entryId,
+      userId: user.id,
     })
   }
 }

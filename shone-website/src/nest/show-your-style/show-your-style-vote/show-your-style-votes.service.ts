@@ -43,11 +43,21 @@ export class ShowYourStyleVotesService {
 
   async create(createShowYourStyleVoteDto: CreateShowYourStyleVoteDto) {
     const user = await this.userRepository.findOne(
-      createShowYourStyleVoteDto.user_id,
+      createShowYourStyleVoteDto.userId,
     )
+    if (!user) {
+      throw new NotFoundException(
+        `User with id: ${createShowYourStyleVoteDto.userId} not found`,
+      )
+    }
     const entry = await this.showYourStyleEntriesRepository.findOne(
-      createShowYourStyleVoteDto.entry_id,
+      createShowYourStyleVoteDto.entryId,
     )
+    if (!entry) {
+      throw new NotFoundException(
+        `Entry with id: ${createShowYourStyleVoteDto.entryId} not found`,
+      )
+    }
     const showYourStyleVote = this.showYourStyleVotesRepository.create({
       ...createShowYourStyleVoteDto,
       user,

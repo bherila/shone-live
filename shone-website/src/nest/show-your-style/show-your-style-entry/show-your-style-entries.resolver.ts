@@ -35,11 +35,11 @@ export class ShowYourStyleEntriesResolver {
   @UseGuards(new AuthGuard())
   async addShowYourStyleEntry(
     @Context('user') user: User,
-    @Args('video_url') video_url: string,
+    @Args('videoUrl') videoUrl: string,
   ) {
     return await this.showYourStyleEntriesService.create({
-      video_url,
-      user_id: user.id,
+      videoUrl,
+      userId: user.id,
     })
   }
 }

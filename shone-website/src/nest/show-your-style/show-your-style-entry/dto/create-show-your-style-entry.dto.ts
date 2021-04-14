@@ -5,9 +5,9 @@ import { IsNumber, IsString } from 'class-validator'
 export class CreateShowYourStyleEntryDto {
   @Field()
   @IsNumber()
-  readonly user_id: number
+  readonly userId: number
 
   @Field()
   @IsString()
-  readonly video_url: string
+  readonly videoUrl: string
 }

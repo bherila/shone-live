@@ -27,17 +27,17 @@ export class ShowYourStyleVotesResolver {
 
   @Mutation(() => ShowYourStyleVote)
   @UseGuards(new AuthGuard())
-  async addShowYourStyleVotes(
+  async addShowYourStyleVote(
     @Context('user') user: User,
     @Args('vote') vote: number,
-    @Args('view_duration') view_duration: number,
-    @Args('entry_id') entry_id: number,
+    @Args('viewDuration') viewDuration: number,
+    @Args('entryId') entryId: number,
   ) {
     return await this.showYourStyleVotesService.create({
       vote,
-      view_duration,
-      entry_id,
-      user_id: user.id,
+      viewDuration,
+      entryId,
+      userId: user.id,
     })
   }
 }

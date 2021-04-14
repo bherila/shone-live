@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import {
+  Injectable,
+  NotFoundException,
+  UnprocessableEntityException,
+} from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
@@ -31,17 +35,17 @@ export class ShowYourStyleEntriesService {
     )
     if (!showYourStyleEntry) {
       throw new NotFoundException(
-        `Show Your Style Enrty with id: ${id} not found`,
+        `Show Your Style Entry with id: ${id} not found`,
       )
     }
     return showYourStyleEntry
   }
 
-  async findRandomForUser(user_id: number) {
+  async findRandomForUser(userId: number) {
     const showYourStyleEntry = await this.showYourStyleEntriesRepository
       .createQueryBuilder('show_your_style_entry')
       .where(
-        `show_your_style_entry.id NOT IN (SELECT entryId FROM show_your_style_view_record WHERE userId = ${user_id});`,
+        `show_your_style_entry.id NOT IN (SELECT entry_id FROM show_your_style_view_record WHERE user_id = ${userId});`,
       )
       .getOne()
 
@@ -50,8 +54,21 @@ export class ShowYourStyleEntriesService {
 
   async create(createShowYourStyleEntryDto: CreateShowYourStyleEntryDto) {
     const user = await this.userRepository.findOne(
-      createShowYourStyleEntryDto.user_id,
+      createShowYourStyleEntryDto.userId,
     )
+    if (!user) {
+      throw new NotFoundException(
+        `User with id: ${createShowYourStyleEntryDto.userId} not found`,
+      )
+    }
+    const entry = await this.showYourStyleEntriesRepository.findOne({
+      videoUrl: createShowYourStyleEntryDto.videoUrl,
+    })
+    if (entry) {
+      throw new UnprocessableEntityException(
+        `Entry with that videoUrl already exists`,
+      )
+    }
 
     const showYourStyleEntry = this.showYourStyleEntriesRepository.create({
       ...createShowYourStyleEntryDto,

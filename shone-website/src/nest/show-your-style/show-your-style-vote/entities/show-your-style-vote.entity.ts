@@ -3,6 +3,7 @@ import {
   Column,
   Entity,
   Index,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm'
@@ -22,21 +23,19 @@ export class ShowYourStyleVote {
 
   @Field()
   @ManyToOne(() => ShowYourStyleEntry)
+  @JoinColumn({ name: 'entry_id' })
   entry: ShowYourStyleEntry
 
   @Field()
   @ManyToOne(() => User)
+  @JoinColumn({ name: 'user_id' })
   user: User
 
   @Field()
-  @Column({
-    // @TODO comment: 'Consumer Lead email',
-  })
+  @Column({ comment: 'Vote number from 1 to 5' })
   vote: number
 
-  @Field()
-  @Column({
-    // @TODO comment: 'Consumer Lead email',
-  })
-  readonly view_duration: number
+  @Field({ name: 'view_duration' })
+  @Column({ name: 'view_duration' })
+  readonly viewDuration: number
 }

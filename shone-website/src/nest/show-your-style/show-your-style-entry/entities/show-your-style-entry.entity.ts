@@ -3,6 +3,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm'
@@ -18,16 +19,18 @@ export class ShowYourStyleEntry {
 
   @Field()
   @ManyToOne(() => User)
+  @JoinColumn({ name: 'user_id' })
   user: User
 
-  @Field()
+  @Field({ name: 'video_url' })
   @Column({
     comment: 'Video URL',
     unique: true,
+    name: 'video_url',
   })
-  video_url: string
+  videoUrl: string
 
-  @Field()
-  @CreateDateColumn({ type: 'timestamp' })
-  readonly submitted_timestamp: Date
+  @Field({ name: 'submitted_timestamp' })
+  @CreateDateColumn({ type: 'timestamp', name: 'submitted_timestamp' })
+  readonly submittedTimestamp: Date
 }

@@ -5,11 +5,11 @@ import { IsNumber } from 'class-validator'
 export class CreateShowYourStyleVoteDto {
   @Field()
   @IsNumber()
-  readonly user_id: number
+  readonly userId: number
 
   @Field()
   @IsNumber()
-  readonly entry_id: number
+  readonly entryId: number
 
   @Field()
   @IsNumber()
@@ -17,5 +17,5 @@ export class CreateShowYourStyleVoteDto {
 
   @Field()
   @IsNumber()
-  readonly view_duration: number
+  readonly viewDuration: number
 }

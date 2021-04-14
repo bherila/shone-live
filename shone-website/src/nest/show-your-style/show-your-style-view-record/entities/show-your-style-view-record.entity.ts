@@ -3,6 +3,7 @@ import {
   CreateDateColumn,
   Entity,
   Index,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm'
@@ -22,13 +23,15 @@ export class ShowYourStyleViewRecord {
 
   @Field()
   @ManyToOne(() => ShowYourStyleEntry)
+  @JoinColumn({ name: 'entry_id' })
   entry: ShowYourStyleEntry
 
   @Field()
   @ManyToOne(() => User)
+  @JoinColumn({ name: 'user_id' })
   user: User
 
-  @Field()
-  @CreateDateColumn({ type: 'timestamp' })
-  readonly view_time: Date
+  @Field({ name: 'view_time' })
+  @CreateDateColumn({ type: 'timestamp', name: 'view_time' })
+  readonly viewTime: Date
 }

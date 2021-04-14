@@ -5,9 +5,9 @@ import { IsNumber } from 'class-validator'
 export class CreateShowYourStyleViewRecordDto {
   @Field()
   @IsNumber()
-  readonly user_id: number
+  readonly userId: number
 
   @Field()
   @IsNumber()
-  readonly entry_id: number
+  readonly entryId: number
 }

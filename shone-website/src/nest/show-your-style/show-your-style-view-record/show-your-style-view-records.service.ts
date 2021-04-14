@@ -45,11 +45,21 @@ export class ShowYourStyleViewRecordsService {
     createShowYourStyleViewRecordDto: CreateShowYourStyleViewRecordDto,
   ) {
     const user = await this.userRepository.findOne(
-      createShowYourStyleViewRecordDto.user_id,
+      createShowYourStyleViewRecordDto.userId,
     )
+    if (!user) {
+      throw new NotFoundException(
+        `User with id: ${createShowYourStyleViewRecordDto.userId} not found`,
+      )
+    }
     const entry = await this.showYourStyleEntriesRepository.findOne(
-      createShowYourStyleViewRecordDto.entry_id,
+      createShowYourStyleViewRecordDto.entryId,
     )
+    if (!entry) {
+      throw new NotFoundException(
+        `Entry with id: ${createShowYourStyleViewRecordDto.entryId} not found`,
+      )
+    }
     const showYourStyleViewRecord = this.showYourStyleViewRecordsRepository.create(
       { ...createShowYourStyleViewRecordDto, user, entry },
     )

@@ -96,7 +96,7 @@ type ShowYourStyleVote {
 type Query {
   address(addressId: Float!): Address
   addresses: [Address!]!
-  consumerLead(showId: Float!): ConsumerLead
+  consumerLead(consumerLeadId: Float!): ConsumerLead
   consumerLeads(paginationQuery: PaginationQueryDto!): [ConsumerLead!]!
   hello(id: Float!): Hello!
   hellos(skip: Int = 0, take: Int = 25): [Hello!]!
@@ -134,9 +134,9 @@ type Mutation {
   add_products(data: CreateProductDto!): Product!
   add_payment(quantity: String!, productId: Float!): Payment!
   add_show(data: CreateShowInput!): Show!
-  addShowYourStyleEntry(video_url: String!): ShowYourStyleEntry!
-  addShowYourStyleVotes(entry_id: Float!, view_duration: Float!, vote: Float!): ShowYourStyleVote!
-  addShowYourStyleViewRecord(entry_id: Float!): ShowYourStyleViewRecord!
+  addShowYourStyleEntry(videoUrl: String!): ShowYourStyleEntry!
+  addShowYourStyleVote(entryId: Float!, viewDuration: Float!, vote: Float!): ShowYourStyleVote!
+  addShowYourStyleViewRecord(entryId: Float!): ShowYourStyleViewRecord!
   add_user(phone: String!): String!
   update_user(userId: String!, username: String!, email: String!, file: Upload!): User!
 }
