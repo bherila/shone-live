@@ -1,5 +1,7 @@
 import { HttpException, HttpStatus, UseGuards } from '@nestjs/common'
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql'
+import { GraphQLUpload } from 'apollo-server-express'
+import { FileUpload } from 'graphql-upload'
 
 import { AuthGuard } from '../common/auth.guards'
 import { User } from './entities/user.entity'
@@ -22,7 +24,7 @@ export class UserResolver {
   }
 
   @Mutation(() => String)
-  addUser(@Args('phone') phone: string) {
+  add_user(@Args('phone') phone: string) {
     try {
       return this.usersService.create(phone)
     } catch (error) {
@@ -32,16 +34,20 @@ export class UserResolver {
   }
 
   @Query(() => User)
-  verifyCode(@Args('phone') phone: string, @Args('code') code: string) {
+  verify_code(@Args('phone') phone: string, @Args('code') code: string) {
     return this.usersService.verifySmsCode(phone, code)
   }
 
   @Mutation(() => User)
-  async updateUser(
+  async update_user(
+    @Args({ name: 'file', type: () => GraphQLUpload })
+    file: FileUpload,
     @Args('email') email: string,
     @Args('username') username: string,
     @Args('userId') userId: string,
   ) {
-    return this.usersService.update(userId, email, username)
+    if (file.mimetype === ('image/jpeg' || 'image/jpg' || 'image/png')) {
+      return await this.usersService.update(userId, email, username, file)
+    } else return Error('Please Upload only jpeg,png,jpg images')
   }
 }

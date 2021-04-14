@@ -43,4 +43,8 @@ export class User {
   @Field({ nullable: true })
   @Column({ nullable: true })
   token: string
+
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  profileUrl: string
 }

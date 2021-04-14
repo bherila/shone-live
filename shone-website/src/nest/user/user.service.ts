@@ -8,6 +8,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import jwt from 'jsonwebtoken'
 import Twilio from 'twilio'
 
+import { fileUpload } from '../common/fileUpload/index'
 import { message } from '../common/message'
 import { User } from './entities/user.entity'
 import { UserRepository } from './user.repository'
@@ -98,19 +99,29 @@ export class UserService {
     return this.userRepository.find()
   }
 
-  async update(userId, email, username) {
+  async update(userId, email, username, file) {
     const checkUserExits = await this.findOne(userId)
     if (!checkUserExits)
       throw new UnprocessableEntityException(message.userNotExit)
     const checkusernameExitsOrNot = await this.findOne({ username })
     if (checkusernameExitsOrNot)
       throw new UnprocessableEntityException(message.usernameAlreadyExit)
-    const Payload = {
-      id: checkUserExits.id,
-      phone: checkUserExits.phone,
+    try {
+      const profileUrl = await fileUpload(file)
+      const Payload = {
+        id: checkUserExits.id,
+        phone: checkUserExits.phone,
+      }
+      const token = await jwt.sign(Payload, process.env.JWT_SECRET)
+      await this.userRepository.update(userId, {
+        email,
+        username,
+        token,
+        profileUrl,
+      })
+      return await this.findOne(userId)
+    } catch (e) {
+      throw Error(e)
     }
-    const token = await jwt.sign(Payload, process.env.JWT_SECRET)
-    await this.userRepository.update(userId, { email, username, token })
-    return await this.findOne(userId)
   }
 }

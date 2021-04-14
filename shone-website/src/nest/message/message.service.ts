@@ -32,11 +32,17 @@ export class MessageService {
     return await this.messageEntityRepository.save(newMessage)
   }
 
-  findOne(messageEntityId) {
-    return this.messageEntityRepository.findOne(messageEntityId)
+  findOne(messageEntityId, userId) {
+    return this.messageEntityRepository.findOne(messageEntityId, {
+      relations: ['author'],
+      where: { author: { id: userId } },
+    })
   }
 
-  findAll() {
-    return this.messageEntityRepository.find()
+  findAll(userId) {
+    return this.messageEntityRepository.find({
+      relations: ['author'],
+      where: { author: { id: userId } },
+    })
   }
 }
