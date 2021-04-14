@@ -41,12 +41,13 @@ export class UserResolver {
   @Mutation(() => User)
   async update_user(
     @Args({ name: 'file', type: () => GraphQLUpload })
-    { createReadStream, filename }: FileUpload,
+    file: FileUpload,
     @Args('email') email: string,
     @Args('username') username: string,
     @Args('userId') userId: string,
   ) {
-    console.log(`filename`, filename)
-    return this.usersService.update(userId, email, username)
+    if (file.mimetype === ('image/jpeg' || 'image/jpg' || 'image/png')) {
+      return await this.usersService.update(userId, email, username, file)
+    } else return Error('Please Upload only jpeg,png,jpg images')
   }
 }

@@ -61,6 +61,10 @@ import { UserModule } from './user/user.module'
       context: ({ req }) => ({ headers: req.headers }),
       introspection: true,
       playground: true,
+      uploads: {
+        maxFileSize: 5000000, // 05 MB
+        maxFiles: 1,
+      },
     }),
   ],
   controllers: [AppController],
