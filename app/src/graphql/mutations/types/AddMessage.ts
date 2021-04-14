@@ -7,7 +7,7 @@
 // GraphQL mutation operation: AddMessage
 // ====================================================
 
-export interface AddMessage_addMessage {
+export interface AddMessage_add_message {
   __typename: "MessageEntity";
   id: string;
   timestamp: any;
@@ -16,11 +16,10 @@ export interface AddMessage_addMessage {
 }
 
 export interface AddMessage {
-  addMessage: AddMessage_addMessage;
+  add_message: AddMessage_add_message;
 }
 
 export interface AddMessageVariables {
-  userID: number;
   message: string;
   showID: number;
 }

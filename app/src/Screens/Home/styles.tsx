@@ -67,12 +67,11 @@ const styles = StyleSheet.create({
   _footer_inner_section: {
     flexDirection: 'row',
     flexWrap: 'nowrap',
-    justifyContent: 'space-between',
-    maxHeight: Dimensions.get('screen').height / 3
+    justifyContent: 'space-between'
   },
   _message_section: {
     flexDirection: 'column',
-    flex: 3
+    flexGrow: 1
   },
   _footer_right_secttion: {
     flex: 1,

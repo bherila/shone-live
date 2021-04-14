@@ -7,7 +7,7 @@
     "ios": "react-native run-ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "types": "npx apollo codegen:generate --localSchemaFile=schema.json --target=typescript --tagName=gql types"
+    "types": "npx apollo codegen:generate --localSchemaFile=graphql-schema.json --target=typescript --tagName=gql types"
   },
   "dependencies": {
     "@apollo/client": "^3.3.13",
