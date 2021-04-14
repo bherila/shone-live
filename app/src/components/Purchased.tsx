@@ -2,7 +2,7 @@
 import React from 'react'
 import { Text, View, StyleSheet, Image } from 'react-native'
 // <<<<<<<<<<<<<<<<<<< ACTIVE POLL COMPONENT >>>>>>>>>>>>>>>>>>>
-export default function PurchasedItems(props) {
+export default function PurchasedItems() {
   return (
     <View style={styles.container}>
       <View style={styles._profile_view}>
@@ -13,7 +13,7 @@ export default function PurchasedItems(props) {
       </View>
       <View style={styles._description}>
         <Text style={styles._options_text}>
-          Alison H. purchased from Anna's Accessories{' '}
+          Alison H. purchased from Anna&rsquo;s Accessories{' '}
         </Text>
       </View>
     </View>

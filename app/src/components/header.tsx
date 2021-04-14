@@ -3,8 +3,11 @@ import React from 'react'
 import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import { AntDesign } from '@expo/vector-icons'
 import { ScreenNames } from '../utils/ScreenNames'
-// <<<<<<<<<<<<<<<<<<< HEADER COMPONENT >>>>>>>>>>>>>>>>>>>
-export default function Headder(props) {
+
+export default function Header(props: {
+  data: { name: string; handle: string }
+  props: { navigation: { navigate: (url: string) => void } }
+}) {
   return (
     <View style={styles.container}>
       <View style={styles._userData}>

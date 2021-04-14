@@ -12,7 +12,6 @@ export const useSecureStore = (key?: string) => {
       ;(async () => {
         try {
           const storedItem = await SecureStore.getItemAsync(key)
-          console.log({ storedItem })
 
           if (storedItem) {
             // const parsedData =
@@ -24,7 +23,6 @@ export const useSecureStore = (key?: string) => {
           }
           setIsLoading(false)
         } catch (e) {
-          console.log('ERROR: UNABLE TO RETRIVE ITEM FROM STORAGE', { e })
           setIsLoading(false)
           setError(e)
         }
@@ -34,12 +32,11 @@ export const useSecureStore = (key?: string) => {
 
   const setItem = async (key: string, value: any) => {
     try {
-      const response = await SecureStore.setItemAsync(
+      await SecureStore.setItemAsync(
         key,
         JSON.stringify(value)
       )
     } catch (e) {
-      console.log('ERROR: UNABLE TO SAVE ITEM IN STORAGE', { e })
       setError(e)
     }
   }

@@ -1,28 +1,24 @@
 // eslint-disable-next-line no-use-before-define
-import React, { createRef, useEffect, useRef, useState } from 'react'
+import React, { createRef, useEffect, useState } from 'react'
 import { View, TouchableOpacity, Image, TextInput, Alert } from 'react-native'
 import theme from './../../utils/colors'
 import styles from './styles'
 import { Body, Item, Icon, Button, Header, Left, Right } from 'native-base'
 import Text from './../../components/Text'
-//@ts-ignore
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
 import {
   ParamListBase,
   RouteProp,
   useNavigation,
-  useRoute,
+  useRoute
 } from '@react-navigation/native'
 import { useMutation } from '@apollo/client'
 import {
   UpdateUser,
-  UpdateUserVariables,
+  UpdateUserVariables
 } from '../../graphql/mutations/types/UpdateUser'
 import { UPDATE_USER } from '../../graphql/mutations/updateUser'
-import {
-  VerifyCode,
-  VerifyCode_verifyCode,
-} from '../../graphql/queries/types/VerifyCode'
+import { VerifyCode_verifyCode } from '../../graphql/queries/types/VerifyCode'
 import { ScreenNames } from '../../utils/ScreenNames'
 import { globalStyles } from '../../utils/globalStyles'
 import Loader from '../../components/Loader'
@@ -42,24 +38,21 @@ export default function NewAccount() {
   const [lname, setLname] = useState('')
   const [email, setEmail] = useState('')
 
-  let lnameRef = createRef<TextInput>()
-  let emailRef = createRef<TextInput>()
-  console.log({ route })
+  const lnameRef = createRef<TextInput>()
+  const emailRef = createRef<TextInput>()
 
   const [
     updateUser,
-    { data: userData, loading, error: userUpdateError },
+    { data: userData, loading, error: userUpdateError }
   ] = useMutation<UpdateUser, UpdateUserVariables>(UPDATE_USER, {
     variables: {
       email: email,
       userID: route.params?.user?.id,
-      username: 'AbhishekTagline1',
-    },
+      username: 'AbhishekTagline1'
+    }
   })
 
   useEffect(() => {
-    console.log({ userData, loading, userUpdateError })
-
     if (userUpdateError) return Alert.alert(userUpdateError.message)
     if (userData?.updateUser.token) {
       navigateToProfileScreen()
@@ -68,7 +61,7 @@ export default function NewAccount() {
 
   const onGo = () => {
     if (fname !== '' && lname !== '' && email !== '') {
-      const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+      const reg = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/
       if (reg.test(email) === true) {
         updateUser()
       } else {
@@ -98,7 +91,7 @@ export default function NewAccount() {
               style={{
                 flex: 3,
                 justifyContent: 'center',
-                alignItems: 'center',
+                alignItems: 'center'
               }}
             >
               <Image
@@ -117,7 +110,7 @@ export default function NewAccount() {
                 placeholder="First name"
                 placeholderTextColor={'grey'}
                 style={styles._textinput}
-                onChangeText={(text) => {
+                onChangeText={text => {
                   setFname(text)
                 }}
                 autoCapitalize={'none'}
@@ -135,7 +128,7 @@ export default function NewAccount() {
                 placeholder="Last name"
                 placeholderTextColor={'grey'}
                 style={styles._textinput}
-                onChangeText={(text) => {
+                onChangeText={text => {
                   setLname(text)
                 }}
                 autoCapitalize={'none'}
@@ -155,7 +148,7 @@ export default function NewAccount() {
                 style={styles._textinput}
                 keyboardType="email-address"
                 autoCapitalize={'none'}
-                onChangeText={(text) => {
+                onChangeText={text => {
                   setEmail(text)
                 }}
                 returnKeyType={'done'}
