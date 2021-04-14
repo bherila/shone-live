@@ -4,13 +4,13 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL mutation operation: AddUser
+// GraphQL mutation operation: add_user
 // ====================================================
 
-export interface AddUser {
+export interface add_user {
   add_user: string;
 }
 
-export interface AddUserVariables {
+export interface add_userVariables {
   phone: string;
 }

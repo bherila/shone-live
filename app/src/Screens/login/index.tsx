@@ -42,7 +42,7 @@ export default function Login() {
   useEffect(() => {
 
     if (error) return Alert.alert(error.message)
-    if (data?.addUser) {
+    if (data?.add_user) {
       navigation.navigate('ConfirmSms', {
         phone: mobile,
       })

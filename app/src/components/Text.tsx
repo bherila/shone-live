@@ -4,8 +4,8 @@ import { Text, StyleSheet } from 'react-native'
 import { useFonts } from 'expo-font'
 
 export default function App(props: {
-  style: StyleSheet.NamedStyles<any>
-  children: React.FC
+  style: any
+  children: React.FC | string[] | string
 }) {
   const [loaded] = useFonts({
     bahnscift: require('./../utils/Fonts/Bahnschrift-Font-Family/BAHNSCHRIFT1.ttf')
