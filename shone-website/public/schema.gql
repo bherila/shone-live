@@ -9,6 +9,7 @@ type User {
   username: String
   verification_code_time_sent: String!
   token: String
+  profileUrl: String
 }
 
 type Address {
@@ -87,7 +88,7 @@ type Query {
   shows: [Show!]!
   user(userId: Float!): User
   users: [User!]!
-  verifyCode(code: String!, phone: String!): User!
+  verify_code(code: String!, phone: String!): User!
 }
 
 input PaginationQueryDto {
@@ -96,16 +97,16 @@ input PaginationQueryDto {
 }
 
 type Mutation {
-  addAddress(data: CreateAddressDto!): Address!
+  add_address(data: CreateAddressDto!): Address!
   addConsumerLead(email: String!): ConsumerLead!
   addHello(newHelloData: HelloInput!): Hello!
   removeHello(id: Float!): Boolean!
-  addMessage(userId: Float!, message: String!, showId: Float!): MessageEntity!
-  addProducts(data: CreateProductDto!): Product!
-  addPayment(userId: Float!, quantity: String!, productId: Float!): Payment!
-  addShow(data: CreateShowInput!): Show!
-  addUser(phone: String!): String!
-  updateUser(userId: String!, username: String!, email: String!): User!
+  add_message(message: String!, showId: Float!): MessageEntity!
+  add_products(data: CreateProductDto!): Product!
+  add_payment(quantity: String!, productId: Float!): Payment!
+  add_show(data: CreateShowInput!): Show!
+  add_user(phone: String!): String!
+  update_user(userId: String!, username: String!, email: String!, file: Upload!): User!
 }
 
 input CreateAddressDto {
@@ -137,3 +138,6 @@ input CreateShowInput {
   startDate: DateTime!
   endDate: DateTime!
 }
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload

@@ -1,6 +1,5 @@
 import React from 'react'
-import { View, Text, ActivityIndicator } from 'react-native'
-import styles from '../Screens/login/styles'
+import { ActivityIndicator } from 'react-native'
 import theme from '../utils/colors'
 import { globalStyles } from '../utils/globalStyles'
 

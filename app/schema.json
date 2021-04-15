@@ -858,7 +858,7 @@
             "deprecationReason": null
           },
           {
-            "name": "verifyCode",
+            "name": "verify_code",
             "description": null,
             "args": [
               {
@@ -1311,7 +1311,7 @@
             "deprecationReason": null
           },
           {
-            "name": "addUser",
+            "name": "add_user",
             "description": null,
             "args": [
               {

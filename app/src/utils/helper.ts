@@ -12,11 +12,11 @@ export async function requestCameraAndAudioPermission() {
       granted['android.permission.CAMERA'] ===
         PermissionsAndroid.RESULTS.GRANTED
     ) {
-      console.log('You can use the cameras & mic')
+      console.info('You can use the cameras & mic')
     } else {
-      console.log('Permission denied')
+      console.warn('Permission denied')
     }
   } catch (err) {
-    console.log('Permission Error : ', { err })
+    console.error('Permission Error : ', { err })
   }
 }

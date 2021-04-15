@@ -7,7 +7,6 @@ import { Card, CardItem, Body, Item, Icon, Button } from 'native-base'
 import { EvilIcons, FontAwesome } from '@expo/vector-icons'
 
 import Text from './../../components/Text'
-//@ts-ignore
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
 import { TextInputMask } from 'react-native-masked-text'
 import { useNavigation } from '@react-navigation/native'
@@ -41,10 +40,9 @@ export default function Login() {
   }, [mobile])
 
   useEffect(() => {
-    console.log({ data, error, loading })
 
     if (error) return Alert.alert(error.message)
-    if (data?.addUser) {
+    if (data?.add_user) {
       navigation.navigate('ConfirmSms', {
         phone: mobile,
       })
@@ -76,7 +74,7 @@ export default function Login() {
               <CardItem>
                 <Body>
                   <Text style={styles._login_desc}>
-                    For fast and easy login, we'll need your digits. Don't ``
+                    For fast and easy login, we&rsquo;ll need your digits. Don&rsquo;t ``
                     worry about remembering your password for later.
                   </Text>
                 </Body>

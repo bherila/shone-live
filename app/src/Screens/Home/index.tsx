@@ -21,11 +21,7 @@ import { Header, Poll } from '../../components'
 
 import { useRoute } from '@react-navigation/core'
 import LiveStream from '../../components/LiveStream/LiveStream'
-
-import { useQuery } from '@apollo/client'
-import { GetShows } from '../../graphql/queries/types/GetShows'
-import { GetShow, GetShowVariables } from '../../graphql/queries/types/GetShow'
-import { GET_SHOW } from '../../graphql/queries/getShow'
+import { IPoll } from '../../components/poll'
 
 interface Product {
   id: string
@@ -52,7 +48,7 @@ interface ILiveShow {
   featuredProductId: string // corresponds to one of the IDs of products array
   products: Product[]
   chats: ChatMessage[]
-  activePoll?: Poll | null // if activePoll != null then the poll can be rendered as an overlay
+  activePoll?: IPoll | null // if activePoll != null then the poll can be rendered as an overlay
 }
 
 const exampleShow: ILiveShow = {
@@ -94,17 +90,6 @@ const exampleShow: ILiveShow = {
 
 const LiveShow = (props: any) => {
   const route: any = useRoute()
-
-  const { data: show, error, loading } = useQuery<GetShow, GetShowVariables>(
-    GET_SHOW,
-    {
-      variables: {
-        ID: parseFloat(route.params.showId),
-      },
-    }
-  )
-
-  console.log({ show, error, loading })
 
   return (
     <TouchableWithoutFeedback

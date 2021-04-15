@@ -18,6 +18,8 @@ export type Scalars = {
   Float: number
   /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
   DateTime: any
+  /** The `Upload` scalar type represents a file upload. */
+  Upload: any
 }
 
 export type Address = {
@@ -41,27 +43,27 @@ export type ConsumerLead = {
 }
 
 export type CreateAddressDto = {
-  user_id: Scalars['String']
+  userId: Scalars['String']
   city: Scalars['String']
   country: Scalars['String']
   line1: Scalars['String']
   line2: Scalars['String']
-  postal_code: Scalars['String']
+  postalCode: Scalars['String']
   state: Scalars['String']
   name: Scalars['String']
   phone: Scalars['String']
 }
 
 export type CreateProductDto = {
-  user_id: Scalars['String']
-  show_id: Scalars['Float']
+  userId: Scalars['String']
+  showId: Scalars['Float']
   name: Scalars['String']
   description: Scalars['String']
 }
 
 export type CreateShowInput = {
   title: Scalars['String']
-  imageurl?: Maybe<Scalars['String']>
+  image_url?: Maybe<Scalars['String']>
   startDate: Scalars['DateTime']
   endDate: Scalars['DateTime']
 }
@@ -81,24 +83,24 @@ export type MessageEntity = {
   id: Scalars['ID']
   timestamp: Scalars['DateTime']
   message: Scalars['String']
-  author_alias: Scalars['String']
+  alias: Scalars['String']
 }
 
 export type Mutation = {
   __typename?: 'Mutation'
-  addAddress: Address
+  add_address: Address
   addConsumerLead: ConsumerLead
   addHello: Hello
   removeHello: Scalars['Boolean']
-  addMessage: MessageEntity
-  addProducts: Product
-  addPayment: Payment
-  addShow: Show
-  addUser: Scalars['String']
-  updateUser: User
+  add_message: MessageEntity
+  add_products: Product
+  add_payment: Payment
+  add_show: Show
+  add_user: Scalars['String']
+  update_user: User
 }
 
-export type MutationAddAddressArgs = {
+export type MutationAdd_AddressArgs = {
   data: CreateAddressDto
 }
 
@@ -114,34 +116,33 @@ export type MutationRemoveHelloArgs = {
   id: Scalars['Float']
 }
 
-export type MutationAddMessageArgs = {
-  user_id: Scalars['Float']
+export type MutationAdd_MessageArgs = {
   message: Scalars['String']
-  show_id: Scalars['Float']
+  showId: Scalars['Float']
 }
 
-export type MutationAddProductsArgs = {
+export type MutationAdd_ProductsArgs = {
   data: CreateProductDto
 }
 
-export type MutationAddPaymentArgs = {
-  user_id: Scalars['Float']
+export type MutationAdd_PaymentArgs = {
   quantity: Scalars['String']
-  product_id: Scalars['Float']
+  productId: Scalars['Float']
 }
 
-export type MutationAddShowArgs = {
+export type MutationAdd_ShowArgs = {
   data: CreateShowInput
 }
 
-export type MutationAddUserArgs = {
+export type MutationAdd_UserArgs = {
   phone: Scalars['String']
 }
 
-export type MutationUpdateUserArgs = {
+export type MutationUpdate_UserArgs = {
   userId: Scalars['String']
   username: Scalars['String']
   email: Scalars['String']
+  file: Scalars['Upload']
 }
 
 export type PaginationQueryDto = {
@@ -168,8 +169,8 @@ export type Product = {
 
 export type Query = {
   __typename?: 'Query'
-  Address?: Maybe<Address>
-  Addresss: Array<Address>
+  address?: Maybe<Address>
+  addresses: Array<Address>
   consumerLead?: Maybe<ConsumerLead>
   consumerLeads: Array<ConsumerLead>
   hello: Hello
@@ -178,13 +179,13 @@ export type Query = {
   messageEntities: Array<MessageEntity>
   product?: Maybe<Product>
   products: Array<Product>
-  Payment?: Maybe<Payment>
-  Payments: Array<Payment>
+  payment?: Maybe<Payment>
+  payments: Array<Payment>
   show?: Maybe<Show>
   shows: Array<Show>
   user?: Maybe<User>
   users: Array<User>
-  verifyCode: User
+  verify_code: User
 }
 
 export type QueryAddressArgs = {
@@ -232,7 +233,7 @@ export type QueryUserArgs = {
   userId: Scalars['Float']
 }
 
-export type QueryVerifyCodeArgs = {
+export type QueryVerify_CodeArgs = {
   code: Scalars['String']
   phone: Scalars['String']
 }
@@ -253,8 +254,9 @@ export type User = {
   email?: Maybe<Scalars['String']>
   phone: Scalars['String']
   username?: Maybe<Scalars['String']>
-  verificationCodeTimeSent: Scalars['String']
+  verification_code_time_sent: Scalars['String']
   token?: Maybe<Scalars['String']>
+  profileUrl?: Maybe<Scalars['String']>
 }
 
 export type SubscribeToWaitlistMutationVariables = Exact<{

@@ -1,19 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { Image, View, TouchableOpacity, Alert } from 'react-native'
-import theme from './../../utils/colors'
+import { Image, View, TouchableOpacity } from 'react-native'
+import theme from '../../utils/colors'
 import styles from './styles'
 import { Header, Left, Button, Icon, Right, Body } from 'native-base'
-import Text from './../../components/Text'
+import Text from '../../components/Text'
 
-//@ts-ignore
 import OTPTextInput from 'react-native-otp-textinput'
-//@ts-ignore
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
 import { useNavigation, useRoute } from '@react-navigation/native'
-import * as SecureStore from 'expo-secure-store'
 import StorageKeys from '../../utils/StorageKeys'
 import { useSecureStore } from '../../hooks/useSecureStore'
-import { useApolloClient, useQuery } from '@apollo/client'
+import { useApolloClient } from '@apollo/client'
 import {
   VerifyCode,
   VerifyCodeVariables,
@@ -31,14 +28,12 @@ export default function ConfirmSms() {
 
   const client = useApolloClient()
 
-  console.log({ params })
-
   const { setItem, error } = useSecureStore()
 
   const verifyOTP = async () => {
     try {
       setIsLoading(true)
-      const { data, error, loading } = await client.query<
+      const { data } = await client.query<
         VerifyCode,
         VerifyCodeVariables
       >({
@@ -49,12 +44,12 @@ export default function ConfirmSms() {
         },
       })
 
-      await setItem(StorageKeys.AUTH_TOKEN, data.verifyCode.token)
+      await setItem(StorageKeys.AUTH_TOKEN, data.verify_code.token)
 
       setIsLoading(false)
       navigateToMainScreen(data)
     } catch (e) {
-      console.log('Confirm OTP Error : ', { e })
+      console.error('Confirm OTP Error : ', { e })
     }
   }
 
@@ -65,7 +60,7 @@ export default function ConfirmSms() {
   }, [otp])
 
   const navigateToMainScreen = async (data?: VerifyCode) => {
-    if (data?.verifyCode?.username) {
+    if (data?.verify_code?.username) {
       navigation.reset({
         index: 0,
         routes: [
@@ -76,16 +71,8 @@ export default function ConfirmSms() {
       })
     } else {
       navigation.navigate(ScreenNames.AuthScreens.NEW_ACCOUNT, {
-        user: data?.verifyCode,
+        user: data?.verify_code,
       })
-    }
-  }
-
-  const onConfirm = () => {
-    if (otp.length === 6 && !error) {
-      navigateToMainScreen()
-    } else {
-      alert('Enter valid otp')
     }
   }
 
