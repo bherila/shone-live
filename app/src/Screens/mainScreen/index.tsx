@@ -8,7 +8,7 @@ import {
   Modal,
   Alert,
   FlatList,
-  Platform
+  Platform,
 } from 'react-native'
 import theme from './../../utils/colors'
 import styles from './styles'
@@ -51,40 +51,42 @@ export default function MainScreen() {
   //@ts-ignore
   let uppyRef: Uppy.Uppy = new Uppy({
     autoProceed: true,
-    debug: true
+    debug: true,
   })
 
   uppyRef.use(Transloadit, {
     importFromUploadURLs: true,
     params: {
       auth: { key: TRANSLOADIT_KEY },
-      template_id: TRANSLOADIT_TEMPLATE_ID
-    }
+      template_id: TRANSLOADIT_TEMPLATE_ID,
+    },
   })
 
-  uppyRef.on('complete', result => {
+  uppyRef.on('complete', (result) => {
     console.log('Upload complete:', result)
   })
 
-  const { data: shows, error: showsError, loading: isShowsLoading } = useQuery<
-    GetShows
-  >(GET_SHOWS)
+  const {
+    data: shows,
+    error: showsError,
+    loading: isShowsLoading,
+  } = useQuery<GetShows>(GET_SHOWS)
   const newArr = [
     { img: require('./../../../assets/newone.png') },
     { img: require('./../../../assets/newtwo.png') },
-    { img: require('./../../../assets/newthree.png') }
+    { img: require('./../../../assets/newthree.png') },
   ]
 
   const commingSoon = [
     { img: require('./../../../assets/comingone.png') },
     { img: require('./../../../assets/comingtwo.png') },
-    { img: require('./../../../assets/comingthree.png') }
+    { img: require('./../../../assets/comingthree.png') },
   ]
 
   const moreShows = [
     { img: require('../../../assets/moreone.png') },
     { img: require('../../../assets/moretwo.png') },
-    { img: require('../../../assets/morethree.png') }
+    { img: require('../../../assets/morethree.png') },
   ]
 
   useEffect(() => {
@@ -118,9 +120,9 @@ export default function MainScreen() {
       index: 0,
       routes: [
         {
-          name: ScreenNames.AuthScreens.LOGIN
-        }
-      ]
+          name: ScreenNames.AuthScreens.LOGIN,
+        },
+      ],
     })
 
     hideMenu()
@@ -130,7 +132,7 @@ export default function MainScreen() {
     ;(async () => {
       if (Platform.OS !== 'web') {
         const {
-          status
+          status,
         } = await ImagePicker.requestMediaLibraryPermissionsAsync()
         if (status !== 'granted') {
           alert('Sorry, we need camera roll permissions to make this work!')
@@ -156,12 +158,12 @@ export default function MainScreen() {
             name: video.uri.split('/').pop(), // file name
             type: 'video/*', // file type
             data: new Blob([JSON.stringify(video, null, 2)], {
-              type: 'video/*'
+              type: 'video/*',
             }), // file blob
             source: 'Local', // optional, determines the source of the file, for example, Instagram
             isRemote: false, // optional, set to true if actual file is not in the browser, but on some remote server, for example, when using companion in combination with Instagram
 
-            extension: '.mp4'
+            extension: '.mp4',
           })
 
           uppyRef.upload()
@@ -177,7 +179,7 @@ export default function MainScreen() {
       mediaTypes: ImagePicker.MediaTypeOptions.Videos,
       allowsEditing: true,
       quality: 1,
-      videoMaxDuration: 60
+      videoMaxDuration: 60,
     })
 
     console.log(result)
@@ -194,7 +196,7 @@ export default function MainScreen() {
         onPress={() => {
           navigation.navigate(ScreenNames.HomeScreens.HOME, {
             type: 'join',
-            showId: item.id
+            showId: item.id,
           })
         }}
       >
@@ -202,7 +204,7 @@ export default function MainScreen() {
           source={{
             uri: item.image_url
               ? item.image_url
-              : 'https://picsum.photos/200/300'
+              : 'https://picsum.photos/200/300',
           }}
           style={styles._image}
         />
@@ -219,7 +221,7 @@ export default function MainScreen() {
           style={{
             flex: 3,
             justifyContent: 'center',
-            alignItems: 'center'
+            alignItems: 'center',
           }}
         >
           <Image
