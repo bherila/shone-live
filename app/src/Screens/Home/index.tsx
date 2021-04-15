@@ -24,7 +24,6 @@ import { useMutation, useQuery } from '@apollo/client'
 import { GetShow, GetShowVariables } from '../../graphql/queries/types/GetShow'
 import { GET_SHOW } from '../../graphql/queries/getShow'
 import Loader from '../../components/Loader'
-import { globalStyles } from '../../utils/globalStyles'
 import { ADD_MESSAGE } from '../../graphql/mutations/addMessage'
 import {
   AddMessage,
@@ -97,7 +96,7 @@ const exampleShow: ILiveShow = {
   },
 }
 
-const LiveShow = (props: any) => {
+const LiveShow = () => {
   const route: any = useRoute()
 
   const flatlist = useRef<any>()
@@ -119,7 +118,7 @@ const LiveShow = (props: any) => {
 
   const [
     addMessage,
-    { data: messageData, error: messageError, loading: messageLoading },
+    { data: messageData, loading: messageLoading, error: messageError },
   ] = useMutation<AddMessage, AddMessageVariables>(ADD_MESSAGE, {
     variables: {
       showID: parseFloat(route.params.showId),
@@ -200,7 +199,7 @@ const LiveShow = (props: any) => {
                       data={messageList}
                       extraData={messageList}
                       keyboardShouldPersistTaps="handled"
-                      renderItem={({ item, index }) => {
+                      renderItem={({ item }) => {
                         return (
                           <View style={styles._chatRow}>
                             <Image

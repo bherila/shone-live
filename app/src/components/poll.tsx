@@ -1,8 +1,8 @@
 // eslint-disable-next-line no-use-before-define
 import React from 'react'
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
-// <<<<<<<<<<<<<<<<<<< ACTIVE POLL COMPONENT >>>>>>>>>>>>>>>>>>>
-export default function Poll(props) {
+
+export default function Poll(props: any) {
   return (
     <View style={styles.container}>
       <View style={styles._question_view}>

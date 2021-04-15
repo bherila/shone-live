@@ -1,11 +1,10 @@
-// eslint-disable-next-line no-use-before-define
 import React from 'react'
 import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import { AntDesign } from '@expo/vector-icons'
 import { ScreenNames } from '../utils/ScreenNames'
 import { useNavigation } from '@react-navigation/native'
-// <<<<<<<<<<<<<<<<<<< HEADER COMPONENT >>>>>>>>>>>>>>>>>>>
-export default function Headder(props: any) {
+
+export default function Header(props: any) {
   const navigation = useNavigation()
   return (
     <View style={styles.container}>

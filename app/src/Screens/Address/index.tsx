@@ -1,7 +1,7 @@
 import React from 'react'
 import { useNavigation } from '@react-navigation/core'
 import { Body, Button, Header, Left, Title, Text } from 'native-base'
-import { SafeAreaView, FlatList, View, Image } from 'react-native'
+import { SafeAreaView, FlatList, View } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import styles from './styles'
 

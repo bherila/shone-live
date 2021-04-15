@@ -1,4 +1,4 @@
-// eslint-disable-next-line no-use-before-define
+/* eslint-disable react/no-unescaped-entities */
 import React, { useState, useEffect } from 'react'
 import { Image, View, TouchableOpacity, Keyboard, Alert } from 'react-native'
 import theme from './../../utils/colors'
@@ -7,7 +7,6 @@ import { Card, CardItem, Body, Item, Icon, Button } from 'native-base'
 import { EvilIcons, FontAwesome } from '@expo/vector-icons'
 
 import Text from './../../components/Text'
-//@ts-ignore
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
 import { TextInputMask } from 'react-native-masked-text'
 import { useNavigation } from '@react-navigation/native'
@@ -42,7 +41,6 @@ export default function Login() {
   }, [mobile])
 
   useEffect(() => {
-    console.log({ data, error, loading })
 
     if (error) return Alert.alert(error.message)
     if (data?.add_user) {

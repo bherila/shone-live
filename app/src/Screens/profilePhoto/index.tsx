@@ -1,16 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Image, View, TouchableOpacity, Platform } from 'react-native'
 import theme from './../../utils/colors'
 import styles from './styles'
 import { MaterialIcons } from '@expo/vector-icons'
 import * as ImagePicker from 'expo-image-picker'
 import {
-  Card,
-  CardItem,
   Body,
-  Item,
   Icon,
-  Input,
   Button,
   Header,
   Left,
@@ -24,10 +20,9 @@ import { ScreenNames } from '../../utils/ScreenNames'
 export default function ProfilePhoto() {
   const navigation = useNavigation()
 
-  const [image, setImage] = useState(null)
+  const [image, setImage] = useState<string>()
 
   const [openCamera, setOpenCamera] = useState(true)
-  const [photo, setPhoto] = useState(false)
 
   const getPermition = async () => {
     if (Platform.OS !== 'web') {
@@ -48,8 +43,6 @@ export default function ProfilePhoto() {
         quality: 1,
       })
 
-      console.log(result)
-
       if (!result.cancelled) {
         setImage(result.uri)
       }
@@ -61,7 +54,6 @@ export default function ProfilePhoto() {
   const capture = (v) => {
     setOpenCamera(true)
     setImage(v)
-    console.log('--------------->', v)
   }
   return (
     <View style={styles.container}>
