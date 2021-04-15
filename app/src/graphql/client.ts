@@ -5,25 +5,21 @@ import {
   InMemoryCache,
 } from '@apollo/client'
 import { onError } from 'apollo-link-error'
-import { API_STAGING, API_LOCALHOST } from '../utils/environment'
 import StorageKeys from '../utils/StorageKeys'
 import * as SecureStore from 'expo-secure-store'
 import { setContext } from '@apollo/client/link/context'
 
-const link = onError(({ graphQLErrors, networkError, operation, response }) => {
-  console.log({ graphQLErrors, operation, response })
+const link = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
-    console.log({ graphQLErrors })
 
     graphQLErrors.forEach(({ message, locations, path }) => {
-      console.log(
+      console.error(
         `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
       )
-      console.log({ message, locations, path })
     })
   }
   if (networkError)
-    console.log(`[Network error]: ${networkError}`, { networkError })
+    console.error(`[Network error]: ${networkError}`, { networkError })
 })
 
 const getToken = async () => {

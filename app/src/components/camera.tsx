@@ -13,13 +13,13 @@ import { Entypo } from '@expo/vector-icons'
 
 let cameraRef: Camera | null
 
-const TakePhoto = (props) => {
-  const [hasPermission, setHasPermission] = useState(null)
+const TakePhoto = (props: any) => {
+  const [hasPermission, setHasPermission] = useState<boolean>()
   const [type] = useState(Camera.Constants.Type.back)
   const [, setIsCameraUiOn] = useState(false)
   const [, setIsCapturing] = useState(false)
   const [flashMode] = useState(true)
-  const [, setCapturePhoto] = useState(null)
+  const [, setCapturePhoto] = useState<string>()
 
   const snap = async () => {
     if (cameraRef) {

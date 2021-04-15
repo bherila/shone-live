@@ -1,8 +1,8 @@
-/* eslint-disable no-use-before-define */
+/* eslint-disable react/no-unescaped-entities */
 import React from 'react'
 import { Text, View, StyleSheet, Image } from 'react-native'
 // <<<<<<<<<<<<<<<<<<< ACTIVE POLL COMPONENT >>>>>>>>>>>>>>>>>>>
-export default function PurchasedItems(props) {
+export default function PurchasedItems() {
   return (
     <View style={styles.container}>
       <View style={styles._profile_view}>

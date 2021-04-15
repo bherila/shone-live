@@ -3,8 +3,18 @@ import React from 'react'
 import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import { AntDesign } from '@expo/vector-icons'
 import { ScreenNames } from '../utils/ScreenNames'
-// <<<<<<<<<<<<<<<<<<< HEADER COMPONENT >>>>>>>>>>>>>>>>>>>
-export default function Headder(props) {
+
+interface IHeader {
+  data: {
+    name: string
+    handle: string
+  }
+  props: {
+    navigation: { navigate: (screen: string) => void }
+  }
+}
+
+export default function Header(props: IHeader) {
   return (
     <View style={styles.container}>
       <View style={styles._userData}>
@@ -39,7 +49,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginTop: 40,
-    paddingHorizontal: 15,
+    paddingHorizontal: 15
   },
   _userData: {
     height: 50,
@@ -49,7 +59,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 10,
-    justifyContent: 'space-between',
+    justifyContent: 'space-between'
   },
   _circle: {
     height: 50,
@@ -58,12 +68,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#00000069',
+    backgroundColor: '#00000069'
   },
   _user_profile: {
     height: 40,
     width: 40,
-    borderRadius: 35 / 2,
+    borderRadius: 35 / 2
   },
   _shop_all: {
     backgroundColor: 'rgb(0,196,154)',
@@ -71,18 +81,18 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     paddingVertical: 7,
     paddingHorizontal: 15,
-    height: 40,
+    height: 40
   },
   shop_btn_text: {
     fontWeight: 'bold',
     textAlign: 'center',
-    color: 'white',
+    color: 'white'
   },
   _name: {
     color: 'white',
-    fontWeight: 'bold',
+    fontWeight: 'bold'
   },
   _handle: {
-    color: 'white',
-  },
+    color: 'white'
+  }
 })

@@ -6,9 +6,9 @@ import {
   TouchableOpacity,
   ScrollView,
   Modal,
-  Alert,
   FlatList,
   Platform,
+  Alert,
 } from 'react-native'
 import theme from './../../utils/colors'
 import styles from './styles'
@@ -28,10 +28,10 @@ import { ScreenNames } from '../../utils/ScreenNames'
 import { useDispatch } from 'react-redux'
 import { userLogout } from '../../redux/actions/userActions'
 import AppButton from '../../components/AppButton'
-import Uppy, { StrictTypes } from '@uppy/core'
+import Uppy from '@uppy/core'
 import Transloadit from '@uppy/transloadit'
 import * as ImagePicker from 'expo-image-picker'
-import { TRANSLOADIT_KEY, TRANSLOADIT_TEMPLATE_ID } from 'react-native-dotenv'
+import { TRANSLOADIT_KEY, TRANSLOADIT_TEMPLATE_ID } from '@env'
 
 interface ListItem {
   item: GetShows_shows
@@ -43,13 +43,13 @@ export default function MainScreen() {
 
   const dispatch = useDispatch()
 
-  const { setItem, error } = useSecureStore()
+  const { setItem } = useSecureStore()
 
   const [modalVisible, setModalVisible] = useState(false)
   const [video, setVideo] = useState<any>()
 
   //@ts-ignore
-  let uppyRef: Uppy.Uppy = new Uppy({
+  const uppyRef: Uppy.Uppy = new Uppy({
     autoProceed: true,
     debug: true,
   })
@@ -63,19 +63,14 @@ export default function MainScreen() {
   })
 
   uppyRef.on('complete', (result) => {
-    console.log('Upload complete:', result)
+    console.info('Upload complete:', result)
   })
 
   const {
     data: shows,
-    error: showsError,
     loading: isShowsLoading,
+    error:showsError,
   } = useQuery<GetShows>(GET_SHOWS)
-  const newArr = [
-    { img: require('./../../../assets/newone.png') },
-    { img: require('./../../../assets/newtwo.png') },
-    { img: require('./../../../assets/newthree.png') },
-  ]
 
   const commingSoon = [
     { img: require('./../../../assets/comingone.png') },
@@ -129,7 +124,7 @@ export default function MainScreen() {
   }
 
   useEffect(() => {
-    ;(async () => {
+    (async () => {
       if (Platform.OS !== 'web') {
         const {
           status,
@@ -142,11 +137,9 @@ export default function MainScreen() {
   }, [])
 
   useEffect(() => {
-    ;(async () => {
+    (async () => {
       if (video) {
         try {
-          console.log({ video })
-          console.log(video.uri)
 
           // const url = video.uri.replace('file:///', 'file:/')
           // const response = await fetch(url)
@@ -168,28 +161,26 @@ export default function MainScreen() {
 
           uppyRef.upload()
         } catch (e) {
-          console.log({ e })
+          console.error({ e })
         }
       }
     })()
   }, [video])
 
   const pickVideo = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
+    const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Videos,
       allowsEditing: true,
       quality: 1,
       videoMaxDuration: 60,
     })
 
-    console.log(result)
-
     if (!result.cancelled) {
       setVideo(result)
     }
   }
 
-  const renderShowItem = ({ item, index }: ListItem) => {
+  const renderShowItem = ({ item }: ListItem) => {
     return (
       <TouchableOpacity
         style={styles._imageView}

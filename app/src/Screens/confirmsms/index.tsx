@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Image, View, TouchableOpacity, Alert } from 'react-native'
+import { Image, View, TouchableOpacity } from 'react-native'
 import theme from './../../utils/colors'
 import styles from './styles'
 import { Header, Left, Button, Icon, Right, Body } from 'native-base'
 import Text from './../../components/Text'
 
-//@ts-ignore
 import OTPTextInput from 'react-native-otp-textinput'
-//@ts-ignore
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import StorageKeys from '../../utils/StorageKeys'
@@ -45,7 +43,7 @@ export default function ConfirmSms() {
       setIsLoading(true)
 
       dispatch(userInit())
-      const { data, error: codeError, loading } = await client.query<
+      const { data } = await client.query<
         VerifyCode,
         VerifyCodeVariables
       >({
@@ -57,13 +55,11 @@ export default function ConfirmSms() {
       })
 
       dispatch(userInitSuccess(data.verify_code))
-      console.log({ data, error })
 
       setIsLoading(false)
       navigateToMainScreen(data)
     } catch (e) {
       dispatch(userInitFailure(e))
-      console.log('Confirm OTP Error : ', { e })
     }
   }
 
@@ -89,14 +85,6 @@ export default function ConfirmSms() {
       navigation.navigate(ScreenNames.AuthScreens.NEW_ACCOUNT, {
         user: data?.verify_code,
       })
-    }
-  }
-
-  const onConfirm = () => {
-    if (otp.length === 6 && !error) {
-      navigateToMainScreen()
-    } else {
-      alert('Enter valid otp')
     }
   }
 

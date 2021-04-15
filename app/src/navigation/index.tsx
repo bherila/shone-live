@@ -20,7 +20,7 @@ import { useSecureStore } from '../hooks/useSecureStore'
 import { ScreenNames } from '../utils/ScreenNames'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { userInit, userInitSuccess } from '../redux/actions/userActions'
+import { userInitSuccess } from '../redux/actions/userActions'
 
 const Stack = createStackNavigator()
 

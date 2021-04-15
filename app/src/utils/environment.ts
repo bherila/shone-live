@@ -1,4 +1,3 @@
-//@ts-ignore
 import { AGORA_APP_ID, API_HOST, API_HOST_STAGING, API_HOST_LOCAL } from '@env'
 
 //Prod

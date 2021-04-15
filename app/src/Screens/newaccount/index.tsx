@@ -1,22 +1,21 @@
-// eslint-disable-next-line no-use-before-define
+/* eslint-disable no-useless-escape */
 import React, { createRef, useEffect, useState } from 'react'
 import { View, TouchableOpacity, Image, TextInput, Alert } from 'react-native'
 import theme from './../../utils/colors'
 import styles from './styles'
 import { Body, Item, Icon, Button, Header, Left, Right } from 'native-base'
 import Text from './../../components/Text'
-//@ts-ignore
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
 import {
   ParamListBase,
   RouteProp,
   useNavigation,
-  useRoute,
+  useRoute
 } from '@react-navigation/native'
 import { useMutation } from '@apollo/client'
 import {
   UpdateUser,
-  UpdateUserVariables,
+  UpdateUserVariables
 } from '../../graphql/mutations/types/UpdateUser'
 import { UPDATE_USER } from '../../graphql/mutations/updateUser'
 import { VerifyCode_verify_code } from '../../graphql/queries/types/VerifyCode'
@@ -26,11 +25,7 @@ import Loader from '../../components/Loader'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import StorageKeys from '../../utils/StorageKeys'
 import { useSecureStore } from '../../hooks/useSecureStore'
-import {
-  userInit,
-  userInitFailure,
-  userInitSuccess,
-} from '../../redux/actions/userActions'
+import { userInit, userInitSuccess } from '../../redux/actions/userActions'
 import { useDispatch } from 'react-redux'
 
 interface IParams extends ParamListBase {
@@ -47,7 +42,7 @@ export default function NewAccount() {
   const [lname, setLname] = useState('')
   const [email, setEmail] = useState('')
 
-  const { setItem, error } = useSecureStore()
+  const { setItem } = useSecureStore()
   const dispatch = useDispatch()
 
   const lnameRef = createRef<TextInput>()
@@ -55,13 +50,13 @@ export default function NewAccount() {
 
   const [
     updateUser,
-    { data: userData, loading, error: userUpdateError },
+    { data: userData, loading, error: userUpdateError }
   ] = useMutation<UpdateUser, UpdateUserVariables>(UPDATE_USER, {
     variables: {
       email: email,
       userID: route.params?.user?.id,
-      username: fname + lname,
-    },
+      username: fname + lname
+    }
   })
 
   useEffect(() => {
@@ -109,7 +104,7 @@ export default function NewAccount() {
               style={{
                 flex: 3,
                 justifyContent: 'center',
-                alignItems: 'center',
+                alignItems: 'center'
               }}
             >
               <Image
@@ -128,7 +123,7 @@ export default function NewAccount() {
                 placeholder="First name"
                 placeholderTextColor={'grey'}
                 style={styles._textinput}
-                onChangeText={(text) => {
+                onChangeText={text => {
                   setFname(text)
                 }}
                 autoCapitalize={'none'}
@@ -146,7 +141,7 @@ export default function NewAccount() {
                 placeholder="Last name"
                 placeholderTextColor={'grey'}
                 style={styles._textinput}
-                onChangeText={(text) => {
+                onChangeText={text => {
                   setLname(text)
                 }}
                 autoCapitalize={'none'}
@@ -166,7 +161,7 @@ export default function NewAccount() {
                 style={styles._textinput}
                 keyboardType="email-address"
                 autoCapitalize={'none'}
-                onChangeText={(text) => {
+                onChangeText={text => {
                   setEmail(text)
                 }}
                 returnKeyType={'done'}
