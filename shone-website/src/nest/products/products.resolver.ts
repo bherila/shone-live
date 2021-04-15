@@ -10,8 +10,8 @@ export class ProductResolver {
   constructor(private readonly productsService: ProductsService) {}
 
   @Query(() => Product, { nullable: true })
-  product(@Args('showId') showId: number) {
-    return this.productsService.findOne(showId)
+  product(@Args('productId') productId: number) {
+    return this.productsService.findOne(productId)
   }
 
   @Query(() => [Product])

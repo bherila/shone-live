@@ -1,0 +1,8 @@
+mutation AddMessage($message: String!, $showID: Float!) {
+  add_message(message: $message, showId: $showID) {
+    id
+    timestamp
+    message
+    alias
+  }
+}

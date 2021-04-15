@@ -1,4 +1,3 @@
-import { FontDisplay } from 'expo-font'
 import { StyleSheet } from 'react-native'
 import theme from './colors'
 

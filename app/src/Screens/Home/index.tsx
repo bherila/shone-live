@@ -11,7 +11,7 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   Alert,
-  FlatList,
+  FlatList
 } from 'react-native'
 import styles from './styles'
 import { FontAwesome, Entypo } from '@expo/vector-icons'
@@ -20,15 +20,8 @@ import { Header, Poll } from '../../components'
 import { useRoute } from '@react-navigation/core'
 import LiveStream from '../../components/LiveStream/LiveStream'
 
-import { useMutation, useQuery } from '@apollo/client'
-import { GetShow, GetShowVariables } from '../../graphql/queries/types/GetShow'
-import { GET_SHOW } from '../../graphql/queries/getShow'
+import { useAddMessageMutation, useGetShowQuery } from '../../generated/graphql'
 import Loader from '../../components/Loader'
-import { ADD_MESSAGE } from '../../graphql/mutations/addMessage'
-import {
-  AddMessage,
-  AddMessageVariables,
-} from '../../graphql/mutations/types/AddMessage'
 import { useAppSelector } from '../../redux/store'
 
 interface Product {
@@ -69,31 +62,31 @@ const exampleShow: ILiveShow = {
       qtyLeft: 2,
       imageUrl: 'TODO',
       price: 129,
-      currency: 'USD',
-    },
+      currency: 'USD'
+    }
   ],
   chats: [
     {
       name: 'Mike A.',
       message: 'DOPE!!!',
-      profileImage: 'TODO',
+      profileImage: 'TODO'
     },
     {
       name: 'Allison H.',
       message: 'YAAASSSSS!!!',
-      profileImage: 'TODO',
+      profileImage: 'TODO'
     },
     {
       name: 'Sarah M.',
       message:
         "This makes me so happy to see. I've always wanted something like this in Platinum. Bling... bling...",
-      profileImage: 'TODO',
-    },
+      profileImage: 'TODO'
+    }
   ],
   activePoll: {
     question: 'What metal should I use next?',
-    options: ['Rose Gold', 'Platinum', 'Silver'],
-  },
+    options: ['Rose Gold', 'Platinum', 'Silver']
+  }
 }
 
 const LiveShow = () => {
@@ -103,28 +96,19 @@ const LiveShow = () => {
 
   const [message, setMessage] = useState('')
   const [messageList, setMessageList] = useState<any>([])
-  const user = useAppSelector((state) => state.user.user)
+  const user = useAppSelector(state => state.user.user)
 
-  const { data: show, error, loading } = useQuery<GetShow, GetShowVariables>(
-    GET_SHOW,
-    {
-      variables: {
-        ID: parseFloat(route.params.showId),
-      },
-
-      pollInterval: 2000,
-    }
-  )
+  const { data: show, error, loading } = useGetShowQuery({
+    variables: {
+      ID: parseFloat(route.params.showId)
+    },
+    pollInterval: 2000
+  })
 
   const [
     addMessage,
-    { data: messageData, loading: messageLoading, error: messageError },
-  ] = useMutation<AddMessage, AddMessageVariables>(ADD_MESSAGE, {
-    variables: {
-      showID: parseFloat(route.params.showId),
-      message: message,
-    },
-  })
+    { data: messageData, error: messageError, loading: messageLoading }
+  ] = useAddMessageMutation()
 
   useEffect(() => {
     if (messageError) return Alert.alert(messageError.message)
@@ -147,8 +131,8 @@ const LiveShow = () => {
           alias: user?.username,
           id: '20',
           message: message,
-          timestamp: '2021-04-12T00:29:57.162Z',
-        },
+          timestamp: '2021-04-12T00:29:57.162Z'
+        }
       ]
 
       setMessageList(data)
@@ -193,7 +177,7 @@ const LiveShow = () => {
                       ref={flatlist}
                       showsVerticalScrollIndicator={false}
                       contentContainerStyle={{
-                        flexGrow: 1,
+                        flexGrow: 1
                       }}
                       keyExtractor={(item, index) => `key${index}`}
                       data={messageList}
@@ -245,7 +229,7 @@ const LiveShow = () => {
                   placeholder="Say Something.."
                   placeholderTextColor="rgb(209,205,205)"
                   value={message}
-                  onChangeText={(text) => setMessage(text)}
+                  onChangeText={text => setMessage(text)}
                 />
                 <View style={styles.footerBtnsRow}>
                   <TouchableOpacity

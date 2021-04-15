@@ -1,4 +1,4 @@
-import { User } from '../../../types/models/User'
+import { User } from "../../generated/graphql"
 
 export const USER_INIT = 'USER_INIT'
 export const USER_INIT_SUCCESS = 'USER_INIT_SUCCESS'

@@ -1,5 +1,5 @@
-import { User } from '../../../types/models/User'
-import { UserActionTypes } from '../actionTypes/userActionTypes'
+import { User } from '../../generated/graphql'
+import { UserActionTypes } from '../actionTypes/UserActionTypes'
 
 interface UserState {
   user: User | null

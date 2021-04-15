@@ -10,28 +10,20 @@ import Text from './../../components/Text'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
 import { TextInputMask } from 'react-native-masked-text'
 import { useNavigation } from '@react-navigation/native'
-import { useMutation } from '@apollo/client'
-import { ADD_USER } from '../../graphql/mutations/addUser'
-import {
-  AddUser,
-  AddUserVariables,
-} from '../../graphql/mutations/types/AddUser'
 import { globalStyles } from '../../utils/globalStyles'
 import Loader from '../../components/Loader'
 import { ScreenNames } from '../../utils/ScreenNames'
+import { useAddUserMutation } from '../../generated/graphql'
 
 export default function Login() {
   const navigation = useNavigation()
 
   const [mobile, setMobile] = useState('')
 
-  const [addUser, { data, error, loading }] = useMutation<
-    AddUser,
-    AddUserVariables
-  >(ADD_USER, {
+  const [addUser, { data, error, loading }] = useAddUserMutation({
     variables: {
-      phone: `+1${mobile}`,
-    },
+      phone: `+1${mobile}`
+    }
   })
 
   useEffect(() => {
@@ -41,11 +33,10 @@ export default function Login() {
   }, [mobile])
 
   useEffect(() => {
-
     if (error) return Alert.alert(error.message)
     if (data?.add_user) {
       navigation.navigate(ScreenNames.AuthScreens.CONFIRM_SMS, {
-        phone: mobile,
+        phone: mobile
       })
     }
   }, [data, error, loading])
@@ -96,10 +87,10 @@ export default function Login() {
                     //@ts-ignore
                     maskType: 'BRL', // for international set it -&amp;nbsp;INTERNATIONAL type masking
                     withDDD: true,
-                    dddMask: '999-999-9999', // this is a your define formatting you use according to your requirment
+                    dddMask: '999-999-9999' // this is a your define formatting you use according to your requirment
                   }}
                   maxLength={12} // set length according to your input requirment
-                  onChangeText={(text) => {
+                  onChangeText={text => {
                     setMobile(text)
                   }}
                   value={mobile}
