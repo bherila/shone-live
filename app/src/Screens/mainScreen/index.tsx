@@ -31,6 +31,7 @@ import AppButton from '../../components/AppButton'
 import Uppy, { StrictTypes } from '@uppy/core'
 import Transloadit from '@uppy/transloadit'
 import * as ImagePicker from 'expo-image-picker'
+import { TRANSLOADIT_KEY, TRANSLOADIT_TEMPLATE_ID } from 'react-native-dotenv'
 
 interface ListItem {
   item: GetShows_shows
@@ -56,8 +57,8 @@ export default function MainScreen() {
   uppyRef.use(Transloadit, {
     importFromUploadURLs: true,
     params: {
-      auth: { key: '675a2b99137e4317b3cd6fc520288181' },
-      template_id: '2944d5ca1fc848da9c9823692d705b70'
+      auth: { key: TRANSLOADIT_KEY },
+      template_id: TRANSLOADIT_TEMPLATE_ID
     }
   })
 
