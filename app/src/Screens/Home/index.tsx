@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-use-before-define
-import React, { createRef, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   View,
   Image,
@@ -11,16 +11,11 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   Alert,
-  FlatList,
-  Dimensions,
+  FlatList
 } from 'react-native'
-// css
 import styles from './styles'
-// icons
 import { FontAwesome, Entypo } from '@expo/vector-icons'
-// components
 import { Header, Poll } from '../../components'
-// purchased component is available but right now its not used
 
 import { useRoute } from '@react-navigation/core'
 import LiveStream from '../../components/LiveStream/LiveStream'
@@ -33,10 +28,9 @@ import { globalStyles } from '../../utils/globalStyles'
 import { ADD_MESSAGE } from '../../graphql/mutations/addMessage'
 import {
   AddMessage,
-  AddMessageVariables,
+  AddMessageVariables
 } from '../../graphql/mutations/types/AddMessage'
 import { useAppSelector } from '../../redux/store'
-import { ScrollView } from 'react-native-gesture-handler'
 
 interface Product {
   id: string
@@ -76,31 +70,31 @@ const exampleShow: ILiveShow = {
       qtyLeft: 2,
       imageUrl: 'TODO',
       price: 129,
-      currency: 'USD',
-    },
+      currency: 'USD'
+    }
   ],
   chats: [
     {
       name: 'Mike A.',
       message: 'DOPE!!!',
-      profileImage: 'TODO',
+      profileImage: 'TODO'
     },
     {
       name: 'Allison H.',
       message: 'YAAASSSSS!!!',
-      profileImage: 'TODO',
+      profileImage: 'TODO'
     },
     {
       name: 'Sarah M.',
       message:
         "This makes me so happy to see. I've always wanted something like this in Platinum. Bling... bling...",
-      profileImage: 'TODO',
-    },
+      profileImage: 'TODO'
+    }
   ],
   activePoll: {
     question: 'What metal should I use next?',
-    options: ['Rose Gold', 'Platinum', 'Silver'],
-  },
+    options: ['Rose Gold', 'Platinum', 'Silver']
+  }
 }
 
 const LiveShow = (props: any) => {
@@ -109,40 +103,34 @@ const LiveShow = (props: any) => {
   const flatlist = useRef<any>()
 
   const [message, setMessage] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
   const [messageList, setMessageList] = useState<any>([])
-  const user = useAppSelector((state) => state.user.user)
+  const user = useAppSelector(state => state.user.user)
 
   const { data: show, error, loading } = useQuery<GetShow, GetShowVariables>(
     GET_SHOW,
     {
       variables: {
-        ID: parseFloat(route.params.showId),
+        ID: parseFloat(route.params.showId)
       },
 
-      pollInterval: 2000,
+      pollInterval: 2000
     }
   )
 
   const [
     addMessage,
-    { data: messageData, error: messageError, loading: messageLoading },
+    { data: messageData, error: messageError, loading: messageLoading }
   ] = useMutation<AddMessage, AddMessageVariables>(ADD_MESSAGE, {
     variables: {
-      message: message,
       showID: parseFloat(route.params.showId),
-    },
+      message: message
+    }
   })
 
   useEffect(() => {
-    setIsLoading(false)
-    setMessage('')
-
-    console.log({ messageData, messageError })
-
     if (messageError) return Alert.alert(messageError.message)
     if (messageData?.add_message) {
-      setMessageList([...messageList, messageData])
+      flatlist?.current?.scrollToEnd({ animated: true })
     }
   }, [messageData, messageError])
 
@@ -151,154 +139,142 @@ const LiveShow = (props: any) => {
     setMessageList(show?.show?.chatMessages)
   }, [show, error])
 
+  const onMessageSend = async (message: string) => {
+    if (message) {
+      Keyboard.dismiss()
+      const data = [
+        ...messageList,
+        {
+          alias: user?.username,
+          id: '20',
+          message: message,
+          timestamp: '2021-04-12T00:29:57.162Z'
+        }
+      ]
+
+      setMessageList(data)
+      flatlist?.current?.scrollToEnd({ animated: true })
+
+      await addMessage()
+    }
+  }
+
   return (
-    <TouchableWithoutFeedback
-      style={globalStyles.container}
-      onPress={() => Keyboard.dismiss()}
-    >
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <>
         <Loader isLoading={loading} />
 
-        <TouchableWithoutFeedback
-          style={{ backgroundColor: 'red' }}
-          onPress={() => Keyboard.dismiss()}
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={styles.container}
         >
-          <>
-            <KeyboardAvoidingView
-              behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-              style={styles.container}
-            >
-              {/* Agora Live Streaming Component */}
-              <LiveStream
-                isHost={route.params?.type === 'create'}
-                token={''}
-                channelID={route.params.showId}
-              />
+          {/* Agora Live Streaming Component */}
+          <LiveStream
+            isHost={route.params?.type === 'create'}
+            token={''}
+            channelID={route.params.showId}
+          />
 
-              <View style={styles._body_section}>
-                {/* <<<<<<<<<<<<<< SCREEN HEADER >>>>>>>>>>>> */}
-                <View style={styles._header}>
-                  <Header data={exampleShow} show={show} />
-                </View>
-                {/* <<<<<<<<<<<<<< ACTIVE POLL>>>>>>>>>>>> */}
+          <View style={styles._bodySection}>
+            {/* <<<<<<<<<<<<<< SCREEN HEADER >>>>>>>>>>>> */}
+            <View style={styles._header}>
+              <Header data={exampleShow} show={show} />
+            </View>
+            {/* <<<<<<<<<<<<<< ACTIVE POLL>>>>>>>>>>>> */}
 
-                {exampleShow.activePoll === null ? (
-                  <Poll data={exampleShow.activePoll} />
-                ) : null}
-                {/* <<<<<<<<<<<<<< FOOTER >>>>>>>>>>>> */}
-                <View style={styles._footer}>
-                  <View style={styles._footer_inner_section}>
-                    <View style={styles._message_section}>
-                      <View style={{ height: 200 }}>
-                        <FlatList
-                          ref={flatlist}
-                          showsVerticalScrollIndicator={false}
-                          contentContainerStyle={{
-                            flexGrow: 1,
-                          }}
-                          keyExtractor={(item, index) => 'key' + index}
-                          data={messageList}
-                          extraData={messageList}
-                          keyboardShouldPersistTaps="always"
-                          renderItem={({ item, index }) => {
-                            return (
-                              <View style={styles._chat_row}>
-                                <Image
-                                  source={require('../../../assets/chatIcon.png')}
-                                  style={styles._user_profile}
-                                />
-                                <View style={{ flex: 1 }}>
-                                  <Text style={styles._name}>
-                                    {item?.author_alias}
-                                  </Text>
-                                  <Text style={styles._message}>
-                                    {item?.message}
-                                  </Text>
-                                </View>
-                              </View>
-                            )
-                          }}
-                        />
-                      </View>
-                    </View>
-
-                    {/* <<<<<<<<<<<<<< PRODUCT >>>>>>>>>>>> */}
-                    <View style={styles._footer_right_secttion}>
-                      {exampleShow.products.map((val, i) => {
+            {exampleShow.activePoll === null ? (
+              <Poll data={exampleShow.activePoll} />
+            ) : null}
+            {/* <<<<<<<<<<<<<< FOOTER >>>>>>>>>>>> */}
+            <View style={styles._footer}>
+              <View style={styles._footerInnerSection}>
+                <View style={styles._messageSection}>
+                  <View style={{ height: 200 }}>
+                    <FlatList
+                      ref={flatlist}
+                      showsVerticalScrollIndicator={false}
+                      contentContainerStyle={{
+                        flexGrow: 1
+                      }}
+                      keyExtractor={(item, index) => `key${index}`}
+                      data={messageList}
+                      extraData={messageList}
+                      keyboardShouldPersistTaps="handled"
+                      renderItem={({ item, index }) => {
                         return (
-                          <TouchableOpacity style={styles._left_box} key={i}>
-                            <Text style={styles._heading}>
-                              {val.qtyLeft} LEFT
-                            </Text>
+                          <View style={styles._chatRow}>
                             <Image
-                              source={require('../../../assets/product.jpg')}
-                              style={{ height: 40, width: 40 }}
+                              source={require('../../../assets/chatIcon.png')}
+                              style={styles._userProfile}
                             />
-                          </TouchableOpacity>
+                            <View style={{ flex: 1 }}>
+                              <Text style={styles._name}>{item?.alias}</Text>
+                              <Text style={styles._message}>
+                                {item?.message}
+                              </Text>
+                            </View>
+                          </View>
                         )
-                      })}
-                      <TouchableOpacity style={styles._shop_all}>
-                        <Text style={styles.shop_btn_text}>Shop All</Text>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                  {/* <<<<<<<<<<<<<< CHAT SECTION >>>>>>>>>>>> */}
-
-                  <View style={styles._footer_chat_row}>
-                    <TextInput
-                      style={styles._text_input}
-                      placeholder="Say Something.."
-                      placeholderTextColor="rgb(209,205,205)"
-                      value={message}
-                      onChangeText={(text) => setMessage(text)}
+                      }}
                     />
-                    <View style={styles.footer_btns_row}>
-                      <TouchableOpacity
-                        disabled={isLoading}
-                        style={styles._footer_icon_circle}
-                        onPress={async () => {
-                          if (message) {
-                            setIsLoading(true)
-                            Keyboard.dismiss()
-                            const data = [
-                              ...messageList,
-                              {
-                                author_alias: user?.username,
-                                id: '20',
-                                message: message,
-                                timestamp: '2021-04-12T00:29:57.162Z',
-                                __typename: 'MessageEntity',
-                              },
-                            ]
-                            // const filteredData = data.filter(
-                            //   item => item != undefined
-                            // )
-                            setMessageList(data)
-                            flatlist?.current?.scrollToEnd({ animated: true })
-                            await addMessage()
-                          }
-                        }}
-                      >
-                        <Entypo
-                          name="share-alternative"
-                          size={20}
-                          color="rgb(249,160,63)"
-                        />
-                      </TouchableOpacity>
-                      <TouchableOpacity style={styles._footer_icon_circle}>
-                        <FontAwesome
-                          name="diamond"
-                          size={20}
-                          color="rgb(249,160,63)"
-                        />
-                      </TouchableOpacity>
-                    </View>
                   </View>
+                </View>
+
+                {/* <<<<<<<<<<<<<< PRODUCT >>>>>>>>>>>> */}
+                <View style={styles._footerRightSecttion}>
+                  {exampleShow.products.map((val, i) => {
+                    return (
+                      <TouchableOpacity style={styles._leftBox} key={i}>
+                        <Text style={styles._heading}>{val.qtyLeft} LEFT</Text>
+                        <Image
+                          source={require('../../../assets/product.jpg')}
+                          style={{ height: 40, width: 40 }}
+                        />
+                      </TouchableOpacity>
+                    )
+                  })}
+                  <TouchableOpacity style={styles._shopAll}>
+                    <Text style={styles.shopBtnText}>Shop All</Text>
+                  </TouchableOpacity>
                 </View>
               </View>
-            </KeyboardAvoidingView>
-          </>
-        </TouchableWithoutFeedback>
+              {/* <<<<<<<<<<<<<< CHAT SECTION >>>>>>>>>>>> */}
+
+              <View style={styles._footerChaRow}>
+                <TextInput
+                  style={styles._textInput}
+                  placeholder="Say Something.."
+                  placeholderTextColor="rgb(209,205,205)"
+                  value={message}
+                  onChangeText={text => setMessage(text)}
+                />
+                <View style={styles.footerBtnsRow}>
+                  <TouchableOpacity
+                    disabled={messageLoading}
+                    style={styles._footerIconCircle}
+                    onPress={async () => {
+                      onMessageSend(message)
+                      setMessage('')
+                    }}
+                  >
+                    <Entypo
+                      name="share-alternative"
+                      size={20}
+                      color="rgb(249,160,63)"
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles._footerIconCircle}>
+                    <FontAwesome
+                      name="diamond"
+                      size={20}
+                      color="rgb(249,160,63)"
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          </View>
+        </KeyboardAvoidingView>
       </>
     </TouchableWithoutFeedback>
   )

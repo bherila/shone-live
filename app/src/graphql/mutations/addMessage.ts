@@ -1,12 +1,12 @@
 import gql from 'graphql-tag'
 
 export const ADD_MESSAGE = gql`
-  mutation AddMessage($message: String!, $showID: Float!) {
-    add_message(message: $message, show_id: $showID) {
+  mutation AddMessage($showID: Float!, $message: String!) {
+    add_message(showId: $showID, message: $message) {
       id
-      timestamp
       message
-      author_alias
+      timestamp
+      alias
     }
   }
 `

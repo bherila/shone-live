@@ -6,10 +6,13 @@ export const GET_SHOWS = gql`
       id
       title
       image_url
+      start_date
+      end_date
       chatMessages {
         id
         message
-        author_alias
+        timestamp
+        alias
       }
     }
   }

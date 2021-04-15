@@ -3,80 +3,81 @@ import { Dimensions, StyleSheet } from 'react-native'
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'transparent',
+    backgroundColor: 'transparent'
   },
   loginContainer: {
     alignItems: 'center',
     flexGrow: 1,
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   backgroundVideo: {
     position: 'absolute',
     top: 0,
     left: 0,
     bottom: 0,
-    right: 0,
+    right: 0
   },
   _header: {
     // height: 100,
     // backgroundColor: "#00000069",
   },
-  _body_section: {
+  _bodySection: {
     flexDirection: 'column',
     justifyContent: 'space-between',
-    flex: 1,
+    flex: 1
   },
   _footer: {
-    backgroundColor: '#00000069',
+    backgroundColor: '#00000069'
   },
-  _chat_row: {
+  _chatRow: {
     flexDirection: 'row',
     // alignItems:"center",
     marginVertical: 5,
-    paddingHorizontal: 10,
+    paddingHorizontal: 10
   },
-  _user_profile: {
+  _userProfile: {
     height: 35,
     width: 35,
     borderRadius: 35 / 2,
-    marginRight: 10,
+    marginRight: 10
   },
   _name: {
     color: 'white',
     fontWeight: 'bold',
-    flex: 1,
+    flex: 1
   },
   _message: {
-    color: 'white',
+    color: 'white'
   },
-  _footer_chat_row: {
+  _footerChaRow: {
     borderTopWidth: 1,
     borderColor: 'grey',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingBottom: 15,
-    paddingTop: 7,
+    paddingTop: 7
   },
-  _left_box: {
+  _leftBox: {
     height: 80,
     width: 80,
     borderRadius: 20,
-    backgroundColor: 'white',
+    backgroundColor: 'white'
   },
-  _footer_inner_section: {
+  _footerInnerSection: {
     flexDirection: 'row',
     flexWrap: 'nowrap',
-    justifyContent: 'space-between',
+    justifyContent: 'space-between'
   },
-  _message_section: {
+  _messageSection: {
     flexDirection: 'column',
-    flexGrow: 1,
+    flexGrow: 1
   },
-  _footer_right_secttion: {
+  _footerRightSecttion: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'flex-end',
+    marginHorizontal: 16
   },
   _heading: {
     backgroundColor: 'rgb(43,65,98)',
@@ -87,42 +88,42 @@ const styles = StyleSheet.create({
     marginHorizontal: 4,
     marginTop: -5,
     fontWeight: 'bold',
-    fontSize: 12,
+    fontSize: 12
   },
-  _shop_all: {
+  _shopAll: {
     backgroundColor: 'rgb(249,160,63)',
     borderRadius: 25,
     width: 70,
     marginVertical: 10,
-    paddingVertical: 7,
+    paddingVertical: 7
   },
-  shop_btn_text: {
+  shopBtnText: {
     color: 'white',
     textAlign: 'center',
     fontWeight: 'bold',
     fontSize: 12,
-    elevation: 5,
+    elevation: 5
   },
-  _text_input: {
+  _textInput: {
     color: 'white',
     paddingVertical: 10,
     // marginBottom:15,
     paddingLeft: 30,
-    fontWeight: 'bold',
+    fontWeight: 'bold'
   },
-  _footer_icon_circle: {
+  _footerIconCircle: {
     height: 40,
     width: 40,
     borderRadius: 20,
     backgroundColor: 'rgb(115,107,111)',
     marginHorizontal: 5,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
-  footer_btns_row: {
+  footerBtnsRow: {
     flexDirection: 'row',
-    alignItems: 'center',
-  },
+    alignItems: 'center'
+  }
 })
 
 export default styles

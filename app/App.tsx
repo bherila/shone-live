@@ -61,7 +61,7 @@
 import React, { useState, useEffect } from 'react'
 import { useFonts } from 'expo-font'
 import Navigator from './src/navigation/index'
-import { PermissionsAndroid, Platform, StyleSheet, View } from 'react-native'
+import { Platform, StyleSheet, View } from 'react-native'
 import LottieView from 'lottie-react-native'
 import { requestCameraAndAudioPermission } from './src/utils/helper'
 import { ApolloProvider } from '@apollo/client'
@@ -91,24 +91,21 @@ export default function App() {
   return (
     <Provider store={store}>
       <ApolloProvider client={client}>
-        <>
-          {isReady ? (
-            <Navigator />
-          ) : (
-            <View style={styles.animationContainer}>
-              <LottieView
-                autoPlay={true}
-                loop={false}
-                style={{
-                  width: '100%',
-                  // height: 100,
-                  backgroundColor: '#fff'
-                }}
-                source={require('./assets/shone-lottie-animation-black.json')}
-              />
-            </View>
-          )}
-        </>
+        {isReady ? (
+          <Navigator />
+        ) : (
+          <View style={styles.animationContainer}>
+            <LottieView
+              autoPlay={true}
+              loop={false}
+              style={{
+                width: '100%',
+                backgroundColor: '#fff'
+              }}
+              source={require('./assets/shone-lottie-animation-black.json')}
+            />
+          </View>
+        )}
       </ApolloProvider>
     </Provider>
   )

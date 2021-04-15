@@ -8,18 +8,18 @@
 // ====================================================
 
 export interface AddMessage_add_message {
-  __typename: 'MessageEntity'
-  id: string
-  timestamp: any
-  message: string
-  author_alias: string
+  __typename: "MessageEntity";
+  id: string;
+  message: string;
+  timestamp: any;
+  alias: string;
 }
 
 export interface AddMessage {
-  add_message: AddMessage_add_message
+  add_message: AddMessage_add_message;
 }
 
 export interface AddMessageVariables {
-  message: string
-  showID: number
+  showID: number;
+  message: string;
 }
