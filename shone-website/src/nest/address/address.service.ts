@@ -16,8 +16,11 @@ export class AddressService {
     private readonly userRepository: UserRepository,
   ) {}
 
-  async create(addressData: CreateAddressDto): Promise<Address> {
-    const user = await this.userRepository.findOne(addressData.userId)
+  async create(
+    addressData: CreateAddressDto,
+    userId: string,
+  ): Promise<Address> {
+    const user = await this.userRepository.findOne(userId)
     delete addressData.userId
     const address = this.addressRepository.create({
       user,

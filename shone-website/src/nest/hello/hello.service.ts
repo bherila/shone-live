@@ -26,7 +26,7 @@ export class HelloService {
     return this.staticData.find((x) => x.id === id)
   }
 
-  async findAll(args: HelloArgs): Promise<Hello[]> {
+  async findAll(): Promise<Hello[]> {
     return this.staticData as Hello[]
   }
 
@@ -38,11 +38,11 @@ export class HelloService {
 
 @ArgsType()
 export class HelloArgs {
-  @Field((type) => Int)
+  @Field(() => Int)
   @Min(0)
   skip = 0
 
-  @Field((type) => Int)
+  @Field(() => Int)
   @Min(1)
   @Max(50)
   take = 25

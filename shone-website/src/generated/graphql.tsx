@@ -1,294 +1,410 @@
-import { gql } from '@apollo/client'
-import * as Apollo from '@apollo/client'
-export type Maybe<T> = T | null
-export type Exact<T extends { [key: string]: unknown }> = {
-  [K in keyof T]: T[K]
-}
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> &
-  { [SubKey in K]?: Maybe<T[SubKey]> }
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> &
-  { [SubKey in K]: Maybe<T[SubKey]> }
-const defaultOptions = {}
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
+export type Maybe<T> = T | null;
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+const defaultOptions =  {}
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: string
-  String: string
-  Boolean: boolean
-  Int: number
-  Float: number
+  ID: string;
+  String: string;
+  Boolean: boolean;
+  Int: number;
+  Float: number;
   /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
-  DateTime: any
+  DateTime: any;
   /** The `Upload` scalar type represents a file upload. */
-  Upload: any
-}
+  Upload: any;
+};
 
 export type Address = {
-  __typename?: 'Address'
-  id: Scalars['Float']
-  city: Scalars['String']
-  country: Scalars['String']
-  line1: Scalars['String']
-  line2: Scalars['String']
-  postal_code: Scalars['String']
-  state: Scalars['String']
-  name: Scalars['String']
-  phone: Scalars['String']
-}
+  __typename?: 'Address';
+  id: Scalars['Float'];
+  city: Scalars['String'];
+  country: Scalars['String'];
+  line1: Scalars['String'];
+  line2: Scalars['String'];
+  postal_code: Scalars['String'];
+  state: Scalars['String'];
+  name: Scalars['String'];
+  phone: Scalars['String'];
+};
 
 export type ConsumerLead = {
-  __typename?: 'ConsumerLead'
-  id: Scalars['Float']
-  email: Scalars['String']
-  submitted_timestamp: Scalars['DateTime']
-}
+  __typename?: 'ConsumerLead';
+  id: Scalars['Float'];
+  email: Scalars['String'];
+  submitted_timestamp: Scalars['DateTime'];
+};
 
 export type CreateAddressDto = {
-  userId: Scalars['String']
-  city: Scalars['String']
-  country: Scalars['String']
-  line1: Scalars['String']
-  line2: Scalars['String']
-  postalCode: Scalars['String']
-  state: Scalars['String']
-  name: Scalars['String']
-  phone: Scalars['String']
-}
+  userId: Scalars['String'];
+  city: Scalars['String'];
+  country: Scalars['String'];
+  line1: Scalars['String'];
+  line2: Scalars['String'];
+  postalCode: Scalars['String'];
+  state: Scalars['String'];
+  name: Scalars['String'];
+  phone: Scalars['String'];
+};
 
 export type CreateProductDto = {
-  userId: Scalars['String']
-  showId: Scalars['Float']
-  name: Scalars['String']
-  description: Scalars['String']
-}
+  userId: Scalars['String'];
+  showId: Scalars['Float'];
+  name: Scalars['String'];
+  description: Scalars['String'];
+};
 
 export type CreateShowInput = {
-  title: Scalars['String']
-  image_url?: Maybe<Scalars['String']>
-  startDate: Scalars['DateTime']
-  endDate: Scalars['DateTime']
-}
+  title: Scalars['String'];
+  image_url?: Maybe<Scalars['String']>;
+  startDate: Scalars['DateTime'];
+  endDate: Scalars['DateTime'];
+};
+
 
 export type Hello = {
-  __typename?: 'Hello'
-  id: Scalars['Int']
-  message: Scalars['String']
-}
+  __typename?: 'Hello';
+  id: Scalars['Int'];
+  message: Scalars['String'];
+};
 
 export type HelloInput = {
-  message: Scalars['String']
-}
+  message: Scalars['String'];
+};
 
 export type MessageEntity = {
-  __typename?: 'MessageEntity'
-  id: Scalars['ID']
-  timestamp: Scalars['DateTime']
-  message: Scalars['String']
-  alias: Scalars['String']
-}
+  __typename?: 'MessageEntity';
+  id: Scalars['ID'];
+  timestamp: Scalars['DateTime'];
+  message: Scalars['String'];
+  alias: Scalars['String'];
+};
 
 export type Mutation = {
-  __typename?: 'Mutation'
-  add_address: Address
-  addConsumerLead: ConsumerLead
-  addHello: Hello
-  removeHello: Scalars['Boolean']
-  add_message: MessageEntity
-  add_products: Product
-  add_payment: Payment
-  add_show: Show
-  add_user: Scalars['String']
-  update_user: User
-}
+  __typename?: 'Mutation';
+  add_address: Address;
+  addConsumerLead: ConsumerLead;
+  addHello: Hello;
+  removeHello: Scalars['Boolean'];
+  add_message: MessageEntity;
+  add_products: Product;
+  add_payment: Payment;
+  add_show: Show;
+  add_show_your_style_entry: ShowYourStyleEntry;
+  add_show_your_style_vote: ShowYourStyleVote;
+  add_show_your_style_view_record: ShowYourStyleViewRecord;
+  add_user: Scalars['String'];
+  update_user: User;
+};
+
 
 export type MutationAdd_AddressArgs = {
-  data: CreateAddressDto
-}
+  data: CreateAddressDto;
+};
+
 
 export type MutationAddConsumerLeadArgs = {
-  email: Scalars['String']
-}
+  email: Scalars['String'];
+};
+
 
 export type MutationAddHelloArgs = {
-  newHelloData: HelloInput
-}
+  newHelloData: HelloInput;
+};
+
 
 export type MutationRemoveHelloArgs = {
-  id: Scalars['Float']
-}
+  id: Scalars['Float'];
+};
+
 
 export type MutationAdd_MessageArgs = {
-  message: Scalars['String']
-  showId: Scalars['Float']
-}
+  message: Scalars['String'];
+  showId: Scalars['Float'];
+};
+
 
 export type MutationAdd_ProductsArgs = {
-  data: CreateProductDto
-}
+  data: CreateProductDto;
+};
+
 
 export type MutationAdd_PaymentArgs = {
-  quantity: Scalars['String']
-  productId: Scalars['Float']
-}
+  quantity: Scalars['String'];
+  productId: Scalars['Float'];
+};
+
 
 export type MutationAdd_ShowArgs = {
-  data: CreateShowInput
-}
+  data: CreateShowInput;
+};
+
+
+export type MutationAdd_Show_Your_Style_EntryArgs = {
+  videoUrl: Scalars['String'];
+};
+
+
+export type MutationAdd_Show_Your_Style_VoteArgs = {
+  entryId: Scalars['Float'];
+  viewDuration: Scalars['Float'];
+  vote: Scalars['Float'];
+};
+
+
+export type MutationAdd_Show_Your_Style_View_RecordArgs = {
+  entryId: Scalars['Float'];
+};
+
 
 export type MutationAdd_UserArgs = {
-  phone: Scalars['String']
-}
+  phone: Scalars['String'];
+};
+
 
 export type MutationUpdate_UserArgs = {
-  userId: Scalars['String']
-  username: Scalars['String']
-  email: Scalars['String']
-  file: Scalars['Upload']
-}
+  userId: Scalars['String'];
+  username: Scalars['String'];
+  email: Scalars['String'];
+  file: Scalars['Upload'];
+};
 
 export type PaginationQueryDto = {
-  limit: Scalars['Float']
-  offset: Scalars['Float']
-}
+  limit: Scalars['Float'];
+  offset: Scalars['Float'];
+};
 
 export type Payment = {
-  __typename?: 'Payment'
-  id: Scalars['ID']
-  product: Product
-  user: User
-  quantity: Scalars['Float']
-}
+  __typename?: 'Payment';
+  id: Scalars['ID'];
+  product: Product;
+  user: User;
+  quantity: Scalars['Float'];
+};
 
 export type Product = {
-  __typename?: 'Product'
-  id: Scalars['Float']
-  name: Scalars['String']
-  description: Scalars['String']
-  user: User
-  show: Show
-}
+  __typename?: 'Product';
+  id: Scalars['Float'];
+  name: Scalars['String'];
+  description: Scalars['String'];
+  user: User;
+  show: Show;
+};
 
 export type Query = {
-  __typename?: 'Query'
-  address?: Maybe<Address>
-  addresses: Array<Address>
-  consumerLead?: Maybe<ConsumerLead>
-  consumerLeads: Array<ConsumerLead>
-  hello: Hello
-  hellos: Array<Hello>
-  messageEntity?: Maybe<MessageEntity>
-  messageEntities: Array<MessageEntity>
-  product?: Maybe<Product>
-  products: Array<Product>
-  payment?: Maybe<Payment>
-  payments: Array<Payment>
-  show?: Maybe<Show>
-  shows: Array<Show>
-  user?: Maybe<User>
-  users: Array<User>
-  verify_code: User
-}
+  __typename?: 'Query';
+  address?: Maybe<Address>;
+  addresses: Array<Address>;
+  consumerLead?: Maybe<ConsumerLead>;
+  consumerLeads: Array<ConsumerLead>;
+  hello: Hello;
+  hellos: Array<Hello>;
+  messageEntity?: Maybe<MessageEntity>;
+  messageEntities: Array<MessageEntity>;
+  product?: Maybe<Product>;
+  products: Array<Product>;
+  payment?: Maybe<Payment>;
+  payments: Array<Payment>;
+  show?: Maybe<Show>;
+  shows: Array<Show>;
+  show_your_style_Entry?: Maybe<ShowYourStyleEntry>;
+  get_random_show_your_style_entry?: Maybe<ShowYourStyleEntry>;
+  show_your_style_entries: Array<ShowYourStyleEntry>;
+  show_your_style_vote?: Maybe<ShowYourStyleVote>;
+  show_your_style_votes: Array<ShowYourStyleVote>;
+  show_your_style_view_record?: Maybe<ShowYourStyleViewRecord>;
+  show_your_style_view_records: Array<ShowYourStyleViewRecord>;
+  user?: Maybe<User>;
+  users: Array<User>;
+  verify_code: User;
+};
+
 
 export type QueryAddressArgs = {
-  addressId: Scalars['Float']
-}
+  addressId: Scalars['Float'];
+};
+
 
 export type QueryConsumerLeadArgs = {
-  showId: Scalars['Float']
-}
+  consumerLeadId: Scalars['Float'];
+};
+
 
 export type QueryConsumerLeadsArgs = {
-  paginationQuery: PaginationQueryDto
-}
+  paginationQuery: PaginationQueryDto;
+};
+
 
 export type QueryHelloArgs = {
-  id: Scalars['Float']
-}
+  id: Scalars['Float'];
+};
+
 
 export type QueryHellosArgs = {
-  skip?: Maybe<Scalars['Int']>
-  take?: Maybe<Scalars['Int']>
-}
+  skip?: Maybe<Scalars['Int']>;
+  take?: Maybe<Scalars['Int']>;
+};
+
 
 export type QueryMessageEntityArgs = {
-  messageEntityId: Scalars['Float']
-}
+  messageEntityId: Scalars['Float'];
+};
+
 
 export type QueryProductArgs = {
-  showId: Scalars['Float']
-}
+  showId: Scalars['Float'];
+};
+
 
 export type QueryProductsArgs = {
-  paginationQuery: PaginationQueryDto
-}
+  paginationQuery: PaginationQueryDto;
+};
+
 
 export type QueryPaymentArgs = {
-  PaymentId: Scalars['Float']
-}
+  PaymentId: Scalars['Float'];
+};
+
 
 export type QueryShowArgs = {
-  showId: Scalars['Float']
-}
+  showId: Scalars['Float'];
+};
+
+
+export type QueryShow_Your_Style_EntryArgs = {
+  showId: Scalars['Float'];
+};
+
+
+export type QueryShow_Your_Style_EntriesArgs = {
+  paginationQuery: PaginationQueryDto;
+};
+
+
+export type QueryShow_Your_Style_VoteArgs = {
+  showId: Scalars['Float'];
+};
+
+
+export type QueryShow_Your_Style_VotesArgs = {
+  paginationQuery: PaginationQueryDto;
+};
+
+
+export type QueryShow_Your_Style_View_RecordArgs = {
+  showId: Scalars['Float'];
+};
+
+
+export type QueryShow_Your_Style_View_RecordsArgs = {
+  paginationQuery: PaginationQueryDto;
+};
+
 
 export type QueryUserArgs = {
-  userId: Scalars['Float']
-}
+  userId: Scalars['Float'];
+};
+
 
 export type QueryVerify_CodeArgs = {
-  code: Scalars['String']
-  phone: Scalars['String']
-}
+  code: Scalars['String'];
+  phone: Scalars['String'];
+};
 
 export type Show = {
-  __typename?: 'Show'
-  id: Scalars['ID']
-  title: Scalars['String']
-  image_url?: Maybe<Scalars['String']>
-  start_date: Scalars['DateTime']
-  end_date: Scalars['DateTime']
-  chatMessages?: Maybe<Array<MessageEntity>>
-}
+  __typename?: 'Show';
+  id: Scalars['ID'];
+  title: Scalars['String'];
+  image_url?: Maybe<Scalars['String']>;
+  start_date: Scalars['DateTime'];
+  end_date: Scalars['DateTime'];
+  chatMessages?: Maybe<Array<MessageEntity>>;
+};
+
+export type ShowYourStyleEntry = {
+  __typename?: 'ShowYourStyleEntry';
+  id: Scalars['Float'];
+  user: User;
+  video_url: Scalars['String'];
+  submitted_timestamp: Scalars['DateTime'];
+};
+
+export type ShowYourStyleViewRecord = {
+  __typename?: 'ShowYourStyleViewRecord';
+  id: Scalars['Float'];
+  entry: ShowYourStyleEntry;
+  user: User;
+  view_time: Scalars['DateTime'];
+};
+
+export type ShowYourStyleVote = {
+  __typename?: 'ShowYourStyleVote';
+  id: Scalars['Float'];
+  entry: ShowYourStyleEntry;
+  user: User;
+  vote: Scalars['Float'];
+  view_duration: Scalars['Float'];
+};
+
 
 export type User = {
-  __typename?: 'User'
-  id: Scalars['ID']
-  email?: Maybe<Scalars['String']>
-  phone: Scalars['String']
-  username?: Maybe<Scalars['String']>
-  verification_code_time_sent: Scalars['String']
-  token?: Maybe<Scalars['String']>
-  profileUrl?: Maybe<Scalars['String']>
-}
+  __typename?: 'User';
+  id: Scalars['ID'];
+  email?: Maybe<Scalars['String']>;
+  phone: Scalars['String'];
+  username?: Maybe<Scalars['String']>;
+  verification_code_time_sent: Scalars['String'];
+  token?: Maybe<Scalars['String']>;
+  profileUrl?: Maybe<Scalars['String']>;
+};
 
 export type SubscribeToWaitlistMutationVariables = Exact<{
-  email: Scalars['String']
-}>
+  email: Scalars['String'];
+}>;
 
-export type SubscribeToWaitlistMutation = { __typename?: 'Mutation' } & {
-  addConsumerLead: { __typename?: 'ConsumerLead' } & Pick<ConsumerLead, 'email'>
-}
 
-export type GetConsumerLeadsQueryVariables = Exact<{ [key: string]: never }>
+export type SubscribeToWaitlistMutation = (
+  { __typename?: 'Mutation' }
+  & { addConsumerLead: (
+    { __typename?: 'ConsumerLead' }
+    & Pick<ConsumerLead, 'email'>
+  ) }
+);
 
-export type GetConsumerLeadsQuery = { __typename?: 'Query' } & {
-  consumerLeads: Array<
-    { __typename?: 'ConsumerLead' } & Pick<
-      ConsumerLead,
-      'id' | 'email' | 'submitted_timestamp'
-    >
-  >
-}
+export type GetConsumerLeadsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetConsumerLeadsQuery = (
+  { __typename?: 'Query' }
+  & { consumerLeads: Array<(
+    { __typename?: 'ConsumerLead' }
+    & Pick<ConsumerLead, 'id' | 'email' | 'submitted_timestamp'>
+  )> }
+);
+
+export type GetUsersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetUsersQuery = (
+  { __typename?: 'Query' }
+  & { users: Array<(
+    { __typename?: 'User' }
+    & Pick<User, 'email'>
+  )> }
+);
+
 
 export const SubscribeToWaitlistDocument = gql`
-  mutation SubscribeToWaitlist($email: String!) {
-    addConsumerLead(email: $email) {
-      email
-    }
+    mutation SubscribeToWaitlist($email: String!) {
+  addConsumerLead(email: $email) {
+    email
   }
-`
-export type SubscribeToWaitlistMutationFn = Apollo.MutationFunction<
-  SubscribeToWaitlistMutation,
-  SubscribeToWaitlistMutationVariables
->
+}
+    `;
+export type SubscribeToWaitlistMutationFn = Apollo.MutationFunction<SubscribeToWaitlistMutation, SubscribeToWaitlistMutationVariables>;
 
 /**
  * __useSubscribeToWaitlistMutation__
@@ -307,35 +423,22 @@ export type SubscribeToWaitlistMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useSubscribeToWaitlistMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    SubscribeToWaitlistMutation,
-    SubscribeToWaitlistMutationVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useMutation<
-    SubscribeToWaitlistMutation,
-    SubscribeToWaitlistMutationVariables
-  >(SubscribeToWaitlistDocument, options)
-}
-export type SubscribeToWaitlistMutationHookResult = ReturnType<
-  typeof useSubscribeToWaitlistMutation
->
-export type SubscribeToWaitlistMutationResult = Apollo.MutationResult<SubscribeToWaitlistMutation>
-export type SubscribeToWaitlistMutationOptions = Apollo.BaseMutationOptions<
-  SubscribeToWaitlistMutation,
-  SubscribeToWaitlistMutationVariables
->
+export function useSubscribeToWaitlistMutation(baseOptions?: Apollo.MutationHookOptions<SubscribeToWaitlistMutation, SubscribeToWaitlistMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SubscribeToWaitlistMutation, SubscribeToWaitlistMutationVariables>(SubscribeToWaitlistDocument, options);
+      }
+export type SubscribeToWaitlistMutationHookResult = ReturnType<typeof useSubscribeToWaitlistMutation>;
+export type SubscribeToWaitlistMutationResult = Apollo.MutationResult<SubscribeToWaitlistMutation>;
+export type SubscribeToWaitlistMutationOptions = Apollo.BaseMutationOptions<SubscribeToWaitlistMutation, SubscribeToWaitlistMutationVariables>;
 export const GetConsumerLeadsDocument = gql`
-  query getConsumerLeads {
-    consumerLeads(paginationQuery: { limit: 10, offset: 0 }) {
-      id
-      email
-      submitted_timestamp
-    }
+    query getConsumerLeads {
+  consumerLeads(paginationQuery: {limit: 10, offset: 0}) {
+    id
+    email
+    submitted_timestamp
   }
-`
+}
+    `;
 
 /**
  * __useGetConsumerLeadsQuery__
@@ -352,37 +455,48 @@ export const GetConsumerLeadsDocument = gql`
  *   },
  * });
  */
-export function useGetConsumerLeadsQuery(
-  baseOptions?: Apollo.QueryHookOptions<
-    GetConsumerLeadsQuery,
-    GetConsumerLeadsQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useQuery<GetConsumerLeadsQuery, GetConsumerLeadsQueryVariables>(
-    GetConsumerLeadsDocument,
-    options,
-  )
+export function useGetConsumerLeadsQuery(baseOptions?: Apollo.QueryHookOptions<GetConsumerLeadsQuery, GetConsumerLeadsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetConsumerLeadsQuery, GetConsumerLeadsQueryVariables>(GetConsumerLeadsDocument, options);
+      }
+export function useGetConsumerLeadsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetConsumerLeadsQuery, GetConsumerLeadsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetConsumerLeadsQuery, GetConsumerLeadsQueryVariables>(GetConsumerLeadsDocument, options);
+        }
+export type GetConsumerLeadsQueryHookResult = ReturnType<typeof useGetConsumerLeadsQuery>;
+export type GetConsumerLeadsLazyQueryHookResult = ReturnType<typeof useGetConsumerLeadsLazyQuery>;
+export type GetConsumerLeadsQueryResult = Apollo.QueryResult<GetConsumerLeadsQuery, GetConsumerLeadsQueryVariables>;
+export const GetUsersDocument = gql`
+    query getUsers {
+  users {
+    email
+  }
 }
-export function useGetConsumerLeadsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    GetConsumerLeadsQuery,
-    GetConsumerLeadsQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useLazyQuery<
-    GetConsumerLeadsQuery,
-    GetConsumerLeadsQueryVariables
-  >(GetConsumerLeadsDocument, options)
-}
-export type GetConsumerLeadsQueryHookResult = ReturnType<
-  typeof useGetConsumerLeadsQuery
->
-export type GetConsumerLeadsLazyQueryHookResult = ReturnType<
-  typeof useGetConsumerLeadsLazyQuery
->
-export type GetConsumerLeadsQueryResult = Apollo.QueryResult<
-  GetConsumerLeadsQuery,
-  GetConsumerLeadsQueryVariables
->
+    `;
+
+/**
+ * __useGetUsersQuery__
+ *
+ * To run a query within a React component, call `useGetUsersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUsersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetUsersQuery(baseOptions?: Apollo.QueryHookOptions<GetUsersQuery, GetUsersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUsersQuery, GetUsersQueryVariables>(GetUsersDocument, options);
+      }
+export function useGetUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUsersQuery, GetUsersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUsersQuery, GetUsersQueryVariables>(GetUsersDocument, options);
+        }
+export type GetUsersQueryHookResult = ReturnType<typeof useGetUsersQuery>;
+export type GetUsersLazyQueryHookResult = ReturnType<typeof useGetUsersLazyQuery>;
+export type GetUsersQueryResult = Apollo.QueryResult<GetUsersQuery, GetUsersQueryVariables>;

@@ -3,22 +3,32 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm'
 
+import { User } from '../../../user/entities/user.entity'
+
 @ObjectType()
 @Entity()
-export class ConsumerLead {
+export class ShowYourStyleEntry {
   @Field()
   @PrimaryGeneratedColumn()
   readonly id: number
 
   @Field()
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'user_id' })
+  user: User
+
+  @Field({ name: 'video_url' })
   @Column({
-    comment: 'Consumer Lead email',
+    comment: 'Video URL',
     unique: true,
+    name: 'video_url',
   })
-  email: string
+  videoUrl: string
 
   @Field({ name: 'submitted_timestamp' })
   @CreateDateColumn({ type: 'timestamp', name: 'submitted_timestamp' })

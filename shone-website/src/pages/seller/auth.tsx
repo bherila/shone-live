@@ -1,13 +1,13 @@
-import React, { useCallback } from 'react'
+import React from 'react'
 import { useState } from 'react'
 
 import SellerLayout from '../../components/SellerLayout'
 export default () => {
-  const [mode, setMode] = useState('number')
-  const submitNumber = useCallback(() => {
-    //TODO: Submit to backend that sends SMS & confirmation code
-    setMode('confirm') // TODO: do this <-- if API request is successful
-  }, [setMode])
+  const [mode] = useState('number')
+  // const submitNumber = useCallback(() => {
+  //   //TODO: Submit to backend that sends SMS & confirmation code
+  //   setMode('confirm') // TODO: do this <-- if API request is successful
+  // }, [setMode])
   if (mode === 'confirm') {
     return renderConfirm()
   } else {

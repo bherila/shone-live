@@ -9,8 +9,8 @@ export class ConsumerLeadsResolver {
   constructor(private readonly consumerLeadsService: ConsumerLeadsService) {}
 
   @Query(() => ConsumerLead, { nullable: true })
-  consumerLead(@Args('showId') showId: number) {
-    return this.consumerLeadsService.findOne(showId)
+  consumerLead(@Args('consumerLeadId') consumerLeadId: number) {
+    return this.consumerLeadsService.findOne(consumerLeadId)
   }
 
   @Query(() => [ConsumerLead])

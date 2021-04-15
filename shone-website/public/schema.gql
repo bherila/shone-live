@@ -71,10 +71,32 @@ type Payment {
   quantity: Float!
 }
 
+type ShowYourStyleEntry {
+  id: Float!
+  user: User!
+  video_url: String!
+  submitted_timestamp: DateTime!
+}
+
+type ShowYourStyleViewRecord {
+  id: Float!
+  entry: ShowYourStyleEntry!
+  user: User!
+  view_time: DateTime!
+}
+
+type ShowYourStyleVote {
+  id: Float!
+  entry: ShowYourStyleEntry!
+  user: User!
+  vote: Float!
+  view_duration: Float!
+}
+
 type Query {
   address(addressId: Float!): Address
   addresses: [Address!]!
-  consumerLead(showId: Float!): ConsumerLead
+  consumerLead(consumerLeadId: Float!): ConsumerLead
   consumerLeads(paginationQuery: PaginationQueryDto!): [ConsumerLead!]!
   hello(id: Float!): Hello!
   hellos(skip: Int = 0, take: Int = 25): [Hello!]!
@@ -86,6 +108,13 @@ type Query {
   payments: [Payment!]!
   show(showId: Float!): Show
   shows: [Show!]!
+  show_your_style_Entry(showId: Float!): ShowYourStyleEntry
+  get_random_show_your_style_entry: ShowYourStyleEntry
+  show_your_style_entries(paginationQuery: PaginationQueryDto!): [ShowYourStyleEntry!]!
+  show_your_style_vote(showId: Float!): ShowYourStyleVote
+  show_your_style_votes(paginationQuery: PaginationQueryDto!): [ShowYourStyleVote!]!
+  show_your_style_view_record(showId: Float!): ShowYourStyleViewRecord
+  show_your_style_view_records(paginationQuery: PaginationQueryDto!): [ShowYourStyleViewRecord!]!
   user(userId: Float!): User
   users: [User!]!
   verify_code(code: String!, phone: String!): User!
@@ -105,6 +134,9 @@ type Mutation {
   add_products(data: CreateProductDto!): Product!
   add_payment(quantity: String!, productId: Float!): Payment!
   add_show(data: CreateShowInput!): Show!
+  add_show_your_style_entry(videoUrl: String!): ShowYourStyleEntry!
+  add_show_your_style_vote(entryId: Float!, viewDuration: Float!, vote: Float!): ShowYourStyleVote!
+  add_show_your_style_view_record(entryId: Float!): ShowYourStyleViewRecord!
   add_user(phone: String!): String!
   update_user(userId: String!, username: String!, email: String!, file: Upload!): User!
 }
