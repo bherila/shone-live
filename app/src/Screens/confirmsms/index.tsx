@@ -10,58 +10,56 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import StorageKeys from '../../utils/StorageKeys'
 import { useSecureStore } from '../../hooks/useSecureStore'
-import { useApolloClient } from '@apollo/client'
-import {
-  VerifyCode,
-  VerifyCodeVariables,
-} from '../../graphql/queries/types/VerifyCode'
-import { VERIFY_CODE } from '../../graphql/queries/verifyCode'
 import { globalStyles } from '../../utils/globalStyles'
 import Loader from '../../components/Loader'
 import { ScreenNames } from '../../utils/ScreenNames'
 import {
   userInit,
   userInitFailure,
-  userInitSuccess,
+  userInitSuccess
 } from '../../redux/actions/userActions'
 import { useDispatch } from 'react-redux'
+import {
+  User,
+  VerifyCodeQuery,
+  useVerifyCodeLazyQuery
+} from '../../generated/graphql'
 
 export default function ConfirmSms() {
   const navigation = useNavigation()
   const { params } = useRoute<any>()
   const [otp, setOTP] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
+
+  const [
+    verifyCode,
+    { data, loading, error: errorVerifyCode }
+  ] = useVerifyCodeLazyQuery()
 
   const dispatch = useDispatch()
-
-  const client = useApolloClient()
 
   const { setItem, error } = useSecureStore()
 
   const verifyOTP = async () => {
-    try {
-      setIsLoading(true)
-
-      dispatch(userInit())
-      const { data } = await client.query<
-        VerifyCode,
-        VerifyCodeVariables
-      >({
-        query: VERIFY_CODE,
-        variables: {
-          code: otp,
-          phone: '+91' + params?.phone,
-        },
-      })
-
-      dispatch(userInitSuccess(data.verify_code))
-
-      setIsLoading(false)
-      navigateToMainScreen(data)
-    } catch (e) {
-      dispatch(userInitFailure(e))
-    }
+    verifyCode({
+      variables: {
+        code: otp,
+        phone: '+1' + params?.phone
+      }
+    })
+    dispatch(userInit())
   }
+
+  console.log('data', data)
+
+  useEffect(() => {
+    if (!data) return
+    dispatch(userInitSuccess(data?.verify_code as User))
+    navigateToMainScreen(data)
+  }, [data])
+
+  useEffect(() => {
+    if (errorVerifyCode) dispatch(userInitFailure(errorVerifyCode))
+  }, [errorVerifyCode])
 
   useEffect(() => {
     if (otp.length === 6 && !error) {
@@ -69,7 +67,7 @@ export default function ConfirmSms() {
     }
   }, [otp])
 
-  const navigateToMainScreen = async (data?: VerifyCode) => {
+  const navigateToMainScreen = async (data?: VerifyCodeQuery) => {
     if (data?.verify_code?.username) {
       await setItem(StorageKeys.USER, data.verify_code)
       await setItem(StorageKeys.AUTH_TOKEN, data.verify_code.token)
@@ -77,20 +75,20 @@ export default function ConfirmSms() {
         index: 0,
         routes: [
           {
-            name: ScreenNames.HomeScreens.MAIN_SCREEN,
-          },
-        ],
+            name: ScreenNames.HomeScreens.MAIN_SCREEN
+          }
+        ]
       })
     } else {
       navigation.navigate(ScreenNames.AuthScreens.NEW_ACCOUNT, {
-        user: data?.verify_code,
+        user: data?.verify_code
       })
     }
   }
 
   return (
     <View style={globalStyles.container}>
-      <Loader isLoading={isLoading} />
+      <Loader isLoading={loading} />
       <KeyboardAwareScrollView
         contentContainerStyle={{ justifyContent: 'center' }}
       >
@@ -104,7 +102,7 @@ export default function ConfirmSms() {
             style={{
               flex: 3,
               justifyContent: 'center',
-              alignItems: 'center',
+              alignItems: 'center'
             }}
           >
             <Image
@@ -126,7 +124,7 @@ export default function ConfirmSms() {
             style={{
               alignItems: 'center',
               justifyContent: 'center',
-              width: '100%',
+              width: '100%'
             }}
           >
             <OTPTextInput

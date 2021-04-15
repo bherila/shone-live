@@ -12,13 +12,6 @@ import {
   useNavigation,
   useRoute
 } from '@react-navigation/native'
-import { useMutation } from '@apollo/client'
-import {
-  UpdateUser,
-  UpdateUserVariables
-} from '../../graphql/mutations/types/UpdateUser'
-import { UPDATE_USER } from '../../graphql/mutations/updateUser'
-import { VerifyCode_verify_code } from '../../graphql/queries/types/VerifyCode'
 import { ScreenNames } from '../../utils/ScreenNames'
 import { globalStyles } from '../../utils/globalStyles'
 import Loader from '../../components/Loader'
@@ -27,10 +20,15 @@ import StorageKeys from '../../utils/StorageKeys'
 import { useSecureStore } from '../../hooks/useSecureStore'
 import { userInit, userInitSuccess } from '../../redux/actions/userActions'
 import { useDispatch } from 'react-redux'
+import {
+  UpdateUserMutation,
+  User,
+  useUpdateUserMutation
+} from '../../generated/graphql'
 
 interface IParams extends ParamListBase {
   NewAccount: {
-    user: VerifyCode_verify_code
+    user: User
   }
 }
 
@@ -51,11 +49,12 @@ export default function NewAccount() {
   const [
     updateUser,
     { data: userData, loading, error: userUpdateError }
-  ] = useMutation<UpdateUser, UpdateUserVariables>(UPDATE_USER, {
+  ] = useUpdateUserMutation({
     variables: {
       email: email,
       userID: route.params?.user?.id,
-      username: fname + lname
+      username: 'AbhishekTagline5',
+      file: undefined
     }
   })
 
@@ -83,7 +82,7 @@ export default function NewAccount() {
     }
   }
 
-  const navigateToProfileScreen = async (data: UpdateUser) => {
+  const navigateToProfileScreen = async (data: UpdateUserMutation) => {
     await setItem(StorageKeys.AUTH_TOKEN, data.update_user.token)
     await setItem(StorageKeys.USER, data.update_user)
     navigation.navigate(ScreenNames.AuthScreens.PROFILE_PHOTO)

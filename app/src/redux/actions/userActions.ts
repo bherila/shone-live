@@ -1,4 +1,5 @@
-import { User } from '../../../types/models/User'
+import { ApolloError } from '@apollo/client'
+import { User } from '../../generated/graphql'
 import { UserActionTypes } from '../actionTypes/UserActionTypes'
 
 export const userInit = (): UserActionTypes => {
@@ -7,14 +8,14 @@ export const userInit = (): UserActionTypes => {
   }
 }
 
-export const userInitSuccess = (user: User): UserActionTypes => {
+export const userInitSuccess = (user: User ): UserActionTypes => {
   return {
     type: 'USER_INIT_SUCCESS',
     user
   }
 }
 
-export const userInitFailure = (error: object): UserActionTypes => {
+export const userInitFailure = (error: ApolloError): UserActionTypes => {
   return {
     type: 'USER_INIT_FAILURE',
     error

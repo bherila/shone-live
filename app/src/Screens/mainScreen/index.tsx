@@ -8,7 +8,7 @@ import {
   Modal,
   FlatList,
   Platform,
-  Alert,
+  Alert
 } from 'react-native'
 import theme from './../../utils/colors'
 import styles from './styles'
@@ -17,9 +17,6 @@ import { Body, Header, Left, Right } from 'native-base'
 import Menu, { MenuItem } from 'react-native-material-menu'
 import Text from './../../components/Text'
 import { useNavigation } from '@react-navigation/native'
-import { useQuery } from '@apollo/client'
-import { GET_SHOWS } from '../../graphql/queries/shows'
-import { GetShows, GetShows_shows } from '../../graphql/queries/types/GetShows'
 import { globalStyles } from '../../utils/globalStyles'
 import Loader from '../../components/Loader'
 import StorageKeys from '../../utils/StorageKeys'
@@ -32,9 +29,10 @@ import Uppy from '@uppy/core'
 import Transloadit from '@uppy/transloadit'
 import * as ImagePicker from 'expo-image-picker'
 import { TRANSLOADIT_KEY, TRANSLOADIT_TEMPLATE_ID } from '@env'
+import { Show, useGetShowsQuery } from '../../generated/graphql'
 
 interface ListItem {
-  item: GetShows_shows
+  item: Show
   index: number
 }
 
@@ -48,40 +46,39 @@ export default function MainScreen() {
   const [modalVisible, setModalVisible] = useState(false)
   const [video, setVideo] = useState<any>()
 
-  //@ts-ignore
-  const uppyRef: Uppy.Uppy = new Uppy({
+  const uppyRef: Uppy.Uppy = Uppy<Uppy.StrictTypes>({
     autoProceed: true,
-    debug: true,
+    debug: true
   })
 
   uppyRef.use(Transloadit, {
     importFromUploadURLs: true,
     params: {
       auth: { key: TRANSLOADIT_KEY },
-      template_id: TRANSLOADIT_TEMPLATE_ID,
-    },
+      template_id: TRANSLOADIT_TEMPLATE_ID
+    }
   })
 
-  uppyRef.on('complete', (result) => {
+  uppyRef.on('complete', result => {
     console.info('Upload complete:', result)
   })
 
   const {
     data: shows,
-    loading: isShowsLoading,
-    error:showsError,
-  } = useQuery<GetShows>(GET_SHOWS)
+    error: showsError,
+    loading: isShowsLoading
+  } = useGetShowsQuery()
 
   const commingSoon = [
     { img: require('./../../../assets/comingone.png') },
     { img: require('./../../../assets/comingtwo.png') },
-    { img: require('./../../../assets/comingthree.png') },
+    { img: require('./../../../assets/comingthree.png') }
   ]
 
   const moreShows = [
     { img: require('../../../assets/moreone.png') },
     { img: require('../../../assets/moretwo.png') },
-    { img: require('../../../assets/morethree.png') },
+    { img: require('../../../assets/morethree.png') }
   ]
 
   useEffect(() => {
@@ -95,7 +92,7 @@ export default function MainScreen() {
   const menu = useRef<any>()
 
   const hideMenu = () => {
-    menu?.hide()
+    menu?.current?.hide()
   }
 
   const showMenu = () => {
@@ -115,19 +112,19 @@ export default function MainScreen() {
       index: 0,
       routes: [
         {
-          name: ScreenNames.AuthScreens.LOGIN,
-        },
-      ],
+          name: ScreenNames.AuthScreens.LOGIN
+        }
+      ]
     })
 
     hideMenu()
   }
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       if (Platform.OS !== 'web') {
         const {
-          status,
+          status
         } = await ImagePicker.requestMediaLibraryPermissionsAsync()
         if (status !== 'granted') {
           alert('Sorry, we need camera roll permissions to make this work!')
@@ -137,10 +134,9 @@ export default function MainScreen() {
   }, [])
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       if (video) {
         try {
-
           // const url = video.uri.replace('file:///', 'file:/')
           // const response = await fetch(url)
           // const blob = await response.blob()
@@ -151,12 +147,12 @@ export default function MainScreen() {
             name: video.uri.split('/').pop(), // file name
             type: 'video/*', // file type
             data: new Blob([JSON.stringify(video, null, 2)], {
-              type: 'video/*',
+              type: 'video/*'
             }), // file blob
             source: 'Local', // optional, determines the source of the file, for example, Instagram
             isRemote: false, // optional, set to true if actual file is not in the browser, but on some remote server, for example, when using companion in combination with Instagram
 
-            extension: '.mp4',
+            extension: '.mp4'
           })
 
           uppyRef.upload()
@@ -172,7 +168,7 @@ export default function MainScreen() {
       mediaTypes: ImagePicker.MediaTypeOptions.Videos,
       allowsEditing: true,
       quality: 1,
-      videoMaxDuration: 60,
+      videoMaxDuration: 60
     })
 
     if (!result.cancelled) {
@@ -187,7 +183,7 @@ export default function MainScreen() {
         onPress={() => {
           navigation.navigate(ScreenNames.HomeScreens.HOME, {
             type: 'join',
-            showId: item.id,
+            showId: item.id
           })
         }}
       >
@@ -195,7 +191,7 @@ export default function MainScreen() {
           source={{
             uri: item.image_url
               ? item.image_url
-              : 'https://picsum.photos/200/300',
+              : 'https://picsum.photos/200/300'
           }}
           style={styles._image}
         />
@@ -212,7 +208,7 @@ export default function MainScreen() {
           style={{
             flex: 3,
             justifyContent: 'center',
-            alignItems: 'center',
+            alignItems: 'center'
           }}
         >
           <Image
@@ -256,7 +252,7 @@ export default function MainScreen() {
         <View style={styles._newArrView}>
           {shows?.shows && (
             <FlatList
-              data={shows.shows}
+              data={shows.shows as Show[]}
               extraData={shows}
               horizontal
               renderItem={renderShowItem}

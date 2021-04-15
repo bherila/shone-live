@@ -7,10 +7,15 @@
     "ios": "react-native run-ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "types": "npx apollo codegen:generate --localSchemaFile=graphql-schema.json --target=typescript --tagName=gql types"
+    "generate": "graphql-codegen --config codegen.yml",
+    "type-check": "tsc --pretty --noEmit"
   },
   "dependencies": {
     "@apollo/client": "^3.3.13",
+    "@graphql-codegen/cli": "1.21.3",
+    "@graphql-codegen/typescript": "1.21.1",
+    "@graphql-codegen/typescript-operations": "1.17.15",
+    "@graphql-codegen/typescript-react-apollo": "2.2.3",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/native": "^5.9.3",
     "@react-navigation/stack": "^5.14.3",
