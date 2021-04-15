@@ -106,7 +106,7 @@ const exampleShow: ILiveShow = {
 const LiveShow = (props: any) => {
   const route: any = useRoute()
 
-  let flatlist = useRef<any>()
+  const flatlist = useRef<any>()
 
   const [message, setMessage] = useState('')
   const [isLoading, setIsLoading] = useState(false)

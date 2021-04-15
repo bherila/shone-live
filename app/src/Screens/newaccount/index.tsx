@@ -53,8 +53,8 @@ export default function NewAccount() {
   const { setItem, error } = useSecureStore()
   const dispatch = useDispatch()
 
-  let lnameRef = createRef<TextInput>()
-  let emailRef = createRef<TextInput>()
+  const lnameRef = createRef<TextInput>()
+  const emailRef = createRef<TextInput>()
   console.log({ route })
 
   const [
