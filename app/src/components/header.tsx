@@ -3,24 +3,32 @@ import React from 'react'
 import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import { AntDesign } from '@expo/vector-icons'
 import { ScreenNames } from '../utils/ScreenNames'
+import { useNavigation } from '@react-navigation/native'
 // <<<<<<<<<<<<<<<<<<< HEADER COMPONENT >>>>>>>>>>>>>>>>>>>
-export default function Headder(props) {
+export default function Headder(props: any) {
+  const navigation = useNavigation()
   return (
     <View style={styles.container}>
       <View style={styles._userData}>
         <Image
-          source={require('../../assets/chatIcon.png')}
+          // source={require('../../assets/chatIcon.png')}
+          source={{ uri: props.show?.show?.image_url }}
           style={styles._user_profile}
         />
-        <View>
-          <Text style={styles._name}>{props.data.name}</Text>
-          <Text style={styles._handle}>{props.data.handle}</Text>
+        <View style={{ flex: 1, paddingHorizontal: 8 }}>
+          <Text style={styles._name}>{props.show?.show?.title}</Text>
+          <Text style={styles._handle}>{props.show?.show?.subtitle}</Text>
         </View>
         <TouchableOpacity
-          style={styles._shop_all}
-          onPress={() =>
-            props.props.navigation.navigate(ScreenNames.HomeScreens.LIVE_SHOW)
-          }
+          style={[
+            styles._shop_all,
+            {
+              alignSelf: 'center',
+              justifyContent: 'center',
+              paddingVertical: 8,
+            },
+          ]}
+          onPress={() => navigation.navigate(ScreenNames.HomeScreens.LIVE_SHOW)}
         >
           <Text style={styles.shop_btn_text}>LIVE</Text>
         </TouchableOpacity>
@@ -76,6 +84,7 @@ const styles = StyleSheet.create({
   shop_btn_text: {
     fontWeight: 'bold',
     textAlign: 'center',
+    alignSelf: 'center',
     color: 'white',
   },
   _name: {

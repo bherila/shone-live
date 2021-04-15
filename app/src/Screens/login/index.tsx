@@ -19,6 +19,7 @@ import {
 } from '../../graphql/mutations/types/AddUser'
 import { globalStyles } from '../../utils/globalStyles'
 import Loader from '../../components/Loader'
+import { ScreenNames } from '../../utils/ScreenNames'
 
 export default function Login() {
   const navigation = useNavigation()
@@ -30,7 +31,7 @@ export default function Login() {
     AddUserVariables
   >(ADD_USER, {
     variables: {
-      phone: '+1' + mobile,
+      phone: '+91' + mobile,
     },
   })
 
@@ -45,7 +46,7 @@ export default function Login() {
 
     if (error) return Alert.alert(error.message)
     if (data?.addUser) {
-      navigation.navigate('ConfirmSms', {
+      navigation.navigate(ScreenNames.AuthScreens.CONFIRM_SMS, {
         phone: mobile,
       })
     }

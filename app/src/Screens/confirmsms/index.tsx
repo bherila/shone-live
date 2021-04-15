@@ -10,10 +10,9 @@ import OTPTextInput from 'react-native-otp-textinput'
 //@ts-ignore
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
 import { useNavigation, useRoute } from '@react-navigation/native'
-import * as SecureStore from 'expo-secure-store'
 import StorageKeys from '../../utils/StorageKeys'
 import { useSecureStore } from '../../hooks/useSecureStore'
-import { useApolloClient, useQuery } from '@apollo/client'
+import { useApolloClient } from '@apollo/client'
 import {
   VerifyCode,
   VerifyCodeVariables,
@@ -22,6 +21,12 @@ import { VERIFY_CODE } from '../../graphql/queries/verifyCode'
 import { globalStyles } from '../../utils/globalStyles'
 import Loader from '../../components/Loader'
 import { ScreenNames } from '../../utils/ScreenNames'
+import {
+  userInit,
+  userInitFailure,
+  userInitSuccess,
+} from '../../redux/actions/userActions'
+import { useDispatch } from 'react-redux'
 
 export default function ConfirmSms() {
   const navigation = useNavigation()
@@ -29,31 +34,35 @@ export default function ConfirmSms() {
   const [otp, setOTP] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
-  const client = useApolloClient()
+  const dispatch = useDispatch()
 
-  console.log({ params })
+  const client = useApolloClient()
 
   const { setItem, error } = useSecureStore()
 
   const verifyOTP = async () => {
     try {
       setIsLoading(true)
-      const { data, error, loading } = await client.query<
+
+      dispatch(userInit())
+      const { data, error: codeError, loading } = await client.query<
         VerifyCode,
         VerifyCodeVariables
       >({
         query: VERIFY_CODE,
         variables: {
           code: otp,
-          phone: '+1' + params?.phone,
+          phone: '+91' + params?.phone,
         },
       })
 
-      await setItem(StorageKeys.AUTH_TOKEN, data.verifyCode.token)
+      dispatch(userInitSuccess(data.verifyCode))
+      console.log({ data, error })
 
       setIsLoading(false)
       navigateToMainScreen(data)
     } catch (e) {
+      dispatch(userInitFailure(e))
       console.log('Confirm OTP Error : ', { e })
     }
   }
@@ -66,6 +75,8 @@ export default function ConfirmSms() {
 
   const navigateToMainScreen = async (data?: VerifyCode) => {
     if (data?.verifyCode?.username) {
+      await setItem(StorageKeys.USER, data.verifyCode)
+      await setItem(StorageKeys.AUTH_TOKEN, data.verifyCode.token)
       navigation.reset({
         index: 0,
         routes: [

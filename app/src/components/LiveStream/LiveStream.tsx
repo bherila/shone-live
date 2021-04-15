@@ -52,7 +52,7 @@ const LiveStream = (props: Props) => {
       .catch((e) => console.log('Initialization Error : ', { e }))
 
     return () => {
-      ;(async () => {
+      (async () => {
         try {
           await AgoraEngine.current?.stopPreview()
           await AgoraEngine.current?.destroy()
@@ -132,8 +132,6 @@ const LiveStream = (props: Props) => {
       console.log('ERROR WHILE CREATING RTC ENGINE', { e })
     }
   }
-
-  console.log(peerIds)
 
   return (
     <View style={styles.backgroundVideo}>

@@ -24,6 +24,8 @@ import Loader from '../../components/Loader'
 import StorageKeys from '../../utils/StorageKeys'
 import { useSecureStore } from '../../hooks/useSecureStore'
 import { ScreenNames } from '../../utils/ScreenNames'
+import { useDispatch } from 'react-redux'
+import { userLogout } from '../../redux/actions/userActions'
 
 interface ListItem {
   item: GetShows_shows
@@ -32,6 +34,8 @@ interface ListItem {
 
 export default function MainScreen() {
   const navigation = useNavigation()
+
+  const dispatch = useDispatch()
 
   const { setItem, error } = useSecureStore()
 
@@ -81,6 +85,8 @@ export default function MainScreen() {
 
   const Logout = async () => {
     await setItem(StorageKeys.AUTH_TOKEN, '')
+    dispatch(userLogout())
+
     navigation.reset({
       index: 0,
       routes: [

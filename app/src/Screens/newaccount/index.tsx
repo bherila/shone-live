@@ -27,6 +27,14 @@ import { ScreenNames } from '../../utils/ScreenNames'
 import { globalStyles } from '../../utils/globalStyles'
 import Loader from '../../components/Loader'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import StorageKeys from '../../utils/StorageKeys'
+import { useSecureStore } from '../../hooks/useSecureStore'
+import {
+  userInit,
+  userInitFailure,
+  userInitSuccess,
+} from '../../redux/actions/userActions'
+import { useDispatch } from 'react-redux'
 
 interface IParams extends ParamListBase {
   NewAccount: {
@@ -42,8 +50,11 @@ export default function NewAccount() {
   const [lname, setLname] = useState('')
   const [email, setEmail] = useState('')
 
-  let lnameRef = createRef<TextInput>()
-  let emailRef = createRef<TextInput>()
+  const { setItem, error } = useSecureStore()
+  const dispatch = useDispatch()
+
+  const lnameRef = createRef<TextInput>()
+  const emailRef = createRef<TextInput>()
   console.log({ route })
 
   const [
@@ -53,16 +64,20 @@ export default function NewAccount() {
     variables: {
       email: email,
       userID: route.params?.user?.id,
-      username: 'AbhishekTagline1',
+      username: 'AbhishekTagline5',
     },
   })
 
   useEffect(() => {
     console.log({ userData, loading, userUpdateError })
 
-    if (userUpdateError) return Alert.alert(userUpdateError.message)
-    if (userData?.updateUser.token) {
-      navigateToProfileScreen()
+    if (userUpdateError) {
+      dispatch(userInitFailure(userUpdateError))
+      return Alert.alert(userUpdateError.message)
+    }
+    if (userData?.updateUser) {
+      dispatch(userInitSuccess(userData.updateUser))
+      navigateToProfileScreen(userData)
     }
   }, [userData, loading, userUpdateError])
 
@@ -70,6 +85,7 @@ export default function NewAccount() {
     if (fname !== '' && lname !== '' && email !== '') {
       const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
       if (reg.test(email) === true) {
+        dispatch(userInit())
         updateUser()
       } else {
         alert('Enter a valid email')
@@ -79,7 +95,9 @@ export default function NewAccount() {
     }
   }
 
-  const navigateToProfileScreen = () => {
+  const navigateToProfileScreen = async (data: UpdateUser) => {
+    await setItem(StorageKeys.AUTH_TOKEN, data.updateUser.token)
+    await setItem(StorageKeys.USER, data.updateUser)
     navigation.navigate(ScreenNames.AuthScreens.PROFILE_PHOTO)
   }
 

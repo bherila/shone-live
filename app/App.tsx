@@ -66,6 +66,8 @@ import LottieView from 'lottie-react-native'
 import { requestCameraAndAudioPermission } from './src/utils/helper'
 import { ApolloProvider } from '@apollo/client'
 import client from './src/graphql/client'
+import { Provider } from 'react-redux'
+import { store } from './src/redux/store'
 
 export default function App() {
   const [isReady, setIsReady] = useState(false)
@@ -87,26 +89,28 @@ export default function App() {
   }
 
   return (
-    <ApolloProvider client={client}>
-      <>
-        {isReady ? (
-          <Navigator />
-        ) : (
-          <View style={styles.animationContainer}>
-            <LottieView
-              autoPlay={true}
-              loop={false}
-              style={{
-                width: '100%',
-                // height: 100,
-                backgroundColor: '#fff'
-              }}
-              source={require('./assets/shone-lottie-animation-black.json')}
-            />
-          </View>
-        )}
-      </>
-    </ApolloProvider>
+    <Provider store={store}>
+      <ApolloProvider client={client}>
+        <>
+          {isReady ? (
+            <Navigator />
+          ) : (
+            <View style={styles.animationContainer}>
+              <LottieView
+                autoPlay={true}
+                loop={false}
+                style={{
+                  width: '100%',
+                  // height: 100,
+                  backgroundColor: '#fff'
+                }}
+                source={require('./assets/shone-lottie-animation-black.json')}
+              />
+            </View>
+          )}
+        </>
+      </ApolloProvider>
+    </Provider>
   )
 }
 

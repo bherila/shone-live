@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { Dimensions, StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
   container: {
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
   },
   _message_section: {
     flexDirection: 'column',
-    flex: 3,
+    flexGrow: 1,
   },
   _footer_right_secttion: {
     flex: 1,

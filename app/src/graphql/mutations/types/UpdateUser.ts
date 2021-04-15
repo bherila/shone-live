@@ -7,18 +7,18 @@
 // GraphQL mutation operation: UpdateUser
 // ====================================================
 
-export interface UpdateUser_updateUser {
+export interface UpdateUser_update_user {
   __typename: 'User'
   id: string
   email: string | null
   phone: string
-  username: string
+  username: string | null
   verificationCodeTimeSent: string
   token: string | null
 }
 
 export interface UpdateUser {
-  updateUser: UpdateUser_updateUser
+  update_user: UpdateUser_update_user
 }
 
 export interface UpdateUserVariables {

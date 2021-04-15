@@ -7,13 +7,14 @@
     "ios": "react-native run-ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "types": "npx apollo codegen:generate --localSchemaFile=schema.json --target=typescript --tagName=gql types"
+    "types": "npx apollo codegen:generate --localSchemaFile=graphql-schema.json --target=typescript --tagName=gql types"
   },
   "dependencies": {
     "@apollo/client": "^3.3.13",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/native": "^5.9.3",
     "@react-navigation/stack": "^5.14.3",
+    "@types/redux-logger": "^3.0.8",
     "apollo-link-error": "^1.1.13",
     "expo": "^40.0.1",
     "expo-app-loading": "^1.0.1",
@@ -48,6 +49,7 @@
     "react-phone-input-2": "^2.13.9",
     "react-redux": "^7.2.3",
     "redux": "^4.0.5",
+    "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
