@@ -19,6 +19,8 @@ import styles from './styles'
 // components
 import { Poll } from '../../components'
 import { LinearGradient } from 'expo-linear-gradient'
+import ProductBuyDialog from '../../components/ProductBuyDialog'
+import ProductBuyDialogLight from '../../components/ProductBuyDialogLight'
 import { Ionicons } from '@expo/vector-icons'
 
 // purchased component is available but right now its not used
@@ -110,7 +112,7 @@ export default function Home() {
         shouldPlay={true}
         isLooping={true}
         volume={1}
-        isMuted={true}
+        muted={true}
         resizeMode="cover"
       />
       <View style={styles._body_section}>
@@ -169,7 +171,7 @@ export default function Home() {
             {/* <<<<<<<<<<<<<< PRODUCT >>>>>>>>>>>> */}
             {modalvisible ? null : (
               <View style={styles._footer_right_secttion}>
-                {exampleShow.products.map(() => {
+                {exampleShow.products.map((val, i) => {
                   return (
                     <>
                       <TouchableOpacity

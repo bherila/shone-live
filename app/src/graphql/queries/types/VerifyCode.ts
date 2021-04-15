@@ -7,20 +7,20 @@
 // GraphQL query operation: VerifyCode
 // ====================================================
 
-export interface VerifyCode_verify_code {
-  __typename: "User";
-  id: string;
-  email: string | null;
-  phone: string;
-  username: string;
-  token: string | null;
+export interface VerifyCode_verifyCode {
+  __typename: 'User'
+  id: string
+  email: string | null
+  phone: string
+  username: string
+  token: string | null
 }
 
 export interface VerifyCode {
-  verify_code: VerifyCode_verify_code;
+  verifyCode: VerifyCode_verifyCode
 }
 
 export interface VerifyCodeVariables {
-  code: string;
-  phone: string;
+  code: string
+  phone: string
 }

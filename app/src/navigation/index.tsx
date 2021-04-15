@@ -6,7 +6,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 
 import Login from './../Screens/login'
-import ConfirmSms from '../Screens/confirmSms'
+import ConfirmSms from './../Screens/confirmsms'
 import NewAccount from './../Screens/newaccount'
 import ProfilePhoto from './../Screens/profilePhoto'
 import MainScreen from './../Screens/mainScreen'

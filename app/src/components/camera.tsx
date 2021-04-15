@@ -6,25 +6,25 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  StatusBar
+  StatusBar,
 } from 'react-native'
 import { Camera } from 'expo-camera'
 import { Entypo } from '@expo/vector-icons'
 
 let cameraRef: Camera | null
 
-const TakePhoto = (props: { func: (uri: string) => void }) => {
-  const [hasPermission, setHasPermission] = useState<boolean>()
+const TakePhoto = (props) => {
+  const [hasPermission, setHasPermission] = useState(null)
   const [type] = useState(Camera.Constants.Type.back)
   const [, setIsCameraUiOn] = useState(false)
   const [, setIsCapturing] = useState(false)
   const [flashMode] = useState(true)
-  const [, setCapturePhoto] = useState<string>()
+  const [, setCapturePhoto] = useState(null)
 
   const snap = async () => {
     if (cameraRef) {
       const photo = await cameraRef.takePictureAsync({
-        quality: 0.5
+        quality: 0.5,
       })
       setCapturePhoto(photo.uri)
       setIsCapturing(false)
@@ -61,7 +61,7 @@ const TakePhoto = (props: { func: (uri: string) => void }) => {
         <Camera
           style={{ flex: 1 }}
           type={type}
-          ref={ref => (cameraRef = ref)}
+          ref={(ref) => (cameraRef = ref)}
           flashMode={
             flashMode
               ? Camera.Constants.FlashMode.on
@@ -100,11 +100,11 @@ const styles = StyleSheet.create({
     margin: 20,
     alignItems: 'center',
     alignSelf: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   _video_recorder: {
     height: 94,
-    width: 94
+    width: 94,
   },
   _circle: {
     height: 70,
@@ -113,8 +113,8 @@ const styles = StyleSheet.create({
     elevation: 10,
     borderRadius: 35,
     justifyContent: 'center',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 })
 
 export default TakePhoto

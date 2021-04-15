@@ -8,21 +8,21 @@
 // ====================================================
 
 export interface UpdateUser_updateUser {
-  __typename: "User";
-  id: string;
-  email: string | null;
-  phone: string;
-  username: string;
-  verificationCodeTimeSent: string;
-  token: string | null;
+  __typename: 'User'
+  id: string
+  email: string | null
+  phone: string
+  username: string
+  verificationCodeTimeSent: string
+  token: string | null
 }
 
 export interface UpdateUser {
-  updateUser: UpdateUser_updateUser;
+  updateUser: UpdateUser_updateUser
 }
 
 export interface UpdateUserVariables {
-  userID: string;
-  username: string;
-  email: string;
+  userID: string
+  username: string
+  email: string
 }

@@ -1,11 +1,12 @@
 /* eslint-disable no-use-before-define */
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import {
   Image,
   View,
   TouchableOpacity,
   ScrollView,
   Modal,
+  Alert,
   FlatList,
 } from 'react-native'
 import theme from './../../utils/colors'
@@ -32,14 +33,20 @@ interface ListItem {
 export default function MainScreen() {
   const navigation = useNavigation()
 
-  const { setItem } = useSecureStore()
+  const { setItem, error } = useSecureStore()
 
   const [modalVisible, setModalVisible] = useState(false)
 
   const {
     data: shows,
+    error: showsError,
     loading: isShowsLoading,
   } = useQuery<GetShows>(GET_SHOWS)
+  const newArr = [
+    { img: require('./../../../assets/newone.png') },
+    { img: require('./../../../assets/newtwo.png') },
+    { img: require('./../../../assets/newthree.png') },
+  ]
 
   const commingSoon = [
     { img: require('./../../../assets/comingone.png') },
@@ -86,7 +93,7 @@ export default function MainScreen() {
     hideMenu()
   }
 
-  const renderShowItem = ({ item }: ListItem) => {
+  const renderShowItem = ({ item, index }: ListItem) => {
     return (
       <TouchableOpacity
         style={styles._imageView}
