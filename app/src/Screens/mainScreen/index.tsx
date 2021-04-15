@@ -1,5 +1,5 @@
 /* eslint-disable no-use-before-define */
-import React, { useState, useEffect, useRef, useCallback } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import {
   Image,
   View,
@@ -8,6 +8,7 @@ import {
   Modal,
   Alert,
   FlatList,
+  Platform,
 } from 'react-native'
 import theme from './../../utils/colors'
 import styles from './styles'
@@ -26,6 +27,11 @@ import { useSecureStore } from '../../hooks/useSecureStore'
 import { ScreenNames } from '../../utils/ScreenNames'
 import { useDispatch } from 'react-redux'
 import { userLogout } from '../../redux/actions/userActions'
+import AppButton from '../../components/AppButton'
+import Uppy, { StrictTypes } from '@uppy/core'
+import Transloadit from '@uppy/transloadit'
+import * as ImagePicker from 'expo-image-picker'
+import { TRANSLOADIT_KEY, TRANSLOADIT_TEMPLATE_ID } from 'react-native-dotenv'
 
 interface ListItem {
   item: GetShows_shows
@@ -40,6 +46,25 @@ export default function MainScreen() {
   const { setItem, error } = useSecureStore()
 
   const [modalVisible, setModalVisible] = useState(false)
+  const [video, setVideo] = useState<any>()
+
+  //@ts-ignore
+  let uppyRef: Uppy.Uppy = new Uppy({
+    autoProceed: true,
+    debug: true,
+  })
+
+  uppyRef.use(Transloadit, {
+    importFromUploadURLs: true,
+    params: {
+      auth: { key: TRANSLOADIT_KEY },
+      template_id: TRANSLOADIT_TEMPLATE_ID,
+    },
+  })
+
+  uppyRef.on('complete', (result) => {
+    console.log('Upload complete:', result)
+  })
 
   const {
     data: shows,
@@ -68,10 +93,14 @@ export default function MainScreen() {
     setModalVisible(true)
   }, [])
 
+  useEffect(() => {
+    if (showsError) Alert.alert(showsError?.message)
+  }, [showsError])
+
   const menu = useRef<any>()
 
   const hideMenu = () => {
-    menu?.current?.hide()
+    menu?.hide()
   }
 
   const showMenu = () => {
@@ -97,6 +126,67 @@ export default function MainScreen() {
     })
 
     hideMenu()
+  }
+
+  useEffect(() => {
+    ;(async () => {
+      if (Platform.OS !== 'web') {
+        const {
+          status,
+        } = await ImagePicker.requestMediaLibraryPermissionsAsync()
+        if (status !== 'granted') {
+          alert('Sorry, we need camera roll permissions to make this work!')
+        }
+      }
+    })()
+  }, [])
+
+  useEffect(() => {
+    ;(async () => {
+      if (video) {
+        try {
+          console.log({ video })
+          console.log(video.uri)
+
+          // const url = video.uri.replace('file:///', 'file:/')
+          // const response = await fetch(url)
+          // const blob = await response.blob()
+
+          // console.log({ response, blob })
+
+          uppyRef.addFile({
+            name: video.uri.split('/').pop(), // file name
+            type: 'video/*', // file type
+            data: new Blob([JSON.stringify(video, null, 2)], {
+              type: 'video/*',
+            }), // file blob
+            source: 'Local', // optional, determines the source of the file, for example, Instagram
+            isRemote: false, // optional, set to true if actual file is not in the browser, but on some remote server, for example, when using companion in combination with Instagram
+
+            extension: '.mp4',
+          })
+
+          uppyRef.upload()
+        } catch (e) {
+          console.log({ e })
+        }
+      }
+    })()
+  }, [video])
+
+  const pickVideo = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Videos,
+      allowsEditing: true,
+      quality: 1,
+      videoMaxDuration: 60,
+    })
+
+    console.log(result)
+
+    if (!result.cancelled) {
+      setVideo(result)
+    }
   }
 
   const renderShowItem = ({ item, index }: ListItem) => {
@@ -159,6 +249,18 @@ export default function MainScreen() {
       </Header>
 
       <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={globalStyles.rowContainer}>
+          <AppButton title="Show Your Style" onPress={pickVideo} />
+
+          <AppButton title="Watch Styles" onPress={() => Alert.alert('hii')} />
+        </View>
+        {/* <UppyFilePicker
+          uppy={uppy}
+          show={isFilePickerVisible}
+          onRequestClose={() => setIsFilePickerVisible(false)}
+          companionUrl="http://localhost:3000"
+        /> */}
+
         <Text style={styles._screenHeading}>What’s on now!</Text>
         <View style={styles._newArrView}>
           {shows?.shows && (

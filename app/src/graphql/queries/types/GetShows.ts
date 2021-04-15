@@ -11,7 +11,8 @@ export interface GetShows_shows_chatMessages {
   __typename: 'MessageEntity'
   id: string
   message: string
-  author_alias: string
+  timestamp: any
+  alias: string
 }
 
 export interface GetShows_shows {
@@ -19,6 +20,8 @@ export interface GetShows_shows {
   id: string
   title: string
   image_url: string | null
+  start_date: any
+  end_date: any
   chatMessages: GetShows_shows_chatMessages[] | null
 }
 

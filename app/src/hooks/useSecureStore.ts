@@ -11,7 +11,7 @@ export const useSecureStore = (key?: string) => {
       setIsLoading(true)
       ;(async () => {
         try {
-          const storedItem = await SecureStore.getItemAsync(key)
+          const storedItem: string = await SecureStore.getItemAsync(key)
           console.log({ storedItem })
 
           if (storedItem) {
@@ -19,7 +19,7 @@ export const useSecureStore = (key?: string) => {
             //   typeof storedItem == 'object'
             //     ? await JSON.parse(storedItem)
             //     : storedItem
-            const parsedData = await JSON.parse(storedItem)
+            const parsedData = JSON.parse(storedItem)
             setData(parsedData)
           }
           setIsLoading(false)

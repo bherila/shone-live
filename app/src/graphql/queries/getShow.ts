@@ -12,8 +12,7 @@ export const GET_SHOW = gql`
         id
         timestamp
         message
-        author_alias
-        __typename
+        alias
       }
     }
   }

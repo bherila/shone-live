@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     // height: 100,
     // backgroundColor: "#00000069",
   },
-  _body_section: {
+  _bodySection: {
     flexDirection: 'column',
     justifyContent: 'space-between',
     flex: 1,
@@ -29,13 +29,13 @@ const styles = StyleSheet.create({
   _footer: {
     backgroundColor: '#00000069',
   },
-  _chat_row: {
+  _chatRow: {
     flexDirection: 'row',
     // alignItems:"center",
     marginVertical: 5,
     paddingHorizontal: 10,
   },
-  _user_profile: {
+  _userProfile: {
     height: 35,
     width: 35,
     borderRadius: 35 / 2,
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   _message: {
     color: 'white',
   },
-  _footer_chat_row: {
+  _footerChaRow: {
     borderTopWidth: 1,
     borderColor: 'grey',
     flexDirection: 'row',
@@ -58,25 +58,26 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
     paddingTop: 7,
   },
-  _left_box: {
+  _leftBox: {
     height: 80,
     width: 80,
     borderRadius: 20,
     backgroundColor: 'white',
   },
-  _footer_inner_section: {
+  _footerInnerSection: {
     flexDirection: 'row',
     flexWrap: 'nowrap',
     justifyContent: 'space-between',
   },
-  _message_section: {
+  _messageSection: {
     flexDirection: 'column',
     flexGrow: 1,
   },
-  _footer_right_secttion: {
+  _footerRightSecttion: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'flex-end',
+    marginHorizontal: 16,
   },
   _heading: {
     backgroundColor: 'rgb(43,65,98)',
@@ -89,28 +90,28 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 12,
   },
-  _shop_all: {
+  _shopAll: {
     backgroundColor: 'rgb(249,160,63)',
     borderRadius: 25,
     width: 70,
     marginVertical: 10,
     paddingVertical: 7,
   },
-  shop_btn_text: {
+  shopBtnText: {
     color: 'white',
     textAlign: 'center',
     fontWeight: 'bold',
     fontSize: 12,
     elevation: 5,
   },
-  _text_input: {
+  _textInput: {
     color: 'white',
     paddingVertical: 10,
     // marginBottom:15,
     paddingLeft: 30,
     fontWeight: 'bold',
   },
-  _footer_icon_circle: {
+  _footerIconCircle: {
     height: 40,
     width: 40,
     borderRadius: 20,
@@ -119,7 +120,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  footer_btns_row: {
+  footerBtnsRow: {
     flexDirection: 'row',
     alignItems: 'center',
   },

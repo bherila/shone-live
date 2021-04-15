@@ -7,7 +7,6 @@ export const UPDATE_USER = gql`
       email
       phone
       username
-      verificationCodeTimeSent
       token
     }
   }

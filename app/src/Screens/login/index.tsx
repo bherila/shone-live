@@ -31,7 +31,7 @@ export default function Login() {
     AddUserVariables
   >(ADD_USER, {
     variables: {
-      phone: '+91' + mobile,
+      phone: `+1${mobile}`,
     },
   })
 
@@ -45,7 +45,7 @@ export default function Login() {
     console.log({ data, error, loading })
 
     if (error) return Alert.alert(error.message)
-    if (data?.addUser) {
+    if (data?.add_user) {
       navigation.navigate(ScreenNames.AuthScreens.CONFIRM_SMS, {
         phone: mobile,
       })
@@ -87,7 +87,7 @@ export default function Login() {
                 <Text
                   style={{ fontWeight: 'bold', fontSize: 18, color: 'grey' }}
                 >
-                  +1{' '}
+                  +1
                 </Text>
 
                 <TextInputMask

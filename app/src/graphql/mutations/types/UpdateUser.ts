@@ -13,7 +13,6 @@ export interface UpdateUser_update_user {
   email: string | null
   phone: string
   username: string | null
-  verificationCodeTimeSent: string
   token: string | null
 }
 

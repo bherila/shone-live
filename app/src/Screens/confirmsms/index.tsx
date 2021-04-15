@@ -56,7 +56,7 @@ export default function ConfirmSms() {
         },
       })
 
-      dispatch(userInitSuccess(data.verifyCode))
+      dispatch(userInitSuccess(data.verify_code))
       console.log({ data, error })
 
       setIsLoading(false)
@@ -74,9 +74,9 @@ export default function ConfirmSms() {
   }, [otp])
 
   const navigateToMainScreen = async (data?: VerifyCode) => {
-    if (data?.verifyCode?.username) {
-      await setItem(StorageKeys.USER, data.verifyCode)
-      await setItem(StorageKeys.AUTH_TOKEN, data.verifyCode.token)
+    if (data?.verify_code?.username) {
+      await setItem(StorageKeys.USER, data.verify_code)
+      await setItem(StorageKeys.AUTH_TOKEN, data.verify_code.token)
       navigation.reset({
         index: 0,
         routes: [
@@ -87,7 +87,7 @@ export default function ConfirmSms() {
       })
     } else {
       navigation.navigate(ScreenNames.AuthScreens.NEW_ACCOUNT, {
-        user: data?.verifyCode,
+        user: data?.verify_code,
       })
     }
   }

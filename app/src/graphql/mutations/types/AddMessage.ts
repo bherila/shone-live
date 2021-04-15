@@ -10,9 +10,9 @@
 export interface AddMessage_add_message {
   __typename: 'MessageEntity'
   id: string
-  timestamp: any
   message: string
-  author_alias: string
+  timestamp: any
+  alias: string
 }
 
 export interface AddMessage {
@@ -20,6 +20,6 @@ export interface AddMessage {
 }
 
 export interface AddMessageVariables {
-  message: string
   showID: number
+  message: string
 }

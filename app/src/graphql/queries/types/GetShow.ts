@@ -12,7 +12,7 @@ export interface GetShow_show_chatMessages {
   id: string
   timestamp: any
   message: string
-  author_alias: string
+  alias: string
 }
 
 export interface GetShow_show {

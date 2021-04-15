@@ -3,7 +3,6 @@ import {
   ApolloLink,
   HttpLink,
   InMemoryCache,
-  concat,
 } from '@apollo/client'
 import { onError } from 'apollo-link-error'
 import { API_STAGING, API_LOCALHOST } from '../utils/environment'
@@ -23,16 +22,15 @@ const link = onError(({ graphQLErrors, networkError, operation, response }) => {
       console.log({ message, locations, path })
     })
   }
-  if (networkError) console.log(`[Network error]: ${networkError}`)
+  if (networkError)
+    console.log(`[Network error]: ${networkError}`, { networkError })
 })
-const defaultHeaders = {
-  Accept: 'application/*',
-  'Content-Type': '*/*',
-}
 
 const getToken = async () => {
   try {
-    await SecureStore.getItemAsync(StorageKeys.AUTH_TOKEN)
+    const jwtToken = await SecureStore.getItemAsync(StorageKeys.AUTH_TOKEN)
+
+    return jwtToken ? await JSON.parse(jwtToken) : ''
   } catch (err) {
     console.error('Token not found ' + (err.message || err))
   }

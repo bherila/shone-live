@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-use-before-define
-import React, { createRef, useEffect, useRef, useState } from 'react'
+import React, { createRef, useEffect, useState } from 'react'
 import { View, TouchableOpacity, Image, TextInput, Alert } from 'react-native'
 import theme from './../../utils/colors'
 import styles from './styles'
@@ -19,10 +19,7 @@ import {
   UpdateUserVariables,
 } from '../../graphql/mutations/types/UpdateUser'
 import { UPDATE_USER } from '../../graphql/mutations/updateUser'
-import {
-  VerifyCode,
-  VerifyCode_verifyCode,
-} from '../../graphql/queries/types/VerifyCode'
+import { VerifyCode_verify_code } from '../../graphql/queries/types/VerifyCode'
 import { ScreenNames } from '../../utils/ScreenNames'
 import { globalStyles } from '../../utils/globalStyles'
 import Loader from '../../components/Loader'
@@ -38,7 +35,7 @@ import { useDispatch } from 'react-redux'
 
 interface IParams extends ParamListBase {
   NewAccount: {
-    user: VerifyCode_verifyCode
+    user: VerifyCode_verify_code
   }
 }
 
@@ -55,7 +52,6 @@ export default function NewAccount() {
 
   const lnameRef = createRef<TextInput>()
   const emailRef = createRef<TextInput>()
-  console.log({ route })
 
   const [
     updateUser,
@@ -64,19 +60,16 @@ export default function NewAccount() {
     variables: {
       email: email,
       userID: route.params?.user?.id,
-      username: 'AbhishekTagline5',
+      username: fname + lname,
     },
   })
 
   useEffect(() => {
-    console.log({ userData, loading, userUpdateError })
-
     if (userUpdateError) {
-      dispatch(userInitFailure(userUpdateError))
       return Alert.alert(userUpdateError.message)
     }
-    if (userData?.updateUser) {
-      dispatch(userInitSuccess(userData.updateUser))
+    if (userData?.update_user) {
+      dispatch(userInitSuccess(userData.update_user))
       navigateToProfileScreen(userData)
     }
   }, [userData, loading, userUpdateError])
@@ -96,8 +89,8 @@ export default function NewAccount() {
   }
 
   const navigateToProfileScreen = async (data: UpdateUser) => {
-    await setItem(StorageKeys.AUTH_TOKEN, data.updateUser.token)
-    await setItem(StorageKeys.USER, data.updateUser)
+    await setItem(StorageKeys.AUTH_TOKEN, data.update_user.token)
+    await setItem(StorageKeys.USER, data.update_user)
     navigation.navigate(ScreenNames.AuthScreens.PROFILE_PHOTO)
   }
 

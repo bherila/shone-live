@@ -1,4 +1,6 @@
+import { FontDisplay } from 'expo-font'
 import { StyleSheet } from 'react-native'
+import theme from './colors'
 
 export const globalStyles = StyleSheet.create({
   container: {
@@ -17,5 +19,22 @@ export const globalStyles = StyleSheet.create({
   },
   loader: {
     backgroundColor: '#33333390',
+  },
+  rowContainer: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  buttonContainer: {
+    flex: 1,
+    padding: 16,
+    borderRadius: 8,
+    backgroundColor: theme.textColor.color,
+    margin: 8,
+  },
+  primaryButtonText: {
+    fontSize: 20,
+    fontFamily: 'bahnscift',
+    color: 'black',
+    textAlign: 'center',
   },
 })
