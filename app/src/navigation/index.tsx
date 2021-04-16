@@ -21,6 +21,7 @@ import { ScreenNames } from '../utils/ScreenNames'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { userInitSuccess } from '../redux/actions/userActions'
+import WatchStyle from '../Screens/WatchStyle'
 
 const Stack = createStackNavigator()
 
@@ -68,6 +69,11 @@ function Navigation() {
         <Stack.Screen
           name={ScreenNames.HomeScreens.MAIN_SCREEN}
           component={MainScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={ScreenNames.HomeScreens.WATCH_STYLE}
+          component={WatchStyle}
           options={{ headerShown: false }}
         />
         <Stack.Screen

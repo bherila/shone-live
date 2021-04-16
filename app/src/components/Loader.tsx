@@ -1,23 +1,29 @@
 import React from 'react'
-import { ActivityIndicator } from 'react-native'
+import { ActivityIndicator, Text, View } from 'react-native'
 import theme from '../utils/colors'
 import { globalStyles } from '../utils/globalStyles'
 
 interface Props {
   isLoading: boolean
+  progress?: number
+  total?: number
+  isProgressShown?: boolean
 }
 
-const Loader = ({ isLoading }: Props) => {
+const Loader = ({ isLoading, progress, total, isProgressShown }: Props) => {
   return isLoading ? (
-    <ActivityIndicator
+    <View
       style={[
         globalStyles.absoluteView,
         globalStyles.absolouteCenter,
-        globalStyles.loader,
+        globalStyles.loader
       ]}
-      size="large"
-      color={theme.textColor.color}
-    />
+    >
+      <ActivityIndicator size="large" color={theme.textColor.color} />
+      {isProgressShown && (
+        <Text style={{ fontSize: 30, color: 'white' }}>{progress}/100</Text>
+      )}
+    </View>
   ) : null
 }
 
