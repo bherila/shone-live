@@ -1,0 +1,10 @@
+query getMyProducts($limit: Float!, $offset: Float!){
+  my_products(paginationQuery:{limit:$limit,offset:$offset}) {
+    id,
+    name,
+    description,
+    show {
+      title
+    }
+  }
+}

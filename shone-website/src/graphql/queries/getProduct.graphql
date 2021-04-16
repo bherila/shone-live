@@ -1,0 +1,9 @@
+query getProduct($productId: Float!){
+  product(productId:$productId) {
+    name,
+    description,
+    show {
+      id
+    }
+  }
+}

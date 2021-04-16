@@ -15,20 +15,20 @@ export async function getServerSideProps() {
 }
 
 export default function ProductsPage({ store }: { store: StoreModel }) {
-  const { render: renderSKU, value: SKU } = useInput({
+  const [SKU, renderSKU] = useInput({
     name: 'SKU',
     defaultValue: '',
   })
-  const { render: rendertitle, value: title } = useInput({
+  const [title, rendertitle] = useInput({
     name: 'title',
     defaultValue: '',
   })
-  const { render: renderSRP, value: SRP } = useInput({
+  const [SRP, renderSRP] = useInput({
     name: 'SRP',
     defaultValue: 0,
     type: 'number',
   })
-  const { render: renderStock, value: stock } = useInput({
+  const [stock, renderStock] = useInput({
     name: 'stock',
     defaultValue: 0,
     type: 'number',

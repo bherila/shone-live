@@ -30,6 +30,16 @@ export class ProductsService {
     })
   }
 
+  findByUser(paginationQuery: PaginationQueryDto, userId: string) {
+    const { limit, offset } = paginationQuery
+    return this.productRepository.find({
+      relations: ['user', 'show'],
+      skip: offset,
+      take: limit,
+      where: { user: { id: userId } },
+    })
+  }
+
   async findOne(id: number) {
     const product = await this.productRepository.findOne(id, {
       relations: ['user', 'show'],
@@ -40,10 +50,10 @@ export class ProductsService {
     return product
   }
 
-  async create(createProductDto: CreateProductDto) {
-    const user = await this.userRepository.findOne(createProductDto.userId)
+  async create(createProductDto: CreateProductDto, userId: string) {
+    const user = await this.userRepository.findOne(userId)
     if (!user) {
-      throw new NotFoundException(`User #${createProductDto.userId} not found`)
+      throw new NotFoundException(`User #${serId} not found`)
     }
     const show = await this.showRepository.findOne(createProductDto.showId)
     if (!show) {

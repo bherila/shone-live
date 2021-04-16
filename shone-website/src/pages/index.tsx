@@ -11,7 +11,7 @@ import useInput from '../hooks/useInput'
 
 export default function Index(): JSX.Element {
   const [submitted, setSubmitted] = useState(false)
-  const { value: email, setValue: setEmail, valid } = useInput({
+  const [email, , setEmail, valid] = useInput<string>({
     defaultValue: '',
     validate: isValidEmail,
   })

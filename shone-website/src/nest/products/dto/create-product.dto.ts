@@ -4,10 +4,6 @@ import { IsNumber, IsString } from 'class-validator'
 @InputType()
 export class CreateProductDto {
   @Field()
-  @IsString()
-  readonly userId: string
-
-  @Field()
   @IsNumber()
   readonly showId: number
 

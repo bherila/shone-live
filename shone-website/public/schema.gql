@@ -1581,8 +1581,9 @@ type Query {
   hellos(skip: Int = 0, take: Int = 25): [Hello!]!
   messageEntity(messageEntityId: Float!): MessageEntity
   messageEntities: [MessageEntity!]!
-  product(productId: Float!): ShoneProduct
+  product(productId: Float!): Product
   products(paginationQuery: PaginationQueryDto!): [Product!]!
+  my_products(paginationQuery: PaginationQueryDto!): [Product!]!
   payment(PaymentId: Float!): Payment
   payments: [Payment!]!
   show(showId: Float!): Show
@@ -1699,7 +1700,7 @@ type Mutation {
   addHello(newHelloData: HelloInput!): Hello!
   removeHello(id: Float!): Boolean!
   add_message(message: String!, showId: Float!): MessageEntity!
-  add_products(data: CreateProductDto!): ShoneProduct!
+  add_product(data: CreateProductDto!): Product!
   add_payment(quantity: String!, productId: Float!): Payment!
   add_show(data: CreateShowInput!): Show!
   add_show_your_style_entry(videoUrl: String!): ShowYourStyleEntry!
@@ -1726,7 +1727,6 @@ input HelloInput {
 }
 
 input CreateProductDto {
-  userId: String!
   showId: Float!
   name: String!
   description: String!

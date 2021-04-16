@@ -55,7 +55,6 @@ export type CreateAddressDto = {
 }
 
 export type CreateProductDto = {
-  userId: Scalars['String']
   showId: Scalars['Float']
   name: Scalars['String']
   description: Scalars['String']
@@ -93,7 +92,7 @@ export type Mutation = {
   addHello: Hello
   removeHello: Scalars['Boolean']
   add_message: MessageEntity
-  add_products: Product
+  add_product: Product
   add_payment: Payment
   add_show: Show
   add_show_your_style_entry: ShowYourStyleEntry
@@ -124,7 +123,7 @@ export type MutationAdd_MessageArgs = {
   showId: Scalars['Float']
 }
 
-export type MutationAdd_ProductsArgs = {
+export type MutationAdd_ProductArgs = {
   data: CreateProductDto
 }
 
@@ -196,6 +195,7 @@ export type Query = {
   messageEntities: Array<MessageEntity>
   product?: Maybe<Product>
   products: Array<Product>
+  my_products: Array<Product>
   payment?: Maybe<Payment>
   payments: Array<Payment>
   show?: Maybe<Show>
@@ -238,10 +238,14 @@ export type QueryMessageEntityArgs = {
 }
 
 export type QueryProductArgs = {
-  showId: Scalars['Float']
+  productId: Scalars['Float']
 }
 
 export type QueryProductsArgs = {
+  paginationQuery: PaginationQueryDto
+}
+
+export type QueryMy_ProductsArgs = {
   paginationQuery: PaginationQueryDto
 }
 
@@ -340,6 +344,47 @@ export type SubscribeToWaitlistMutation = { __typename?: 'Mutation' } & {
   addConsumerLead: { __typename?: 'ConsumerLead' } & Pick<ConsumerLead, 'email'>
 }
 
+export type AddProductMutationVariables = Exact<{
+  showId: Scalars['Float']
+  name: Scalars['String']
+  description: Scalars['String']
+}>
+
+export type AddProductMutation = { __typename?: 'Mutation' } & {
+  add_product: { __typename?: 'Product' } & Pick<
+    Product,
+    'id' | 'name' | 'description'
+  >
+}
+
+export type AddUserMutationVariables = Exact<{
+  phone: Scalars['String']
+}>
+
+export type AddUserMutation = { __typename?: 'Mutation' } & Pick<
+  Mutation,
+  'add_user'
+>
+
+export type UpdateUserMutationVariables = Exact<{
+  userID: Scalars['String']
+  username: Scalars['String']
+  email: Scalars['String']
+  file: Scalars['Upload']
+}>
+
+export type UpdateUserMutation = { __typename?: 'Mutation' } & {
+  update_user: { __typename?: 'User' } & Pick<
+    User,
+    | 'id'
+    | 'email'
+    | 'phone'
+    | 'username'
+    | 'verification_code_time_sent'
+    | 'token'
+  >
+}
+
 export type GetConsumerLeadsQueryVariables = Exact<{ [key: string]: never }>
 
 export type GetConsumerLeadsQuery = { __typename?: 'Query' } & {
@@ -351,10 +396,71 @@ export type GetConsumerLeadsQuery = { __typename?: 'Query' } & {
   >
 }
 
+export type GetMyProductsQueryVariables = Exact<{
+  limit: Scalars['Float']
+  offset: Scalars['Float']
+}>
+
+export type GetMyProductsQuery = { __typename?: 'Query' } & {
+  my_products: Array<
+    { __typename?: 'Product' } & Pick<
+      Product,
+      'id' | 'name' | 'description'
+    > & { show: { __typename?: 'Show' } & Pick<Show, 'title'> }
+  >
+}
+
+export type GetProductQueryVariables = Exact<{
+  productId: Scalars['Float']
+}>
+
+export type GetProductQuery = { __typename?: 'Query' } & {
+  product?: Maybe<
+    { __typename?: 'Product' } & Pick<Product, 'name' | 'description'> & {
+        show: { __typename?: 'Show' } & Pick<Show, 'id'>
+      }
+  >
+}
+
+export type GetShowsQueryVariables = Exact<{ [key: string]: never }>
+
+export type GetShowsQuery = { __typename?: 'Query' } & {
+  shows: Array<
+    { __typename?: 'Show' } & Pick<Show, 'id' | 'title' | 'image_url'> & {
+        chatMessages?: Maybe<
+          Array<
+            { __typename?: 'MessageEntity' } & Pick<
+              MessageEntity,
+              'id' | 'message' | 'alias'
+            >
+          >
+        >
+      }
+  >
+}
+
 export type GetUsersQueryVariables = Exact<{ [key: string]: never }>
 
 export type GetUsersQuery = { __typename?: 'Query' } & {
   users: Array<{ __typename?: 'User' } & Pick<User, 'email'>>
+}
+
+export type VerifyCodeQueryVariables = Exact<{
+  code: Scalars['String']
+  phone: Scalars['String']
+}>
+
+export type VerifyCodeQuery = { __typename?: 'Query' } & {
+  verify_code: { __typename?: 'User' } & Pick<
+    User,
+    | 'id'
+    | 'email'
+    | 'phone'
+    | 'username'
+    | 'verification_code_time_sent'
+    | 'token'
+    | 'profileUrl'
+  >
 }
 
 export const SubscribeToWaitlistDocument = gql`
@@ -405,6 +511,173 @@ export type SubscribeToWaitlistMutationResult = Apollo.MutationResult<SubscribeT
 export type SubscribeToWaitlistMutationOptions = Apollo.BaseMutationOptions<
   SubscribeToWaitlistMutation,
   SubscribeToWaitlistMutationVariables
+>
+export const AddProductDocument = gql`
+  mutation addProduct($showId: Float!, $name: String!, $description: String!) {
+    add_product(
+      data: { showId: $showId, name: $name, description: $description }
+    ) {
+      id
+      name
+      description
+    }
+  }
+`
+export type AddProductMutationFn = Apollo.MutationFunction<
+  AddProductMutation,
+  AddProductMutationVariables
+>
+
+/**
+ * __useAddProductMutation__
+ *
+ * To run a mutation, you first call `useAddProductMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddProductMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addProductMutation, { data, loading, error }] = useAddProductMutation({
+ *   variables: {
+ *      showId: // value for 'showId'
+ *      name: // value for 'name'
+ *      description: // value for 'description'
+ *   },
+ * });
+ */
+export function useAddProductMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    AddProductMutation,
+    AddProductMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<AddProductMutation, AddProductMutationVariables>(
+    AddProductDocument,
+    options,
+  )
+}
+export type AddProductMutationHookResult = ReturnType<
+  typeof useAddProductMutation
+>
+export type AddProductMutationResult = Apollo.MutationResult<AddProductMutation>
+export type AddProductMutationOptions = Apollo.BaseMutationOptions<
+  AddProductMutation,
+  AddProductMutationVariables
+>
+export const AddUserDocument = gql`
+  mutation AddUser($phone: String!) {
+    add_user(phone: $phone)
+  }
+`
+export type AddUserMutationFn = Apollo.MutationFunction<
+  AddUserMutation,
+  AddUserMutationVariables
+>
+
+/**
+ * __useAddUserMutation__
+ *
+ * To run a mutation, you first call `useAddUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addUserMutation, { data, loading, error }] = useAddUserMutation({
+ *   variables: {
+ *      phone: // value for 'phone'
+ *   },
+ * });
+ */
+export function useAddUserMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    AddUserMutation,
+    AddUserMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<AddUserMutation, AddUserMutationVariables>(
+    AddUserDocument,
+    options,
+  )
+}
+export type AddUserMutationHookResult = ReturnType<typeof useAddUserMutation>
+export type AddUserMutationResult = Apollo.MutationResult<AddUserMutation>
+export type AddUserMutationOptions = Apollo.BaseMutationOptions<
+  AddUserMutation,
+  AddUserMutationVariables
+>
+export const UpdateUserDocument = gql`
+  mutation UpdateUser(
+    $userID: String!
+    $username: String!
+    $email: String!
+    $file: Upload!
+  ) {
+    update_user(
+      userId: $userID
+      username: $username
+      email: $email
+      file: $file
+    ) {
+      id
+      email
+      phone
+      username
+      verification_code_time_sent
+      token
+    }
+  }
+`
+export type UpdateUserMutationFn = Apollo.MutationFunction<
+  UpdateUserMutation,
+  UpdateUserMutationVariables
+>
+
+/**
+ * __useUpdateUserMutation__
+ *
+ * To run a mutation, you first call `useUpdateUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateUserMutation, { data, loading, error }] = useUpdateUserMutation({
+ *   variables: {
+ *      userID: // value for 'userID'
+ *      username: // value for 'username'
+ *      email: // value for 'email'
+ *      file: // value for 'file'
+ *   },
+ * });
+ */
+export function useUpdateUserMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateUserMutation,
+    UpdateUserMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<UpdateUserMutation, UpdateUserMutationVariables>(
+    UpdateUserDocument,
+    options,
+  )
+}
+export type UpdateUserMutationHookResult = ReturnType<
+  typeof useUpdateUserMutation
+>
+export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>
+export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<
+  UpdateUserMutation,
+  UpdateUserMutationVariables
 >
 export const GetConsumerLeadsDocument = gql`
   query getConsumerLeads {
@@ -465,6 +738,189 @@ export type GetConsumerLeadsQueryResult = Apollo.QueryResult<
   GetConsumerLeadsQuery,
   GetConsumerLeadsQueryVariables
 >
+export const GetMyProductsDocument = gql`
+  query getMyProducts($limit: Float!, $offset: Float!) {
+    my_products(paginationQuery: { limit: $limit, offset: $offset }) {
+      id
+      name
+      description
+      show {
+        title
+      }
+    }
+  }
+`
+
+/**
+ * __useGetMyProductsQuery__
+ *
+ * To run a query within a React component, call `useGetMyProductsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMyProductsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMyProductsQuery({
+ *   variables: {
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *   },
+ * });
+ */
+export function useGetMyProductsQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetMyProductsQuery,
+    GetMyProductsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetMyProductsQuery, GetMyProductsQueryVariables>(
+    GetMyProductsDocument,
+    options,
+  )
+}
+export function useGetMyProductsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetMyProductsQuery,
+    GetMyProductsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetMyProductsQuery, GetMyProductsQueryVariables>(
+    GetMyProductsDocument,
+    options,
+  )
+}
+export type GetMyProductsQueryHookResult = ReturnType<
+  typeof useGetMyProductsQuery
+>
+export type GetMyProductsLazyQueryHookResult = ReturnType<
+  typeof useGetMyProductsLazyQuery
+>
+export type GetMyProductsQueryResult = Apollo.QueryResult<
+  GetMyProductsQuery,
+  GetMyProductsQueryVariables
+>
+export const GetProductDocument = gql`
+  query getProduct($productId: Float!) {
+    product(productId: $productId) {
+      name
+      description
+      show {
+        id
+      }
+    }
+  }
+`
+
+/**
+ * __useGetProductQuery__
+ *
+ * To run a query within a React component, call `useGetProductQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProductQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProductQuery({
+ *   variables: {
+ *      productId: // value for 'productId'
+ *   },
+ * });
+ */
+export function useGetProductQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetProductQuery,
+    GetProductQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetProductQuery, GetProductQueryVariables>(
+    GetProductDocument,
+    options,
+  )
+}
+export function useGetProductLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetProductQuery,
+    GetProductQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetProductQuery, GetProductQueryVariables>(
+    GetProductDocument,
+    options,
+  )
+}
+export type GetProductQueryHookResult = ReturnType<typeof useGetProductQuery>
+export type GetProductLazyQueryHookResult = ReturnType<
+  typeof useGetProductLazyQuery
+>
+export type GetProductQueryResult = Apollo.QueryResult<
+  GetProductQuery,
+  GetProductQueryVariables
+>
+export const GetShowsDocument = gql`
+  query GetShows {
+    shows {
+      id
+      title
+      image_url
+      chatMessages {
+        id
+        message
+        alias
+      }
+    }
+  }
+`
+
+/**
+ * __useGetShowsQuery__
+ *
+ * To run a query within a React component, call `useGetShowsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetShowsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetShowsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetShowsQuery(
+  baseOptions?: Apollo.QueryHookOptions<GetShowsQuery, GetShowsQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetShowsQuery, GetShowsQueryVariables>(
+    GetShowsDocument,
+    options,
+  )
+}
+export function useGetShowsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetShowsQuery,
+    GetShowsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetShowsQuery, GetShowsQueryVariables>(
+    GetShowsDocument,
+    options,
+  )
+}
+export type GetShowsQueryHookResult = ReturnType<typeof useGetShowsQuery>
+export type GetShowsLazyQueryHookResult = ReturnType<
+  typeof useGetShowsLazyQuery
+>
+export type GetShowsQueryResult = Apollo.QueryResult<
+  GetShowsQuery,
+  GetShowsQueryVariables
+>
 export const GetUsersDocument = gql`
   query getUsers {
     users {
@@ -516,4 +972,67 @@ export type GetUsersLazyQueryHookResult = ReturnType<
 export type GetUsersQueryResult = Apollo.QueryResult<
   GetUsersQuery,
   GetUsersQueryVariables
+>
+export const VerifyCodeDocument = gql`
+  query VerifyCode($code: String!, $phone: String!) {
+    verify_code(code: $code, phone: $phone) {
+      id
+      email
+      phone
+      username
+      verification_code_time_sent
+      token
+      profileUrl
+    }
+  }
+`
+
+/**
+ * __useVerifyCodeQuery__
+ *
+ * To run a query within a React component, call `useVerifyCodeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useVerifyCodeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useVerifyCodeQuery({
+ *   variables: {
+ *      code: // value for 'code'
+ *      phone: // value for 'phone'
+ *   },
+ * });
+ */
+export function useVerifyCodeQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    VerifyCodeQuery,
+    VerifyCodeQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<VerifyCodeQuery, VerifyCodeQueryVariables>(
+    VerifyCodeDocument,
+    options,
+  )
+}
+export function useVerifyCodeLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    VerifyCodeQuery,
+    VerifyCodeQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<VerifyCodeQuery, VerifyCodeQueryVariables>(
+    VerifyCodeDocument,
+    options,
+  )
+}
+export type VerifyCodeQueryHookResult = ReturnType<typeof useVerifyCodeQuery>
+export type VerifyCodeLazyQueryHookResult = ReturnType<
+  typeof useVerifyCodeLazyQuery
+>
+export type VerifyCodeQueryResult = Apollo.QueryResult<
+  VerifyCodeQuery,
+  VerifyCodeQueryVariables
 >

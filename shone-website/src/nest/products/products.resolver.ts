@@ -1,5 +1,7 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
+import { UseGuards } from '@nestjs/common'
+import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql'
 
+import { AuthGuard } from '../common/auth.guards'
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto'
 import { CreateProductDto } from './dto/create-product.dto'
 import { Product } from './entities/product.entity'
@@ -20,8 +22,22 @@ export class ProductResolver {
   ): Promise<Product[]> {
     return this.productsService.findAll(paginationQuery)
   }
+
+  @Query(() => [Product])
+  @UseGuards(new AuthGuard())
+  my_products(
+    @Context('user') user,
+    @Args('paginationQuery') paginationQuery: PaginationQueryDto,
+  ): Promise<Product[]> {
+    return this.productsService.findByUser(paginationQuery, user.id)
+  }
+
   @Mutation(() => Product)
-  async add_products(@Args('data') data: CreateProductDto) {
-    return await this.productsService.create(data)
+  @UseGuards(new AuthGuard())
+  async add_product(
+    @Context('user') user,
+    @Args('data') data: CreateProductDto,
+  ) {
+    return await this.productsService.create(data, user.id)
   }
 }
