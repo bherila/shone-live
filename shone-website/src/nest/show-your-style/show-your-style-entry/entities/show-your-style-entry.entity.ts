@@ -34,3 +34,24 @@ export class ShowYourStyleEntry {
   @CreateDateColumn({ type: 'timestamp', name: 'submitted_timestamp' })
   readonly submittedTimestamp: Date
 }
+
+@ObjectType()
+@Entity()
+export class ShowYourStyleVideoIdEntry {
+  @Field()
+  @PrimaryGeneratedColumn()
+  readonly id: number
+
+  @Field()
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'user_id' })
+  user: User
+
+  @Field({ name: 'video_id' })
+  @Column({
+    comment: 'Video Id',
+    unique: true,
+    name: 'video_id',
+  })
+  videoId: string
+}

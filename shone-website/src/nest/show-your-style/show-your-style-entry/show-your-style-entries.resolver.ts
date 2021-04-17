@@ -5,6 +5,7 @@ import { AuthGuard } from '../../common/auth.guards'
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
 import { User } from '../../user/entities/user.entity'
 import { ShowYourStyleEntry } from './entities/show-your-style-entry.entity'
+import { ShowYourStyleVideoIdEntry } from './entities/show-your-style-entry.entity'
 import { ShowYourStyleEntriesService } from './show-your-style-entries.service'
 
 @Resolver(() => ShowYourStyleEntry)
@@ -39,6 +40,18 @@ export class ShowYourStyleEntriesResolver {
   ) {
     return await this.showYourStyleEntriesService.create({
       videoUrl,
+      userId: user.id,
+    })
+  }
+
+  @Mutation(() => ShowYourStyleVideoIdEntry)
+  @UseGuards(new AuthGuard())
+  async add_video_id_from_translodit(
+    @Context('user') user: User,
+    @Args('videoId') videoId: string,
+  ) {
+    return await this.showYourStyleEntriesService.storeVideoId({
+      videoId,
       userId: user.id,
     })
   }

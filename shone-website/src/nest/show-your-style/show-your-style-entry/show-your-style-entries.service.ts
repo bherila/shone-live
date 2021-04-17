@@ -9,14 +9,19 @@ import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
 import { User } from '../../user/entities/user.entity'
 import { UserRepository } from '../../user/user.repository'
 import { CreateShowYourStyleEntryDto } from './dto/create-show-your-style-entry.dto'
+import { CreateShowYourStyleVideoIdEntryDto } from './dto/create-show-your-style-entry.dto'
 import { ShowYourStyleEntry } from './entities/show-your-style-entry.entity'
+import { ShowYourStyleVideoIdEntry } from './entities/show-your-style-entry.entity'
 import { ShowYourStyleEntriesRepository } from './show-your-style-entries.repository'
+import { ShowYourStyleVideoIdEntriesRepository } from './show-your-style-entries.repository'
 
 @Injectable()
 export class ShowYourStyleEntriesService {
   constructor(
     @InjectRepository(ShowYourStyleEntry)
     private readonly showYourStyleEntriesRepository: ShowYourStyleEntriesRepository,
+    @InjectRepository(ShowYourStyleVideoIdEntry)
+    private readonly showYourStyleVideoIdEntriesRepository: ShowYourStyleVideoIdEntriesRepository,
     @InjectRepository(User)
     private readonly userRepository: UserRepository,
   ) {}
@@ -76,6 +81,38 @@ export class ShowYourStyleEntriesService {
     })
     const savedShowYourStyleEntry = await this.showYourStyleEntriesRepository.save(
       showYourStyleEntry,
+    )
+    return savedShowYourStyleEntry
+  }
+
+  async storeVideoId(
+    createShowYourStyleVideoIdEntryDto: CreateShowYourStyleVideoIdEntryDto,
+  ) {
+    const user = await this.userRepository.findOne(
+      createShowYourStyleVideoIdEntryDto.userId,
+    )
+    if (!user) {
+      throw new NotFoundException(
+        `User with id: ${createShowYourStyleVideoIdEntryDto.userId} not found`,
+      )
+    }
+    const entry = await this.showYourStyleVideoIdEntriesRepository.findOne({
+      videoId: createShowYourStyleVideoIdEntryDto.videoId,
+    })
+    if (entry) {
+      throw new UnprocessableEntityException(
+        `Entry with that videoId already exists`,
+      )
+    }
+
+    const showYourStyleVideoIdEntry = this.showYourStyleVideoIdEntriesRepository.create(
+      {
+        ...createShowYourStyleVideoIdEntryDto,
+        user,
+      },
+    )
+    const savedShowYourStyleEntry = await this.showYourStyleVideoIdEntriesRepository.save(
+      showYourStyleVideoIdEntry,
     )
     return savedShowYourStyleEntry
   }
