@@ -25,7 +25,6 @@ export class UserService {
       )
     }
     const checkExistUser = await this.userRepository.findOne({ phone })
-    console.log(`checkExistUser`, checkExistUser)
     let userDetail: User = checkExistUser
     if (!checkExistUser) {
       const newUser = this.userRepository.create({
@@ -55,10 +54,8 @@ export class UserService {
         from: process.env.TWILIO_PHONE_NUMBER,
         to: phone,
       })
-      console.info('message.sid', message.sid)
       return true
     } catch (error) {
-      console.error('error => ', error)
       throw new HttpException(
         'send code faild',
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -99,27 +96,31 @@ export class UserService {
     return this.userRepository.find()
   }
 
-  async update(userId, email, username, file) {
-    const checkUserExits = await this.findOne(userId)
+  async update(user: any) {
+    const temoData: any = {}
+    const checkUserExits = await this.findOne(user.userId)
     if (!checkUserExits)
       throw new UnprocessableEntityException(message.userNotExit)
-    const checkusernameExitsOrNot = await this.findOne({ username })
-    if (checkusernameExitsOrNot)
-      throw new UnprocessableEntityException(message.usernameAlreadyExit)
+    if (user.username) {
+      temoData.username = user.username
+      const checkusernameExitsOrNot = await this.findOne(user.username)
+      if (checkusernameExitsOrNot)
+        throw new UnprocessableEntityException(message.usernameAlreadyExit)
+    }
+    if (user.email) temoData.email = user.email
     try {
-      const profileUrl = await fileUpload(file)
+      if (user.file) {
+        const profileUrl = await fileUpload(await user.file)
+        temoData.profileUrl = profileUrl
+      }
       const Payload = {
         id: checkUserExits.id,
         phone: checkUserExits.phone,
       }
       const token = await jwt.sign(Payload, process.env.JWT_SECRET)
-      await this.userRepository.update(userId, {
-        email,
-        username,
-        token,
-        profileUrl,
-      })
-      return await this.findOne(userId)
+      temoData.token = token
+      await this.userRepository.update(user.userId, temoData)
+      return await this.findOne(user.userId)
     } catch (e) {
       throw Error(e)
     }

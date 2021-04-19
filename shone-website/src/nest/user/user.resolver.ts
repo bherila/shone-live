@@ -5,6 +5,7 @@ import { FileUpload } from 'graphql-upload'
 
 import { AuthGuard } from '../common/auth.guards'
 import { User } from './entities/user.entity'
+import { updateUserEntityDto } from './entities/user.entity'
 import { UserService } from './user.service'
 
 @Resolver(() => User)
@@ -39,15 +40,9 @@ export class UserResolver {
   }
 
   @Mutation(() => User)
-  async update_user(
-    @Args({ name: 'file', type: () => GraphQLUpload })
-    file: FileUpload,
-    @Args('email') email: string,
-    @Args('username') username: string,
-    @Args('userId') userId: string,
-  ) {
-    if (file.mimetype === ('image/jpeg' || 'image/jpg' || 'image/png')) {
-      return await this.usersService.update(userId, email, username, file)
+  async update_user(@Args('user') user: updateUserEntityDto) {
+    if (user.file.type === ('image/jpeg' || 'image/jpg' || 'image/png')) {
+      return await this.usersService.update(user)
     } else return Error('Please Upload only jpeg,png,jpg images')
   }
 }
