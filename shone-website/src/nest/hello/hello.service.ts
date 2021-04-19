@@ -22,7 +22,7 @@ export class HelloService {
     return data as any
   }
 
-  async findOneById(id: number): Promise<Hello> {
+  async findOneById(id: string): Promise<Hello> {
     return this.staticData.find((x) => x.id === id)
   }
 
@@ -30,7 +30,7 @@ export class HelloService {
     return this.staticData as Hello[]
   }
 
-  async remove(id: number): Promise<boolean> {
+  async remove(id: string): Promise<boolean> {
     this.staticData = this.staticData.filter((x) => x.id !== id)
     return true
   }

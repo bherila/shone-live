@@ -3,8 +3,8 @@ import Router from 'next/router'
 import React from 'react'
 
 import StoreSection from '../../../../../components/StoreSection'
+import { Brand } from '../../../../../generated/graphql'
 import useInput from '../../../../../hooks/useInput'
-import { StoreModel } from '../../..'
 
 export async function getServerSideProps() {
   return {
@@ -14,7 +14,7 @@ export async function getServerSideProps() {
   }
 }
 
-export default function ProductsPage({ store }: { store: StoreModel }) {
+export default function ProductsPage({ store }: { store: Brand }) {
   const [SKU, renderSKU] = useInput({
     name: 'SKU',
     defaultValue: '',

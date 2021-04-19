@@ -9,7 +9,7 @@ export class HelloResolver {
   constructor(private readonly helloService: HelloService) {}
 
   @Query(() => Hello)
-  async hello(@Args('id') id: number): Promise<Hello> {
+  async hello(@Args('id') id: string): Promise<Hello> {
     const hello = await this.helloService.findOneById(id)
     if (!hello) {
       throw new NotFoundException(id)
@@ -32,7 +32,7 @@ export class HelloResolver {
   }
 
   @Mutation(() => Boolean)
-  async removeHello(@Args('id') id: number) {
+  async removeHello(@Args('id') id: string) {
     return this.helloService.remove(id)
   }
 

@@ -8,15 +8,8 @@ import {
   useAddProductMutation,
   useGetProductLazyQuery,
   useGetShowsQuery,
+  useUpdateProductMutation,
 } from '../../generated/graphql'
-
-export async function getServerSideProps() {
-  return {
-    props: {
-      store: { name: "Bretton's Store", id: 'S00001' },
-    },
-  }
-}
 
 export default function ProductsPage() {
   const router = useRouter()
@@ -30,12 +23,19 @@ export default function ProductsPage() {
   } = useForm({ reValidateMode: 'onChange', mode: 'onChange' })
 
   const { data } = useGetShowsQuery()
+  const isNew = id === 'new'
 
-  const [addProduct, { loading }] = useAddProductMutation()
-  const [getProduct, { data: productData }] = useGetProductLazyQuery()
+  const [addProduct, { loading: loadingAddProduct }] = useAddProductMutation()
+  const [updateProduct, { loading: loadingUpdate }] = useUpdateProductMutation()
+  const [
+    getProduct,
+    { data: productData, loading: loadingGetProduct },
+  ] = useGetProductLazyQuery()
+
+  const loading = loadingAddProduct || loadingUpdate || loadingGetProduct
 
   useEffect(() => {
-    if (id !== 'new')
+    if (!isNew)
       getProduct({
         variables: { productId: +id },
       })
@@ -53,11 +53,13 @@ export default function ProductsPage() {
 
   const onSubmit = async (newProduct) => {
     try {
-      console.log(newProduct)
-      await addProduct({
+      const product = isNew ? newProduct : { id: +id, ...newProduct }
+      console.log(product)
+
+      await (isNew ? addProduct : updateProduct)({
         variables: {
-          ...newProduct,
-          showId: newProduct.showId * 1,
+          ...product,
+          showId: newProduct.showId,
         },
       })
       router.push('/products')
@@ -93,6 +95,7 @@ export default function ProductsPage() {
           registerOptions={{ required: true }}
           error={errors.showId && 'is required'}
         >
+          <option className="text-gray-200" value="" />
           {data?.shows.map((show) => (
             <option key={show.id} value={show.id}>
               {show.title}
@@ -103,8 +106,9 @@ export default function ProductsPage() {
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="submit"
+            disabled={loading}
           >
-            {id === 'new' ? 'Create' : 'Edit'}
+            {isNew ? 'Create' : 'Edit'}
           </button>
         </div>
       </form>

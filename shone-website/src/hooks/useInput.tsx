@@ -31,7 +31,6 @@ export default function useInput<T>({
 
   return [
     value,
-    // eslint-disable-next-line react/display-name
     () => (
       <div className={className || 'my-2 w-full'}>
         <TextField

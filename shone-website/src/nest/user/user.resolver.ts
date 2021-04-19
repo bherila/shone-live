@@ -11,7 +11,7 @@ export class UserResolver {
   constructor(private readonly usersService: UserService) {}
 
   @Query(() => User, { nullable: true })
-  user(@Args('userId') userId: number) {
+  user(@Args('userId') userId: string) {
     return this.usersService.findOne(userId)
   }
 
@@ -27,7 +27,6 @@ export class UserResolver {
     try {
       return this.usersService.create(phone)
     } catch (error) {
-      console.log(`error`, error)
       throw new HttpException(JSON.stringify(error), HttpStatus.BAD_REQUEST)
     }
   }

@@ -17,7 +17,7 @@ export class Payment {
   @PrimaryGeneratedColumn({
     type: 'bigint',
   })
-  readonly id: number
+  readonly id: string
 
   @Field()
   @ManyToOne(() => Product)

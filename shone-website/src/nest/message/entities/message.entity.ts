@@ -19,7 +19,7 @@ export class MessageEntity {
   @PrimaryGeneratedColumn({
     type: 'bigint',
   })
-  readonly id: number
+  readonly id: string
 
   @ManyToOne(() => Show)
   @JoinColumn({

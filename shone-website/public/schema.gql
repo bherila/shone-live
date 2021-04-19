@@ -13,7 +13,7 @@ type User {
 }
 
 type Address {
-  id: Float!
+  id: String!
   city: String!
   country: String!
   line1: String!
@@ -24,8 +24,15 @@ type Address {
   phone: String!
 }
 
+type Brand {
+  id: String!
+  name: String!
+  description: String!
+  user: User!
+}
+
 type ConsumerLead {
-  id: Float!
+  id: String!
   email: String!
   submitted_timestamp: DateTime!
 }
@@ -47,6 +54,7 @@ type Show {
   start_date: DateTime!
   end_date: DateTime!
   chatMessages: [MessageEntity!]
+  brand: Brand!
 }
 
 type MessageEntity {
@@ -56,1637 +64,99 @@ type MessageEntity {
   alias: String!
 }
 
-type Payment {
-  id: ID!
-  user: User!
-  quantity: Float!
-}
-
-type ShoneProduct {
-  id: Float!
+type Product {
+  id: String!
   name: String!
   description: String!
   user: User!
   show: Show!
+  brand: Brand!
 }
 
 type ShowYourStyleEntry {
-  id: Float!
+  id: String!
   user: User!
   video_url: String!
   submitted_timestamp: DateTime!
 }
 
 type ShowYourStyleViewRecord {
-  id: Float!
+  id: String!
   entry: ShowYourStyleEntry!
   user: User!
   view_time: DateTime!
 }
 
 type ShowYourStyleVote {
-  id: Float!
+  id: String!
   entry: ShowYourStyleEntry!
   user: User!
   vote: Float!
   view_duration: Float!
 }
 
-type Album {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
-  id: Float!
-
-  """ID of the parent entity"""
-  parent_id: Float!
-
-  """Parent Type"""
-  type: String!
-
-  """Name of Album"""
-  name: String!
-
-  """Album media"""
-  media: String!
-}
-
-type App {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
-  id: Float!
-
-  """User ID of Owner"""
-  owner_id: Float!
-  app_secret: String!
-
-  """The name of the team/business/project"""
-  name: String!
-
-  """App description"""
-  description: String!
-
-  """Remote Callback URL"""
-  auth_callback_url: String!
-
-  """Auth Redirect URL"""
-  auth_redirect_url: String!
-
-  """Remote url of the icon file."""
-  icon_url: String!
-
-  """API Version"""
-  api_version: String!
-
-  """App Status"""
-  status: String!
-
-  """Date of account creation"""
-  date_created: DateTime!
-
-  """Date of last account update"""
-  date_last_modified: DateTime!
-}
-
-type AuthRequest {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
-  id: Float!
-
-  """App ID"""
-  app_id: Float!
-
-  """ID of User authorizing the App"""
-  user_id: Float!
-
-  """Code used to confirm the request"""
-  code: String!
-
-  """Authorization Token"""
-  token: String!
-
-  """Status of the request"""
-  status: String!
-
-  """Scope of the requested permissions"""
-  scope: String!
-
-  """Time the request expires"""
-  date_expires: DateTime!
-}
-
-type Bag {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
-  id: Float!
-
-  """ID of the Order the Bag belongs to"""
-  order_id: Float!
-
-  """ID of the Merchant the Bag references"""
-  merchant_id: Float!
-
-  """ID of the App creating this Bag"""
-  app_id: Float!
-
-  """ID of the Order on the External Ecommerce Platform"""
-  external_id: String!
-
-  """Status"""
-  status: String!
-
-  """Fulfillment Status"""
-  fulfillment_status: String!
-
-  """Financial Status"""
-  financial_status: String!
-
-  """SKUs added to the bag"""
-  skus: String!
-
-  """Shipping Method of the Bag"""
-  shipping_method: String!
-
-  """Taxes applied to the bag"""
-  taxes: String!
-
-  """Subtotal of the bag"""
-  sub_total: Float!
-
-  """Shipping Total of the bag"""
-  shipping_total: Float!
-
-  """Tax Total of the bag"""
-  tax_total: Float!
-
-  """Total price of the bag"""
-  total: Float!
-
-  """Transactions of the bag"""
-  transactions: String!
-
-  """If bag is tracked externally"""
-  external_checkout: Boolean!
-
-  """Name of Merchant"""
-  merchant_name: String!
-}
-
-type BagShippingMethod {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
-  bag_id: Float!
-  shipping_method_id: String!
-}
-
-type CartPaymentMethod {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
-
-  """Generated payment token."""
-  token: String!
-
-  """Number on the credit or debit card."""
-  card_number: String!
-
-  """CVC code on the credit or debit card."""
-  card_cvc: Float!
-
-  """Expiration month of the credit or debit card."""
-  card_exp_month: Float!
-
-  """Expiration year of the credit or debit card."""
-  card_exp_year: Float!
-
-  """Postal Code of the credit or debit card."""
-  card_postal_code: String!
-}
-
-type Category {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
+type ShowSegment {
   id: String!
-
-  """Category Name"""
-  name: String!
-
-  """Category Slug"""
-  slug: String!
-
-  """Parent ID"""
-  parent_id: String!
-
-  """Category Depth"""
-  depth: Float!
+  brand: Brand!
+  show: Show!
 }
 
-type CurrentPaymentToken {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
-
-  """Stripe Public Token"""
-  stripe_token: String!
-}
-
-type CustomerAddress {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
-
-  """Customer"""
-  customer: String!
-
-  """Customer Shipping Address"""
-  shipping_address: String!
-
-  """Customer Billing Address"""
-  billing_address: String!
-}
-
-type Dimension {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
-  id: Float!
-
-  """Sku ID"""
-  sku_id: Float!
-
-  """What's being measured"""
-  measure: String!
-
-  """Type of Measurement"""
-  type: String!
-
-  """Unit of Measure"""
-  unit_of_measure: String!
-
-  """Value"""
-  value: Float!
-}
-
-type Event {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
-  id: Float!
-
-  """App ID"""
-  app_id: Float!
-
-  """User ID"""
-  user_id: Float!
-
-  """The type of event"""
-  type: String!
-
-  """Message event body"""
-  message: String!
-
-  """Date of account creation"""
-  date_created: DateTime!
-
-  """Date of last account update"""
-  date_last_modified: DateTime!
-}
-
-type GuestOrderCustomer {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
-
-  """First Name"""
-  first_name: String!
-
-  """Last Name"""
-  last_name: String!
-
-  """Email Address of Customer"""
-  email: String!
-}
-
-type LoginRequest {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
-
-  """User Email Address"""
-  username: String!
-
-  """User Password"""
-  password: String!
-}
-
-type LoginResponse {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
-  id: Float!
-
-  """The users first name"""
-  first_name: String!
-
-  """The users last name"""
-  last_name: String!
-
-  """The users raw desired password"""
-  password: String!
-
-  """The users unique email address"""
-  email: String!
-
-  """The Id of the Store the User is associated to."""
-  merchant_id: Float!
-
-  """The allowed values for the user type"""
-  type: String!
-
-  """If a user has verified their emailed address"""
-  verified: Boolean!
-
-  """The status of the user"""
-  status: String!
-
-  """Date of account creation"""
-  date_created: DateTime!
-
-  """Date of last account update"""
-  date_last_modified: DateTime!
-  roles: String!
-
-  """Users Access Token. Currently expires after 1440 minutes."""
-  token: String!
-
-  """Users Refresh Token. Never expires."""
-  refresh_token: String!
-}
-
-type Media {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
-  id: Float!
-
-  """Album ID"""
-  album_id: Float!
-
-  """External ID"""
-  external_id: String!
-
-  """ID of hosted cloud entity"""
-  cloud_id: String!
-
-  """Media URL"""
-  url: String!
-
-  """Media Source URL"""
-  source_url: String!
-
-  """Media Type"""
-  type: String!
-
-  """Display Order"""
-  display_order: Float!
-
-  """Primary Media"""
-  primary_media: Boolean!
-}
-
-type Meta {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
-  id: Float!
-
-  """Offer Id"""
-  offer_id: Float!
-
-  """Key"""
-  key: String!
-
-  """Value"""
-  value: String!
-}
-
-type Offer {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
-  id: Float!
-
-  """The parent/container product ID"""
-  product_id: String!
-
-  """External ID"""
-  external_id: String!
-
-  """External URL"""
-  external_url: String!
-
-  """Name of Product in Offer"""
-  name: String!
-
-  """Product Description"""
-  description: String!
-
-  """Source Platform"""
-  source: String!
-
-  """Name of Merchant Selling Product"""
-  seller: String!
-
-  """Name of Original Vendor"""
-  vendor: String!
-
-  """Merchant ID"""
-  merchant_id: Float!
-
-  """Is Product Available"""
-  available: Boolean!
-
-  """Is Product Visible"""
-  visible: Boolean!
-
-  """Minimum Price the Product sells for"""
-  min_price: Float!
-
-  """Maximum Price the Product sells for"""
-  max_price: Float!
-
-  """Amount given by merchant"""
-  commission_rate: Float!
-
-  """If the commission rate is unique to this offer."""
-  special_commission_rate: Boolean!
-
-  """Default Currency of Offer"""
-  currency: String!
-
-  """Original Category on Source Platform"""
-  source_category_name: String!
-
-  """Additional Meta Data of the Offer"""
-  meta: String!
-
-  """Product Variations"""
-  variants: String!
-
-  """Product SKUs"""
-  skus: String!
-
-  """Product Albums"""
-  albums: String!
-
-  """Is the product 3D Enabled"""
-  three_d_enables: Boolean!
-
-  """3D Resource Object"""
-  three_d_resource: String!
-
-  """Product Type"""
-  type: String!
-
-  """Status"""
-  status: String!
-
-  """Date of offer creation"""
-  date_created: DateTime!
-
-  """Date of last offer update"""
-  date_last_modified: DateTime!
-
-  """Weight Unit"""
-  weight_unit: String!
-
-  """Size Unit"""
-  size_unit: String!
-}
-
-type Order {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
-  id: Float!
-  token: String!
-
-  """ID of the Seller"""
-  seller_id: Float!
-
-  """ID of the User placing the order"""
-  user_id: Float!
-
-  """ID of the App creating the order"""
-  app_id: Float!
-
-  """Customer placing the order"""
-  customer: String!
-
-  """Bags in the Order"""
-  bags: String!
-
-  """Shipping Address of the Order"""
-  shipping_address: String!
-
-  """Billing Address of the Order"""
-  billing_address: String!
-
-  """Payment Method of the Order"""
-  payment_method: String!
-
-  """Subtotal of the Order"""
-  sub_total: Float!
-
-  """Shipping Total of the Order"""
-  shipping_total: Float!
-
-  """Tax Total of the Order"""
-  tax_total: Float!
-
-  """Total of the Order"""
-  total: Float!
-
-  """App Customer ID"""
-  app_customer_id: String!
-
-  """App Order ID"""
-  app_order_id: String!
-
-  """Status of the Order"""
-  status: String!
-
-  """Date of order creation"""
-  date_created: DateTime!
-
-  """Date of last order update"""
-  date_last_modified: DateTime!
-
-  """Is the customer a guest or an authed user."""
-  guest: Boolean!
-
-  """
-  Optional value used to represent an identifier in your system. Max length of 128 characters.
-  """
-  referral_id: String!
-}
-
-type OrderAddress {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
-
-  """Name on Address"""
-  name: String!
-
-  """City"""
-  city: String!
-
-  """State Abbreviation"""
-  state: String!
-
-  """Country ISO2 Code"""
-  country: String!
-
-  """Postal/Zip Code"""
-  postal_code: String!
-
-  """Phone Number"""
-  phone: String!
-
-  """Address Type"""
-  type: String!
-
-  """First line of the Address"""
-  address_1: String!
-
-  """Second line of the Address"""
-  address_2: String!
-}
-
-type OrderCustomer {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
-
-  """ID of the User the Order Customer references"""
-  user_id: Float!
-
-  """First Name"""
-  first_name: String!
-
-  """Last Name"""
-  last_name: String!
-
-  """Email Address of Customer"""
-  email: String!
-  name: String!
-}
-
-type OrderPaymentMethod {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
-
-  """Brand of Card"""
-  brand: String!
-
-  """Last Four Numbers on Card"""
-  last_four: String!
-
-  """Card Expiration Month"""
-  exp_month: Float!
-
-  """Card Expiration Year"""
-  exp_year: Float!
-
-  """Name as it appears on card."""
-  cardholder_name: String!
-
-  """ID of the referenced Payment Method"""
-  payment_method_id: Float!
-
-  """Is Default Method"""
-  default: Boolean!
-}
-
-type OrderSearchRequest {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
-
-  """User ID"""
-  user_id: Float!
-
-  """Merchant ID"""
-  merchant_id: Float!
-
-  """Referral ID"""
-  referral_id: String!
-}
-
-type OrderShippingMethod {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
-
-  """Type of Shipping Method"""
-  type: String!
-  carrier: String!
-
-  """Shipping Method Label"""
-  label: String!
-
-  """Total cost of the Shipping Method"""
-  price: Float!
-
-  """Minimum Subtotal"""
-  min_subtotal: Float!
-  max_subtotal: Float!
-
-  """Minimum Weight"""
-  min_weight: Float!
-
-  """Maximum Weight"""
-  max_weight: Float!
-  id: Float!
-
-  """ID of the referenced Shipping Method"""
-  shipping_method_id: String!
-
-  """ID of the Bag the Shipping Method applies to"""
-  bag_id: Float!
-
-  """ID of the merchant the bag belongs to"""
-  merchant_id: Float!
-
-  """Carrier Tracking Number"""
-  tracking_number: String!
-}
-
-type OrderShippingMethodWrapper {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
-  bag_id: Float!
-  shipping_methods: String!
-}
-
-type OrderSku {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
-  id: Float!
-
-  """ID of the Merchant the SKU belongs to"""
-  merchant_id: Float!
-
-  """ID of the App creating the Order"""
-  app_id: Float!
-
-  """ID of the Product"""
-  product_id: String!
-
-  """ID of the referenced SKU"""
-  sku_id: Float!
-
-  """ID of the SKU on the External Ecommerce Platform"""
-  external_id: String!
-
-  """Name of the SKU"""
-  name: String!
-
-  """URL of the thumbnail image"""
-  thumbnail: String!
-
-  """Quantity of the SKU being purchased"""
-  quantity: Float!
-
-  """SKU Price"""
-  price: Float!
-}
-
-type OrderTax {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
-
-  """ID of the Order the Tax belongs to"""
-  order_id: Float!
-
-  """ID of the Merchant the Bag belongs to"""
-  merchant_id: Float!
-
-  """SKUs covered by the Tax"""
-  skus: String!
-
-  """State abbreviation"""
-  state: String!
-
-  """Postal/Zip Code"""
-  postal_code: String!
-
-  """Tax Rate"""
-  rate: Float!
-
-  """Total Tax amount on Bag"""
-  amount: Float!
-
-  """Description of the Tax"""
-  description: String!
-}
-
-type PageOrder {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
-  total_pages: Float!
-  total_elements: Float!
-  size: Float!
-  content: String!
-  number: Float!
-  sort: String!
-  first: Boolean!
-  last: Boolean!
-  number_of_elements: Float!
-}
-
-type PageProduct {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
-  total_pages: Float!
-  total_elements: Float!
-  size: Float!
-  content: String!
-  number: Float!
-  sort: String!
-  first: Boolean!
-  last: Boolean!
-  number_of_elements: Float!
-}
-
-type Permission {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
-
-  """Name of the Permission"""
-  name: String!
-
-  """Brief description of the Permission"""
-  description: String!
-}
-
-type Product {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
+type UserBrandRole {
   id: String!
-
-  """Product Name"""
-  name: String!
-
-  """Product Description"""
-  description: String!
-
-  """Product Long Description"""
-  long_description: String!
-
-  """Product Slug/Handle"""
-  slug: String!
-
-  """Brand"""
-  brand: String!
-
-  """Is the Product Available"""
-  available: Boolean!
-
-  """Is the Product Visible"""
-  visible: Boolean!
-
-  """Product Type"""
-  type: String!
-  currency: String!
-
-  """Minimum Price of the Product"""
-  min_price: Float!
-
-  """Maximum Price of the Product"""
-  max_price: Float!
-
-  """Product Variants"""
-  variants: String!
-
-  """Merchant Offerings"""
-  offers: String!
-
-  """Categories"""
-  categories: String!
-
-  """Gender"""
-  gender: String!
-
-  """Meta Data"""
-  meta: String!
-
-  """Tags"""
-  tags: String!
-
-  """ID's of related products."""
-  related_product_ids: String!
-
-  """ID's of Cross Saleable Products."""
-  cross_sale_product_ids: String!
-
-  """List of Global Trade Item Numbers"""
-  gtins: String!
-
-  """The default/cover image of the Product"""
-  default_image_url: String!
-
-  """Overall Quantity"""
-  qty_available: Float!
-
-  """The maximum commission rate offered by a merchant."""
-  max_commission_rate: Float!
-
-  """Date of product creation"""
-  date_created: DateTime!
-
-  """Date of last product update"""
-  date_last_modified: DateTime!
+  read: Boolean!
+  write: Boolean!
+  admin: Boolean!
+  user: User!
+  brand: Brand!
 }
 
-type ProductVariant {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
+type UserShowRole {
   id: String!
-
-  """Product ID"""
-  product_id: String!
-  name: String!
-
-  """Is this a visual variant"""
-  visual: Boolean!
-
-  """Product Variant values"""
-  values: String!
-
-  """Display Order"""
-  display_order: Float!
-}
-
-type ProductVariantValue {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
-  id: String!
-
-  """ID of the Variation"""
-  variant_id: String!
-
-  """Name"""
-  name: String!
-
-  """Display Order"""
-  display_order: Float!
-
-  """Color/Pattern Swatch URL"""
-  swatch: String!
-
-  """Hex Code"""
-  hex: String!
-}
-
-type RefreshTokenResponse {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
-
-  """Token"""
-  token: String!
-}
-
-type Role {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
-
-  """Name of the Role"""
-  name: String!
-
-  """Brief description of the Role"""
-  description: String!
-
-  """Permissions available to this Role"""
-  permissions: String!
-}
-
-type SearchRequest {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
-
-  """Query"""
-  query: String!
-
-  """Merchant ID"""
-  merchant_id: Float!
-
-  """Category ID"""
-  category_id: String!
-
-  """Category Slug"""
-  category_slug: String!
-
-  """Minimum Commission"""
-  min_commission: Float!
-
-  """Maximum Commission"""
-  max_commission: Float!
-
-  """Minimum Price"""
-  min_price: Float!
-
-  """Maximum Price"""
-  max_price: Float!
-
-  """Include offers with products"""
-  include_offers: Boolean!
-}
-
-type Sku {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
-  id: Float!
-
-  """ID of the Offer"""
-  offer_id: Float!
-
-  """ID of the Merchant"""
-  merchant_id: Float!
-
-  """ID of the SKU on the External Ecom Platform"""
-  external_id: String!
-
-  """Sku Name"""
-  name: String!
-
-  """Amazon Standard Identification Number"""
-  asin: String!
-
-  """Global Trade Item Number"""
-  gtin: String!
-
-  """Universal Product Code"""
-  upc: String!
-
-  """European Article Number"""
-  ean: String!
-
-  """International Standard Book Number"""
-  isbn: String!
-
-  """Is the Product in Stock"""
-  in_stock: Boolean!
-
-  """Quantity Available"""
-  quantity_available: Float!
-
-  """Is the SKUs inventory tracked"""
-  inventory_tracked: Boolean!
-
-  """Sale Price of the SKU"""
-  sale_price: Float!
-
-  """Retail Price of the SKU"""
-  retail_price: Float!
-
-  """The starting currency of this SKU"""
-  currency: String!
-
-  """Is the product taxable"""
-  taxable: Boolean!
-
-  """Type of Tax on this SKU"""
-  tax_type: String!
-
-  """Sku Albums"""
-  albums: String!
-
-  """Variant Values that apply to this SKU"""
-  variant_values: String!
-  type: String!
-
-  """SKU Status"""
-  status: String!
-
-  """Date of SKU creation"""
-  date_created: DateTime!
-
-  """Date of last SKU update"""
-  date_last_modified: DateTime!
-
-  """Dimensions of the SKU"""
-  sku_dimensions: String!
-}
-
-type SkuDimensions {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
-
-  """ID of SKU Dimensions Belong To"""
-  sku_id: Float!
-
-  """Weight of SKU"""
-  weight: Float!
-
-  """Height of SKU"""
-  height: Float!
-
-  """Width of SKU"""
-  width: Float!
-
-  """Length of SKU"""
-  length: Float!
-
-  """Dimensions Type"""
-  type: String!
-}
-
-type SkuVariantValue {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
-
-  """Variant Name"""
-  variant: String!
-
-  """Variant Value"""
-  value: String!
-}
-
-type Sort {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
-}
-
-type Transaction {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
-  id: Float!
-
-  """ID of the Merchant receiving the transaction"""
-  merchant_id: Float!
-
-  """ID of the User who facilitated the transaction"""
-  seller_id: Float!
-
-  """ID of the App that created the Order"""
-  app_id: Float!
-
-  """ID of the Order the Transaction applies to"""
-  order_id: Float!
-
-  """ID of the Bag the Transaction applies to"""
-  bag_id: Float!
-
-  """ID of the referenced Payment Method"""
-  payment_method_id: Float!
-
-  """ID of the Transaction in the Payment Gateway"""
-  gateway_transaction_id: String!
-
-  """Gateway processing the Transaction"""
-  gateway: String!
-
-  """Total amount being transacted"""
-  amount: Float!
-
-  """Currency the Transaction takes place in"""
-  currency: String!
-
-  """Transaction Type"""
-  type: String!
-
-  """Error Code from gateway if error occurred"""
-  error_code: String!
-
-  """Transaction Status"""
-  status: String!
-
-  """Is this a test Transaction"""
-  test: Boolean!
-
-  """Date of transaction creation"""
-  date_created: DateTime!
-
-  """Date of last transaction update"""
-  date_last_modified: DateTime!
-  orderPaymentMethod: String!
-}
-
-type Variant {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
-
-  """ID of the Product Variant"""
-  product_variant_id: String!
-
-  """ID of the Variant on the External Ecommerce Platform"""
-  external_id: String!
-
-  """Variant Name"""
-  name: String!
-
-  """Is the variant visual"""
-  visual: Boolean!
-  values: String!
-}
-
-type VariantValue {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
-
-  """ID of the Product Variation Value"""
-  product_variant_value_id: String!
-
-  """ID of the Variant in the External Ecommerce Platform"""
-  external_id: String!
-
-  """Variant Value Name"""
-  name: String!
-
-  """ID's of SKU's containing this Variant Value"""
-  sku_ids: String!
-}
-
-type Webhook {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
-  id: Float!
-  app_id: Float!
-
-  """The event being triggered"""
-  event: String!
-
-  """Remote endpoint the webhook posts against."""
-  remote_endpoint: String!
-
-  """Status of the webhook"""
-  status: String!
-
-  """Date of webhook creation"""
-  date_created: DateTime!
-
-  """Date of last webhook update"""
-  date_last_modified: DateTime!
-}
-
-type WebhookError {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
-  id: Float!
-
-  """App ID"""
-  app_id: Float!
-
-  """ID of the webhook the error occurred on"""
-  webhook_id: Float!
-
-  """HTTP Status Code"""
-  status_code: Float!
-
-  """Response from the remote url"""
-  response: String!
-
-  """Date of webhook error creation"""
-  date_created: DateTime!
-
-  """Date of last webhook error update"""
-  date_last_modified: DateTime!
-}
-
-type WebhookHeader {
-  """Global unique ID for this entity (within SHONE)"""
-  ent_id: String!
-
-  """Date this entity was created"""
-  ent_created: DateTime!
-
-  """Date this entity was updated"""
-  ent_updated: DateTime!
-  id: Float!
-
-  """App ID"""
-  app_id: Float!
-
-  """ID of the webhook the header belongs to"""
-  webhook_id: Float!
-
-  """Header Key"""
-  key: String!
-
-  """Header Value"""
-  value: String!
-
-  """Date of webhook header creation"""
-  date_created: DateTime!
-
-  """Date of last webhook header update"""
-  date_last_modified: DateTime!
+  read: Boolean!
+  write: Boolean!
+  admin: Boolean!
+  user: User!
+  show: Show!
 }
 
 type Query {
-  address(addressId: Float!): Address
+  address(addressId: String!): Address
   addresses: [Address!]!
-  consumerLead(consumerLeadId: Float!): ConsumerLead
+  brand(brandId: String!): Brand
+  brands(paginationQuery: PaginationQueryDto!): [Brand!]!
+  my_brands(paginationQuery: PaginationQueryDto!): [Brand!]!
+  consumerLead(consumerLeadId: String!): ConsumerLead
   consumerLeads(paginationQuery: PaginationQueryDto!): [ConsumerLead!]!
-  hello(id: Float!): Hello!
+  hello(id: String!): Hello!
   hellos(skip: Int = 0, take: Int = 25): [Hello!]!
-  messageEntity(messageEntityId: Float!): MessageEntity
+  messageEntity(messageEntityId: String!): MessageEntity
   messageEntities: [MessageEntity!]!
-  product(productId: Float!): Product
+  product(productId: String!): Product
   products(paginationQuery: PaginationQueryDto!): [Product!]!
   my_products(paginationQuery: PaginationQueryDto!): [Product!]!
-  payment(PaymentId: Float!): Payment
+  payment(PaymentId: String!): Payment
   payments: [Payment!]!
-  show(showId: Float!): Show
+  show(showId: String!): Show
   shows: [Show!]!
-  show_your_style_Entry(showId: Float!): ShowYourStyleEntry
+  showsegment(showsegmentId: String!): ShowSegment
+  showsegments(paginationQuery: PaginationQueryDto!): [ShowSegment!]!
+  my_showsegments(paginationQuery: PaginationQueryDto!): [ShowSegment!]!
+  show_your_style_Entry(showId: String!): ShowYourStyleEntry
   get_random_show_your_style_entry: ShowYourStyleEntry
   show_your_style_entries(paginationQuery: PaginationQueryDto!): [ShowYourStyleEntry!]!
-  show_your_style_vote(showId: Float!): ShowYourStyleVote
+  show_your_style_vote(showId: String!): ShowYourStyleVote
   show_your_style_votes(paginationQuery: PaginationQueryDto!): [ShowYourStyleVote!]!
-  show_your_style_view_record(showId: Float!): ShowYourStyleViewRecord
+  show_your_style_view_record(showId: String!): ShowYourStyleViewRecord
   show_your_style_view_records(paginationQuery: PaginationQueryDto!): [ShowYourStyleViewRecord!]!
-  user(userId: Float!): User
+  user(userId: String!): User
   users: [User!]!
   verify_code(code: String!, phone: String!): User!
-  albumEntId(albumEntId: String!): Album
-  albums(paginationQuery: PaginationQueryDto!): [Album!]!
-  appEntId(appEntId: String!): App
-  apps(paginationQuery: PaginationQueryDto!): [App!]!
-  authRequestEntId(authRequestEntId: String!): AuthRequest
-  authRequests(paginationQuery: PaginationQueryDto!): [AuthRequest!]!
-  bagEntId(bagEntId: String!): Bag
-  bags(paginationQuery: PaginationQueryDto!): [Bag!]!
-  bagShippingMethodEntId(bagShippingMethodEntId: String!): BagShippingMethod
-  bagShippingMethods(paginationQuery: PaginationQueryDto!): [BagShippingMethod!]!
-  cartPaymentMethodEntId(cartPaymentMethodEntId: String!): CartPaymentMethod
-  cartPaymentMethods(paginationQuery: PaginationQueryDto!): [CartPaymentMethod!]!
-  categoryEntId(categoryEntId: String!): Category
-  categories(paginationQuery: PaginationQueryDto!): [Category!]!
-  currentPaymentTokenEntId(currentPaymentTokenEntId: String!): CurrentPaymentToken
-  currentPaymentTokens(paginationQuery: PaginationQueryDto!): [CurrentPaymentToken!]!
-  customerAddressEntId(customerAddressEntId: String!): CustomerAddress
-  customerAddresses(paginationQuery: PaginationQueryDto!): [CustomerAddress!]!
-  dimensionEntId(dimensionEntId: String!): Dimension
-  dimensions(paginationQuery: PaginationQueryDto!): [Dimension!]!
-  eventEntId(eventEntId: String!): Event
-  events(paginationQuery: PaginationQueryDto!): [Event!]!
-  guestOrderCustomerEntId(guestOrderCustomerEntId: String!): GuestOrderCustomer
-  guestOrderCustomers(paginationQuery: PaginationQueryDto!): [GuestOrderCustomer!]!
-  loginRequestEntId(loginRequestEntId: String!): LoginRequest
-  loginRequests(paginationQuery: PaginationQueryDto!): [LoginRequest!]!
-  loginResponseEntId(loginResponseEntId: String!): LoginResponse
-  loginResponses(paginationQuery: PaginationQueryDto!): [LoginResponse!]!
-  mediaEntId(mediaEntId: String!): Media
-  media(paginationQuery: PaginationQueryDto!): [Media!]!
-  metaEntId(metaEntId: String!): Meta
-  metas(paginationQuery: PaginationQueryDto!): [Meta!]!
-  offerEntId(offerEntId: String!): Offer
-  offers(paginationQuery: PaginationQueryDto!): [Offer!]!
-  orderEntId(orderEntId: String!): Order
-  orders(paginationQuery: PaginationQueryDto!): [Order!]!
-  orderAddressEntId(orderAddressEntId: String!): OrderAddress
-  orderAddresses(paginationQuery: PaginationQueryDto!): [OrderAddress!]!
-  orderCustomerEntId(orderCustomerEntId: String!): OrderCustomer
-  orderCustomers(paginationQuery: PaginationQueryDto!): [OrderCustomer!]!
-  orderPaymentMethodEntId(orderPaymentMethodEntId: String!): OrderPaymentMethod
-  orderPaymentMethods(paginationQuery: PaginationQueryDto!): [OrderPaymentMethod!]!
-  orderSearchRequestEntId(orderSearchRequestEntId: String!): OrderSearchRequest
-  orderSearchRequests(paginationQuery: PaginationQueryDto!): [OrderSearchRequest!]!
-  orderShippingMethodEntId(orderShippingMethodEntId: String!): OrderShippingMethod
-  orderShippingMethods(paginationQuery: PaginationQueryDto!): [OrderShippingMethod!]!
-  orderShippingMethodWrapperEntId(orderShippingMethodWrapperEntId: String!): OrderShippingMethodWrapper
-  orderShippingMethodWrappers(paginationQuery: PaginationQueryDto!): [OrderShippingMethodWrapper!]!
-  orderSkuEntId(orderSkuEntId: String!): OrderSku
-  orderSkus(paginationQuery: PaginationQueryDto!): [OrderSku!]!
-  orderTaxEntId(orderTaxEntId: String!): OrderTax
-  orderTaxes(paginationQuery: PaginationQueryDto!): [OrderTax!]!
-  pageOrderEntId(pageOrderEntId: String!): PageOrder
-  pageOrders(paginationQuery: PaginationQueryDto!): [PageOrder!]!
-  pageProductEntId(pageProductEntId: String!): PageProduct
-  pageProducts(paginationQuery: PaginationQueryDto!): [PageProduct!]!
-  permissionEntId(permissionEntId: String!): Permission
-  permissions(paginationQuery: PaginationQueryDto!): [Permission!]!
-  productEntId(productEntId: String!): Product
-  productVariantEntId(productVariantEntId: String!): ProductVariant
-  productVariants(paginationQuery: PaginationQueryDto!): [ProductVariant!]!
-  productVariantValueEntId(productVariantValueEntId: String!): ProductVariantValue
-  productVariantValues(paginationQuery: PaginationQueryDto!): [ProductVariantValue!]!
-  refreshTokenResponseEntId(refreshTokenResponseEntId: String!): RefreshTokenResponse
-  refreshTokenResponses(paginationQuery: PaginationQueryDto!): [RefreshTokenResponse!]!
-  roleEntId(roleEntId: String!): Role
-  roles(paginationQuery: PaginationQueryDto!): [Role!]!
-  searchRequestEntId(searchRequestEntId: String!): SearchRequest
-  searchRequests(paginationQuery: PaginationQueryDto!): [SearchRequest!]!
-  skuEntId(skuEntId: String!): Sku
-  skus(paginationQuery: PaginationQueryDto!): [Sku!]!
-  skuDimensionsEntId(skuDimensionsEntId: String!): SkuDimensions
-  skuDimensions(paginationQuery: PaginationQueryDto!): [SkuDimensions!]!
-  skuVariantValueEntId(skuVariantValueEntId: String!): SkuVariantValue
-  skuVariantValues(paginationQuery: PaginationQueryDto!): [SkuVariantValue!]!
-  sortEntId(sortEntId: String!): Sort
-  sorts(paginationQuery: PaginationQueryDto!): [Sort!]!
-  transactionEntId(transactionEntId: String!): Transaction
-  transactions(paginationQuery: PaginationQueryDto!): [Transaction!]!
-  variantEntId(variantEntId: String!): Variant
-  variants(paginationQuery: PaginationQueryDto!): [Variant!]!
-  variantValueEntId(variantValueEntId: String!): VariantValue
-  variantValues(paginationQuery: PaginationQueryDto!): [VariantValue!]!
-  webhookEntId(webhookEntId: String!): Webhook
-  webhooks(paginationQuery: PaginationQueryDto!): [Webhook!]!
-  webhookErrorEntId(webhookErrorEntId: String!): WebhookError
-  webhookErrors(paginationQuery: PaginationQueryDto!): [WebhookError!]!
-  webhookHeaderEntId(webhookHeaderEntId: String!): WebhookHeader
-  webhookHeaders(paginationQuery: PaginationQueryDto!): [WebhookHeader!]!
+  userbrandrole(userbrandroleId: String!): UserBrandRole
+  userbrandroles(paginationQuery: PaginationQueryDto!): [UserBrandRole!]!
+  my_userbrandroles(paginationQuery: PaginationQueryDto!): [UserBrandRole!]!
+  usershowrole(usershowroleId: String!): UserShowRole
+  usershowroles(paginationQuery: PaginationQueryDto!): [UserShowRole!]!
+  my_usershowroles(paginationQuery: PaginationQueryDto!): [UserShowRole!]!
 }
 
 input PaginationQueryDto {
@@ -1696,18 +166,27 @@ input PaginationQueryDto {
 
 type Mutation {
   add_address(data: CreateAddressDto!): Address!
+  add_brand(data: CreateBrandDto!): Brand!
+  update_brand(data: UpdateBrandDto!): Brand!
   addConsumerLead(email: String!): ConsumerLead!
   addHello(newHelloData: HelloInput!): Hello!
-  removeHello(id: Float!): Boolean!
-  add_message(message: String!, showId: Float!): MessageEntity!
+  removeHello(id: String!): Boolean!
+  add_message(message: String!, showId: String!): MessageEntity!
   add_product(data: CreateProductDto!): Product!
-  add_payment(quantity: String!, productId: Float!): Payment!
+  update_product(data: UpdateProductDto!): Product!
+  add_payment(quantity: String!, productId: String!): Payment!
   add_show(data: CreateShowInput!): Show!
+  add_showsegment(data: CreateShowSegmentDto!): ShowSegment!
+  update_showsegment(data: UpdateShowSegmentDto!): ShowSegment!
   add_show_your_style_entry(videoUrl: String!): ShowYourStyleEntry!
-  add_show_your_style_vote(entryId: Float!, viewDuration: Float!, vote: Float!): ShowYourStyleVote!
-  add_show_your_style_view_record(entryId: Float!): ShowYourStyleViewRecord!
+  add_show_your_style_vote(entryId: String!, viewDuration: Float!, vote: Float!): ShowYourStyleVote!
+  add_show_your_style_view_record(entryId: String!): ShowYourStyleViewRecord!
   add_user(phone: String!): String!
   update_user(userId: String!, username: String!, email: String!, file: Upload!): User!
+  add_userbrandrole(data: CreateUserBrandRoleDto!): UserBrandRole!
+  update_userbrandrole(data: UpdateUserBrandRoleDto!): UserBrandRole!
+  add_usershowrole(data: CreateUserShowRoleDto!): UserShowRole!
+  update_usershowrole(data: UpdateUserShowRoleDto!): UserShowRole!
 }
 
 input CreateAddressDto {
@@ -1722,12 +201,31 @@ input CreateAddressDto {
   phone: String!
 }
 
+input CreateBrandDto {
+  name: String!
+  description: String!
+}
+
+input UpdateBrandDto {
+  id: String!
+  name: String!
+  description: String!
+}
+
 input HelloInput {
   message: String!
 }
 
 input CreateProductDto {
-  showId: Float!
+  showId: String
+  brandId: String
+  name: String!
+  description: String!
+}
+
+input UpdateProductDto {
+  id: String!
+  showId: String!
   name: String!
   description: String!
 }
@@ -1739,5 +237,44 @@ input CreateShowInput {
   endDate: DateTime!
 }
 
+input CreateShowSegmentDto {
+  showId: String!
+  brand_id: String!
+}
+
+input UpdateShowSegmentDto {
+  id: String!
+  name: String!
+  description: String!
+}
+
 """The `Upload` scalar type represents a file upload."""
 scalar Upload
+
+input CreateUserBrandRoleDto {
+  brandId: String!
+  userId: String!
+  read: Boolean!
+  write: Boolean!
+  admin: Boolean!
+}
+
+input UpdateUserBrandRoleDto {
+  id: String!
+  name: String!
+  description: String!
+}
+
+input CreateUserShowRoleDto {
+  showId: String!
+  userId: String!
+  read: Boolean!
+  write: Boolean!
+  admin: Boolean!
+}
+
+input UpdateUserShowRoleDto {
+  id: String!
+  name: String!
+  description: String!
+}

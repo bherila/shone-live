@@ -1,4 +1,4 @@
-query getProduct($productId: Float!){
+query GetProduct($productId: String!){
   product(productId:$productId) {
     name,
     description,

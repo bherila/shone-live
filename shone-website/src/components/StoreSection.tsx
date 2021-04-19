@@ -10,9 +10,12 @@ import {
 import Router from 'next/router'
 import React from 'react'
 
-import { StoreModel } from '../pages/seller'
+import { Brand } from '../generated/graphql'
 
 const useStyles = makeStyles((theme) => ({
+  toolbar: {
+    backgroundColor: theme.palette.common.black,
+  },
   root: {
     flexGrow: 1,
   },
@@ -31,7 +34,7 @@ export default function StoreSection({
   store,
   children,
 }: {
-  store: StoreModel
+  store: Brand
   children: React.ReactNode
 }) {
   const classes = useStyles()
@@ -39,7 +42,7 @@ export default function StoreSection({
   return (
     <>
       <AppBar position="static">
-        <Toolbar>
+        <Toolbar className={classes.toolbar}>
           <Box
             display="flex"
             alignItems="center"

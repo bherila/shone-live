@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 
 import StoreSection from '../../../../../components/StoreSection'
 import Table from '../../../../../components/Table'
-import { StoreModel } from '../../..'
+import { Brand } from '../../../../../generated/graphql'
 
 export async function getServerSideProps() {
   return {
@@ -32,7 +32,7 @@ export default function ProductsPage({
   store,
   products,
 }: {
-  store: StoreModel
+  store: Brand
   products: ProductModel[]
 }) {
   const [newProducts, setNewProducts] = useState([])

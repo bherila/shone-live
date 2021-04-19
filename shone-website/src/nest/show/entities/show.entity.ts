@@ -1,14 +1,22 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql'
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm'
 
+import { Brand } from '../../brands/entities/brand.entity'
 import { MessageEntity } from '../../message/entities/message.entity'
 
 @ObjectType()
 @Entity()
 export class Show {
   @Field(() => ID)
-  @PrimaryGeneratedColumn()
-  readonly id: number
+  @PrimaryGeneratedColumn('uuid')
+  readonly id: string
 
   @Field()
   @Column()
@@ -35,4 +43,5 @@ export class Show {
   @Field(() => [MessageEntity], { nullable: true })
   @OneToMany(() => MessageEntity, (message) => message.show)
   chatMessages: MessageEntity[]
+
 }

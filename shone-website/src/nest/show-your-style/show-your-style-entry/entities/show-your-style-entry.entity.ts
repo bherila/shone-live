@@ -14,8 +14,8 @@ import { User } from '../../../user/entities/user.entity'
 @Entity()
 export class ShowYourStyleEntry {
   @Field()
-  @PrimaryGeneratedColumn()
-  readonly id: number
+  @PrimaryGeneratedColumn('uuid')
+  readonly id: string
 
   @Field()
   @ManyToOne(() => User)

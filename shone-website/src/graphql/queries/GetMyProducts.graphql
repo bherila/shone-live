@@ -1,0 +1,7 @@
+query GetMyBrands($limit: Float!, $offset: Float!){
+  my_brands(paginationQuery:{limit:$limit,offset:$offset}) {
+    id,
+    name,
+    description,
+  }
+}

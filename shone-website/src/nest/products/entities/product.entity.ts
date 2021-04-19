@@ -7,15 +7,16 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm'
 
-import { Show } from '../../show/entities/show.entity'
+import { Brand } from '../../brands/entities/brand.entity'
+import { ShowSegment } from '../../show-segment/entities/show-segment.entity'
 import { User } from '../../user/entities/user.entity'
 
 @ObjectType()
 @Entity()
 export class Product {
   @Field()
-  @PrimaryGeneratedColumn()
-  readonly id: number
+  @PrimaryGeneratedColumn('uuid')
+  readonly id: string
 
   @Field()
   @Column({
@@ -29,21 +30,6 @@ export class Product {
   })
   description: string
 
-  // @Column({
-  //     comment: "base retail price for the show",
-  // })
-  // price: number;
-
-  // @Column({
-  //     comment: "quantity available to sell for associated show",
-  // })
-  // quantity: number;
-
-  // @Column({
-  //     comment: "currently available quantity. updated after each successful transaction"
-  // })
-  // current_quantity: number;
-
   @Field()
   @ManyToOne(() => User)
   @JoinColumn({
@@ -52,13 +38,16 @@ export class Product {
   user: User
 
   @Field()
-  @ManyToOne(() => Show)
+  @ManyToOne(() => ShowSegment)
   @JoinColumn({
-    name: 'show_id',
+    name: 'show_segment_id',
   })
-  show: Show
+  showSegment: ShowSegment
 
-  // @Field()
-  // @ManyToOne(() => Payment)
-  // paymnet: Payment
+  @Field()
+  @ManyToOne(() => Brand)
+  @JoinColumn({
+    name: 'brand_id',
+  })
+  brand: Brand
 }

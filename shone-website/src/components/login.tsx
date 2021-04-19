@@ -7,7 +7,6 @@ import {
   useAddUserMutation,
   useVerifyCodeLazyQuery,
 } from '../generated/graphql'
-import useInput from '../hooks/useInput'
 
 interface LoginPageProps {
   redirectPath: string
@@ -33,12 +32,12 @@ const Login = ({ redirectPath }: LoginPageProps) => {
     try {
       await addUser({
         variables: {
-          phone: `+1${phone}`,
+          phone: `${phone}`,
         },
       })
       setStep(2)
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
 
@@ -46,7 +45,7 @@ const Login = ({ redirectPath }: LoginPageProps) => {
     verifyCode({
       variables: {
         code,
-        phone: `+1${phone}`,
+        phone: phone,
       },
     })
   }
@@ -59,7 +58,6 @@ const Login = ({ redirectPath }: LoginPageProps) => {
   }, [verify])
 
   const onSubmit = (data) => {
-    console.log(data)
     if (step === 1) {
       handleAddUser(data.phone)
     } else {
@@ -79,7 +77,6 @@ const Login = ({ redirectPath }: LoginPageProps) => {
                 label="Phone"
                 {...register('phone', {
                   required: true,
-                  validate: (mobile) => mobile.replace(/-/g, '')?.length === 10,
                 })}
               />
               {errors['phone'] && 'error'}

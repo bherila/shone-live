@@ -1,4 +1,4 @@
-mutation addProduct($showId: Float!, $name: String!, $description: String!) {
+mutation AddProduct($showId: String!, $name: String!, $description: String!) {
   add_product(
     data: { showId: $showId, name: $name, description: $description }
   ) {

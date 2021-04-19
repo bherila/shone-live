@@ -9,7 +9,7 @@ export class ShowResolver {
   constructor(private readonly showsService: ShowService) {}
 
   @Query(() => Show, { nullable: true })
-  show(@Args('showId') showId: number) {
+  show(@Args('showId') showId: string) {
     return this.showsService.findOne(showId)
   }
 

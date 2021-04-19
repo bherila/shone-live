@@ -1,15 +1,15 @@
 import { Field, InputType } from '@nestjs/graphql'
-import { IsNumber } from 'class-validator'
+import { IsNumber, IsString } from 'class-validator'
 
 @InputType()
 export class CreateShowYourStyleVoteDto {
   @Field()
-  @IsNumber()
-  readonly userId: number
+  @IsString()
+  readonly userId: string
 
   @Field()
-  @IsNumber()
-  readonly entryId: number
+  @IsString()
+  readonly entryId: string
 
   @Field()
   @IsNumber()

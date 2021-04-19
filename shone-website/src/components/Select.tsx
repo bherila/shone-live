@@ -28,7 +28,6 @@ export default function Select({
         className="shadow appearance-none border bg-white rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         {...register(name, registerOptions)}
       >
-        <option className="text-gray-200" value="" disabled></option>
         {children}
       </select>
       {error && <p className="text-red-500 pl-1 text-xs italic">{error}</p>}

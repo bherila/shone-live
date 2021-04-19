@@ -34,7 +34,7 @@ export class ShowYourStyleEntriesService {
     })
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     const showYourStyleEntry = await this.showYourStyleEntriesRepository.findOne(
       id,
     )
@@ -46,7 +46,7 @@ export class ShowYourStyleEntriesService {
     return showYourStyleEntry
   }
 
-  async findRandomForUser(userId: number) {
+  async findRandomForUser(userId: string) {
     const showYourStyleEntry = await this.showYourStyleEntriesRepository
       .createQueryBuilder('show_your_style_entry')
       .where(
@@ -151,7 +151,7 @@ export class ShowYourStyleEntriesService {
     }
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     const showYourStyleEntry = await this.findOne(id)
     return this.showYourStyleEntriesRepository.remove(showYourStyleEntry)
   }
