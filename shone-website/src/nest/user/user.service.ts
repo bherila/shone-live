@@ -65,7 +65,8 @@ export class UserService {
 
   async verifySmsCode(phone, code) {
     let userDetail = await this.findOne({ phone })
-    if (!userDetail) throw new UnprocessableEntityException(message.userNotExit)
+    if (!userDetail)
+      throw new UnprocessableEntityException(message.userNotExist)
     const currentTime = new Date().toUTCString()
     const findDiff =
       (new Date(currentTime).getTime() -
@@ -98,14 +99,14 @@ export class UserService {
 
   async update(user: any) {
     const temoData: any = {}
-    const checkUserExits = await this.findOne(user.id)
-    if (!checkUserExits)
-      throw new UnprocessableEntityException(message.userNotExit)
+    const checkUserExist = await this.findOne(user.id)
+    if (!checkUserExist)
+      throw new UnprocessableEntityException(message.userNotExist)
     if (user.username) {
       temoData.username = user.username
-      const checkusernameExitsOrNot = await this.findOne(user.username)
-      if (checkusernameExitsOrNot)
-        throw new UnprocessableEntityException(message.usernameAlreadyExit)
+      const checkusernameExistsOrNot = await this.findOne(user.username)
+      if (checkusernameExistsOrNot)
+        throw new UnprocessableEntityException(message.usernameAlreadyExist)
     }
     if (user.email) temoData.email = user.email
     try {
@@ -114,8 +115,8 @@ export class UserService {
         temoData.profileUrl = profileUrl
       }
       const Payload = {
-        id: checkUserExits.id,
-        phone: checkUserExits.phone,
+        id: checkUserExist.id,
+        phone: checkUserExist.phone,
       }
       const token = await jwt.sign(Payload, process.env.JWT_SECRET)
       temoData.token = token

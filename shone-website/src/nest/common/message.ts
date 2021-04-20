@@ -1,6 +1,6 @@
 export const message = {
-  userNotExit: 'user not exits',
-  usernameAlreadyExit: 'username already exits',
+  userNotExist: 'user not exits',
+  usernameAlreadyExist: 'username already exits',
   codeExpired: 'code expired',
   wrongCode: 'Wrong code',
 }
