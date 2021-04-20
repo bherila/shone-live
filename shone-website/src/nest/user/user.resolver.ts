@@ -1,9 +1,8 @@
 import { HttpException, HttpStatus, UseGuards } from '@nestjs/common'
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql'
-import { GraphQLUpload } from 'apollo-server-express'
-import { FileUpload } from 'graphql-upload'
 
 import { AuthGuard } from '../common/auth.guards'
+import { updateUserEntityDto } from './dto/user.dto'
 import { User } from './entities/user.entity'
 import { UserService } from './user.service'
 
@@ -39,15 +38,14 @@ export class UserResolver {
   }
 
   @Mutation(() => User)
-  async update_user(
-    @Args({ name: 'file', type: () => GraphQLUpload })
-    file: FileUpload,
-    @Args('email') email: string,
-    @Args('username') username: string,
-    @Args('userId') userId: string,
-  ) {
+  async update_user(@Args('user') user: updateUserEntityDto) {
+    const file = await user.file
+    user = {
+      ...user,
+      file,
+    }
     if (file.mimetype === ('image/jpeg' || 'image/jpg' || 'image/png')) {
-      return await this.usersService.update(userId, email, username, file)
+      return await this.usersService.update(user)
     } else return Error('Please Upload only jpeg,png,jpg images')
   }
 }
