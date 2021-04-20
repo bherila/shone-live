@@ -3,7 +3,7 @@
  * modifications between BEGIN MANUAL SECTION and END MANUAL SECTION
  * designators.
  *
- * @generated-editable Codelock<<QydkTGJx76wmCoucch588oNlFiBVGfdY>>
+ * @generated-editable Codelock<<yZnNEB6tikivDQGNWJ7W6XHdo1QzzamW>>
  */
 
 import { Field, ObjectType } from '@nestjs/graphql'
@@ -23,7 +23,7 @@ export class OrderTax {
     name: 'ent_id',
     description: 'Global unique ID for this entity (within SHONE)',
   })
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn('uuid', { name: 'ent_id' })
   readonly entId: string
 
   @Field({ name: 'ent_created', description: 'Date this entity was created' })
