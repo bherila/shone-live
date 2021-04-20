@@ -13,10 +13,8 @@ import { User } from '../../user/entities/user.entity'
 @ObjectType()
 @Entity()
 export class Payment {
-  @Field(() => ID)
-  @PrimaryGeneratedColumn({
-    type: 'bigint',
-  })
+  @Field()
+  @PrimaryGeneratedColumn('uuid')
   readonly id: string
 
   @Field()

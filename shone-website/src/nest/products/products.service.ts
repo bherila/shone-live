@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import {
+  Injectable,
+  NotFoundException,
+  UnprocessableEntityException,
+} from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 
 import { BrandRepository } from '../brands/brands.repository'
@@ -21,7 +25,7 @@ export class ProductsService {
     @InjectRepository(User)
     private readonly userRepository: UserRepository,
     @InjectRepository(ShowSegment)
-    private readonly showsegmentRepository: ShowSegmentRepository,
+    private readonly showSegmentRepository: ShowSegmentRepository,
     @InjectRepository(Brand)
     private readonly brandRepository: BrandRepository,
   ) {}
@@ -29,7 +33,7 @@ export class ProductsService {
   findAll(paginationQuery: PaginationQueryDto) {
     const { limit, offset } = paginationQuery
     return this.productRepository.find({
-      relations: ['user', 'showSegment'],
+      relations: ['user', 'brand', 'showSegments'],
       skip: offset,
       take: limit,
     })
@@ -38,16 +42,26 @@ export class ProductsService {
   findByUser(paginationQuery: PaginationQueryDto, userId: string) {
     const { limit, offset } = paginationQuery
     return this.productRepository.find({
-      relations: ['user', 'showSegment'],
+      relations: ['user', 'brand', 'showSegments'],
       skip: offset,
       take: limit,
       where: { user: { id: userId } },
     })
   }
 
+  findByBrand(paginationQuery: PaginationQueryDto, brandId: string) {
+    const { limit, offset } = paginationQuery
+    return this.productRepository.find({
+      relations: ['user', 'brand', 'showSegments'],
+      skip: offset,
+      take: limit,
+      where: { brand: { id: brandId } },
+    })
+  }
+
   async findOne(id: string) {
     const product = await this.productRepository.findOne(id, {
-      relations: ['user', 'showSegment'],
+      relations: ['user', 'brand', 'showSegments'],
     })
     if (!product) {
       throw new NotFoundException(`Product id: ${id} not found`)
@@ -56,35 +70,31 @@ export class ProductsService {
   }
 
   async create(createProductDto: CreateProductDto, userId: string) {
+    if (!createProductDto.showSegmentId && !createProductDto.brandId) {
+      throw new UnprocessableEntityException(
+        `you must define a related ShowSegment or Brand`,
+      )
+    }
     const user = await this.userRepository.findOne(userId)
     if (!user) {
       throw new NotFoundException(`User #${userId} not found`)
     }
-    const showsegmentOrBrand = { showSegment: undefined, brand: undefined }
+    const showsegmentOrBrand = { showSegments: undefined, brand: undefined }
     if (createProductDto.showSegmentId) {
-      const showSegment = await this.showsegmentRepository.findOne(
+      const showSegment = await this.showSegmentRepository.findOne(
         createProductDto.showSegmentId,
-        {
-          relations: ['brand'],
-        },
       )
       if (!showSegment) {
         throw new NotFoundException(
-          `ShowSegment #${createProductDto.showSegmentId} not found`,
+          `Show Segment #${createProductDto.showSegmentId} not found`,
         )
       }
-      showsegmentOrBrand.showSegment = showSegment
-      showsegmentOrBrand.brand = showSegment.brand
+      showsegmentOrBrand.showSegments = [showSegment]
     } else if (createProductDto.brandId) {
-      const brand = await this.brandRepository.findOne(
-        createProductDto.brandId,
-        {
-          relations: ['brand'],
-        },
-      )
+      const brand = await this.brandRepository.findOne(createProductDto.brandId)
       if (!brand) {
         throw new NotFoundException(
-          `ShowSegment #${createProductDto.showSegmentId} not found`,
+          `Brand #${createProductDto.showSegmentId} not found`,
         )
       }
       showsegmentOrBrand.brand = brand
@@ -98,13 +108,8 @@ export class ProductsService {
     return savedProduct
   }
 
-  async update({ id, showSegmentId, description, name }: UpdateProductDto) {
-    const showSegment = await this.showsegmentRepository.findOne(showSegmentId)
-    if (!showSegment) {
-      throw new NotFoundException(`ShowSegment #${showSegmentId} not found`)
-    }
+  async update({ id, description, name }: UpdateProductDto) {
     await this.productRepository.update(id, {
-      showSegment,
       description,
       name,
     })

@@ -1,17 +1,11 @@
-mutation UpdateProduct($id: String!,$showId: String!, $name: String!, $description: String!) {
+mutation UpdateProduct($id: String!, $name: String!, $description: String!) {
   update_product (data: {
     id: $id,
-    showId: $showId,
     name: $name,
     description: $description
   }) {
     id
     name
     description
-    show {
-      title
-      image_url
-      start_date
-    }
   }
 }

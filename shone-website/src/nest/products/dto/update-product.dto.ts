@@ -9,10 +9,6 @@ export class UpdateProductDto {
 
   @Field()
   @IsString()
-  readonly showSegmentId: string
-
-  @Field()
-  @IsString()
   readonly name: string
 
   @Field()

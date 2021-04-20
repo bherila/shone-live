@@ -2,8 +2,9 @@ query GetProduct($productId: String!){
   product(productId:$productId) {
     name,
     description,
-    show {
+    brand{
       id
+      name
     }
   }
 }

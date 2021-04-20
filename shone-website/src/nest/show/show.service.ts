@@ -1,6 +1,10 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 
+import { User } from '../user/entities/user.entity'
+import { UserRepository } from '../user/user.repository'
+import { UserShowRole } from '../user-show-role/entities/user-show-role.entity'
+import { UserShowRoleRepository } from '../user-show-role/user-show-roles.repository'
 import { CreateShowInput } from './entities/createShow.entity'
 import { Show } from './entities/show.entity'
 import { ShowRepository } from './show.repository'
@@ -9,11 +13,32 @@ import { ShowRepository } from './show.repository'
 export class ShowService {
   constructor(
     @InjectRepository(Show) private readonly showRepository: ShowRepository,
+    @InjectRepository(User)
+    private readonly userRepository: UserRepository,
+    @InjectRepository(UserShowRole)
+    private readonly userShowRoleRepository: UserShowRoleRepository,
   ) {}
 
-  async create(data: CreateShowInput): Promise<Show> {
-    const newdata = this.showRepository.create(data)
-    return this.showRepository.save(newdata)
+  async create(data: CreateShowInput, userId: string): Promise<Show> {
+    const user = await this.userRepository.findOne(userId)
+    if (!user) {
+      throw new NotFoundException(`User #${userId} not found`)
+    }
+    const show = this.showRepository.create({
+      ownerUser: user,
+      ...data,
+    })
+    const savedShow = await this.showRepository.save(show)
+    const userShowRole = this.userShowRoleRepository.create({
+      user,
+      show,
+      read: true,
+      write: true,
+      admin: true,
+      streamTo: true,
+    })
+    await this.userShowRoleRepository.save(userShowRole)
+    return savedShow
   }
 
   findOne(userId) {
@@ -21,6 +46,8 @@ export class ShowService {
   }
 
   findAll() {
-    return this.showRepository.find({ relations: ['chatMessages'] })
+    return this.showRepository.find({
+      relations: ['chatMessages'],
+    })
   }
 }

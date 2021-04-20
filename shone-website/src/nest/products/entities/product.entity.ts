@@ -3,6 +3,8 @@ import {
   Column,
   Entity,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm'
@@ -19,15 +21,11 @@ export class Product {
   readonly id: string
 
   @Field()
-  @Column({
-    comment: 'product name',
-  })
+  @Column({ comment: 'product name' })
   name: string
 
   @Field()
-  @Column({
-    comment: 'product description',
-  })
+  @Column({ comment: 'product description' })
   description: string
 
   @Field()
@@ -37,14 +35,12 @@ export class Product {
   })
   user: User
 
-  @Field()
-  @ManyToOne(() => ShowSegment)
-  @JoinColumn({
-    name: 'show_segment_id',
-  })
-  showSegment: ShowSegment
+  @Field(() => [ShowSegment])
+  @ManyToMany(() => ShowSegment)
+  @JoinTable()
+  showSegments: ShowSegment[]
 
-  @Field()
+  @Field({ nullable: true })
   @ManyToOne(() => Brand)
   @JoinColumn({
     name: 'brand_id',

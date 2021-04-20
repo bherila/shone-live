@@ -4,7 +4,6 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm'
 
@@ -36,7 +35,7 @@ export class UserBrandRole {
   user: User
 
   @Field()
-  @OneToOne(() => Brand)
+  @ManyToOne(() => Brand)
   @JoinColumn({ name: 'brand_id' })
   brand: Brand
 }

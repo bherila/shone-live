@@ -6,8 +6,8 @@ import Input from '../../components/Input'
 import Select from '../../components/Select'
 import {
   useAddProductMutation,
+  useGetMyBrandsQuery,
   useGetProductLazyQuery,
-  useGetShowsQuery,
   useUpdateProductMutation,
 } from '../../generated/graphql'
 
@@ -22,7 +22,9 @@ export default function ProductsPage() {
     register,
   } = useForm({ reValidateMode: 'onChange', mode: 'onChange' })
 
-  const { data } = useGetShowsQuery()
+  const { data } = useGetMyBrandsQuery({
+    variables: { limit: 10, offset: 0 },
+  })
   const isNew = id === 'new'
 
   const [addProduct, { loading: loadingAddProduct }] = useAddProductMutation()
@@ -37,7 +39,7 @@ export default function ProductsPage() {
   useEffect(() => {
     if (!isNew)
       getProduct({
-        variables: { productId: +id },
+        variables: { productId: id },
       })
   }, [id])
 
@@ -46,25 +48,24 @@ export default function ProductsPage() {
       reset({
         name: productData.product.name,
         description: productData.product.description,
-        showId: productData.product.show.id,
+        brandId: productData.product.brand?.id,
       })
     }
   }, [data, productData])
 
   const onSubmit = async (newProduct) => {
     try {
-      const product = isNew ? newProduct : { id: +id, ...newProduct }
-      console.log(product)
+      const product = isNew ? newProduct : { id: id, ...newProduct }
 
       await (isNew ? addProduct : updateProduct)({
         variables: {
           ...product,
-          showId: newProduct.showId,
+          brandId: newProduct.brandId,
         },
       })
       router.push('/products')
     } catch (e) {
-      console.log(e)
+      console.error(e)
     }
   }
 
@@ -89,16 +90,16 @@ export default function ProductsPage() {
           error={errors.description && 'is required'}
         />
         <Select
-          label="Show Id"
-          name="showId"
+          label="Brand Id"
+          name="brandId"
           register={register}
           registerOptions={{ required: true }}
-          error={errors.showId && 'is required'}
+          error={errors.brandId && 'is required'}
         >
           <option className="text-gray-200" value="" />
-          {data?.shows.map((show) => (
-            <option key={show.id} value={show.id}>
-              {show.title}
+          {data?.my_brands.map((brand) => (
+            <option key={brand.id} value={brand.id}>
+              {brand.name}
             </option>
           ))}
         </Select>

@@ -3,6 +3,8 @@ import { GraphQLModule } from '@nestjs/graphql'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { join } from 'path'
 
+import { ShowModule } from './show/show.module'
+import { Show } from './show/entities/show.entity'
 import { AddressModule } from './address/address.module'
 import { Address } from './address/entities/address.entity'
 import { AppController } from './app.controller'
@@ -18,8 +20,6 @@ import { Payment } from './payment/entities/payment.entity'
 import { PaymentModule } from './payment/payment.module'
 import { Product } from './products/entities/product.entity'
 import { ProductsModule } from './products/products.module'
-import { Show } from './show/entities/show.entity'
-import { ShowModule } from './show/show.module'
 import { ShowSegment } from './show-segment/entities/show-segment.entity'
 import { ShowSegmentsModule } from './show-segment/show-segments.module'
 import { ShowYourStylesModule } from './show-your-style/show-your-style.module'
@@ -47,13 +47,13 @@ import { UserShowRolesModule } from './user-show-role/user-show-roles.module'
           MessageEntity,
           Product,
           Payment,
-          Show,
           ShowSegment,
+          Show,
           ShowYourStyleVote,
           ShowYourStyleViewRecord,
           ShowYourStyleVote,
-          User,
           UserBrandRole,
+          User,
           UserShowRole,
         ],
         autoLoadEntities: true,

@@ -5,6 +5,7 @@ import { FileUpload } from 'graphql-upload'
 
 @InputType()
 export class updateUserEntityDto {
+  @Field()
   id: string
 
   @IsOptional()

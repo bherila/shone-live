@@ -4,6 +4,8 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto'
 import { User } from '../user/entities/user.entity'
 import { UserRepository } from '../user/user.repository'
+import { UserBrandRole } from '../user-brand-role/entities/user-brand-role.entity'
+import { UserBrandRoleRepository } from '../user-brand-role/user-brand-roles.repository'
 import { BrandRepository } from './brands.repository'
 import { CreateBrandDto } from './dto/create-brand.dto'
 import { UpdateBrandDto } from './dto/update-brand.dto'
@@ -16,12 +18,14 @@ export class BrandsService {
     private readonly brandRepository: BrandRepository,
     @InjectRepository(User)
     private readonly userRepository: UserRepository,
+    @InjectRepository(UserBrandRole)
+    private readonly userBrandRoleRepository: UserBrandRoleRepository,
   ) {}
 
   findAll(paginationQuery: PaginationQueryDto) {
     const { limit, offset } = paginationQuery
     return this.brandRepository.find({
-      relations: ['user'],
+      relations: ['ownerUser'],
       skip: offset,
       take: limit,
     })
@@ -30,16 +34,16 @@ export class BrandsService {
   findByUser(paginationQuery: PaginationQueryDto, userId: string) {
     const { limit, offset } = paginationQuery
     return this.brandRepository.find({
-      relations: ['user'],
+      relations: ['ownerUser'],
       skip: offset,
       take: limit,
-      where: { user: { id: userId } },
+      where: { ownerUser: { id: userId } },
     })
   }
 
   async findOne(id: string) {
     const brand = await this.brandRepository.findOne(id, {
-      relations: ['user'],
+      relations: ['ownerUser'],
     })
     if (!brand) {
       throw new NotFoundException(`Brand id: ${id} not found`)
@@ -53,10 +57,18 @@ export class BrandsService {
       throw new NotFoundException(`User #${userId} not found`)
     }
     const brand = this.brandRepository.create({
-      user,
+      ownerUser: user,
       ...createBrandDto,
     })
     const savedBrand = await this.brandRepository.save(brand)
+    const userBrandRole = this.userBrandRoleRepository.create({
+      user,
+      brand,
+      read: true,
+      write: true,
+      admin: true,
+    })
+    await this.userBrandRoleRepository.save(userBrandRole)
     return savedBrand
   }
 

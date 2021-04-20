@@ -9,9 +9,5 @@ export class UpdateShowSegmentDto {
 
   @Field()
   @IsString()
-  readonly name: string
-
-  @Field()
-  @IsString()
-  readonly description: string
+  readonly title: string
 }

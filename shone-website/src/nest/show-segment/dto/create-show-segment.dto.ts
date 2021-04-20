@@ -9,5 +9,9 @@ export class CreateShowSegmentDto {
 
   @Field()
   @IsString()
-  readonly brand_id: string
+  readonly brandId: string
+
+  @Field()
+  @IsString()
+  readonly title: string
 }

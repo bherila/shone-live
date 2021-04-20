@@ -35,9 +35,9 @@ export default function ProductsTable({
           field: 'description',
         },
         {
-          title: 'Show',
-          renderField: ({ show }) => show.title,
-          field: 'show',
+          title: 'Brand',
+          renderField: ({ brand }) => brand?.name,
+          field: 'brand',
         },
         {
           title: 'Actions',

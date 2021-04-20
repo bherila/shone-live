@@ -1,10 +1,7 @@
-query GetMyProducts($limit: Float!, $offset: Float!){
-  my_products(paginationQuery:{limit:$limit,offset:$offset}) {
+query GetMyBrands($limit: Float!, $offset: Float!){
+  my_brands(paginationQuery:{limit:$limit,offset:$offset}) {
     id,
     name,
     description,
-    show {
-      title
-    }
   }
 }

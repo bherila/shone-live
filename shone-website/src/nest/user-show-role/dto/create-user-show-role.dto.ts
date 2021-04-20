@@ -22,4 +22,8 @@ export class CreateUserShowRoleDto {
   @Field()
   @IsBoolean()
   admin: boolean
+
+  @Field()
+  @IsBoolean()
+  streamTo: boolean
 }
