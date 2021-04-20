@@ -1,4 +1,4 @@
-import { Field, ID, InputType, ObjectType } from '@nestjs/graphql'
+import { Field, InputType } from '@nestjs/graphql'
 import { GraphQLUpload } from 'apollo-server-express'
 import { IsOptional } from 'class-validator'
 import { FileUpload } from 'graphql-upload'

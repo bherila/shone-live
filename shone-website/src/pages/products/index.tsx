@@ -1,4 +1,4 @@
-import { CircularProgress, Grid } from '@material-ui/core'
+import { Grid } from '@material-ui/core'
 import Router from 'next/router'
 import React, { useEffect, useState } from 'react'
 
@@ -9,7 +9,7 @@ export default function ProductsPage() {
   const [limit, setLimit] = useState(10)
   const [offset, setOffset] = useState(0)
 
-  const [getMyProducts, { data, loading }] = useGetMyProductsLazyQuery()
+  const [getMyProducts, { data }] = useGetMyProductsLazyQuery()
 
   useEffect(() => {
     if (limit !== undefined && offset !== undefined)

@@ -14,8 +14,8 @@ export class CreateShowYourStyleEntryDto {
 
 export class CreateShowYourStyleVideoIdEntryDto {
   @Field()
-  @IsNumber()
-  readonly userId: number
+  @IsString()
+  readonly userId: string
 
   @Field()
   @IsString()

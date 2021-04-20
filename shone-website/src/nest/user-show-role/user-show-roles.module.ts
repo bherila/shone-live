@@ -7,8 +7,8 @@ import { User } from '../user/entities/user.entity'
 import { UserRepository } from '../user/user.repository'
 import { UserShowRole } from './entities/user-show-role.entity'
 import { UserShowRoleRepository } from './user-show-roles.repository'
-import { UserShowRolesService } from './user-show-roles.service'
 import { UserShowRoleResolver } from './user-show-roles.resolver'
+import { UserShowRolesService } from './user-show-roles.service'
 
 @Module({
   imports: [

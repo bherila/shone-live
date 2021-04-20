@@ -39,7 +39,7 @@ export class ShowYourStyleEntry {
 @Entity()
 export class ShowYourStyleVideoIdEntry {
   @Field()
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   readonly entry_id: number
 
   @Field()
