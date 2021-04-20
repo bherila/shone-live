@@ -19,7 +19,7 @@ export class HelloResolver {
 
   @Query(() => [Hello])
   hellos(@Args() helloArgs: HelloArgs): Promise<Hello[]> {
-    return this.helloService.findAll(helloArgs)
+    return this.helloService.findAll()
   }
 
   @Mutation(() => Hello)

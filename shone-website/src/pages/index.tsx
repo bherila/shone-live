@@ -2,12 +2,12 @@ import cn from 'classnames'
 import Head from 'next/head'
 import React, { useState } from 'react'
 
-import Tick from '../../public/tick.svg'
 import AnimatedLogo from '../components/animated-logo'
 import rainbow from '../components/RainbowGradientContainer.module.css'
 import { useSubscribeToWaitlistMutation } from '../generated/graphql'
 import isValidEmail from '../helpers/isValidEmail'
 import useInput from '../hooks/useInput'
+import Image from 'next/image';
 
 export default function Index(): JSX.Element {
   const [submitted, setSubmitted] = useState(false)
@@ -91,7 +91,7 @@ export default function Index(): JSX.Element {
                   <div className="text-3xl w-8/12 text-center">
                     THANK YOU FOR SENDING YOUR EMAIL!
                   </div>
-                  <Tick className="mt-4 w-1/12" />
+                  <Image src="/tick.svg" className="mt-4 w-1/12" width={100} height={100} />
                 </div>
               </div>
             )}
