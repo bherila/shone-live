@@ -1,11 +1,9 @@
 import { HttpException, HttpStatus, UseGuards } from '@nestjs/common'
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql'
-import { GraphQLUpload } from 'apollo-server-express'
-import { FileUpload } from 'graphql-upload'
 
 import { AuthGuard } from '../common/auth.guards'
+import { updateUserEntityDto } from './dto/user.dto'
 import { User } from './entities/user.entity'
-import { updateUserEntityDto } from './entities/user.entity'
 import { UserService } from './user.service'
 
 @Resolver(() => User)
