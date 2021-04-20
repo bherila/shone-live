@@ -12,6 +12,8 @@ export const ScreenNames = {
     PAYMENT: 'Payment',
     ADDRESS: 'Address',
     ACCOUNT: 'Account',
-    WATCH_STYLE: 'WatchStyle'
+    WATCH_STYLE: 'WatchStyle',
+    VOTE_AND_WIN: 'VoteAndWin',
+    RANKING_DETAILS_SCREEN: 'RankingDetails'
   }
 }

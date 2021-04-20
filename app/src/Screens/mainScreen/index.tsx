@@ -27,7 +27,7 @@ import { userLogout } from '../../redux/actions/userActions'
 import AppButton from '../../components/AppButton'
 import * as ImagePicker from 'expo-image-picker'
 import { Show, useGetShowsQuery } from '../../generated/graphql'
-import { uppy } from '../../utils/TransloaditApi'
+import { UppyClient } from '../../utils/TransloaditApi'
 import * as FileSystem from 'expo-file-system'
 
 interface ListItem {
@@ -36,6 +36,8 @@ interface ListItem {
 }
 
 export default function MainScreen() {
+  const uppy = UppyClient().uppy
+
   const navigation = useNavigation()
 
   const dispatch = useDispatch()
@@ -190,6 +192,11 @@ export default function MainScreen() {
     }
   }
 
+  const navigateToVoteScreen = () => {
+    navigation.navigate(ScreenNames.HomeScreens.VOTE_AND_WIN)
+    hideMenu()
+  }
+
   const renderShowItem = ({ item }: ListItem) => {
     return (
       <TouchableOpacity
@@ -248,6 +255,7 @@ export default function MainScreen() {
               </TouchableOpacity>
             }
           >
+            <MenuItem onPress={navigateToVoteScreen}>Vote and Win</MenuItem>
             <MenuItem onPress={() => ViewProfile()}>View Profile</MenuItem>
 
             <MenuItem onPress={() => Logout()}>Logout</MenuItem>

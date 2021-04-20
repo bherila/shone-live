@@ -1,5 +1,12 @@
 import React, { useEffect } from 'react'
-import { Image, View, TouchableOpacity, ScrollView, Alert } from 'react-native'
+import {
+  Image,
+  View,
+  TouchableOpacity,
+  ScrollView,
+  Alert,
+  Platform
+} from 'react-native'
 import theme from './../../utils/colors'
 import styles from './styles'
 import {
@@ -18,9 +25,9 @@ import { ReactNativeFile } from 'apollo-upload-client'
 import * as mime from 'react-native-mime-types'
 import { useUpdateUserMutation } from '../../generated/graphql'
 import { useAppSelector } from '../../redux/store'
-import * as FileSystem from 'expo-file-system'
 import { useDispatch } from 'react-redux'
 import { userUpdateStore } from '../../redux/actions/userActions'
+import Loader from '../../components/Loader'
 
 export default function Account() {
   const navigation = useNavigation()
@@ -40,75 +47,54 @@ export default function Account() {
     if (userUpdateError) return Alert.alert(userUpdateError.message)
     if (data) {
       dispatch(userUpdateStore(data.update_user))
+      setImage(undefined)
     }
   }, [data, userUpdateError, userUpdateLoading])
 
   const user = useAppSelector(state => state.user.user)
 
-  const generateRNFile = (uri: string, name: string) => {
+  const generateRNFile = async (uri: string, name: string) => {
     const mimeType = mime.lookup(uri)
     return uri
       ? new ReactNativeFile({
-          uri,
+          uri: Platform.OS === 'ios' ? uri.replace('file:///', 'file:/') : uri,
           type: mimeType ? mimeType : 'image/jpeg',
           name
         })
       : null
   }
 
-  const urlToBlob = async (uri: string) => {
-    let fileBase64 = await FileSystem.readAsStringAsync(uri, {
-      encoding: 'base64'
-    })
-
-    return new Promise<Blob | File>((resolve, reject) => {
-      var xhr = new XMLHttpRequest()
-      xhr.onerror = reject
-      xhr.onreadystatechange = () => {
-        if (xhr.readyState === 4) {
-          resolve(xhr.response)
-        }
-      }
-      xhr.open('GET', 'data:image/jpeg;base64,' + fileBase64, true)
-      xhr.responseType = 'blob' // convert type
-      xhr.send()
-    })
-  }
-
   const onUploadPress = async () => {
     if (image) {
       const name = image.uri.split('/').pop()
-      const blobData = await urlToBlob(image.uri)
-      const file = generateRNFile(
+
+      const file = await generateRNFile(
         image.uri,
         name ? name : `picture${Date.now()}`
       )
 
       await updateUser({
         variables: {
-          email: user?.email || '',
-          userID: user?.id || '',
-          // username: user?.username || '',
-          username: 'Abhishek.Tagline' + Math.random() * 100 || '',
-          file: file
+          user: {
+            file: file
+          }
         }
       })
     }
   }
 
   useEffect(() => {
-    console.log({ user })
+    console.log({ image })
 
     if (error) return Alert.alert(error?.message)
-
     if (image) {
       onUploadPress()
-      setImage(undefined)
     }
   }, [image, error])
 
   return (
     <View style={styles.container}>
+      <Loader isLoading={userUpdateLoading} />
       <Header style={{ elevation: 0, backgroundColor: 'transparent' }}>
         <Left style={{ flex: 1 }}>
           <Button transparent onPress={() => navigation.goBack()}>
@@ -134,7 +120,11 @@ export default function Account() {
           >
             <Image
               // source={require('./../../../assets/exist.jpg')}
-              source={{ uri: image ? image?.uri : '' }}
+              source={
+                user?.profileUrl
+                  ? { uri: user.profileUrl }
+                  : require('./../../../assets/exist.jpg')
+              }
               style={styles._profilePic}
             />
           </TouchableOpacity>
@@ -144,7 +134,12 @@ export default function Account() {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles._circle}>
           <Image
-            source={require('./../../../assets/avatar.jpg')}
+            // source={require('./../../../assets/avatar.jpg')}
+            source={
+              user?.profileUrl
+                ? { uri: user.profileUrl }
+                : require('./../../../assets/exist.jpg')
+            }
             style={styles._avatarImg}
           />
 

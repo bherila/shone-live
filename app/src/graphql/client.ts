@@ -1,14 +1,10 @@
-import {
-  ApolloClient,
-  ApolloLink,
-  HttpLink,
-  InMemoryCache
-} from '@apollo/client'
+import { ApolloClient, ApolloLink, InMemoryCache } from '@apollo/client'
 import { onError } from 'apollo-link-error'
 import StorageKeys from '../utils/StorageKeys'
 import * as SecureStore from 'expo-secure-store'
 import { setContext } from '@apollo/client/link/context'
 import { createUploadLink } from 'apollo-upload-client'
+import { API } from '../utils/environment'
 
 const link = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
@@ -38,23 +34,18 @@ const authLink = setContext(async (_, { headers }) => {
   return {
     headers: {
       ...headers,
+      'content-type': 'application/json',
+      accept: 'application/json',
       authorization: token ? `Bearer ${token}` : ''
     }
   }
 })
-
-const httpLink = new HttpLink({
-  // uri: API_LOCALHOST
-  // uri: 'http://27879b22f36b.ngrok.io/api/graphql'
-  uri: 'http://localhost:3000/api/graphql'
-})
-
 const client = new ApolloClient({
   link: ApolloLink.from([
     authLink,
     link as any,
-    httpLink,
     createUploadLink({ uri: 'http://localhost:3000/api/graphql' })
+    // createUploadLink({ uri: API })
   ]),
   cache: new InMemoryCache()
 })

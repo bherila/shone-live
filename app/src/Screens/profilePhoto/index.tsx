@@ -1,62 +1,103 @@
-import React, { useState } from 'react'
-import { Image, View, TouchableOpacity, Platform } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { Image, View, TouchableOpacity, Alert } from 'react-native'
 import theme from './../../utils/colors'
 import styles from './styles'
 import { MaterialIcons } from '@expo/vector-icons'
-import * as ImagePicker from 'expo-image-picker'
-import {
-  Body,
-  Icon,
-  Button,
-  Header,
-  Left,
-  Right,
-} from 'native-base'
+import { Body, Icon, Button, Header, Left, Right } from 'native-base'
 import Text from './../../components/Text'
 import Camera from './../../components/camera'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import { ScreenNames } from '../../utils/ScreenNames'
+import { useDispatch } from 'react-redux'
+import {
+  UpdateUserMutation,
+  useUpdateUserMutation
+} from '../../generated/graphql'
+import useImagePicker from '../../hooks/useImagePicker'
+import { userUpdateStore } from '../../redux/actions/userActions'
+import { useAppSelector } from '../../redux/store'
+import { generateRNFile } from '../../utils/helper'
+import Loader from '../../components/Loader'
+import StorageKeys from '../../utils/StorageKeys'
+import { useSecureStore } from '../../hooks/useSecureStore'
 
 export default function ProfilePhoto() {
   const navigation = useNavigation()
-
-  const [image, setImage] = useState<string>()
+  const route: any = useRoute()
 
   const [openCamera, setOpenCamera] = useState(true)
+  const { setItem } = useSecureStore()
 
-  const getPermition = async () => {
-    if (Platform.OS !== 'web') {
-      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync()
-      if (status !== 'granted') {
-        alert('Sorry, we need camera roll permissions to make this work!')
-      }
-    }
+  const { pickImage, image, error, setImage } = useImagePicker(500)
+
+  const dispatch = useDispatch()
+
+  const [
+    updateUser,
+    { data, error: userUpdateError, loading: userUpdateLoading }
+  ] = useUpdateUserMutation({
+    fetchPolicy: 'no-cache'
+  })
+
+  const setUserToStorage = async (data: UpdateUserMutation) => {
+    await setItem(StorageKeys.AUTH_TOKEN, data.update_user.token)
+    await setItem(StorageKeys.USER, data.update_user)
   }
 
-  const pickImage = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync()
-    if (status) {
-      const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
-        allowsEditing: true,
-        aspect: [4, 4],
-        quality: 1,
+  useEffect(() => {
+    if (userUpdateError) return Alert.alert(userUpdateError.message)
+    if (data) {
+      setUserToStorage(data)
+      dispatch(userUpdateStore(data.update_user))
+      navigation.reset({
+        index: 0,
+        routes: [
+          {
+            name: ScreenNames.HomeScreens.MAIN_SCREEN
+          }
+        ]
       })
+    }
+  }, [data, userUpdateError, userUpdateLoading])
 
-      if (!result.cancelled) {
-        setImage(result.uri)
-      }
+  const onUploadPress = async () => {
+    if (image) {
+      const name = image.uri.split('/').pop()
+
+      const file = generateRNFile(
+        image.uri,
+        name ? name : `picture${Date.now()}`
+      )
+
+      await updateUser({
+        variables: {
+          user: {
+            email: route.params?.email || '',
+            username: `${route.params?.username}`,
+            file: file
+          }
+        }
+      })
     } else {
-      getPermition()
+      Alert.alert('Please choose an image.')
     }
   }
 
-  const capture = (v) => {
+  useEffect(() => {
+    if (error) return Alert.alert(error?.message)
+
+    if (image) {
+      console.log({ image })
+    }
+  }, [image, error])
+
+  const capture = v => {
     setOpenCamera(true)
     setImage(v)
   }
   return (
     <View style={styles.container}>
+      <Loader isLoading={userUpdateLoading} />
       {openCamera ? (
         <>
           <Header style={{ elevation: 0, backgroundColor: 'transparent' }}>
@@ -69,7 +110,7 @@ export default function ProfilePhoto() {
               style={{
                 flex: 3,
                 justifyContent: 'center',
-                alignItems: 'center',
+                alignItems: 'center'
               }}
             >
               <Image
@@ -79,9 +120,9 @@ export default function ProfilePhoto() {
             </Body>
             <Right style={{ flex: 1 }}>
               <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate(ScreenNames.HomeScreens.MAIN_SCREEN)
-                }
+                onPress={() => {
+                  onUploadPress()
+                }}
               >
                 <Text style={theme.textColor}>Next</Text>
               </TouchableOpacity>
@@ -98,7 +139,10 @@ export default function ProfilePhoto() {
               {image ? (
                 <>
                   {image && (
-                    <Image source={{ uri: image }} style={styles._avatarImg} />
+                    <Image
+                      source={{ uri: image.uri }}
+                      style={styles._avatarImg}
+                    />
                   )}
                 </>
               ) : (
@@ -108,7 +152,10 @@ export default function ProfilePhoto() {
                 />
               )}
 
-              <TouchableOpacity style={[styles._editView, theme.bg]}>
+              <TouchableOpacity
+                style={[styles._editView, theme.bg]}
+                onPress={pickImage}
+              >
                 <MaterialIcons name="mode-edit" size={20} color="white" />
               </TouchableOpacity>
             </View>
@@ -117,7 +164,7 @@ export default function ProfilePhoto() {
             style={{
               justifyContent: 'center',
               alignItems: 'center',
-              padding: 15,
+              padding: 15
             }}
           >
             <TouchableOpacity

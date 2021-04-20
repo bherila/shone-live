@@ -12,7 +12,10 @@ import { store } from './src/redux/store'
 export default function App() {
   const [isReady, setIsReady] = useState(false)
   const [loaded] = useFonts({
-    bahnscift: require('./src/utils/Fonts/Bahnschrift-Font-Family/BAHNSCHRIFT1.ttf')
+    bahnscift: require('./src/utils/Fonts/Bahnschrift-Font-Family/BAHNSCHRIFT1.ttf'),
+    poppins_semibold: require('./src/utils/Fonts/Poppins-SemiBold.ttf'),
+    poppins_regular: require('./src/utils/Fonts/Poppins-Regular.ttf'),
+    poppins_medium: require('./src/utils/Fonts/Poppins-Medium.ttf')
   })
 
   useEffect(() => {
