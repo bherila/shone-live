@@ -98,7 +98,7 @@ export class UserService {
 
   async update(user: any) {
     const temoData: any = {}
-    const checkUserExits = await this.findOne(user.userId)
+    const checkUserExits = await this.findOne(user.id)
     if (!checkUserExits)
       throw new UnprocessableEntityException(message.userNotExit)
     if (user.username) {
@@ -119,8 +119,8 @@ export class UserService {
       }
       const token = await jwt.sign(Payload, process.env.JWT_SECRET)
       temoData.token = token
-      await this.userRepository.update(user.userId, temoData)
-      return await this.findOne(user.userId)
+      await this.userRepository.update(user.id, temoData)
+      return await this.findOne(user.id)
     } catch (e) {
       throw Error(e)
     }

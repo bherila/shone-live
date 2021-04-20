@@ -14,14 +14,14 @@ export const fileUpload = async (file) => {
 
       const buf = Buffer.from(file.toString())
 
-      const extention = path.extname(file.name)
+      const extention = path.extname(file.filename)
       const uploadFileName = uuidv4() + extention
       const param = {
         Bucket: process.env.BUCKET_NAME,
         Key: uploadFileName,
         Body: buf,
         ACL: 'public-read',
-        ContentType: file.type,
+        ContentType: file.mimetype,
       }
       try {
         await s3.putObject(param)

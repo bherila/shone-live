@@ -39,7 +39,12 @@ export class UserResolver {
 
   @Mutation(() => User)
   async update_user(@Args('user') user: updateUserEntityDto) {
-    if (user.file.type === ('image/jpeg' || 'image/jpg' || 'image/png')) {
+    const file = await user.file
+    user = {
+      ...user,
+      file,
+    }
+    if (file.mimetype === ('image/jpeg' || 'image/jpg' || 'image/png')) {
       return await this.usersService.update(user)
     } else return Error('Please Upload only jpeg,png,jpg images')
   }
