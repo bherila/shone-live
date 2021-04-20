@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid'
 
 export const fileUpload = async (file) => {
   try {
+    console.log(file)
     if (file) {
       const spacesEndpoint = new AWS.Endpoint(process.env.BUCKET_ENDPOINT)
       const s3 = new AWS.S3({

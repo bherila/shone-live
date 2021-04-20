@@ -98,29 +98,29 @@ export class UserService {
   }
 
   async update(user: any) {
-    const temoData: any = {}
+    const tempData: any = {}
     const checkUserExist = await this.findOne(user.id)
     if (!checkUserExist)
       throw new UnprocessableEntityException(message.userNotExist)
     if (user.username) {
-      temoData.username = user.username
+      tempData.username = user.username
       const checkusernameExistsOrNot = await this.findOne(user.username)
       if (checkusernameExistsOrNot)
         throw new UnprocessableEntityException(message.usernameAlreadyExist)
     }
-    if (user.email) temoData.email = user.email
+    if (user.email) tempData.email = user.email
     try {
       if (user.file) {
         const profileUrl = await fileUpload(await user.file)
-        temoData.profileUrl = profileUrl
+        tempData.profileUrl = profileUrl
       }
       const payload = {
         id: checkUserExist.id,
         phone: checkUserExist.phone,
       }
       const token = await jwt.sign(payload, process.env.JWT_SECRET)
-      temoData.token = token
-      await this.userRepository.update(user.id, temoData)
+      tempData.token = token
+      await this.userRepository.update(user.id, tempData)
       return await this.findOne(user.id)
     } catch (e) {
       return e

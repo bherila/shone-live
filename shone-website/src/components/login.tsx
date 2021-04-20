@@ -32,7 +32,7 @@ const Login = ({ redirectPath }: LoginPageProps) => {
     try {
       await addUser({
         variables: {
-          phone: `${phone}`,
+          phone,
         },
       })
       setStep(2)
@@ -42,10 +42,11 @@ const Login = ({ redirectPath }: LoginPageProps) => {
   }
 
   const handleVerifyCode = ({ code, phone }) => {
+    console.log('phone', phone)
     verifyCode({
       variables: {
         code,
-        phone: phone,
+        phone,
       },
     })
   }
