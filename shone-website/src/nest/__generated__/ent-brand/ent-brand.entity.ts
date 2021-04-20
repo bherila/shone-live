@@ -3,7 +3,7 @@
  * modifications between BEGIN MANUAL SECTION and END MANUAL SECTION
  * designators.
  *
- * @generated-editable Codelock<<v1agwFjuw0pMPZ59yWPHWd7N6B2MMl0P>>
+ * @generated-editable Codelock<<C79pUQ8+4i9VZgNHy/eGeK0gsQbBgk9V>>
  */
 
 import { Field, ObjectType } from '@nestjs/graphql'
@@ -48,7 +48,7 @@ export class EntBrand {
   // Add any custom properties you need
   /* END MANUAL SECTION */
 
-  // Gen from: {"type":"","$ref":"#/definitions/User","dtoExclude":true}
+  // Gen from: {"type":"","$ref":"#/definitions/#/definitions/User","dtoExclude":true}
   @Field({
     name: 'owner_user',
   })
