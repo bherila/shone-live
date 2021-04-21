@@ -7,7 +7,7 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core'
-import Router from 'next/router'
+import Router, { useRouter } from 'next/router'
 import React from 'react'
 
 import { Brand } from '../generated/graphql'
@@ -37,6 +37,8 @@ export default function StoreSection({
   store: Brand
   children: React.ReactNode
 }) {
+  const router = useRouter()
+  const { pid }: { pid?: string } = router.query
   const classes = useStyles()
 
   return (
@@ -62,37 +64,31 @@ export default function StoreSection({
             <Box>
               <Button
                 className={classes.buttonText}
-                onClick={() => Router.push(`/seller/store/${store.id}/`)}
+                onClick={() => Router.push(`/seller/store/${pid}/`)}
               >
                 Orders
               </Button>
               <Button
                 className={classes.buttonText}
-                onClick={() =>
-                  Router.push(`/seller/store/${store.id}/products`)
-                }
+                onClick={() => Router.push(`/seller/store/${pid}/products`)}
               >
                 Products
               </Button>
               <Button
                 className={classes.buttonText}
-                onClick={() =>
-                  Router.push(`/seller/store/${store.id}/customers`)
-                }
+                onClick={() => Router.push(`/seller/store/${pid}/customers`)}
               >
                 Customers
               </Button>
               <Button
                 className={classes.buttonText}
-                onClick={() =>
-                  Router.push(`/seller/store/${store.id}/analytics`)
-                }
+                onClick={() => Router.push(`/seller/store/${pid}/analytics`)}
               >
                 Analytics
               </Button>
               <Button
                 className={classes.buttonText}
-                onClick={() => Router.push(`/seller/store/${store.id}/shows`)}
+                onClick={() => Router.push(`/seller/store/${pid}/shows`)}
               >
                 Shows
               </Button>

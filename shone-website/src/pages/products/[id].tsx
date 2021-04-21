@@ -89,20 +89,22 @@ export default function ProductsPage() {
           registerOptions={{ required: true }}
           error={errors.description && 'is required'}
         />
-        <Select
-          label="Brand Id"
-          name="brandId"
-          register={register}
-          registerOptions={{ required: true }}
-          error={errors.brandId && 'is required'}
-        >
-          <option className="text-gray-200" value="" />
-          {data?.my_brands.map((brand) => (
-            <option key={brand.id} value={brand.id}>
-              {brand.name}
-            </option>
-          ))}
-        </Select>
+        {isNew && (
+          <Select
+            label="Brand Id"
+            name="brandId"
+            register={register}
+            registerOptions={{ required: true }}
+            error={errors.brandId && 'is required'}
+          >
+            <option className="text-gray-200" value="" />
+            {data?.my_brands.map((brand) => (
+              <option key={brand.id} value={brand.id}>
+                {brand.name}
+              </option>
+            ))}
+          </Select>
+        )}
         <div className="flex items-center justify-center">
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"

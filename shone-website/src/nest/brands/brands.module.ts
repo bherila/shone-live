@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
+import { Product } from '../products/entities/product.entity'
 import { User } from '../user/entities/user.entity'
 import { UserRepository } from '../user/user.repository'
 import { UserBrandRole } from '../user-brand-role/entities/user-brand-role.entity'
@@ -9,7 +10,6 @@ import { BrandRepository } from './brands.repository'
 import { BrandResolver } from './brands.resolver'
 import { BrandsService } from './brands.service'
 import { Brand } from './entities/brand.entity'
-import { Product } from '../products/entities/product.entity'
 
 @Module({
   imports: [

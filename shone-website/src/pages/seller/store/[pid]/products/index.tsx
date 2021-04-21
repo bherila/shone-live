@@ -1,9 +1,13 @@
-import Router from 'next/router'
+import Router, { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 
+import ProductsTable from '../../../../../components/ProductTable'
 import StoreSection from '../../../../../components/StoreSection'
-import Table from '../../../../../components/Table'
-import { Brand } from '../../../../../generated/graphql'
+import {
+  Brand,
+  Product,
+  useGetBrandProductsLazyQuery,
+} from '../../../../../generated/graphql'
 
 export async function getServerSideProps() {
   return {
@@ -35,6 +39,31 @@ export default function ProductsPage({
   store: Brand
   products: ProductModel[]
 }) {
+  const router = useRouter()
+  const { pid }: { pid?: string } = router.query
+  const [limit, setLimit] = useState(10)
+  const [offset, setOffset] = useState(0)
+
+  const [getBrandProducts, { data }] = useGetBrandProductsLazyQuery()
+
+  useEffect(() => {
+    if (limit !== undefined && offset !== undefined)
+      getBrandProducts({
+        variables: { limit, offset, brandId: pid },
+      })
+  }, [limit, offset])
+
+  const onChangePage = (page) => {
+    setOffset(page * limit)
+  }
+  const onChangeRowsPerPage = (rowsPerPage) => {
+    console.log(rowsPerPage)
+    setOffset(0)
+    setLimit(rowsPerPage)
+  }
+
+  console.log(data)
+
   const [newProducts, setNewProducts] = useState([])
   useEffect(() => {
     const { SKU, title, SRP, stock } = Router.query
@@ -43,37 +72,17 @@ export default function ProductsPage({
   }, [])
   return (
     <StoreSection store={store}>
-      <Table
-        rows={[...products, ...newProducts]}
-        columns={[
-          {
-            title: 'SKU',
-            field: 'SKU',
-          },
-          {
-            title: 'Title',
-            field: 'title',
-          },
-          {
-            title: 'SRP',
-            field: 'SRP',
-            renderField: (product) => (1 * product.SRP)?.toFixed(2) || '-',
-          },
-          {
-            title: 'Stock Qty',
-            field: 'stock',
-          },
-        ]}
-        tableWidth="50%"
-        rowId="SKU"
-        tableTitle="Products"
+      <ProductsTable
+        products={(data?.brandProducts as Product[]) || []}
         bottomActions={[
           {
-            handleClick: () =>
-              Router.push(`/seller/store/${store.id}/products/new`),
+            handleClick: () => Router.push(`/products/new`),
             name: 'New Product',
           },
         ]}
+        handleEdit={(id) => Router.push(`/products/${id}`)}
+        onChangePage={onChangePage}
+        onChangeRowsPerPage={onChangeRowsPerPage}
       />
     </StoreSection>
   )

@@ -37,7 +37,7 @@ export default function ProductsPage() {
         spacing={3}
       >
         <ProductsTable
-          products={(data?.my_products as Product[]) || []}
+          products={(data?.myProducts as Product[]) || []}
           bottomActions={[
             {
               handleClick: () => Router.push(`/products/new`),

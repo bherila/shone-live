@@ -1,5 +1,5 @@
 query GetMyProducts($limit: Float!, $offset: Float!){
-  my_products(paginationQuery:{limit:$limit,offset:$offset}) {
+  myProducts(paginationQuery:{limit:$limit,offset:$offset}) {
     id,
     name,
     description,

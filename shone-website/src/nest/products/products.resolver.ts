@@ -26,11 +26,21 @@ export class ProductResolver {
 
   @Query(() => [Product])
   @UseGuards(new AuthGuard())
-  my_products(
+  myProducts(
     @Context('user') user,
     @Args('paginationQuery') paginationQuery: PaginationQueryDto,
   ): Promise<Product[]> {
     return this.productsService.findByUser(paginationQuery, user.id)
+  }
+
+  @Query(() => [Product])
+  @UseGuards(new AuthGuard())
+  brandProducts(
+    @Context('user') user,
+    @Args('brandId') brandId: string,
+    @Args('paginationQuery') paginationQuery: PaginationQueryDto,
+  ): Promise<Product[]> {
+    return this.productsService.findByBrand(paginationQuery, brandId, user.id)
   }
 
   @Mutation(() => Product)

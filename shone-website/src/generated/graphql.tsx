@@ -303,7 +303,8 @@ export type Query = {
   messageEntities: Array<MessageEntity>;
   product?: Maybe<Product>;
   products: Array<Product>;
-  my_products: Array<Product>;
+  myProducts: Array<Product>;
+  brandProducts: Array<Product>;
   payment?: Maybe<Payment>;
   payments: Array<Payment>;
   show?: Maybe<Show>;
@@ -385,8 +386,14 @@ export type QueryProductsArgs = {
 };
 
 
-export type QueryMy_ProductsArgs = {
+export type QueryMyProductsArgs = {
   paginationQuery: PaginationQueryDto;
+};
+
+
+export type QueryBrandProductsArgs = {
+  paginationQuery: PaginationQueryDto;
+  brandId: Scalars['String'];
 };
 
 
@@ -670,6 +677,21 @@ export type UpdateUserMutation = (
   ) }
 );
 
+export type GetBrandProductsQueryVariables = Exact<{
+  brandId: Scalars['String'];
+  limit: Scalars['Float'];
+  offset: Scalars['Float'];
+}>;
+
+
+export type GetBrandProductsQuery = (
+  { __typename?: 'Query' }
+  & { brandProducts: Array<(
+    { __typename?: 'Product' }
+    & Pick<Product, 'id' | 'name' | 'description'>
+  )> }
+);
+
 export type GetConsumerLeadsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -703,7 +725,7 @@ export type GetMyProductsQueryVariables = Exact<{
 
 export type GetMyProductsQuery = (
   { __typename?: 'Query' }
-  & { my_products: Array<(
+  & { myProducts: Array<(
     { __typename?: 'Product' }
     & Pick<Product, 'id' | 'name' | 'description'>
     & { brand?: Maybe<(
@@ -955,6 +977,48 @@ export function useUpdateUserMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutation>;
 export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>;
 export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
+export const GetBrandProductsDocument = gql`
+    query GetBrandProducts($brandId: String!, $limit: Float!, $offset: Float!) {
+  brandProducts(
+    paginationQuery: {limit: $limit, offset: $offset}
+    brandId: $brandId
+  ) {
+    id
+    name
+    description
+  }
+}
+    `;
+
+/**
+ * __useGetBrandProductsQuery__
+ *
+ * To run a query within a React component, call `useGetBrandProductsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetBrandProductsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetBrandProductsQuery({
+ *   variables: {
+ *      brandId: // value for 'brandId'
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *   },
+ * });
+ */
+export function useGetBrandProductsQuery(baseOptions: Apollo.QueryHookOptions<GetBrandProductsQuery, GetBrandProductsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetBrandProductsQuery, GetBrandProductsQueryVariables>(GetBrandProductsDocument, options);
+      }
+export function useGetBrandProductsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetBrandProductsQuery, GetBrandProductsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetBrandProductsQuery, GetBrandProductsQueryVariables>(GetBrandProductsDocument, options);
+        }
+export type GetBrandProductsQueryHookResult = ReturnType<typeof useGetBrandProductsQuery>;
+export type GetBrandProductsLazyQueryHookResult = ReturnType<typeof useGetBrandProductsLazyQuery>;
+export type GetBrandProductsQueryResult = Apollo.QueryResult<GetBrandProductsQuery, GetBrandProductsQueryVariables>;
 export const GetConsumerLeadsDocument = gql`
     query GetConsumerLeads {
   consumerLeads(paginationQuery: {limit: 10, offset: 0}) {
@@ -1031,7 +1095,7 @@ export type GetMyBrandsLazyQueryHookResult = ReturnType<typeof useGetMyBrandsLaz
 export type GetMyBrandsQueryResult = Apollo.QueryResult<GetMyBrandsQuery, GetMyBrandsQueryVariables>;
 export const GetMyProductsDocument = gql`
     query GetMyProducts($limit: Float!, $offset: Float!) {
-  my_products(paginationQuery: {limit: $limit, offset: $offset}) {
+  myProducts(paginationQuery: {limit: $limit, offset: $offset}) {
     id
     name
     description

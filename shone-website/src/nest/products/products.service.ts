@@ -49,7 +49,11 @@ export class ProductsService {
     })
   }
 
-  findByBrand(paginationQuery: PaginationQueryDto, brandId: string) {
+  async findByBrand(
+    paginationQuery: PaginationQueryDto,
+    brandId: string,
+    userId: string,
+  ) {
     const { limit, offset } = paginationQuery
     return this.productRepository.find({
       relations: ['user', 'brand', 'showSegments'],

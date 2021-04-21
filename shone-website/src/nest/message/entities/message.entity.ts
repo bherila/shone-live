@@ -40,7 +40,6 @@ export class MessageEntity {
   })
   message: string
 
-  /* Copy user alias (nickname) here to avoid having to JOIN user object */
   @Field()
   @Column({
     name: 'author_alias',

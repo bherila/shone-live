@@ -153,7 +153,8 @@ type Query {
   messageEntities: [MessageEntity!]!
   product(productId: String!): Product
   products(paginationQuery: PaginationQueryDto!): [Product!]!
-  my_products(paginationQuery: PaginationQueryDto!): [Product!]!
+  myProducts(paginationQuery: PaginationQueryDto!): [Product!]!
+  brandProducts(paginationQuery: PaginationQueryDto!, brandId: String!): [Product!]!
   payment(PaymentId: String!): Payment
   payments: [Payment!]!
   show(showId: String!): Show
