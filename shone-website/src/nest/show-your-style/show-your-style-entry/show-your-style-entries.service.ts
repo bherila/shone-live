@@ -117,6 +117,40 @@ export class ShowYourStyleEntriesService {
     return savedShowYourStyleEntry
   }
 
+  public async updateVideoUrlFromVideoId(result) {
+    console.log(`result`, result)
+    const checkUserExist = await this.showYourStyleVideoIdEntriesRepository.findOne(
+      result.user_id,
+    )
+    if (!checkUserExist) {
+      throw new NotFoundException(`User with id: ${result.user_id} not found`)
+    }
+    const checkVideoIdExist = await this.showYourStyleVideoIdEntriesRepository.findOne(
+      result.video_id,
+    )
+    if (!checkVideoIdExist) {
+      throw new UnprocessableEntityException(
+        `Entry with that videoId do not exist`,
+      )
+    }
+    const updateData: any = {}
+    updateData.video_url = result.video_url
+    updateData.error = result.error
+    updateData.isViewable = result.isViewable
+
+    try {
+      await this.showYourStyleVideoIdEntriesRepository.update(
+        result.video_id,
+        updateData,
+      )
+      return await this.showYourStyleVideoIdEntriesRepository.findOne(
+        result.user_id,
+      )
+    } catch (e) {
+      return e
+    }
+  }
+
   async remove(id: number) {
     const showYourStyleEntry = await this.findOne(id)
     return this.showYourStyleEntriesRepository.remove(showYourStyleEntry)
