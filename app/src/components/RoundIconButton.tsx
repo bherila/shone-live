@@ -3,7 +3,9 @@ import {
   TouchableOpacity,
   Image,
   ImageSourcePropType,
-  ImageStyle
+  ImageStyle,
+  ViewStyle,
+  StyleProp
 } from 'react-native'
 import { globalStyles } from '../utils/globalStyles'
 
@@ -11,12 +13,18 @@ interface Props {
   iconUri: ImageSourcePropType
   onPress: () => void
   iconStyle?: ImageStyle
+  containerStyle?: StyleProp<ViewStyle>
 }
 
-const RoundIconButton = ({ iconUri, onPress, iconStyle }: Props) => {
+const RoundIconButton = ({
+  iconUri,
+  onPress,
+  iconStyle,
+  containerStyle
+}: Props) => {
   return (
     <TouchableOpacity
-      style={globalStyles.roundIconButtonContainer}
+      style={[globalStyles.roundIconButtonContainer, containerStyle]}
       onPress={onPress}
     >
       <Image style={iconStyle} source={iconUri} />
