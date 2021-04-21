@@ -15,7 +15,6 @@ import {
 } from '../../generated/graphql'
 import useImagePicker from '../../hooks/useImagePicker'
 import { userUpdateStore } from '../../redux/actions/userActions'
-import { useAppSelector } from '../../redux/store'
 import { generateRNFile } from '../../utils/helper'
 import Loader from '../../components/Loader'
 import StorageKeys from '../../utils/StorageKeys'
@@ -84,11 +83,7 @@ export default function ProfilePhoto() {
   }
 
   useEffect(() => {
-    if (error) return Alert.alert(error?.message)
-
-    if (image) {
-      console.log({ image })
-    }
+    if (error) return Alert.alert(error.message)
   }, [image, error])
 
   const capture = v => {

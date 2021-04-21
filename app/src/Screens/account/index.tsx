@@ -42,8 +42,6 @@ export default function Account() {
   ] = useUpdateUserMutation()
 
   useEffect(() => {
-    console.log({ data, userUpdateError, userUpdateLoading })
-
     if (userUpdateError) return Alert.alert(userUpdateError.message)
     if (data) {
       dispatch(userUpdateStore(data.update_user))
@@ -84,9 +82,7 @@ export default function Account() {
   }
 
   useEffect(() => {
-    console.log({ image })
-
-    if (error) return Alert.alert(error?.message)
+    if (error) return Alert.alert(error.message)
     if (image) {
       onUploadPress()
     }
@@ -119,7 +115,6 @@ export default function Account() {
             onPress={() => navigation.navigate(ScreenNames.AuthScreens.LOGIN)}
           >
             <Image
-              // source={require('./../../../assets/exist.jpg')}
               source={
                 user?.profileUrl
                   ? { uri: user.profileUrl }
@@ -134,7 +129,6 @@ export default function Account() {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles._circle}>
           <Image
-            // source={require('./../../../assets/avatar.jpg')}
             source={
               user?.profileUrl
                 ? { uri: user.profileUrl }
