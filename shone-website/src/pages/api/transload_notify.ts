@@ -19,10 +19,10 @@ export default async function handler(req, res) {
     const data = JSON.parse(transloadit)
     const urlData = data.results
       ? data.results.video_hls.map(({ ssl_url }) => ssl_url)
-      : []
+      : ''
 
     const videoData: any = {
-      urls: JSON.stringify(urlData),
+      urls: urlData ? JSON.stringify(urlData) : '',
       json_data: JSON.stringify(data),
       video_id: data.assembly_id,
       user_id: data.fields.user_id,
@@ -37,7 +37,7 @@ export default async function handler(req, res) {
         : ''
       videoData.isViewable = 1
       const result = await query(
-        `UPDATE show_your_style_video_id_entry set video_url=${videoData.video_url}, isViewable=${videoData.isViewable} WHERE video_id= ${videoData.video_id}`,
+        `UPDATE show_your_style_video_id_entry set video_url=${videoData.video_url}, json_data=${videoData.json_data},urls=${videoData.urls}, isViewable=${videoData.isViewable} WHERE video_id= ${videoData.video_id}`,
       )
       console.log(result)
     }
