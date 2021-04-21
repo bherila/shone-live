@@ -149,6 +149,8 @@ export default function MainScreen() {
     setIsVideoUploading(true)
     try {
       const blobData = await urlToBlob(uri)
+      console.log({ blobData })
+
       uppy.on('upload-error', (a, { message }, c) => {
         Alert.alert('An Error Occured', message)
       })

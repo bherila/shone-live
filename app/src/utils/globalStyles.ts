@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native'
+import { RFValue } from 'react-native-responsive-fontsize'
 import theme from './colors'
+import FontNames from './Fonts/FontNames'
 
 const ROUNDED_BUTTON_CONTAINER_SIZE = 80
 
@@ -23,20 +25,27 @@ export const globalStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  rowContainer: {
-    flex: 1,
-    flexDirection: 'row'
+  rowContainer: { flexDirection: 'row' },
+  viewCenter: {
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  alignItemCenter: {
+    alignItems: 'center'
+  },
+  alignSelfCenter: {
+    alignSelf: 'center'
   },
   header: {
     elevation: 0,
     backgroundColor: 'transparent'
   },
   buttonContainer: {
-    flex: 1,
     padding: 16,
-    borderRadius: 8,
+    borderRadius: 14,
     backgroundColor: theme.textColor.color,
-    margin: 8
+    margin: 8,
+    flex: 1
   },
   primaryButtonText: {
     fontSize: 20,
@@ -57,5 +66,9 @@ export const globalStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#ffffff50'
+  },
+  primaryText: {
+    fontFamily: FontNames.POPPINS_REGULAR,
+    fontSize: RFValue(18)
   }
 })
