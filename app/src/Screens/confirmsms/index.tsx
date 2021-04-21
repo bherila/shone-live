@@ -43,13 +43,11 @@ export default function ConfirmSms() {
     verifyCode({
       variables: {
         code: otp,
-        phone: '+1' + params?.phone
+        phone: `+1${params?.phone}`
       }
     })
     dispatch(userInit())
   }
-
-  console.log('data', data)
 
   useEffect(() => {
     if (!data) return

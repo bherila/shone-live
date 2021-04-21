@@ -17,12 +17,13 @@ import styles from './styles'
 import { FontAwesome, Entypo } from '@expo/vector-icons'
 import { Header, Poll } from '../../components'
 
-import { useRoute } from '@react-navigation/core'
+import { ParamListBase, RouteProp, useRoute } from '@react-navigation/core'
 import LiveStream from '../../components/LiveStream/LiveStream'
 
 import { useAddMessageMutation, useGetShowQuery } from '../../generated/graphql'
 import Loader from '../../components/Loader'
 import { useAppSelector } from '../../redux/store'
+import { ScreenNames } from '../../utils/ScreenNames'
 
 interface Product {
   id: string
@@ -89,8 +90,15 @@ const exampleShow: ILiveShow = {
   }
 }
 
+interface RouteParams extends ParamListBase {
+  LiveShow: {
+    type: string
+    showId: string
+  }
+}
+
 const LiveShow = () => {
-  const route: any = useRoute()
+  const route = useRoute<RouteProp<RouteParams, 'LiveShow'>>()
 
   const flatlist = useRef<any>()
 
@@ -100,7 +108,7 @@ const LiveShow = () => {
 
   const { data: show, error, loading } = useGetShowQuery({
     variables: {
-      ID: parseFloat(route.params.showId)
+      ID: parseFloat(route.params?.showId)
     },
     pollInterval: 2000
   })
@@ -108,7 +116,12 @@ const LiveShow = () => {
   const [
     addMessage,
     { data: messageData, error: messageError, loading: messageLoading }
-  ] = useAddMessageMutation()
+  ] = useAddMessageMutation({
+    variables: {
+      message,
+      showID: parseFloat(route.params?.showId)
+    }
+  })
 
   useEffect(() => {
     if (messageError) return Alert.alert(messageError.message)
@@ -131,7 +144,7 @@ const LiveShow = () => {
           alias: user?.username,
           id: '20',
           message: message,
-          timestamp: '2021-04-12T00:29:57.162Z'
+          timestamp: new Date().toUTCString()
         }
       ]
 
@@ -140,6 +153,21 @@ const LiveShow = () => {
 
       await addMessage()
     }
+  }
+
+  const renderMessage = ({ item }) => {
+    return (
+      <View style={styles._chatRow}>
+        <Image
+          source={require('../../../assets/chatIcon.png')}
+          style={styles._userProfile}
+        />
+        <View style={{ flex: 1 }}>
+          <Text style={styles._name}>{item?.alias}</Text>
+          <Text style={styles._message}>{item?.message}</Text>
+        </View>
+      </View>
+    )
   }
 
   return (
@@ -183,22 +211,7 @@ const LiveShow = () => {
                       data={messageList}
                       extraData={messageList}
                       keyboardShouldPersistTaps="handled"
-                      renderItem={({ item }) => {
-                        return (
-                          <View style={styles._chatRow}>
-                            <Image
-                              source={require('../../../assets/chatIcon.png')}
-                              style={styles._userProfile}
-                            />
-                            <View style={{ flex: 1 }}>
-                              <Text style={styles._name}>{item?.alias}</Text>
-                              <Text style={styles._message}>
-                                {item?.message}
-                              </Text>
-                            </View>
-                          </View>
-                        )
-                      }}
+                      renderItem={renderMessage}
                     />
                   </View>
                 </View>

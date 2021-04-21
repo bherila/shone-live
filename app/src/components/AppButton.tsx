@@ -1,16 +1,27 @@
 import React from 'react'
-import { Text, TouchableOpacity } from 'react-native'
+import {
+  StyleProp,
+  Text,
+  TextStyle,
+  TouchableOpacity,
+  ViewStyle
+} from 'react-native'
 import { globalStyles } from '../utils/globalStyles'
 
 interface Props {
   title: string
   onPress: () => void
+  containerStyle?: StyleProp<ViewStyle>
+  textStyle?: StyleProp<TextStyle>
 }
 
-const AppButton = ({ title, onPress }: Props) => {
+const AppButton = ({ title, onPress, containerStyle, textStyle }: Props) => {
   return (
-    <TouchableOpacity style={globalStyles.buttonContainer} onPress={onPress}>
-      <Text style={globalStyles.primaryButtonText}>{title}</Text>
+    <TouchableOpacity
+      style={[globalStyles.buttonContainer, containerStyle]}
+      onPress={onPress}
+    >
+      <Text style={[globalStyles.primaryButtonText, textStyle]}>{title}</Text>
     </TouchableOpacity>
   )
 }
