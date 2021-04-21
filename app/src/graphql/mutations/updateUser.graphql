@@ -1,4 +1,4 @@
-mutation UpdateUser($user: updateUserEntityDto!) {
+mutation UpdateUser($user: UpdateUserEntityDto!) {
   update_user(user: $user) {
     email
     id

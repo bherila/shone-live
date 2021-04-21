@@ -6,13 +6,20 @@ import styles from './styles'
 import { Body, Item, Icon, Button, Header, Left, Right } from 'native-base'
 import Text from './../../components/Text'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import { ScreenNames } from '../../utils/ScreenNames'
 import { globalStyles } from '../../utils/globalStyles'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { useUpdateUserMutation } from '../../generated/graphql'
+import StorageKeys from '../../utils/StorageKeys'
+import { useSecureStore } from '../../hooks/useSecureStore'
 
 export default function NewAccount() {
   const navigation = useNavigation()
+  const route = useRoute()
+
+  const [updateUser] = useUpdateUserMutation()
+  const { setItem } = useSecureStore()
 
   const [fname, setFname] = useState('')
   const [lname, setLname] = useState('')
@@ -27,7 +34,22 @@ export default function NewAccount() {
     if (username !== '' && email !== '') {
       const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
       if (reg.test(email) === true) {
-        navigateToProfileScreen()
+        updateUser({
+          variables: {
+            user: {
+              id: route.params?.user.id,
+              username,
+              email
+            }
+          }
+        }).then(async updatedUser => {
+          await setItem(StorageKeys.USER, updatedUser.data?.update_user)
+          await setItem(
+            StorageKeys.AUTH_TOKEN,
+            updatedUser.data?.update_user.token
+          )
+          navigateToProfileScreen()
+        })
       } else {
         alert('Enter a valid email')
       }
@@ -106,7 +128,7 @@ export default function NewAccount() {
               />
             </Item> */}
 
-            <Item>
+            <Item style={styles._codeInput}>
               <TextInput
                 ref={usernameRef}
                 placeholder="Username"

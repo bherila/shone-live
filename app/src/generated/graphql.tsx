@@ -94,7 +94,7 @@ export type Mutation = {
   add_payment: Payment;
   add_show: Show;
   add_show_your_style_entry: ShowYourStyleEntry;
-  add_video_id_from_translodit: ShowYourStyleVideoIdEntry;
+  add_video_id_from_transloadit: ShowYourStyleVideoIdEntry;
   add_show_your_style_vote: ShowYourStyleVote;
   add_show_your_style_view_record: ShowYourStyleViewRecord;
   add_user: Scalars['String'];
@@ -149,7 +149,7 @@ export type MutationAdd_Show_Your_Style_EntryArgs = {
 };
 
 
-export type MutationAdd_Video_Id_From_TransloditArgs = {
+export type MutationAdd_Video_Id_From_TransloaditArgs = {
   videoId: Scalars['String'];
 };
 
@@ -337,9 +337,13 @@ export type ShowYourStyleEntry = {
 
 export type ShowYourStyleVideoIdEntry = {
   __typename?: 'ShowYourStyleVideoIdEntry';
-  id: Scalars['Float'];
+  entry_id: Scalars['Float'];
   user: User;
   video_id: Scalars['String'];
+  entry_timestamp: Scalars['DateTime'];
+  video_url?: Maybe<Scalars['String']>;
+  is_viewable: Scalars['Boolean'];
+  error?: Maybe<Scalars['String']>;
 };
 
 export type ShowYourStyleViewRecord = {
@@ -359,6 +363,13 @@ export type ShowYourStyleVote = {
   view_duration: Scalars['Float'];
 };
 
+export type UpdateUserEntityDto = {
+  id: Scalars['String'];
+  username?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+  file?: Maybe<Scalars['Upload']>;
+};
+
 
 export type User = {
   __typename?: 'User';
@@ -369,12 +380,6 @@ export type User = {
   verification_code_time_sent: Scalars['String'];
   token?: Maybe<Scalars['String']>;
   profileUrl?: Maybe<Scalars['String']>;
-};
-
-export type UpdateUserEntityDto = {
-  username?: Maybe<Scalars['String']>;
-  email?: Maybe<Scalars['String']>;
-  file?: Maybe<Scalars['Upload']>;
 };
 
 export type AddMessageMutationVariables = Exact<{
@@ -530,7 +535,7 @@ export type AddUserMutationHookResult = ReturnType<typeof useAddUserMutation>;
 export type AddUserMutationResult = Apollo.MutationResult<AddUserMutation>;
 export type AddUserMutationOptions = Apollo.BaseMutationOptions<AddUserMutation, AddUserMutationVariables>;
 export const UpdateUserDocument = gql`
-    mutation UpdateUser($user: updateUserEntityDto!) {
+    mutation UpdateUser($user: UpdateUserEntityDto!) {
   update_user(user: $user) {
     email
     id
