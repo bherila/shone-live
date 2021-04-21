@@ -11,7 +11,7 @@ const useImagePicker = (height: number, width?: number) => {
   const [error, setError] = useState<any>()
 
   useEffect(() => {
-    ;(async () => {
+    (async () => {
       if (Platform.OS !== 'web') {
         const {
           status

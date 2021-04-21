@@ -108,7 +108,7 @@ export default function MainScreen() {
   }
 
   useEffect(() => {
-    ;(async () => {
+    (async () => {
       if (Platform.OS !== 'web') {
         const {
           status
@@ -122,12 +122,12 @@ export default function MainScreen() {
 
   //Needed to convert video file to base64 and then to blob, Since Transloadit only allows blob or file data
   const urlToBlob = async (uri: string) => {
-    let fileBase64 = await FileSystem.readAsStringAsync(uri, {
+    const fileBase64 = await FileSystem.readAsStringAsync(uri, {
       encoding: 'base64'
     })
 
     return new Promise<Blob | File>((resolve, reject) => {
-      var xhr = new XMLHttpRequest()
+      const xhr = new XMLHttpRequest()
       xhr.onerror = reject
       xhr.onreadystatechange = () => {
         if (xhr.readyState === 4) {

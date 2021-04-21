@@ -24,6 +24,7 @@ import {
   VerifyCodeQuery,
   useVerifyCodeLazyQuery
 } from '../../generated/graphql'
+import client from '../../graphql/client'
 
 export default function ConfirmSms() {
   const navigation = useNavigation()
