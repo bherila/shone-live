@@ -9,14 +9,14 @@ export class HelloService {
   // For DEMO ONLY we use an array, normally we'd use the database.
   private staticData: Hello[] = [
     {
-      id: 1,
+      id: '1',
       message: 'Hello world!',
     },
   ]
 
   async create(data: HelloInput): Promise<Hello> {
     this.staticData.push({
-      id: this.staticData.length + 1,
+      id: (this.staticData.length + 1).toString(),
       ...data,
     })
     return data as any

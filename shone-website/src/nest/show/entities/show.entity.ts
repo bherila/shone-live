@@ -1,7 +1,15 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql'
-import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
-import { MessageEntity } from '../../message/entities/message.entity'
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm'
 
+import { MessageEntity } from '../../message/entities/message.entity'
 import { User } from '../../user/entities/user.entity'
 
 @ObjectType()
