@@ -1,0 +1,12 @@
+query GetShows {
+  shows {
+    id
+    title
+    image_url
+    chatMessages {
+      id
+      message
+      alias
+    }
+  }
+}

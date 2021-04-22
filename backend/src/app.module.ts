@@ -4,22 +4,17 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { join } from 'path'
 
 import { AddressModule } from './address/address.module'
-import { Address } from './address/entities/address.entity'
+import { BrandsModule } from './brands/brands.module'
 import { ConsumerLeadsModule } from './consumer-leads/consumer-leads.module'
-import { ConsumerLead } from './consumer-leads/entities/consumer-lead.entity'
-import { MessageEntity } from './message/entities/message.entity'
 import { MessageModule } from './message/message.module'
-import { Payment } from './payment/entities/payment.entity'
 import { PaymentModule } from './payment/payment.module'
-import { Product } from './products/entities/product.entity'
 import { ProductsModule } from './products/products.module'
-import { Show } from './show/entities/show.entity'
 import { ShowModule } from './show/show.module'
+import { ShowSegmentsModule } from './show-segment/show-segments.module'
 import { ShowYourStylesModule } from './show-your-style/show-your-style.module'
-import { ShowYourStyleViewRecord } from './show-your-style/show-your-style-view-record/entities/show-your-style-view-record.entity'
-import { ShowYourStyleVote } from './show-your-style/show-your-style-vote/entities/show-your-style-vote.entity'
-import { User } from './user/entities/user.entity'
 import { UserModule } from './user/user.module'
+import { UserBrandRolesModule } from './user-brand-role/user-brand-roles.module'
+import { UserShowRolesModule } from './user-show-role/user-show-roles.module'
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
@@ -29,32 +24,24 @@ import { UserModule } from './user/user.module'
         username: process.env.MYSQL_USER,
         password: process.env.MYSQL_PASS,
         database: process.env.MYSQL_DB,
-        entities: [
-          Address,
-          ConsumerLead,
-          MessageEntity,
-          Product,
-          Payment,
-          Show,
-          ShowYourStyleVote,
-          ShowYourStyleViewRecord,
-          ShowYourStyleVote,
-          User,
-        ],
         autoLoadEntities: true,
         synchronize: true,
-        logging: false,
+        logging: true,
         keepConnectionAlive: true,
       }),
     }),
     AddressModule,
+    BrandsModule,
     ConsumerLeadsModule,
     MessageModule,
     ProductsModule,
     PaymentModule,
     ShowModule,
+    ShowSegmentsModule,
     ShowYourStylesModule,
     UserModule,
+    UserBrandRolesModule,
+    UserShowRolesModule,
     GraphQLModule.forRoot({
       path: '/api/graphql',
       installSubscriptionHandlers: false,

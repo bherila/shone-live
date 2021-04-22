@@ -11,7 +11,7 @@ export class PaymentResolver {
 
   @Query(() => Payment, { nullable: true })
   @UseGuards(new AuthGuard())
-  payment(@Context('user') user, @Args('PaymentId') PaymentId: number) {
+  payment(@Context('user') user, @Args('PaymentId') PaymentId: string) {
     return this.paymentService.findOne(PaymentId, user.id)
   }
 
@@ -25,7 +25,7 @@ export class PaymentResolver {
   @UseGuards(new AuthGuard())
   async add_payment(
     @Context('user') user,
-    @Args('productId') productId: number,
+    @Args('productId') productId: string,
     @Args('quantity') quantity: string,
   ) {
     return await this.paymentService.create(productId, quantity, user.id)

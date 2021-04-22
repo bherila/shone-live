@@ -2,7 +2,7 @@ import React from 'react'
 
 import StoreSection from '../../../../components/StoreSection'
 import Table from '../../../../components/Table'
-import { StoreModel } from '../..'
+import { Brand } from '../../../../generated/graphql'
 
 export async function getServerSideProps() {
   return {
@@ -57,7 +57,7 @@ export default function OrdersPage({
   orders,
   shows,
 }: {
-  store: StoreModel
+  store: Brand
   orders: OrderModel[]
   shows: ShowModel[]
 }) {

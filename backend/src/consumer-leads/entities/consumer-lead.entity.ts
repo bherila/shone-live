@@ -10,8 +10,8 @@ import {
 @Entity()
 export class ConsumerLead {
   @Field()
-  @PrimaryGeneratedColumn()
-  readonly id: number
+  @PrimaryGeneratedColumn('uuid')
+  readonly id: string
 
   @Field()
   @Column({

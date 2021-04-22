@@ -12,7 +12,7 @@ export class AddressResolver {
 
   @Query(() => Address, { nullable: true })
   @UseGuards(new AuthGuard())
-  address(@Context('user') user, @Args('addressId') addressId: number) {
+  address(@Context('user') user, @Args('addressId') addressId: string) {
     return this.AddresssService.findOne(addressId, user.id)
   }
 

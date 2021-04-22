@@ -14,7 +14,7 @@ export class ShowYourStyleViewRecordsResolver {
   ) {}
 
   @Query(() => ShowYourStyleViewRecord, { nullable: true })
-  show_your_style_view_record(@Args('showId') showId: number) {
+  show_your_style_view_record(@Args('showId') showId: string) {
     return this.showYourStyleViewRecordsService.findOne(showId)
   }
 
@@ -29,7 +29,7 @@ export class ShowYourStyleViewRecordsResolver {
   @UseGuards(new AuthGuard())
   async add_show_your_style_view_record(
     @Context('user') user: User,
-    @Args('entryId') entryId: number,
+    @Args('entryId') entryId: string,
   ) {
     return await this.showYourStyleViewRecordsService.create({
       entryId,

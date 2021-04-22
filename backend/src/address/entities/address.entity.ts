@@ -13,8 +13,8 @@ import { User } from '../../user/entities/user.entity'
 @Entity()
 export class Address {
   @Field()
-  @PrimaryGeneratedColumn()
-  id: number
+  @PrimaryGeneratedColumn('uuid')
+  id: string
 
   @Field()
   @Column({
