@@ -7,10 +7,10 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
+import { Album } from './album.entity'
 import { AlbumsRepository } from './album.repository'
 import { AlbumsResolver } from './album.resolver'
 import { AlbumsService } from './album.service'
-import { Album } from './album.entity'
 
 @Module({
   imports: [TypeOrmModule.forFeature([Album, AlbumsRepository])],

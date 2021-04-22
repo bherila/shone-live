@@ -9,8 +9,8 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
-import { RolesService } from './role.service'
 import { Role } from './role.entity'
+import { RolesService } from './role.service'
 
 @Resolver(() => Role)
 export class RolesResolver {

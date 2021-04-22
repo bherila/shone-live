@@ -7,10 +7,10 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
+import { App } from './app.entity'
 import { AppsRepository } from './app.repository'
 import { AppsResolver } from './app.resolver'
 import { AppsService } from './app.service'
-import { App } from './app.entity'
 
 @Module({
   imports: [TypeOrmModule.forFeature([App, AppsRepository])],

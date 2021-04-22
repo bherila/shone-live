@@ -9,8 +9,8 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
-import { AlbumsService } from './album.service'
 import { Album } from './album.entity'
+import { AlbumsService } from './album.service'
 
 @Resolver(() => Album)
 export class AlbumsResolver {

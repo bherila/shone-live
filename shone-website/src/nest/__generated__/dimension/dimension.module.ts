@@ -7,10 +7,10 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
+import { Dimension } from './dimension.entity'
 import { DimensionsRepository } from './dimension.repository'
 import { DimensionsResolver } from './dimension.resolver'
 import { DimensionsService } from './dimension.service'
-import { Dimension } from './dimension.entity'
 
 @Module({
   imports: [TypeOrmModule.forFeature([Dimension, DimensionsRepository])],

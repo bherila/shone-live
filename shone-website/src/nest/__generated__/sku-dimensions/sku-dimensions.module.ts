@@ -7,10 +7,10 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
+import { SkuDimensions } from './sku-dimensions.entity'
 import { SkuDimensionsRepository } from './sku-dimensions.repository'
 import { SkuDimensionsResolver } from './sku-dimensions.resolver'
 import { SkuDimensionsService } from './sku-dimensions.service'
-import { SkuDimensions } from './sku-dimensions.entity'
 
 @Module({
   imports: [TypeOrmModule.forFeature([SkuDimensions, SkuDimensionsRepository])],

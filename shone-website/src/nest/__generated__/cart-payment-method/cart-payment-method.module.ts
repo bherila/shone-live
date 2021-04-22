@@ -7,10 +7,10 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
+import { CartPaymentMethod } from './cart-payment-method.entity'
 import { CartPaymentMethodsRepository } from './cart-payment-method.repository'
 import { CartPaymentMethodsResolver } from './cart-payment-method.resolver'
 import { CartPaymentMethodsService } from './cart-payment-method.service'
-import { CartPaymentMethod } from './cart-payment-method.entity'
 
 @Module({
   imports: [

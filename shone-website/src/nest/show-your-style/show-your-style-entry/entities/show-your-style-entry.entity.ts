@@ -75,4 +75,12 @@ export class ShowYourStyleVideoIdEntry {
   @Field({ nullable: true, name: 'error' })
   @Column({ default: null })
   error: string
+
+  @Field({ nullable: true, name: 'json_data' })
+  @Column({ type: 'mediumtext', default: null })
+  jsonData: string
+
+  @Field({ nullable: true, name: 'urls' })
+  @Column({ default: null })
+  urls: string
 }

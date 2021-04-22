@@ -7,10 +7,10 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
+import { EntShowSegment } from './ent-show-segment.entity'
 import { EntShowSegmentsRepository } from './ent-show-segment.repository'
 import { EntShowSegmentsResolver } from './ent-show-segment.resolver'
 import { EntShowSegmentsService } from './ent-show-segment.service'
-import { EntShowSegment } from './ent-show-segment.entity'
 
 @Module({
   imports: [

@@ -10,9 +10,9 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
-import { PermissionsRepository } from './permission.repository'
 import { CreatePermissionDto } from './create-permission.dto'
 import { Permission } from './permission.entity'
+import { PermissionsRepository } from './permission.repository'
 
 @Injectable()
 export class PermissionsService {

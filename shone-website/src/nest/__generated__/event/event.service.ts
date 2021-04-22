@@ -10,9 +10,9 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
-import { EventsRepository } from './event.repository'
 import { CreateEventDto } from './create-event.dto'
 import { Event } from './event.entity'
+import { EventsRepository } from './event.repository'
 
 @Injectable()
 export class EventsService {

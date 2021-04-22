@@ -10,9 +10,9 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
-import { PageOrdersRepository } from './page-order.repository'
 import { CreatePageOrderDto } from './create-page-order.dto'
 import { PageOrder } from './page-order.entity'
+import { PageOrdersRepository } from './page-order.repository'
 
 @Injectable()
 export class PageOrdersService {

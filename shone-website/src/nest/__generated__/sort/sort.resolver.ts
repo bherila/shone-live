@@ -9,8 +9,8 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
-import { SortsService } from './sort.service'
 import { Sort } from './sort.entity'
+import { SortsService } from './sort.service'
 
 @Resolver(() => Sort)
 export class SortsResolver {

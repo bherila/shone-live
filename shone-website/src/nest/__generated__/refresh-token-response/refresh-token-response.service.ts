@@ -10,9 +10,9 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
-import { RefreshTokenResponsesRepository } from './refresh-token-response.repository'
 import { CreateRefreshTokenResponseDto } from './create-refresh-token-response.dto'
 import { RefreshTokenResponse } from './refresh-token-response.entity'
+import { RefreshTokenResponsesRepository } from './refresh-token-response.repository'
 
 @Injectable()
 export class RefreshTokenResponsesService {

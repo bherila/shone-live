@@ -5,6 +5,7 @@
  */
 
 import { EntityRepository, Repository } from 'typeorm'
+
 import { SearchRequest } from './search-request.entity'
 
 @EntityRepository(SearchRequest)

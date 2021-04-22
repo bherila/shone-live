@@ -1,5 +1,6 @@
 import cn from 'classnames'
 import Head from 'next/head'
+import Image from 'next/image'
 import React, { useState } from 'react'
 
 import AnimatedLogo from '../components/animated-logo'
@@ -7,7 +8,6 @@ import rainbow from '../components/RainbowGradientContainer.module.css'
 import { useSubscribeToWaitlistMutation } from '../generated/graphql'
 import isValidEmail from '../helpers/isValidEmail'
 import useInput from '../hooks/useInput'
-import Image from 'next/image'
 
 export default function Index(): JSX.Element {
   const [submitted, setSubmitted] = useState(false)

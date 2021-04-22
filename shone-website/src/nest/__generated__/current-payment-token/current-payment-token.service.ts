@@ -10,9 +10,9 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
-import { CurrentPaymentTokensRepository } from './current-payment-token.repository'
 import { CreateCurrentPaymentTokenDto } from './create-current-payment-token.dto'
 import { CurrentPaymentToken } from './current-payment-token.entity'
+import { CurrentPaymentTokensRepository } from './current-payment-token.repository'
 
 @Injectable()
 export class CurrentPaymentTokensService {

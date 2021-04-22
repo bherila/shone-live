@@ -5,6 +5,7 @@
  */
 
 import { EntityRepository, Repository } from 'typeorm'
+
 import { EntShowSegment } from './ent-show-segment.entity'
 
 @EntityRepository(EntShowSegment)

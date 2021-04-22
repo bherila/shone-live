@@ -10,9 +10,9 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
-import { RolesRepository } from './role.repository'
 import { CreateRoleDto } from './create-role.dto'
 import { Role } from './role.entity'
+import { RolesRepository } from './role.repository'
 
 @Injectable()
 export class RolesService {

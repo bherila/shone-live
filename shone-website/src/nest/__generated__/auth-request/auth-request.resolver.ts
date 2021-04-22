@@ -9,8 +9,8 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
-import { AuthRequestsService } from './auth-request.service'
 import { AuthRequest } from './auth-request.entity'
+import { AuthRequestsService } from './auth-request.service'
 
 @Resolver(() => AuthRequest)
 export class AuthRequestsResolver {

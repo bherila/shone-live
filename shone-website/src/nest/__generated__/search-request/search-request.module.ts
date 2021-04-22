@@ -7,10 +7,10 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
+import { SearchRequest } from './search-request.entity'
 import { SearchRequestsRepository } from './search-request.repository'
 import { SearchRequestsResolver } from './search-request.resolver'
 import { SearchRequestsService } from './search-request.service'
-import { SearchRequest } from './search-request.entity'
 
 @Module({
   imports: [

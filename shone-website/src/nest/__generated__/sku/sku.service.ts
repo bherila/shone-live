@@ -10,9 +10,9 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
-import { SkusRepository } from './sku.repository'
 import { CreateSkuDto } from './create-sku.dto'
 import { Sku } from './sku.entity'
+import { SkusRepository } from './sku.repository'
 
 @Injectable()
 export class SkusService {

@@ -7,10 +7,10 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
+import { OrderCustomer } from './order-customer.entity'
 import { OrderCustomersRepository } from './order-customer.repository'
 import { OrderCustomersResolver } from './order-customer.resolver'
 import { OrderCustomersService } from './order-customer.service'
-import { OrderCustomer } from './order-customer.entity'
 
 @Module({
   imports: [

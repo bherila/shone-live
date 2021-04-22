@@ -9,8 +9,8 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
-import { OrderPaymentMethodsService } from './order-payment-method.service'
 import { OrderPaymentMethod } from './order-payment-method.entity'
+import { OrderPaymentMethodsService } from './order-payment-method.service'
 
 @Resolver(() => OrderPaymentMethod)
 export class OrderPaymentMethodsResolver {

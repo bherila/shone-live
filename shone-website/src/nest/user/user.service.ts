@@ -77,11 +77,11 @@ export class UserService {
     if (userDetail.verificationCode !== code)
       throw new HttpException(message.wrongCode, HttpStatus.BAD_REQUEST)
     if (userDetail.username) {
-      const Payload = {
+      const payload = {
         id: userDetail.id,
         phone,
       }
-      const token = await jwt.sign(Payload, process.env.JWT_SECRET)
+      const token = await jwt.sign(payload, process.env.JWT_SECRET)
       await this.userRepository.update(userDetail.id, { token })
       userDetail = await this.findOne(userDetail.id)
     }
@@ -114,16 +114,16 @@ export class UserService {
         const profileUrl = await fileUpload(await user.file)
         temoData.profileUrl = profileUrl
       }
-      const Payload = {
+      const payload = {
         id: checkUserExist.id,
         phone: checkUserExist.phone,
       }
-      const token = await jwt.sign(Payload, process.env.JWT_SECRET)
+      const token = await jwt.sign(payload, process.env.JWT_SECRET)
       temoData.token = token
       await this.userRepository.update(user.id, temoData)
       return await this.findOne(user.id)
     } catch (e) {
-      throw Error(e)
+      return e
     }
   }
 }

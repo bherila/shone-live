@@ -7,10 +7,10 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
+import { OrderShippingMethodWrapper } from './order-shipping-method-wrapper.entity'
 import { OrderShippingMethodWrappersRepository } from './order-shipping-method-wrapper.repository'
 import { OrderShippingMethodWrappersResolver } from './order-shipping-method-wrapper.resolver'
 import { OrderShippingMethodWrappersService } from './order-shipping-method-wrapper.service'
-import { OrderShippingMethodWrapper } from './order-shipping-method-wrapper.entity'
 
 @Module({
   imports: [

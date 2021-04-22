@@ -8,13 +8,13 @@
 
 import { Field, InputType } from '@nestjs/graphql'
 import {
-  IsEmail,
-  IsString,
-  IsInt,
   IsDate,
-  MinLength,
-  MaxLength,
+  IsEmail,
+  IsInt,
+  IsString,
   Matches,
+  MaxLength,
+  MinLength,
 } from 'class-validator'
 
 @InputType()

@@ -5,6 +5,7 @@
  */
 
 import { EntityRepository, Repository } from 'typeorm'
+
 import { LoginRequest } from './login-request.entity'
 
 @EntityRepository(LoginRequest)

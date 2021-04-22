@@ -7,10 +7,10 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
+import { OrderAddress } from './order-address.entity'
 import { OrderAddressesRepository } from './order-address.repository'
 import { OrderAddressesResolver } from './order-address.resolver'
 import { OrderAddressesService } from './order-address.service'
-import { OrderAddress } from './order-address.entity'
 
 @Module({
   imports: [TypeOrmModule.forFeature([OrderAddress, OrderAddressesRepository])],
