@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native'
 import { RFValue } from 'react-native-responsive-fontsize'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import theme from './colors'
 import FontNames from './Fonts/FontNames'
 
@@ -41,14 +42,15 @@ export const globalStyles = StyleSheet.create({
     backgroundColor: 'transparent'
   },
   buttonContainer: {
-    padding: 16,
-    borderRadius: 14,
+    paddingHorizontal: wp(1),
+    paddingVertical: wp(3),
+    borderRadius: wp(3.5),
     backgroundColor: theme.textColor.color,
-    margin: 8,
+    margin: wp(1),
     flex: 1
   },
   primaryButtonText: {
-    fontSize: 20,
+    fontSize: RFValue(20),
     fontFamily: 'bahnscift',
     color: 'black',
     textAlign: 'center'
