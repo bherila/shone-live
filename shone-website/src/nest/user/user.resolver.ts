@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, UseGuards } from '@nestjs/common'
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql'
 
 import { AuthGuard } from '../common/auth.guards'
-import { updateUserEntityDto } from './dto/user.dto'
+import { updateUserEntityDto } from './dto/update-user.dto'
 import { User } from './entities/user.entity'
 import { UserService } from './user.service'
 
