@@ -108,7 +108,7 @@ export default function MainScreen() {
   }
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       if (Platform.OS !== 'web') {
         const {
           status

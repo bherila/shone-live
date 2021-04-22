@@ -32,7 +32,7 @@ const ContestListItem = ({
 }: Props) => {
   const dim = index % 2 == 0 ? { marginRight: wp(5) } : { marginLeft: wp(5) }
   return (
-    <TouchableOpacity style={[styles.container, dim]}>
+    <TouchableOpacity style={[styles.container, dim]} activeOpacity={0.8}>
       <ImageBackground
         source={
           image_url ? { uri: image_url } : require('../../assets/avatar.jpg')
