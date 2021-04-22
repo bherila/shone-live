@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql'
+import { Field, ObjectType } from '@nestjs/graphql'
 import {
   Column,
   CreateDateColumn,
@@ -15,16 +15,12 @@ import { User } from '../../user/entities/user.entity'
 @ObjectType()
 @Entity()
 export class MessageEntity {
-  @Field(() => ID)
-  @PrimaryGeneratedColumn({
-    type: 'bigint',
-  })
-  readonly id: number
+  @Field()
+  @PrimaryGeneratedColumn('uuid')
+  readonly id: string
 
   @ManyToOne(() => Show)
-  @JoinColumn({
-    name: 'show_id',
-  })
+  @JoinColumn({ name: 'show_id' })
   show: Show
 
   @ManyToOne(() => User)
@@ -44,7 +40,6 @@ export class MessageEntity {
   })
   message: string
 
-  /* Copy user alias (nickname) here to avoid having to JOIN user object */
   @Field()
   @Column({
     name: 'author_alias',

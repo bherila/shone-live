@@ -13,7 +13,7 @@ export class MessageResolver {
   @UseGuards(new AuthGuard())
   messageEntity(
     @Context('user') user,
-    @Args('messageEntityId') messageEntityId: number,
+    @Args('messageEntityId') messageEntityId: string,
   ) {
     return this.messageEntitysService.findOne(messageEntityId, user.id)
   }
@@ -27,7 +27,7 @@ export class MessageResolver {
   @Mutation(() => MessageEntity)
   @UseGuards(new AuthGuard())
   async add_message(
-    @Args('showId') showId: number,
+    @Args('showId') showId: string,
     @Args('message') message: string,
     @Context('user') user,
   ) {

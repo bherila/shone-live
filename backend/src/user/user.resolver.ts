@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, UseGuards } from '@nestjs/common'
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql'
 
 import { AuthGuard } from '../common/auth.guards'
-import { UpdateUserEntityDto } from './dto/user.dto'
+import { updateUserEntityDto } from './dto/update-user.dto'
 import { User } from './entities/user.entity'
 import { UserService } from './user.service'
 
@@ -11,7 +11,7 @@ export class UserResolver {
   constructor(private readonly usersService: UserService) {}
 
   @Query(() => User, { nullable: true })
-  user(@Args('userId') userId: number) {
+  user(@Args('userId') userId: string) {
     return this.usersService.findOne(userId)
   }
 
@@ -27,7 +27,6 @@ export class UserResolver {
     try {
       return this.usersService.create(phone)
     } catch (error) {
-      console.log(`error`, error)
       throw new HttpException(JSON.stringify(error), HttpStatus.BAD_REQUEST)
     }
   }
@@ -38,14 +37,16 @@ export class UserResolver {
   }
 
   @Mutation(() => User)
-  async update_user(@Args('user') updateUser: UpdateUserEntityDto) {
-    if (
-      updateUser.file?.mimetype &&
-      ['image/jpeg' || 'image/jpg' || 'image/png'].includes(
-        updateUser.file?.mimetype,
-      )
-    )
-      return Error('Please Upload only jpeg,png,jpg images')
-    return await this.usersService.update(updateUser)
+  async update_user(@Args('user') user: updateUserEntityDto) {
+    const file = user.file
+    if (file) {
+      if (file.mimetype === ('image/jpeg' || 'image/jpg' || 'image/png'))
+        return Error('Please Upload only jpeg,png,jpg images')
+      user = {
+        ...user,
+        file,
+      }
+    }
+    return await this.usersService.update(user)
   }
 }

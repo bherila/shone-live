@@ -42,7 +42,6 @@ export class ProductsService {
   findByUser(paginationQuery: PaginationQueryDto, userId: string) {
     const { limit, offset } = paginationQuery
     return this.productRepository.find({
-      relations: ['user', 'brand', 'showSegments'],
       skip: offset,
       take: limit,
       where: { user: { id: userId } },
@@ -81,7 +80,7 @@ export class ProductsService {
     }
     const user = await this.userRepository.findOne(userId)
     if (!user) {
-      throw new NotFoundException(`User #${userId} not found`)
+      throw new NotFoundException(`User #${createProductDto.userId} not found`)
     }
     const showsegmentOrBrand = { showSegments: undefined, brand: undefined }
     if (createProductDto.showSegmentId) {

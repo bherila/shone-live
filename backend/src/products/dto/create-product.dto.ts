@@ -1,15 +1,17 @@
 import { Field, InputType } from '@nestjs/graphql'
-import { IsNumber, IsString } from 'class-validator'
+import { IsOptional, IsString } from 'class-validator'
 
 @InputType()
 export class CreateProductDto {
-  @Field()
+  @IsOptional()
+  @Field({ nullable: true })
   @IsString()
-  readonly userId: string
+  readonly showSegmentId: string
 
-  @Field()
-  @IsNumber()
-  readonly showId: number
+  @IsOptional()
+  @Field({ nullable: true })
+  @IsString()
+  readonly brandId: string
 
   @Field()
   @IsString()

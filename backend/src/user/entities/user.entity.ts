@@ -5,8 +5,8 @@ import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm'
 @Entity()
 export class User {
   @Field(() => ID)
-  @PrimaryGeneratedColumn()
-  readonly id: number
+  @PrimaryGeneratedColumn('uuid')
+  readonly id: string
 
   @Index({
     unique: true,

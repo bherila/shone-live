@@ -26,7 +26,6 @@ export class ProductResolver {
 
   @Query(() => [Product])
   @UseGuards(new AuthGuard())
-  myProducts(
     @Context('user') user,
     @Args('paginationQuery') paginationQuery: PaginationQueryDto,
   ): Promise<Product[]> {

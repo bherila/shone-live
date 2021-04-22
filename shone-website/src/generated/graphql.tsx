@@ -70,9 +70,9 @@ export type CreateProductDto = {
   description: Scalars['String'];
 };
 
-export type CreateShowInput = {
+export type CreateShowDto = {
   title: Scalars['String'];
-  image_url?: Maybe<Scalars['String']>;
+  imageUrl: Scalars['String'];
   startDate: Scalars['DateTime'];
   endDate: Scalars['DateTime'];
 };
@@ -101,16 +101,6 @@ export type CreateUserShowRoleDto = {
 };
 
 
-export type Hello = {
-  __typename?: 'Hello';
-  id: Scalars['Int'];
-  message: Scalars['String'];
-};
-
-export type HelloInput = {
-  message: Scalars['String'];
-};
-
 export type MessageEntity = {
   __typename?: 'MessageEntity';
   id: Scalars['String'];
@@ -125,8 +115,6 @@ export type Mutation = {
   add_brand: Brand;
   update_brand: Brand;
   addConsumerLead: ConsumerLead;
-  addHello: Hello;
-  removeHello: Scalars['Boolean'];
   add_message: MessageEntity;
   add_product: Product;
   update_product: Product;
@@ -167,16 +155,6 @@ export type MutationAddConsumerLeadArgs = {
 };
 
 
-export type MutationAddHelloArgs = {
-  newHelloData: HelloInput;
-};
-
-
-export type MutationRemoveHelloArgs = {
-  id: Scalars['String'];
-};
-
-
 export type MutationAdd_MessageArgs = {
   message: Scalars['String'];
   showId: Scalars['String'];
@@ -200,7 +178,7 @@ export type MutationAdd_PaymentArgs = {
 
 
 export type MutationAdd_ShowArgs = {
-  data: CreateShowInput;
+  data: CreateShowDto;
 };
 
 
@@ -297,8 +275,6 @@ export type Query = {
   my_brands: Array<Brand>;
   consumerLead?: Maybe<ConsumerLead>;
   consumerLeads: Array<ConsumerLead>;
-  hello: Hello;
-  hellos: Array<Hello>;
   messageEntity?: Maybe<MessageEntity>;
   messageEntities: Array<MessageEntity>;
   product?: Maybe<Product>;
@@ -357,17 +333,6 @@ export type QueryConsumerLeadArgs = {
 
 export type QueryConsumerLeadsArgs = {
   paginationQuery: PaginationQueryDto;
-};
-
-
-export type QueryHelloArgs = {
-  id: Scalars['String'];
-};
-
-
-export type QueryHellosArgs = {
-  skip?: Maybe<Scalars['Int']>;
-  take?: Maybe<Scalars['Int']>;
 };
 
 
@@ -490,6 +455,8 @@ export type Show = {
   start_date: Scalars['DateTime'];
   end_date: Scalars['DateTime'];
   chatMessages?: Maybe<Array<MessageEntity>>;
+  showSegments?: Maybe<Array<ShowSegment>>;
+  userShowRoles?: Maybe<Array<UserShowRole>>;
   owner_user: User;
 };
 
@@ -500,6 +467,7 @@ export type ShowSegment = {
   brand: Brand;
   show: Show;
   ownerUser: User;
+  products: Array<Product>;
 };
 
 export type ShowYourStyleEntry = {
@@ -519,6 +487,8 @@ export type ShowYourStyleVideoIdEntry = {
   video_url?: Maybe<Scalars['String']>;
   is_viewable: Scalars['Boolean'];
   error?: Maybe<Scalars['String']>;
+  json_data?: Maybe<Scalars['String']>;
+  urls?: Maybe<Scalars['String']>;
 };
 
 export type ShowYourStyleViewRecord = {
@@ -557,14 +527,17 @@ export type UpdateShowSegmentDto = {
 
 export type UpdateUserBrandRoleDto = {
   id: Scalars['String'];
-  name: Scalars['String'];
-  description: Scalars['String'];
+  read: Scalars['Boolean'];
+  write: Scalars['Boolean'];
+  admin: Scalars['Boolean'];
 };
 
 export type UpdateUserShowRoleDto = {
   id: Scalars['String'];
-  name: Scalars['String'];
-  description: Scalars['String'];
+  read: Scalars['Boolean'];
+  write: Scalars['Boolean'];
+  admin: Scalars['Boolean'];
+  stream_to: Scalars['Boolean'];
 };
 
 

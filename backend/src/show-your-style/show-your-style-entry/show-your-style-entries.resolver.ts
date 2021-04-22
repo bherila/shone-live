@@ -15,7 +15,7 @@ export class ShowYourStyleEntriesResolver {
   ) {}
 
   @Query(() => ShowYourStyleEntry, { nullable: true })
-  show_your_style_Entry(@Args('showId') showId: number) {
+  show_your_style_Entry(@Args('showId') showId: string) {
     return this.showYourStyleEntriesService.findOne(showId)
   }
 
