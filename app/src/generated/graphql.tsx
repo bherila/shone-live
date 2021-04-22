@@ -94,6 +94,7 @@ export type Mutation = {
   add_payment: Payment;
   add_show: Show;
   add_show_your_style_entry: ShowYourStyleEntry;
+  add_video_id_from_transloadit: ShowYourStyleVideoIdEntry;
   add_show_your_style_vote: ShowYourStyleVote;
   add_show_your_style_view_record: ShowYourStyleViewRecord;
   add_user: Scalars['String'];
@@ -148,6 +149,11 @@ export type MutationAdd_Show_Your_Style_EntryArgs = {
 };
 
 
+export type MutationAdd_Video_Id_From_TransloaditArgs = {
+  videoId: Scalars['String'];
+};
+
+
 export type MutationAdd_Show_Your_Style_VoteArgs = {
   entryId: Scalars['Float'];
   viewDuration: Scalars['Float'];
@@ -166,10 +172,7 @@ export type MutationAdd_UserArgs = {
 
 
 export type MutationUpdate_UserArgs = {
-  userId: Scalars['String'];
-  username: Scalars['String'];
-  email: Scalars['String'];
-  file: Scalars['Upload'];
+  user: UpdateUserEntityDto;
 };
 
 export type PaginationQueryDto = {
@@ -255,7 +258,7 @@ export type QueryMessageEntityArgs = {
 
 
 export type QueryProductArgs = {
-  showId: Scalars['Float'];
+  productId: Scalars['Float'];
 };
 
 
@@ -332,6 +335,17 @@ export type ShowYourStyleEntry = {
   submitted_timestamp: Scalars['DateTime'];
 };
 
+export type ShowYourStyleVideoIdEntry = {
+  __typename?: 'ShowYourStyleVideoIdEntry';
+  entry_id: Scalars['Float'];
+  user: User;
+  video_id: Scalars['String'];
+  entry_timestamp: Scalars['DateTime'];
+  video_url?: Maybe<Scalars['String']>;
+  is_viewable: Scalars['Boolean'];
+  error?: Maybe<Scalars['String']>;
+};
+
 export type ShowYourStyleViewRecord = {
   __typename?: 'ShowYourStyleViewRecord';
   id: Scalars['Float'];
@@ -347,6 +361,13 @@ export type ShowYourStyleVote = {
   user: User;
   vote: Scalars['Float'];
   view_duration: Scalars['Float'];
+};
+
+export type UpdateUserEntityDto = {
+  id: Scalars['String'];
+  username?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+  file?: Maybe<Scalars['Upload']>;
 };
 
 
@@ -386,10 +407,7 @@ export type AddUserMutation = (
 );
 
 export type UpdateUserMutationVariables = Exact<{
-  userID: Scalars['String'];
-  username: Scalars['String'];
-  email: Scalars['String'];
-  file: Scalars['Upload'];
+  user: UpdateUserEntityDto;
 }>;
 
 
@@ -397,7 +415,7 @@ export type UpdateUserMutation = (
   { __typename?: 'Mutation' }
   & { update_user: (
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'email' | 'phone' | 'username' | 'verification_code_time_sent' | 'token'>
+    & Pick<User, 'email' | 'id' | 'phone' | 'profileUrl' | 'token' | 'username' | 'verification_code_time_sent'>
   ) }
 );
 
@@ -517,14 +535,15 @@ export type AddUserMutationHookResult = ReturnType<typeof useAddUserMutation>;
 export type AddUserMutationResult = Apollo.MutationResult<AddUserMutation>;
 export type AddUserMutationOptions = Apollo.BaseMutationOptions<AddUserMutation, AddUserMutationVariables>;
 export const UpdateUserDocument = gql`
-    mutation UpdateUser($userID: String!, $username: String!, $email: String!, $file: Upload!) {
-  update_user(userId: $userID, username: $username, email: $email, file: $file) {
-    id
+    mutation UpdateUser($user: UpdateUserEntityDto!) {
+  update_user(user: $user) {
     email
+    id
     phone
+    profileUrl
+    token
     username
     verification_code_time_sent
-    token
   }
 }
     `;
@@ -543,10 +562,7 @@ export type UpdateUserMutationFn = Apollo.MutationFunction<UpdateUserMutation, U
  * @example
  * const [updateUserMutation, { data, loading, error }] = useUpdateUserMutation({
  *   variables: {
- *      userID: // value for 'userID'
- *      username: // value for 'username'
- *      email: // value for 'email'
- *      file: // value for 'file'
+ *      user: // value for 'user'
  *   },
  * });
  */

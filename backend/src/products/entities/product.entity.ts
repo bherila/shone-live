@@ -1,26 +1,33 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from "typeorm";
+import { Field, ObjectType } from '@nestjs/graphql'
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm'
 
-import { File } from "../../files/entities/file.entity";
-import { Show } from "../../shows/entities/show.entity";
-import { Sku } from "../../skus/entities/sku.entity";
-import { User } from "../../users/entities/user.entity";
+import { Show } from '../../show/entities/show.entity'
+import { User } from '../../user/entities/user.entity'
 
+@ObjectType()
 @Entity()
 export class Product {
-  @PrimaryColumn({
-    comment: "stripe id is used to match 1 to 1",
-  })
-  id: string;
+  @Field()
+  @PrimaryGeneratedColumn()
+  readonly id: number
 
+  @Field()
   @Column({
-    comment: "product name",
+    comment: 'product name',
   })
-  name: string;
+  name: string
 
+  @Field()
   @Column({
-    comment: "product description",
+    comment: 'product description',
   })
-  description: string;
+  description: string
 
   // @Column({
   //     comment: "base retail price for the show",
@@ -37,29 +44,21 @@ export class Product {
   // })
   // current_quantity: number;
 
-  // if many to many we we use join table and note it on the owner
-  // @JoinTable() // 👈 Join the 2 tables - only the OWNER-side does this
-  @ManyToOne(
-    (type) => User,
-    (user) => user.products, // what is "product" within the User Entity
-    {
-      cascade: ["insert", "update"],
-    }
-  )
-  user: User;
-
-  @ManyToOne((type) => Show, (show) => show.products, {
-    cascade: ["insert", "update"],
+  @Field()
+  @ManyToOne(() => User)
+  @JoinColumn({
+    name: 'user_id',
   })
-  show: Show;
+  user: User
 
-  @OneToMany((type) => File, (file) => file.show, {
-    cascade: true,
+  @Field()
+  @ManyToOne(() => Show)
+  @JoinColumn({
+    name: 'show_id',
   })
-  files: File[];
+  show: Show
 
-  @OneToMany((type) => Sku, (sku) => sku.product, {
-    cascade: true,
-  })
-  skus: Sku[];
+  // @Field()
+  // @ManyToOne(() => Payment)
+  // paymnet: Payment
 }

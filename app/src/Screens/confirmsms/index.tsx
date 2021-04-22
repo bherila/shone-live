@@ -24,6 +24,7 @@ import {
   VerifyCodeQuery,
   useVerifyCodeLazyQuery
 } from '../../generated/graphql'
+import client from '../../graphql/client'
 
 export default function ConfirmSms() {
   const navigation = useNavigation()
@@ -43,13 +44,11 @@ export default function ConfirmSms() {
     verifyCode({
       variables: {
         code: otp,
-        phone: '+1' + params?.phone
+        phone: `+1${params?.phone}`
       }
     })
     dispatch(userInit())
   }
-
-  console.log('data', data)
 
   useEffect(() => {
     if (!data) return

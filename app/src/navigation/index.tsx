@@ -21,6 +21,9 @@ import { ScreenNames } from '../utils/ScreenNames'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { userInitSuccess } from '../redux/actions/userActions'
+import WatchStyle from '../Screens/WatchStyle'
+import VoteAndWin from '../Screens/VoteAndWin'
+import RankingDetails from '../Screens/RankingDetails'
 
 const Stack = createStackNavigator()
 
@@ -30,7 +33,9 @@ function Navigation() {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(userInitSuccess(data))
+    if (data) {
+      dispatch(userInitSuccess(data))
+    }
   }, [data])
 
   if (isLoading) return <></>
@@ -68,6 +73,21 @@ function Navigation() {
         <Stack.Screen
           name={ScreenNames.HomeScreens.MAIN_SCREEN}
           component={MainScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={ScreenNames.HomeScreens.WATCH_STYLE}
+          component={WatchStyle}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={ScreenNames.HomeScreens.VOTE_AND_WIN}
+          component={VoteAndWin}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={ScreenNames.HomeScreens.RANKING_DETAILS_SCREEN}
+          component={RankingDetails}
           options={{ headerShown: false }}
         />
         <Stack.Screen

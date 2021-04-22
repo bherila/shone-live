@@ -1,79 +1,55 @@
 /* eslint-disable no-useless-escape */
-import React, { createRef, useEffect, useState } from 'react'
-import { View, TouchableOpacity, Image, TextInput, Alert } from 'react-native'
+import React, { createRef, useState } from 'react'
+import { View, TouchableOpacity, Image, TextInput } from 'react-native'
 import theme from './../../utils/colors'
 import styles from './styles'
 import { Body, Item, Icon, Button, Header, Left, Right } from 'native-base'
 import Text from './../../components/Text'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
-import {
-  ParamListBase,
-  RouteProp,
-  useNavigation,
-  useRoute
-} from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import { ScreenNames } from '../../utils/ScreenNames'
 import { globalStyles } from '../../utils/globalStyles'
-import Loader from '../../components/Loader'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { useUpdateUserMutation } from '../../generated/graphql'
 import StorageKeys from '../../utils/StorageKeys'
 import { useSecureStore } from '../../hooks/useSecureStore'
-import { userInit, userInitSuccess } from '../../redux/actions/userActions'
-import { useDispatch } from 'react-redux'
-import {
-  UpdateUserMutation,
-  User,
-  useUpdateUserMutation
-} from '../../generated/graphql'
-
-interface IParams extends ParamListBase {
-  NewAccount: {
-    user: User
-  }
-}
 
 export default function NewAccount() {
   const navigation = useNavigation()
-  const route = useRoute<RouteProp<IParams, 'NewAccount'>>()
+  const route = useRoute()
+
+  const [updateUser] = useUpdateUserMutation()
+  const { setItem } = useSecureStore()
 
   const [fname, setFname] = useState('')
   const [lname, setLname] = useState('')
+
+  const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
 
-  const { setItem } = useSecureStore()
-  const dispatch = useDispatch()
-
   const lnameRef = createRef<TextInput>()
+  const usernameRef = createRef<TextInput>()
   const emailRef = createRef<TextInput>()
-
-  const [
-    updateUser,
-    { data: userData, loading, error: userUpdateError }
-  ] = useUpdateUserMutation({
-    variables: {
-      email: email,
-      userID: route.params?.user?.id,
-      username: 'AbhishekTagline5',
-      file: undefined
-    }
-  })
-
-  useEffect(() => {
-    if (userUpdateError) {
-      return Alert.alert(userUpdateError.message)
-    }
-    if (userData?.update_user) {
-      dispatch(userInitSuccess(userData.update_user))
-      navigateToProfileScreen(userData)
-    }
-  }, [userData, loading, userUpdateError])
-
   const onGo = () => {
-    if (fname !== '' && lname !== '' && email !== '') {
+    if (username !== '' && email !== '') {
       const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
       if (reg.test(email) === true) {
-        dispatch(userInit())
-        updateUser()
+        updateUser({
+          variables: {
+            user: {
+              id: route.params?.user.id,
+              username,
+              email
+            }
+          }
+        }).then(async updatedUser => {
+          await setItem(StorageKeys.USER, updatedUser.data?.update_user)
+          await setItem(
+            StorageKeys.AUTH_TOKEN,
+            updatedUser.data?.update_user.token
+          )
+          navigateToProfileScreen()
+        })
       } else {
         alert('Enter a valid email')
       }
@@ -82,15 +58,15 @@ export default function NewAccount() {
     }
   }
 
-  const navigateToProfileScreen = async (data: UpdateUserMutation) => {
-    await setItem(StorageKeys.AUTH_TOKEN, data.update_user.token)
-    await setItem(StorageKeys.USER, data.update_user)
-    navigation.navigate(ScreenNames.AuthScreens.PROFILE_PHOTO)
+  const navigateToProfileScreen = async () => {
+    navigation.navigate(ScreenNames.AuthScreens.PROFILE_PHOTO, {
+      username,
+      email
+    })
   }
 
   return (
     <SafeAreaView style={[globalStyles.container, { height: '100%' }]}>
-      <Loader isLoading={loading} />
       <KeyboardAwareScrollView>
         <View style={[globalStyles.container]}>
           <Header style={{ elevation: 0, backgroundColor: 'transparent' }}>
@@ -116,7 +92,7 @@ export default function NewAccount() {
           <View style={styles._innerView}>
             <Text style={styles._desc}>Welcome. Create a new account.</Text>
 
-            <Item regular style={styles._codeInput}>
+            {/* <Item regular style={styles._codeInput}>
               <TextInput
                 autoFocus={true}
                 placeholder="First name"
@@ -132,9 +108,9 @@ export default function NewAccount() {
                   lnameRef.current?.focus()
                 }}
               />
-            </Item>
+            </Item> */}
 
-            <Item regular style={styles._codeInput}>
+            {/* <Item regular style={styles._codeInput}>
               <TextInput
                 ref={lnameRef}
                 placeholder="Last name"
@@ -142,6 +118,24 @@ export default function NewAccount() {
                 style={styles._textinput}
                 onChangeText={text => {
                   setLname(text)
+                }}
+                autoCapitalize={'none'}
+                keyboardType={'default'}
+                returnKeyType={'next'}
+                onSubmitEditing={() => {
+                  emailRef.current?.focus()
+                }}
+              />
+            </Item> */}
+
+            <Item style={styles._codeInput}>
+              <TextInput
+                ref={usernameRef}
+                placeholder="Username"
+                placeholderTextColor={'grey'}
+                style={styles._textinput}
+                onChangeText={text => {
+                  setUsername(text)
                 }}
                 autoCapitalize={'none'}
                 keyboardType={'default'}

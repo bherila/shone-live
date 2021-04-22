@@ -1,10 +1,11 @@
-mutation UpdateUser($userID: String!, $username: String!, $email: String!, $file: Upload!) {
-  update_user(userId: $userID, username: $username, email: $email, file: $file) {
-    id
+mutation UpdateUser($user: UpdateUserEntityDto!) {
+  update_user(user: $user) {
     email
+    id
     phone
+    profileUrl
+    token
     username
     verification_code_time_sent
-    token
   }
 }

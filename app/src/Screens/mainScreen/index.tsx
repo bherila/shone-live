@@ -25,11 +25,10 @@ import { ScreenNames } from '../../utils/ScreenNames'
 import { useDispatch } from 'react-redux'
 import { userLogout } from '../../redux/actions/userActions'
 import AppButton from '../../components/AppButton'
-import Uppy from '@uppy/core'
-import Transloadit from '@uppy/transloadit'
 import * as ImagePicker from 'expo-image-picker'
-import { TRANSLOADIT_KEY, TRANSLOADIT_TEMPLATE_ID } from '@env'
 import { Show, useGetShowsQuery } from '../../generated/graphql'
+import { UppyClient } from '../../utils/TransloaditApi'
+import * as FileSystem from 'expo-file-system'
 
 interface ListItem {
   item: Show
@@ -37,31 +36,18 @@ interface ListItem {
 }
 
 export default function MainScreen() {
+  const uppy = UppyClient().uppy
+
   const navigation = useNavigation()
 
   const dispatch = useDispatch()
 
   const { setItem } = useSecureStore()
 
+  const [isVideoUploading, setIsVideoUploading] = useState(false)
   const [modalVisible, setModalVisible] = useState(false)
-  const [video, setVideo] = useState<any>()
 
-  const uppyRef: Uppy.Uppy = Uppy<Uppy.StrictTypes>({
-    autoProceed: true,
-    debug: true
-  })
-
-  uppyRef.use(Transloadit, {
-    importFromUploadURLs: true,
-    params: {
-      auth: { key: TRANSLOADIT_KEY },
-      template_id: TRANSLOADIT_TEMPLATE_ID
-    }
-  })
-
-  uppyRef.on('complete', result => {
-    console.info('Upload complete:', result)
-  })
+  const [progress, setProgress] = useState(0)
 
   const {
     data: shows,
@@ -106,6 +92,7 @@ export default function MainScreen() {
 
   const Logout = async () => {
     await setItem(StorageKeys.AUTH_TOKEN, '')
+    await setItem(StorageKeys.USER, '')
     dispatch(userLogout())
 
     navigation.reset({
@@ -121,47 +108,76 @@ export default function MainScreen() {
   }
 
   useEffect(() => {
-    ;(async () => {
+    (async () => {
       if (Platform.OS !== 'web') {
         const {
           status
         } = await ImagePicker.requestMediaLibraryPermissionsAsync()
-        if (status !== 'granted') {
+        if (status === ImagePicker.PermissionStatus.DENIED) {
           alert('Sorry, we need camera roll permissions to make this work!')
         }
       }
     })()
   }, [])
 
-  useEffect(() => {
-    ;(async () => {
-      if (video) {
-        try {
-          // const url = video.uri.replace('file:///', 'file:/')
-          // const response = await fetch(url)
-          // const blob = await response.blob()
+  //Needed to convert video file to base64 and then to blob, Since Transloadit only allows blob or file data
+  const urlToBlob = async (uri: string) => {
+    const fileBase64 = await FileSystem.readAsStringAsync(uri, {
+      encoding: 'base64'
+    })
 
-          // console.log({ response, blob })
-
-          uppyRef.addFile({
-            name: video.uri.split('/').pop(), // file name
-            type: 'video/*', // file type
-            data: new Blob([JSON.stringify(video, null, 2)], {
-              type: 'video/*'
-            }), // file blob
-            source: 'Local', // optional, determines the source of the file, for example, Instagram
-            isRemote: false, // optional, set to true if actual file is not in the browser, but on some remote server, for example, when using companion in combination with Instagram
-
-            extension: '.mp4'
-          })
-
-          uppyRef.upload()
-        } catch (e) {
-          console.error({ e })
+    return new Promise<Blob | File>((resolve, reject) => {
+      const xhr = new XMLHttpRequest()
+      xhr.onerror = reject
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4) {
+          resolve(xhr.response)
         }
       }
-    })()
-  }, [video])
+      xhr.open('GET', 'data:image/jpeg;base64,' + fileBase64, true)
+      xhr.responseType = 'blob' // convert type
+      xhr.send()
+    })
+  }
+
+  const setVideoProgressComplete = () => {
+    setIsVideoUploading(false)
+    setProgress(0)
+  }
+
+  const uploadVideoToTransloadit = async (uri: string) => {
+    setIsVideoUploading(true)
+    try {
+      const blobData = await urlToBlob(uri)
+      uppy.on('upload-error', (a, { message }, c) => {
+        Alert.alert('An Error Occured', message)
+      })
+      uppy.on('upload-progress', (source, { bytesTotal, bytesUploaded }, c) => {
+        setProgress(Math.ceil((bytesUploaded / bytesTotal) * 100))
+      })
+
+      uppy.on('upload-success', (a, b, c) => {
+        setVideoProgressComplete()
+        console.log({ a, b, c })
+      })
+      uppy.on('complete', (a, b, c) => {
+        setVideoProgressComplete()
+        navigation.navigate(ScreenNames.HomeScreens.WATCH_STYLE)
+        console.log('Complete', { a, b, c })
+      })
+      uppy.addFile({
+        name: uri.split('/').pop(),
+        type: 'video/*',
+        data: blobData,
+        source: 'Local',
+        isRemote: false
+      })
+      uppy.upload()
+    } catch (e) {
+      console.error('UPPY ERROR ', { e })
+      setIsVideoUploading(false)
+    }
+  }
 
   const pickVideo = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -172,8 +188,13 @@ export default function MainScreen() {
     })
 
     if (!result.cancelled) {
-      setVideo(result)
+      uploadVideoToTransloadit(result.uri)
     }
+  }
+
+  const navigateToVoteScreen = () => {
+    navigation.navigate(ScreenNames.HomeScreens.VOTE_AND_WIN)
+    hideMenu()
   }
 
   const renderShowItem = ({ item }: ListItem) => {
@@ -201,8 +222,14 @@ export default function MainScreen() {
 
   return (
     <View style={globalStyles.container}>
-      <Loader isLoading={isShowsLoading} />
-      <Header style={{ elevation: 0, backgroundColor: 'transparent' }}>
+      <Loader
+        isLoading={isShowsLoading || isVideoUploading}
+        isProgressShown={isVideoUploading}
+        progress={progress}
+        total={100}
+      />
+
+      <Header style={globalStyles.header}>
         <Left />
         <Body
           style={{
@@ -213,10 +240,10 @@ export default function MainScreen() {
         >
           <Image
             source={require('./../../../assets/logo.png')}
-            style={{ height: 60, width: 120 }}
+            style={globalStyles.profileLogo}
           />
         </Body>
-        <Right style={{ flex: 1 }}>
+        <Right style={globalStyles.container}>
           <Menu
             ref={menu}
             button={
@@ -228,6 +255,7 @@ export default function MainScreen() {
               </TouchableOpacity>
             }
           >
+            <MenuItem onPress={navigateToVoteScreen}>Vote and Win</MenuItem>
             <MenuItem onPress={() => ViewProfile()}>View Profile</MenuItem>
 
             <MenuItem onPress={() => Logout()}>Logout</MenuItem>
@@ -239,15 +267,13 @@ export default function MainScreen() {
         <View style={globalStyles.rowContainer}>
           <AppButton title="Show Your Style" onPress={pickVideo} />
 
-          <AppButton title="Watch Styles" onPress={() => Alert.alert('hii')} />
+          <AppButton
+            title="Watch Styles"
+            onPress={() => {
+              navigation.navigate(ScreenNames.HomeScreens.WATCH_STYLE)
+            }}
+          />
         </View>
-        {/* <UppyFilePicker
-          uppy={uppy}
-          show={isFilePickerVisible}
-          onRequestClose={() => setIsFilePickerVisible(false)}
-          companionUrl="http://localhost:3000"
-        /> */}
-
         <Text style={styles._screenHeading}>What’s on now!</Text>
         <View style={styles._newArrView}>
           {shows?.shows && (

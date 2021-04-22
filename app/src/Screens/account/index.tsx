@@ -1,24 +1,96 @@
-import React from 'react'
-import { Image, View, TouchableOpacity, ScrollView } from 'react-native'
+import React, { useEffect } from 'react'
+import {
+  Image,
+  View,
+  TouchableOpacity,
+  ScrollView,
+  Alert,
+  Platform
+} from 'react-native'
 import theme from './../../utils/colors'
 import styles from './styles'
 import {
   MaterialIcons,
   AntDesign,
   Entypo,
-  SimpleLineIcons,
+  SimpleLineIcons
 } from '@expo/vector-icons'
 import { Body, Icon, Button, Header, Left, Right, ListItem } from 'native-base'
 
 import Text from './../../components/Text'
 import { useNavigation } from '@react-navigation/native'
 import { ScreenNames } from '../../utils/ScreenNames'
+import useImagePicker from '../../hooks/useImagePicker'
+import { ReactNativeFile } from 'apollo-upload-client'
+import * as mime from 'react-native-mime-types'
+import { useUpdateUserMutation } from '../../generated/graphql'
+import { useAppSelector } from '../../redux/store'
+import { useDispatch } from 'react-redux'
+import { userUpdateStore } from '../../redux/actions/userActions'
+import Loader from '../../components/Loader'
 
 export default function Account() {
   const navigation = useNavigation()
 
+  const { pickImage, image, error, setImage } = useImagePicker(500)
+
+  const dispatch = useDispatch()
+
+  const [
+    updateUser,
+    { data, error: userUpdateError, loading: userUpdateLoading }
+  ] = useUpdateUserMutation()
+
+  useEffect(() => {
+    if (userUpdateError) return Alert.alert(userUpdateError.message)
+    if (data) {
+      dispatch(userUpdateStore(data.update_user))
+      setImage(undefined)
+    }
+  }, [data, userUpdateError, userUpdateLoading])
+
+  const user = useAppSelector(state => state.user.user)
+
+  const generateRNFile = async (uri: string, name: string) => {
+    const mimeType = mime.lookup(uri)
+    return uri
+      ? new ReactNativeFile({
+          uri: Platform.OS === 'ios' ? uri.replace('file:///', 'file:/') : uri,
+          type: mimeType ? mimeType : 'image/jpeg',
+          name
+        })
+      : null
+  }
+
+  const onUploadPress = async () => {
+    if (image) {
+      const name = image.uri.split('/').pop()
+
+      const file = await generateRNFile(
+        image.uri,
+        name ? name : `picture${Date.now()}`
+      )
+
+      await updateUser({
+        variables: {
+          user: {
+            file: file
+          }
+        }
+      })
+    }
+  }
+
+  useEffect(() => {
+    if (error) return Alert.alert(error.message)
+    if (image) {
+      onUploadPress()
+    }
+  }, [image, error])
+
   return (
     <View style={styles.container}>
+      <Loader isLoading={userUpdateLoading} />
       <Header style={{ elevation: 0, backgroundColor: 'transparent' }}>
         <Left style={{ flex: 1 }}>
           <Button transparent onPress={() => navigation.goBack()}>
@@ -29,7 +101,7 @@ export default function Account() {
           style={{
             flex: 3,
             justifyContent: 'center',
-            alignItems: 'center',
+            alignItems: 'center'
           }}
         >
           <Image
@@ -43,7 +115,11 @@ export default function Account() {
             onPress={() => navigation.navigate(ScreenNames.AuthScreens.LOGIN)}
           >
             <Image
-              source={require('./../../../assets/exist.jpg')}
+              source={
+                user?.profileUrl
+                  ? { uri: user.profileUrl }
+                  : require('./../../../assets/exist.jpg')
+              }
               style={styles._profilePic}
             />
           </TouchableOpacity>
@@ -53,11 +129,18 @@ export default function Account() {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles._circle}>
           <Image
-            source={require('./../../../assets/avatar.jpg')}
+            source={
+              user?.profileUrl
+                ? { uri: user.profileUrl }
+                : require('./../../../assets/exist.jpg')
+            }
             style={styles._avatarImg}
           />
 
-          <TouchableOpacity style={[styles._editView, theme.bg]}>
+          <TouchableOpacity
+            style={[styles._editView, theme.bg]}
+            onPress={pickImage}
+          >
             <MaterialIcons name="mode-edit" size={20} color="white" />
           </TouchableOpacity>
         </View>

@@ -8,8 +8,8 @@ export const config = {
 }
 export default (req: NextApiRequest, res: NextApiResponse) =>
   new Promise((resolve) => {
-    Backend.getListener().then((listener) => {
-      listener(req, res)
-      res.on('finish', resolve)
-    })
+    // Backend.getListener().then((listener) => {
+    //   listener(req, res)
+    //   res.on('finish', resolve)
+    // })
   })

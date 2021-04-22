@@ -1,105 +1,65 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { Injectable, NotFoundException } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
 
-import { PaginationQueryDto } from "../common/dto/pagination-query.dto";
-import { Show } from "../shows/entities/show.entity";
-import { StripeService } from "../stripe/stripe.service";
-import { User } from "../users/entities/user.entity";
-import { CreateProductDto } from "./dto/create-product.dto";
-import { UpdateProductDto } from "./dto/update-product.dto";
-import { Product } from "./entities/product.entity";
+import { PaginationQueryDto } from '../common/dto/pagination-query.dto'
+import { Show } from '../show/entities/show.entity'
+import { ShowRepository } from '../show/show.repository'
+import { User } from '../user/entities/user.entity'
+import { UserRepository } from '../user/user.repository'
+import { CreateProductDto } from './dto/create-product.dto'
+import { Product } from './entities/product.entity'
+import { ProductRepository } from './products.repository'
 
 @Injectable()
 export class ProductsService {
   constructor(
     @InjectRepository(Product)
-    private readonly productRepository: Repository<Product>,
+    private readonly productRepository: ProductRepository,
     @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
+    private readonly userRepository: UserRepository,
     @InjectRepository(Show)
-    private readonly showRepository: Repository<Show>,
-    private readonly stripeService: StripeService
+    private readonly showRepository: ShowRepository,
   ) {}
 
   findAll(paginationQuery: PaginationQueryDto) {
-    const { limit, offset } = paginationQuery;
+    const { limit, offset } = paginationQuery
     return this.productRepository.find({
-      relations: ["user", "show", "files"],
+      relations: ['user', 'show'],
       skip: offset,
       take: limit,
-    });
+    })
   }
 
-  async findOne(id: string) {
+  async findOne(id: number) {
     const product = await this.productRepository.findOne(id, {
-      relations: ["user", "show", "files"],
-    });
+      relations: ['user', 'show'],
+    })
     if (!product) {
-      throw new NotFoundException(`Product id: ${id} not found`);
+      throw new NotFoundException(`Product id: ${id} not found`)
     }
-    return product;
+    return product
   }
 
   async create(createProductDto: CreateProductDto) {
-    const user = await this.userRepository.findOne(createProductDto.user_id);
+    const user = await this.userRepository.findOne(createProductDto.userId)
     if (!user) {
-      throw new NotFoundException(
-        `User #${createProductDto.user_id} not found`
-      );
+      throw new NotFoundException(`User #${createProductDto.userId} not found`)
     }
-    const show = await this.showRepository.findOne(createProductDto.show_id);
+    const show = await this.showRepository.findOne(createProductDto.showId)
     if (!show) {
-      throw new NotFoundException(
-        `Show #${createProductDto.show_id} not found`
-      );
+      throw new NotFoundException(`Show #${createProductDto.showId} not found`)
     }
-    const stripeProduct = await this.stripeService.createStripeProduct(
-      createProductDto,
-      show.id,
-      show.scheduled_start.toString()
-    );
     const product = this.productRepository.create({
-      id: stripeProduct.id,
-      show: show,
-      user: user,
-      // current_quantity: createProductDto.quantity,
+      show,
+      user,
       ...createProductDto,
-    });
-    const savedProduct = await this.productRepository.save(product);
-    // this.stripeService.createStripePrice(savedProduct);
-    // refactor to take the product and then the SKU specific info
-    // this.stripeService.createStripeSku(savedProduct); // todo: this is an eg of async, but many of these functions tagged async are actually awaiting everything so are blocking and should be cleaned up
-    return savedProduct;
+    })
+    const savedProduct = await this.productRepository.save(product)
+    return savedProduct
   }
 
-  async update(id: string, updateProductDto: UpdateProductDto) {
-    const user = await this.userRepository.findOne(updateProductDto.user_id);
-    if (!user) {
-      throw new NotFoundException(
-        `User #${updateProductDto.user_id} not found`
-      );
-    }
-    const show = await this.showRepository.findOne(updateProductDto.show_id);
-    if (!show) {
-      throw new NotFoundException(
-        `Show #${updateProductDto.show_id} not found`
-      );
-    }
-    const product = await this.productRepository.preload({
-      id: id,
-      user: user,
-      show: show,
-      ...updateProductDto,
-    });
-    if (!product) {
-      throw new NotFoundException(`Product id: ${id} not found`);
-    }
-    return this.productRepository.save(product);
-  }
-
-  async remove(id: string) {
-    const product = await this.findOne(id);
-    return this.productRepository.remove(product);
+  async remove(id: number) {
+    const product = await this.findOne(id)
+    return this.productRepository.remove(product)
   }
 }
