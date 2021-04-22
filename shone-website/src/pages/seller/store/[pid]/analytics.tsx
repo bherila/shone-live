@@ -1,7 +1,7 @@
 import React from 'react'
 
 import StoreSection from '../../../../components/StoreSection'
-import { StoreModel } from '../..'
+import { Brand } from '../../../../generated/graphql'
 
 export async function getServerSideProps() {
   return {
@@ -11,6 +11,6 @@ export async function getServerSideProps() {
   }
 }
 
-export default function AnalyticsPage({ store }: { store: StoreModel }) {
+export default function AnalyticsPage({ store }: { store: Brand }) {
   return <StoreSection store={store}>BUILDING ANALYTICS PAGE</StoreSection>
 }

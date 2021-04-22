@@ -1,12 +1,19 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import {
+  Injectable,
+  NotFoundException,
+  UnprocessableEntityException,
+} from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 
+import { BrandRepository } from '../brands/brands.repository'
+import { Brand } from '../brands/entities/brand.entity'
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto'
-import { Show } from '../show/entities/show.entity'
-import { ShowRepository } from '../show/show.repository'
+import { ShowSegment } from '../show-segment/entities/show-segment.entity'
+import { ShowSegmentRepository } from '../show-segment/show-segments.repository'
 import { User } from '../user/entities/user.entity'
 import { UserRepository } from '../user/user.repository'
 import { CreateProductDto } from './dto/create-product.dto'
+import { UpdateProductDto } from './dto/update-product.dto'
 import { Product } from './entities/product.entity'
 import { ProductRepository } from './products.repository'
 
@@ -17,22 +24,66 @@ export class ProductsService {
     private readonly productRepository: ProductRepository,
     @InjectRepository(User)
     private readonly userRepository: UserRepository,
-    @InjectRepository(Show)
-    private readonly showRepository: ShowRepository,
+    @InjectRepository(ShowSegment)
+    private readonly showSegmentRepository: ShowSegmentRepository,
+    @InjectRepository(Brand)
+    private readonly brandRepository: BrandRepository,
   ) {}
 
   findAll(paginationQuery: PaginationQueryDto) {
     const { limit, offset } = paginationQuery
     return this.productRepository.find({
-      relations: ['user', 'show'],
+      relations: ['user', 'brand', 'showSegments'],
       skip: offset,
       take: limit,
     })
   }
 
-  async findOne(id: number) {
+  findByUser(paginationQuery: PaginationQueryDto, userId: string) {
+    const { limit, offset } = paginationQuery
+    return this.productRepository.find({
+      relations: ['user', 'brand', 'showSegments'],
+      skip: offset,
+      take: limit,
+      where: { user: { id: userId } },
+    })
+  }
+
+  async findByBrand(
+    paginationQuery: PaginationQueryDto,
+    brandId: string,
+    userId: string,
+  ) {
+    const { limit, offset } = paginationQuery
+    // return this.productRepository.find({
+    //   relations: ['user', 'brand', 'showSegments'],
+    //   skip: offset,
+    //   take: limit,
+    //   where: [{ showSegments: { brandId } }],
+    // })
+    return this.productRepository
+      .createQueryBuilder('product')
+      .leftJoin('brand', 'brand', 'brand.id = product.brand_id')
+      .leftJoin(
+        'product_show_segments',
+        'product_show_segments',
+        'product_show_segments.product_id = product.id ',
+      )
+      .leftJoin(
+        'show_segment',
+        'show_segment',
+        'product_show_segments.show_segment_id = show_segment.id',
+      )
+      .where(
+        'product.brand_id = :brandId OR show_segment.brand_id = :brandId',
+        { brandId },
+      )
+      .getMany()
+  }
+
+  async findOne(id: string) {
     const product = await this.productRepository.findOne(id, {
-      relations: ['user', 'show'],
+      relations: ['user', 'brand', 'showSegments'],
     })
     if (!product) {
       throw new NotFoundException(`Product id: ${id} not found`)
@@ -40,17 +91,38 @@ export class ProductsService {
     return product
   }
 
-  async create(createProductDto: CreateProductDto) {
-    const user = await this.userRepository.findOne(createProductDto.userId)
-    if (!user) {
-      throw new NotFoundException(`User #${createProductDto.userId} not found`)
+  async create(createProductDto: CreateProductDto, userId: string) {
+    if (!createProductDto.showSegmentId && !createProductDto.brandId) {
+      throw new UnprocessableEntityException(
+        `you must define a related ShowSegment or Brand`,
+      )
     }
-    const show = await this.showRepository.findOne(createProductDto.showId)
-    if (!show) {
-      throw new NotFoundException(`Show #${createProductDto.showId} not found`)
+    const user = await this.userRepository.findOne(userId)
+    if (!user) {
+      throw new NotFoundException(`User #${userId} not found`)
+    }
+    const showsegmentOrBrand = { showSegments: undefined, brand: undefined }
+    if (createProductDto.showSegmentId) {
+      const showSegment = await this.showSegmentRepository.findOne(
+        createProductDto.showSegmentId,
+      )
+      if (!showSegment) {
+        throw new NotFoundException(
+          `Show Segment #${createProductDto.showSegmentId} not found`,
+        )
+      }
+      showsegmentOrBrand.showSegments = [showSegment]
+    } else if (createProductDto.brandId) {
+      const brand = await this.brandRepository.findOne(createProductDto.brandId)
+      if (!brand) {
+        throw new NotFoundException(
+          `Brand #${createProductDto.showSegmentId} not found`,
+        )
+      }
+      showsegmentOrBrand.brand = brand
     }
     const product = this.productRepository.create({
-      show,
+      ...showsegmentOrBrand,
       user,
       ...createProductDto,
     })
@@ -58,7 +130,15 @@ export class ProductsService {
     return savedProduct
   }
 
-  async remove(id: number) {
+  async update({ id, description, name }: UpdateProductDto) {
+    await this.productRepository.update(id, {
+      description,
+      name,
+    })
+    return await this.findOne(id)
+  }
+
+  async remove(id: string) {
     const product = await this.findOne(id)
     return this.productRepository.remove(product)
   }

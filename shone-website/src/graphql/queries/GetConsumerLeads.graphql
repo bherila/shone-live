@@ -1,4 +1,4 @@
-query getConsumerLeads {
+query GetConsumerLeads {
   consumerLeads(paginationQuery: { limit: 10, offset: 0 }) {
     id
     email

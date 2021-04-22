@@ -1,4 +1,12 @@
-import { Box, Button, Typography } from '@material-ui/core'
+import {
+  Box,
+  Button,
+  makeStyles,
+  TablePagination,
+  TableSortLabel,
+  Typography,
+  withStyles,
+} from '@material-ui/core'
 import Paper from '@material-ui/core/Paper'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -8,6 +16,38 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import React from 'react'
 
+interface IColumns {
+  title: string
+  sortable?: boolean
+  displayName?: string
+  renderField?: (row: any) => any
+  field: string
+}
+
+const StyledTableCell = withStyles((theme) => ({
+  head: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+  },
+  body: {
+    fontSize: 14,
+  },
+}))(TableCell)
+
+const useStyles = makeStyles({
+  container: {
+    height: 587,
+  },
+})
+
+const StyledTableRow = withStyles((theme) => ({
+  root: {
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.action.hover,
+    },
+  },
+}))(TableRow)
+
 export default function BasicTable({
   bottomActions,
   rows,
@@ -16,15 +56,45 @@ export default function BasicTable({
   handleRowClick,
   tableTitle,
   tableWidth,
+  handleSort,
+  onChangeRowsPerPage,
+  onChangePage,
 }: {
   bottomActions?: any[]
   rows: any[]
-  columns: any[]
+  columns: IColumns[]
   rowId: string
   tableTitle?: string
   tableWidth?: string | number
   handleRowClick?: (id) => void
+  handleSort?: (event, property) => void
+  onChangeRowsPerPage?: (rowsPerPage) => void
+  onChangePage?: (tablePage) => void
 }) {
+  const classes = useStyles()
+  const [order, setOrder] = React.useState<'asc' | 'desc'>('asc')
+  const [orderBy, setOrderBy] = React.useState('calories')
+  const [tablePage, setPage] = React.useState(0)
+  const [rowsPerPage, setRowsPerPage] = React.useState(10)
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage)
+    onChangePage(newPage)
+  }
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10))
+    setPage(0)
+    onChangeRowsPerPage(parseInt(event.target.value, 10))
+  }
+
+  const createSortHandler = (property) => (event) => {
+    if (handleSort) handleSort(event, property)
+    const isAsc = orderBy === property && order === 'asc'
+    setOrder(isAsc ? 'desc' : 'asc')
+    setOrderBy(property)
+  }
+
   return (
     <Box
       width={tableWidth}
@@ -39,31 +109,60 @@ export default function BasicTable({
         </Typography>
       )}
       <Box width={tableWidth} mt={4}>
-        <TableContainer component={Paper}>
-          <Table aria-label="simple table">
+        <TableContainer className={classes.container} component={Paper}>
+          <Table aria-label="simple table" stickyHeader>
             <TableHead>
-              <TableRow>
-                {columns.map(({ title }, index) => (
-                  <TableCell key={`title-${title}-${index}`}>{title}</TableCell>
+              <StyledTableRow>
+                {columns.map(({ title, sortable }, index) => (
+                  <StyledTableCell
+                    key={`title-${title}-${index}`}
+                    sortDirection={orderBy === title ? order : false}
+                  >
+                    {sortable ? (
+                      <TableSortLabel
+                        active={orderBy === title}
+                        direction={orderBy === title ? order : 'asc'}
+                        onClick={createSortHandler(title)}
+                      >
+                        {title}
+                      </TableSortLabel>
+                    ) : (
+                      title
+                    )}
+                  </StyledTableCell>
                 ))}
-              </TableRow>
+              </StyledTableRow>
             </TableHead>
             <TableBody>
               {rows.map((row) => (
-                <TableRow
+                <StyledTableRow
                   onClick={() => handleRowClick && handleRowClick(row[rowId])}
                   key={row[rowId]}
                 >
                   {columns.map(({ renderField, field }, index) => (
-                    <TableCell key={`column-${field}-${index}`}>
+                    <StyledTableCell key={`column-${field}-${index}`}>
                       {renderField ? renderField(row) : row[field]}
-                    </TableCell>
+                    </StyledTableCell>
                   ))}
-                </TableRow>
+                </StyledTableRow>
               ))}
             </TableBody>
           </Table>
         </TableContainer>
+        {onChangePage && onChangeRowsPerPage && (
+          <TablePagination
+            rowsPerPageOptions={[10, 25, 100]}
+            component="div"
+            count={-1}
+            labelDisplayedRows={() => ''}
+            nextIconButtonProps={{ disabled: rows.length < rowsPerPage }}
+            backIconButtonProps={{ disabled: tablePage === 0 }}
+            rowsPerPage={rowsPerPage}
+            page={tablePage}
+            onChangePage={handleChangePage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+          />
+        )}
       </Box>
       {bottomActions && (
         <Box mt={2}>

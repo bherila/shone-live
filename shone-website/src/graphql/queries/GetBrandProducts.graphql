@@ -1,0 +1,10 @@
+query GetBrandProducts($brandId: String!, $limit: Float!, $offset: Float!) {
+  brandProducts(
+    paginationQuery: { limit: $limit, offset: $offset }
+    brandId: $brandId
+  ) {
+    id
+    name
+    description
+  }
+}

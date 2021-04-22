@@ -1,0 +1,11 @@
+query VerifyCode($code: String!, $phone: String!) {
+  verify_code(code: $code, phone: $phone) {
+    id
+    email
+    phone
+    username
+    verification_code_time_sent
+    token
+    profileUrl
+  }
+}

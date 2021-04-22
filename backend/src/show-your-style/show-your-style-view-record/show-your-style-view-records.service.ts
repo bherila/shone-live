@@ -29,7 +29,7 @@ export class ShowYourStyleViewRecordsService {
     })
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     const showYourStyleViewRecord = await this.showYourStyleViewRecordsRepository.findOne(
       id,
     )
@@ -69,7 +69,7 @@ export class ShowYourStyleViewRecordsService {
     return savedShowYourStyleViewRecord
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     const showYourStyleViewRecord = await this.findOne(id)
     return this.showYourStyleViewRecordsRepository.remove(
       showYourStyleViewRecord,

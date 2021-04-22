@@ -14,8 +14,8 @@ import { User } from '../../../user/entities/user.entity'
 @Entity()
 export class ShowYourStyleEntry {
   @Field()
-  @PrimaryGeneratedColumn()
-  readonly id: number
+  @PrimaryGeneratedColumn('uuid')
+  readonly id: string
 
   @Field()
   @ManyToOne(() => User)
@@ -39,7 +39,7 @@ export class ShowYourStyleEntry {
 @Entity()
 export class ShowYourStyleVideoIdEntry {
   @Field()
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   readonly entry_id: number
 
   @Field()
@@ -75,4 +75,12 @@ export class ShowYourStyleVideoIdEntry {
   @Field({ nullable: true, name: 'error' })
   @Column({ default: null })
   error: string
+
+  @Field({ nullable: true, name: 'json_data' })
+  @Column({ type: 'mediumtext', default: null })
+  jsonData: string
+
+  @Field({ nullable: true, name: 'urls' })
+  @Column({ default: null })
+  urls: string
 }

@@ -1,4 +1,4 @@
-query GetShow($ID: Float!) {
+query GetShow($ID: String!) {
   show(showId: $ID) {
     id
     title
