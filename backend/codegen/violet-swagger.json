@@ -1,0 +1,4353 @@
+﻿{
+  "swagger": "2.0",
+  "info": {
+    "version": "v1",
+    "title": "Violet API",
+    "contact": {
+      "name": "Violet.io"
+    }
+  },
+  "host": "sandbox-api.violet.io",
+  "base_path": "/v1",
+  "basePath": "/v1",
+  "tags": [
+    {
+      "name": "Access",
+      "description": ""
+    },
+    {
+      "name": "Catalog - Products",
+      "description": ""
+    },
+    {
+      "name": "Catalog - Offers",
+      "description": ""
+    },
+    {
+      "name": "Catalog - Skus",
+      "description": ""
+    },
+    {
+      "name": "Catalog - Categories",
+      "description": ""
+    },
+    {
+      "name": "Checkout - Cart",
+      "description": ""
+    },
+    {
+      "name": "Checkout - Items",
+      "description": ""
+    },
+    {
+      "name": "Checkout - Customer",
+      "description": ""
+    },
+    {
+      "name": "Checkout - Shipping",
+      "description": ""
+    },
+    {
+      "name": "Checkout - Payment",
+      "description": ""
+    },
+    {
+      "name": "Checkout - Completion",
+      "description": ""
+    }
+  ],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/login": {
+      "post": {
+        "tags": ["Access"],
+        "summary": "Login",
+        "description": "Log into an existing Violet account with a username and password. If sucessful an access token will be returned in the response body for use in additional requests against the API.",
+        "operation_id": "login",
+        "parameters": [
+          {
+            "name": "X-Violet-App-Secret",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Id",
+            "in": "header",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/LoginRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/LoginResponse"
+            }
+          }
+        }
+      }
+    },
+    "/auth/token": {
+      "get": {
+        "tags": ["Access"],
+        "summary": "Refresh Token",
+        "description": "Refreshes a Users token. Pass the \"refresh_token\" value provided in the response body of a login request in the \"X-Violet-Token\" header.",
+        "operation_id": "refreshToken",
+        "parameters": [
+          {
+            "name": "X-Violet-Token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Secret",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Id",
+            "in": "header",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/RefreshTokenResponse"
+            }
+          }
+        }
+      }
+    },
+    "/catalog/products": {
+      "get": {
+        "tags": ["Catalog - Products"],
+        "summary": "Get Products",
+        "description": "Retreives a paginated list of all products in ascending order since date of creation.",
+        "operation_id": "getProducts",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "X-Violet-Token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Secret",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Id",
+            "in": "header",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "default": 1,
+            "format": "int32"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "default": 20,
+            "format": "int32"
+          },
+          {
+            "name": "exclude_public",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "default": false,
+            "description": "Excludes all publicly available products that are not part of your curated catalog. In sandbox this should be left as false as there are no merchant <-> developer relationships and all products are publically available to all developers."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/PageProduct"
+            }
+          }
+        }
+      }
+    },
+    "/catalog/products/random": {
+      "get": {
+        "tags": ["Catalog - Products"],
+        "summary": "Get Random Products",
+        "description": "Retreives a paginated list of products in random order. The original random order is maintained through pagination.",
+        "operation_id": "getRandomProducts",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "X-Violet-Token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Secret",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Id",
+            "in": "header",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "default": 1,
+            "format": "int32"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "default": 20,
+            "format": "int32"
+          },
+          {
+            "name": "exclude_public",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "default": false,
+            "description": "Excludes all publicly available products that are not part of your curated catalog. In sandbox this should be left as false as there are no merchant <-> developer relationships and all products are publically available to all developers."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/PageProduct"
+            }
+          }
+        }
+      }
+    },
+    "/catalog/products/{product_id}": {
+      "get": {
+        "tags": ["Catalog - Products"],
+        "summary": "Get Product by ID",
+        "description": "Retrieves a single product by ID. This request will include all offers of that product.",
+        "operation_id": "getProductById",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "X-Violet-Token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Secret",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Id",
+            "in": "header",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "product_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Product"
+            }
+          }
+        }
+      }
+    },
+    "/catalog/products/search": {
+      "post": {
+        "tags": ["Catalog - Products"],
+        "summary": "Search Products",
+        "description": "Search the complete product catalog by using the available filters in the request body.",
+        "operation_id": "searchProducts",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "X-Violet-Token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Secret",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Id",
+            "in": "header",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "default": 1,
+            "format": "int32"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "default": 20,
+            "format": "int32"
+          },
+          {
+            "name": "exclude_public",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "default": false,
+            "description": "Excludes all publicly available products that are not part of your curated catalog. In sandbox this should be left as false as there are no merchant <-> developer relationships and all products are publically available to all developers."
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/SearchRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/PageProduct"
+            }
+          }
+        }
+      }
+    },
+    "/catalog/skus/{sku_id}": {
+      "get": {
+        "tags": ["Catalog - Skus"],
+        "summary": "Get Sku by ID",
+        "description": "Retreives a single SKU by ID.",
+        "operation_id": "getSkuById",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "X-Violet-Token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Secret",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Id",
+            "in": "header",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "sku_id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Sku"
+            }
+          }
+        }
+      }
+    },
+    "/catalog/offers/{offer_id}": {
+      "get": {
+        "tags": ["Catalog - Offers"],
+        "summary": "Get Offer by ID",
+        "description": "Retrieves a single offer by ID.",
+        "operation_id": "getOfferById",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "X-Violet-Token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Secret",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Id",
+            "in": "header",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "offer_id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Offer"
+            }
+          }
+        }
+      }
+    },
+    "/catalog/categories": {
+      "get": {
+        "tags": ["Catalog - Categories"],
+        "summary": "Get Categories",
+        "description": "Retreives a paginated list of all available categories.",
+        "operation_id": "getCategories",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "X-Violet-Token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Secret",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Id",
+            "in": "header",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "default": 1,
+            "format": "int32"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "default": 20,
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Category"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/catalog/categories/search/{query}": {
+      "get": {
+        "tags": ["Catalog - Categories"],
+        "summary": "Search Categories",
+        "description": "Performs a paginated search of all categories where name matches query.",
+        "operation_id": "searchCategories",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "X-Violet-Token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Secret",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Id",
+            "in": "header",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "query",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "default": 1,
+            "format": "int32"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "default": 20,
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Category"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/catalog/categories/slug/{slug}": {
+      "get": {
+        "tags": ["Catalog - Categories"],
+        "summary": "Get Category by Slug",
+        "description": "Retrieves a single category by slug.",
+        "operation_id": "getCategoryBySlug",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "X-Violet-Token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Secret",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Id",
+            "in": "header",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Category"
+            }
+          }
+        }
+      }
+    },
+    "/catalog/categories/{id}": {
+      "get": {
+        "tags": ["Catalog - Categories"],
+        "summary": "Get Category by ID",
+        "description": "Retrieves a single category by ID.",
+        "operation_id": "getCategoryById",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "X-Violet-Token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Secret",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Id",
+            "in": "header",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Category"
+            }
+          }
+        }
+      }
+    },
+    "/catalog/categories/{id}/tree": {
+      "get": {
+        "tags": ["Catalog - Categories"],
+        "summary": "Get Category Tree",
+        "description": "Retreives the category tree by ID.",
+        "operation_id": "getCategoryTree",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "X-Violet-Token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Secret",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Id",
+            "in": "header",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Category"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/checkout/cart": {
+      "post": {
+        "tags": ["Checkout - Cart"],
+        "summary": "Create Cart",
+        "description": "Creates a new empty cart. <br><br>By setting the 'apply_current_user' flag to true the user associated with the current access token will be applied to the cart. If the user has an existing shipping address and/or billing address saved to their account these will automatically be applied to the cart. <strong>Only applies to oAuthed customer transactions.</strong> <br><br>By setting the 'default_payment_method' flag to true the default payment method, if one exists, of the user associated with the current token will be applied to the cart. <strong>Only applies to oAuthed customer transactions.</strong> <br><br>Use the optional 'app_order_id' parameter to map the newly created cart to an ID in your systems.",
+        "operation_id": "createCart",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "X-Violet-Token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Secret",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Id",
+            "in": "header",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "app_order_id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "base_currency",
+            "in": "query",
+            "required": false,
+            "default": "USD",
+            "type": "string"
+          },
+          {
+            "name": "referral_id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          }
+        }
+      }
+    },
+    "/checkout/cart/byToken/{token}": {
+      "get": {
+        "tags": ["Checkout - Cart"],
+        "summary": "Get Cart by Token",
+        "description": "Retreives a single cart by its token. The token a unique string generated for each cart at the time of creation.",
+        "operation_id": "getCartByToken",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "X-Violet-Token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Secret",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Id",
+            "in": "header",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          }
+        }
+      }
+    },
+    "/checkout/cart/{cart_id}": {
+      "get": {
+        "tags": ["Checkout - Cart"],
+        "summary": "Get Cart by ID",
+        "description": "Retreives a single cart by its ID.",
+        "operation_id": "getCart",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "X-Violet-Token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Secret",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Id",
+            "in": "header",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "cart_id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Checkout - Cart"],
+        "summary": "Delete Cart",
+        "description": "Deletes a cart by its ID.",
+        "operation_id": "deleteCart",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "X-Violet-Token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Secret",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Id",
+            "in": "header",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "cart_id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/checkout/cart/{cart_id}/skus": {
+      "post": {
+        "tags": ["Checkout - Items"],
+        "summary": "Add SKU to Cart",
+        "description": "Adds a SKU to the cart by its ID. Quantity will default to 1 if no quantity is passed. Quantities greater than 10 will default to 10.",
+        "operation_id": "addSkuToCart",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "X-Violet-Token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Secret",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Id",
+            "in": "header",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "cart_id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "price_cart",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "default": false
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/OrderSku"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          }
+        }
+      }
+    },
+    "/checkout/cart/{cart_id}/skus/{order_sku_id}": {
+      "put": {
+        "tags": ["Checkout - Items"],
+        "summary": "Update SKU in Cart",
+        "description": "Modifies a cart SKU by its ID.",
+        "operation_id": "updateSkuInCart",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "X-Violet-Token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Secret",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Id",
+            "in": "header",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "cart_id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "order_sku_id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "price_cart",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "default": false
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/OrderSku"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Checkout - Items"],
+        "summary": "Remove SKU from Cart",
+        "description": "Removes a cart SKU by its ID.",
+        "operation_id": "removeSkuFromCart",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "X-Violet-Token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Secret",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Id",
+            "in": "header",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "cart_id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "order_sku_id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "price_cart",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "default": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          }
+        }
+      }
+    },
+    "/checkout/cart/{cart_id}/billing_address": {
+      "post": {
+        "tags": ["Checkout - Customer"],
+        "summary": "Set Billing Address",
+        "description": "Applies the provided billing address to the cart.",
+        "operation_id": "applyBillingAddress",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "X-Violet-Token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Secret",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Id",
+            "in": "header",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "cart_id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "price_cart",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "default": false
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/OrderAddress"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Checkout - Customer"],
+        "summary": "Update Billing Address",
+        "description": "Modifies the billing address of the cart.",
+        "operation_id": "updateBillingAddress",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "X-Violet-Token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Secret",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Id",
+            "in": "header",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "cart_id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "price_cart",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "default": false
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/OrderAddress"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          }
+        }
+      }
+    },
+    "/checkout/cart/{cart_id}/customer": {
+      "post": {
+        "tags": ["Checkout - Customer"],
+        "summary": "Apply Guest Customer to Cart",
+        "description": "Applies a guest customer to the cart. Guest customers consist of a first name, last name, and email address. Guest customers are not persisted within Violet for use on future orders.",
+        "operation_id": "applyCustomer",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "X-Violet-Token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Secret",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Id",
+            "in": "header",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "cart_id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "price_cart",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "default": false
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/GuestOrderCustomer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          }
+        }
+      }
+    },
+    "/checkout/cart/{cart_id}/shipping": {
+      "post": {
+        "tags": ["Checkout - Shipping"],
+        "summary": "Set Shipping Methods",
+        "description": "Applies a shipping method to a bag. Shipping methods available to each bag can be retreived from 'Get Available Shipping Methods' endpoint. Each bag requires a shipping method.",
+        "operation_id": "applyShippingMethods",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "X-Violet-Token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Secret",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Id",
+            "in": "header",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "cart_id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "price_cart",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "default": false
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/BagShippingMethod"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          }
+        }
+      }
+    },
+    "/checkout/cart/{cart_id}/shipping/available": {
+      "get": {
+        "tags": ["Checkout - Shipping"],
+        "summary": "Get Available Shipping Methods",
+        "description": "Returns a list of available shipping methods for each bag. The shipping address and customer must be applied to the cart before requesting shipping methods.",
+        "operation_id": "getAvailableShippingMethods",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "X-Violet-Token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Secret",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Id",
+            "in": "header",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "cart_id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/OrderShippingMethodWrapper"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/checkout/cart/{cart_id}/shipping/{shipping_method_id}": {
+      "delete": {
+        "tags": ["Checkout - Shipping"],
+        "summary": "Remove Shipping Method",
+        "description": "Removes a previously applied shipping from the cart.",
+        "operation_id": "removeShippingMethod",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "X-Violet-Token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Secret",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Id",
+            "in": "header",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "cart_id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "shipping_method_id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "price_cart",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "default": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          }
+        }
+      }
+    },
+    "/checkout/payment/token": {
+      "get": {
+        "tags": ["Checkout - Payment"],
+        "summary": "Get Stripe Public Token",
+        "description": "Obtain the current Stripe Publishable Key for use in tokenizing payment card data with the <a target='_blank' href='https://stripe.com/docs/stripe-js/reference#stripe-create-token'>Stripe.js library</a>.",
+        "operation_id": "getStripeToken",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "X-Violet-Token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Secret",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Id",
+            "in": "header",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/CurrentPaymentToken"
+            }
+          }
+        }
+      }
+    },
+    "/checkout/cart/{cart_id}/payment": {
+      "post": {
+        "tags": ["Checkout - Payment"],
+        "summary": "Apply Payment Method",
+        "description": "",
+        "operation_id": "applyPaymentMethod",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "X-Violet-Token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Secret",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Id",
+            "in": "header",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "cart_id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/CartPaymentMethod"
+            }
+          },
+          {
+            "name": "price_cart",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "default": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          }
+        }
+      }
+    },
+    "/checkout/cart/{cart_id}/shipping_address": {
+      "post": {
+        "tags": ["Checkout - Customer"],
+        "summary": "Set Shipping Address",
+        "description": "Applies the provided shipping address to the cart.",
+        "operation_id": "applyShippingAddress",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "X-Violet-Token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Secret",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Id",
+            "in": "header",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "cart_id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "price_cart",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "default": false
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/OrderAddress"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Checkout - Customer"],
+        "summary": "Update Shipping Address",
+        "description": "Modifies the shipping address of the cart.",
+        "operation_id": "updateShippingAddress",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "X-Violet-Token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Secret",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Id",
+            "in": "header",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "cart_id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "price_cart",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "default": false
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/OrderAddress"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          }
+        }
+      }
+    },
+    "/checkout/cart/{cart_id}/price": {
+      "get": {
+        "tags": ["Checkout - Completion"],
+        "summary": "Price Cart",
+        "description": "Prices the cart. This includes the calculation of shipping and tax rates. Before pricing a cart the shipping address, billing address, shipping method, and any SKUs should be applied to the cart.",
+        "operation_id": "priceCart",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "X-Violet-Token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Secret",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Id",
+            "in": "header",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "cart_id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          }
+        }
+      }
+    },
+    "/checkout/cart/{cart_id}/submit": {
+      "post": {
+        "tags": ["Checkout - Completion"],
+        "summary": "Submit Cart",
+        "description": "Submits a cart. For each unique bag in your cart an order will be submitted to the source merchant's platform. Depending on the number of bags in your cart this request can take a few moments as each external order is submitted.",
+        "operation_id": "submitCheckout",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "X-Violet-Token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Secret",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Id",
+            "in": "header",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "cart_id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          }
+        }
+      }
+    },
+    "/orders/search": {
+      "post": {
+        "tags": ["Orders"],
+        "summary": "Search Orders",
+        "description": "Performs a paginated search of all orders. Orders can be searched by 'merchant_id', 'user_id', or a combination of both. <br><br>Orders are limited to those placed by your app.",
+        "operation_id": "searchOrders",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "X-Violet-Token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Secret",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Id",
+            "in": "header",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "default": 1,
+            "format": "int32"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "default": 20,
+            "format": "int32"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/OrderSearchRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/PageOrder"
+            },
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/orders": {
+      "get": {
+        "tags": ["Orders"],
+        "summary": "Get Orders",
+        "description": "Returns a paginated list of orders. <br><br>Orders are limited to those placed by your app.",
+        "operation_id": "getAllOrders",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "X-Violet-Token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Secret",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Id",
+            "in": "header",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "default": 1,
+            "format": "int32"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "default": 20,
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/PageOrder"
+            }
+          }
+        }
+      }
+    },
+    "/orders/{order_id}": {
+      "get": {
+        "tags": ["Orders"],
+        "summary": "Get Order by ID",
+        "description": "Retrieves a single order by ID.",
+        "operation_id": "getOrderById",
+        "parameters": [
+          {
+            "name": "X-Violet-Token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Secret",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Id",
+            "in": "header",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "order_id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          }
+        }
+      }
+    },
+    "/apps/{app_id}/webhooks": {
+      "get": {
+        "tags": ["Webhooks"],
+        "summary": "List Webhooks",
+        "description": "Retrieves a list of previously created webhooks.",
+        "operation_id": "getWebhooks",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "X-Violet-Token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Secret",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Id",
+            "in": "header",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "app_id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "event",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Webhook"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Webhooks"],
+        "summary": "Create Webhook",
+        "description": "Creates a new webhook for the desired event. The remote endpoint must be HTTPS.<br><br>We currently limit webhooks to one per event per app. If the event is already active on a previously created webhook that existing webhook will be updated with the new endpoint.",
+        "operation_id": "createWebhook",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "X-Violet-Token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Secret",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Id",
+            "in": "header",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "app_id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/Webhook"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Webhook"
+            }
+          }
+        }
+      }
+    },
+    "/apps/{app_id}/webhooks/{webhook_id}": {
+      "get": {
+        "tags": ["Webhooks"],
+        "summary": "Get Webhook by ID",
+        "description": "Retrieves a single webhook by ID.",
+        "operation_id": "getWebhookById",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "X-Violet-Token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Secret",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Id",
+            "in": "header",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "app_id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "webhook_id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Webhook"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Webhooks"],
+        "summary": "Update Webhook",
+        "description": "Modifies an existing webhook by ID.",
+        "operation_id": "updateWebhook",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "X-Violet-Token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Secret",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Id",
+            "in": "header",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "app_id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "webhook_id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/Webhook"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Webhook"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Webhooks"],
+        "summary": "Delete Webhook",
+        "description": "Removes a webhook. Events will immedietly stop posting to this endpoint upon deletion.",
+        "operation_id": "deleteWebhook",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "X-Violet-Token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Secret",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Violet-App-Id",
+            "in": "header",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "app_id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "webhook_id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Meta": {
+      "type": "object",
+      "required": ["key", "offer_id", "value"],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "read_only": true
+        },
+        "offer_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Offer Id"
+        },
+        "key": {
+          "type": "string",
+          "description": "Key"
+        },
+        "value": {
+          "type": "string",
+          "description": "Value"
+        }
+      },
+      "description": "Additional Product Data"
+    },
+    "PageOrder": {
+      "type": "object",
+      "properties": {
+        "total_pages": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "total_elements": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "content": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Order"
+          }
+        },
+        "number": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "sort": {
+          "$ref": "#/definitions/Sort"
+        },
+        "first": {
+          "type": "boolean",
+          "default": false
+        },
+        "last": {
+          "type": "boolean",
+          "default": false
+        },
+        "number_of_elements": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "PageProduct": {
+      "type": "object",
+      "properties": {
+        "total_pages": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "total_elements": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "content": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Product"
+          }
+        },
+        "number": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "sort": {
+          "$ref": "#/definitions/Sort"
+        },
+        "first": {
+          "type": "boolean",
+          "default": false
+        },
+        "last": {
+          "type": "boolean",
+          "default": false
+        },
+        "number_of_elements": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "SearchRequest": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string",
+          "description": "Query"
+        },
+        "merchant_id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Merchant ID"
+        },
+        "category_id": {
+          "type": "string",
+          "description": "Category ID"
+        },
+        "category_slug": {
+          "type": "string",
+          "description": "Category Slug"
+        },
+        "min_commission": {
+          "type": "number",
+          "format": "double",
+          "description": "Minimum Commission"
+        },
+        "max_commission": {
+          "type": "number",
+          "format": "double",
+          "description": "Maximum Commission"
+        },
+        "min_price": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Minimum Price"
+        },
+        "max_price": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Maximum Price"
+        },
+        "include_offers": {
+          "type": "boolean",
+          "description": "Include offers with products",
+          "default": false
+        }
+      },
+      "description": "Search Request"
+    },
+    "Sort": {
+      "type": "object"
+    },
+    "ProductVariantValue": {
+      "type": "object",
+      "required": ["variant_id"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "read_only": true
+        },
+        "variant_id": {
+          "type": "string",
+          "description": "ID of the Variation"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name"
+        },
+        "display_order": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Display Order"
+        },
+        "swatch": {
+          "type": "string",
+          "description": "Color/Pattern Swatch URL"
+        },
+        "hex": {
+          "type": "string",
+          "description": "Hex Code"
+        }
+      },
+      "description": "Product Variant Value"
+    },
+    "Category": {
+      "type": "object",
+      "required": ["depth", "name", "slug"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "read_only": true
+        },
+        "name": {
+          "type": "string",
+          "description": "Category Name"
+        },
+        "slug": {
+          "type": "string",
+          "description": "Category Slug"
+        },
+        "parent_id": {
+          "type": "string",
+          "description": "Parent ID"
+        },
+        "depth": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Category Depth"
+        }
+      },
+      "description": "Product Category"
+    },
+    "SkuVariantValue": {
+      "type": "object",
+      "required": ["value", "variant"],
+      "properties": {
+        "variant": {
+          "type": "string",
+          "description": "Variant Name"
+        },
+        "value": {
+          "type": "string",
+          "description": "Variant Value"
+        }
+      },
+      "description": "Individual Variation Value for a Sku"
+    },
+    "Sku Dimensions": {
+      "type": "object",
+      "properties": {
+        "sku_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "ID of SKU Dimensions Belong To"
+        },
+        "weight": {
+          "type": "number",
+          "format": "double",
+          "description": "Weight of SKU"
+        },
+        "height": {
+          "type": "number",
+          "format": "double",
+          "description": "Height of SKU"
+        },
+        "width": {
+          "type": "number",
+          "format": "double",
+          "description": "Width of SKU"
+        },
+        "length": {
+          "type": "number",
+          "format": "double",
+          "description": "Length of SKU"
+        },
+        "type": {
+          "type": "string",
+          "description": "Dimensions Type",
+          "enum": ["SKU", "SHIPPING"]
+        }
+      },
+      "description": "Individual Sku Dimensions"
+    },
+    "Media": {
+      "type": "object",
+      "required": ["album_id"],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "read_only": true
+        },
+        "album_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Album ID"
+        },
+        "external_id": {
+          "type": "string",
+          "description": "External ID"
+        },
+        "cloud_id": {
+          "type": "string",
+          "description": "ID of hosted cloud entity"
+        },
+        "url": {
+          "type": "string",
+          "description": "Media URL"
+        },
+        "source_url": {
+          "type": "string",
+          "description": "Media Source URL"
+        },
+        "type": {
+          "type": "string",
+          "description": "Media Type",
+          "enum": ["image", "video"]
+        },
+        "display_order": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Display Order"
+        },
+        "primary_media": {
+          "type": "boolean",
+          "description": "Primary Media",
+          "default": false
+        }
+      },
+      "description": "Media"
+    },
+    "Album": {
+      "type": "object",
+      "required": ["parent_id", "type"],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "read_only": true
+        },
+        "parent_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "ID of the parent entity"
+        },
+        "type": {
+          "type": "string",
+          "description": "Parent Type",
+          "enum": ["offer", "sku"]
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of Album"
+        },
+        "media": {
+          "type": "array",
+          "description": "Album media",
+          "unique_items": true,
+          "items": {
+            "$ref": "#/definitions/Media"
+          }
+        }
+      },
+      "description": "Product Image Container"
+    },
+    "Product": {
+      "type": "object",
+      "required": ["name", "slug"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "read_only": true
+        },
+        "name": {
+          "type": "string",
+          "description": "Product Name"
+        },
+        "description": {
+          "type": "string",
+          "description": "Product Description"
+        },
+        "long_description": {
+          "type": "string",
+          "description": "Product Long Description"
+        },
+        "slug": {
+          "type": "string",
+          "description": "Product Slug/Handle"
+        },
+        "brand": {
+          "type": "string",
+          "description": "Brand"
+        },
+        "available": {
+          "type": "boolean",
+          "description": "Is the Product Available",
+          "default": false
+        },
+        "visible": {
+          "type": "boolean",
+          "description": "Is the Product Visible",
+          "default": false
+        },
+        "type": {
+          "type": "string",
+          "description": "Product Type",
+          "enum": ["physical", "digital", "virtual"]
+        },
+        "currency": {
+          "type": "string",
+          "enum": ["USD", "GBP"]
+        },
+        "min_price": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Minimum Price of the Product"
+        },
+        "max_price": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Maximum Price of the Product"
+        },
+        "variants": {
+          "type": "array",
+          "description": "Product Variants",
+          "unique_items": true,
+          "items": {
+            "$ref": "#/definitions/ProductVariant"
+          }
+        },
+        "offers": {
+          "type": "array",
+          "description": "Merchant Offerings",
+          "unique_items": true,
+          "items": {
+            "$ref": "#/definitions/Offer"
+          }
+        },
+        "categories": {
+          "type": "array",
+          "description": "Categories",
+          "unique_items": true,
+          "items": {
+            "$ref": "#/definitions/Category"
+          }
+        },
+        "gender": {
+          "type": "string",
+          "description": "Gender",
+          "enum": ["MALE", "FEMALE", "UNISEX"]
+        },
+        "meta": {
+          "type": "array",
+          "description": "Meta Data",
+          "unique_items": true,
+          "items": {
+            "$ref": "#/definitions/Meta"
+          }
+        },
+        "tags": {
+          "type": "array",
+          "description": "Tags",
+          "unique_items": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "related_product_ids": {
+          "type": "array",
+          "description": "ID's of related products.",
+          "unique_items": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "cross_sale_product_ids": {
+          "type": "array",
+          "description": "ID's of Cross Saleable Products.",
+          "unique_items": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "gtins": {
+          "type": "array",
+          "description": "List of Global Trade Item Numbers",
+          "unique_items": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "default_image_url": {
+          "type": "string",
+          "description": "The default/cover image of the Product"
+        },
+        "qty_available": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Overall Quantity"
+        },
+        "max_commission_rate": {
+          "type": "number",
+          "format": "double",
+          "description": "The maximum commission rate offered by a merchant."
+        },
+        "date_created": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Date of product creation"
+        },
+        "date_last_modified": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Date of last product update"
+        }
+      },
+      "description": "Products"
+    },
+    "Dimension": {
+      "type": "object",
+      "required": ["measure", "sku_id", "type"],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "read_only": true
+        },
+        "sku_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Sku ID"
+        },
+        "measure": {
+          "type": "string",
+          "description": "What's being measured",
+          "enum": ["height", "weight", "width", "depth"]
+        },
+        "type": {
+          "type": "string",
+          "description": "Type of Measurement",
+          "enum": ["product", "shipping"]
+        },
+        "unit_of_measure": {
+          "type": "string",
+          "description": "Unit of Measure",
+          "enum": [
+            "inches",
+            "feet",
+            "centimeters",
+            "ounces",
+            "pounds",
+            "grams",
+            "kilograms"
+          ]
+        },
+        "value": {
+          "type": "number",
+          "format": "double",
+          "description": "Value"
+        }
+      },
+      "description": "Individual Product Dimensions"
+    },
+    "Variant": {
+      "type": "object",
+      "properties": {
+        "product_variant_id": {
+          "type": "string",
+          "description": "ID of the Product Variant"
+        },
+        "external_id": {
+          "type": "string",
+          "description": "ID of the Variant on the External Ecommerce Platform"
+        },
+        "name": {
+          "type": "string",
+          "description": "Variant Name"
+        },
+        "visual": {
+          "type": "boolean",
+          "description": "Is the variant visual",
+          "default": false
+        },
+        "values": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VariantValue"
+          }
+        }
+      },
+      "description": "Variation Data"
+    },
+    "Offer": {
+      "type": "object",
+      "required": [
+        "available",
+        "merchant_id",
+        "min_price",
+        "name",
+        "product_id",
+        "source",
+        "visible"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "product_id": {
+          "type": "string",
+          "description": "The parent/container product ID"
+        },
+        "external_id": {
+          "type": "string",
+          "description": "External ID"
+        },
+        "external_url": {
+          "type": "string",
+          "description": "External URL"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of Product in Offer"
+        },
+        "description": {
+          "type": "string",
+          "description": "Product Description"
+        },
+        "source": {
+          "type": "string",
+          "description": "Source Platform",
+          "enum": [
+            "OTHER",
+            "SHOPIFY",
+            "MAGENTO",
+            "MAGENTO_ONE",
+            "WOOCOMMERCE",
+            "BIGCOMMERCE",
+            "LIGHTSPEED",
+            "ECWID",
+            "YAAS",
+            "SPREECOMMERCE",
+            "DEMANDWARE",
+            "VOLUSION"
+          ]
+        },
+        "seller": {
+          "type": "string",
+          "description": "Name of Merchant Selling Product"
+        },
+        "vendor": {
+          "type": "string",
+          "description": "Name of Original Vendor"
+        },
+        "merchant_id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Merchant ID"
+        },
+        "available": {
+          "type": "boolean",
+          "description": "Is Product Available",
+          "default": false
+        },
+        "visible": {
+          "type": "boolean",
+          "description": "Is Product Visible",
+          "default": false
+        },
+        "min_price": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Minimum Price the Product sells for"
+        },
+        "max_price": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Maximum Price the Product sells for"
+        },
+        "commission_rate": {
+          "type": "number",
+          "format": "double",
+          "description": "Amount given by merchant"
+        },
+        "special_commission_rate": {
+          "type": "boolean",
+          "description": "If the commission rate is unique to this offer.",
+          "default": false
+        },
+        "currency": {
+          "type": "string",
+          "description": "Default Currency of Offer"
+        },
+        "source_category_name": {
+          "type": "string",
+          "description": "Original Category on Source Platform"
+        },
+        "meta": {
+          "type": "array",
+          "description": "Additional Meta Data of the Offer",
+          "unique_items": true,
+          "items": {
+            "$ref": "#/definitions/Meta"
+          }
+        },
+        "variants": {
+          "type": "array",
+          "description": "Product Variations",
+          "unique_items": true,
+          "items": {
+            "$ref": "#/definitions/Variant"
+          }
+        },
+        "skus": {
+          "type": "array",
+          "description": "Product SKUs",
+          "unique_items": true,
+          "items": {
+            "$ref": "#/definitions/Sku"
+          }
+        },
+        "albums": {
+          "type": "array",
+          "description": "Product Albums",
+          "unique_items": true,
+          "items": {
+            "$ref": "#/definitions/Album"
+          }
+        },
+        "three_d_enables": {
+          "type": "boolean",
+          "description": "Is the product 3D Enabled",
+          "default": false
+        },
+        "three_d_resource": {
+          "type": "string",
+          "description": "3D Resource Object"
+        },
+        "type": {
+          "type": "string",
+          "description": "Product Type",
+          "enum": ["PHYSICAL", "DIGITAL", "VIRTUAL"]
+        },
+        "status": {
+          "type": "string",
+          "description": "Status",
+          "enum": ["ENABLED", "DISABLED"]
+        },
+        "date_created": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Date of offer creation"
+        },
+        "date_last_modified": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Date of last offer update"
+        },
+        "weight_unit": {
+          "type": "string",
+          "description": "Weight Unit",
+          "enum": [
+            "OUNCES",
+            "POUNDS",
+            "GRAMS",
+            "KILOGRAMS",
+            "CARATS",
+            "TONNES",
+            "MILLIGRAMS",
+            "LITERS",
+            "MILLILITERS",
+            "QUARTS",
+            "QUARTERS",
+            "GALLONS",
+            "PINTS"
+          ]
+        },
+        "size_unit": {
+          "type": "string",
+          "description": "Size Unit",
+          "enum": [
+            "MILLIMETERS",
+            "CENTIMETERS",
+            "INCHES",
+            "FEET",
+            "METERS",
+            "YARDS"
+          ]
+        }
+      },
+      "description": "Product Offer"
+    },
+    "VariantValue": {
+      "type": "object",
+      "properties": {
+        "product_variant_value_id": {
+          "type": "string",
+          "description": "ID of the Product Variation Value"
+        },
+        "external_id": {
+          "type": "string",
+          "description": "ID of the Variant in the External Ecommerce Platform"
+        },
+        "name": {
+          "type": "string",
+          "description": "Variant Value Name"
+        },
+        "sku_ids": {
+          "type": "array",
+          "description": "ID's of SKU's containing this Variant Value",
+          "unique_items": true,
+          "items": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "description": "Individual Variation Value"
+    },
+    "ProductVariant": {
+      "type": "object",
+      "required": ["Name", "product_id"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "read_only": true
+        },
+        "product_id": {
+          "type": "string",
+          "description": "Product ID"
+        },
+        "name": {
+          "type": "string"
+        },
+        "visual": {
+          "type": "boolean",
+          "description": "Is this a visual variant",
+          "default": false
+        },
+        "values": {
+          "type": "array",
+          "description": "Product Variant values",
+          "unique_items": true,
+          "items": {
+            "$ref": "#/definitions/ProductVariantValue"
+          }
+        },
+        "display_order": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Display Order"
+        }
+      },
+      "description": "Product Variant"
+    },
+    "Sku": {
+      "type": "object",
+      "required": ["currency", "merchant_id", "offer_id", "sale_price", "type"],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "read_only": true
+        },
+        "offer_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "ID of the Offer"
+        },
+        "merchant_id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "ID of the Merchant"
+        },
+        "external_id": {
+          "type": "string",
+          "description": "ID of the SKU on the External Ecom Platform"
+        },
+        "name": {
+          "type": "string",
+          "description": "Sku Name"
+        },
+        "asin": {
+          "type": "string",
+          "description": "Amazon Standard Identification Number"
+        },
+        "gtin": {
+          "type": "string",
+          "description": "Global Trade Item Number"
+        },
+        "upc": {
+          "type": "string",
+          "description": "Universal Product Code"
+        },
+        "ean": {
+          "type": "string",
+          "description": "European Article Number"
+        },
+        "isbn": {
+          "type": "string",
+          "description": "International Standard Book Number"
+        },
+        "in_stock": {
+          "type": "boolean",
+          "description": "Is the Product in Stock",
+          "default": false
+        },
+        "quantity_available": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Quantity Available"
+        },
+        "inventory_tracked": {
+          "type": "boolean",
+          "description": "Is the SKUs inventory tracked",
+          "default": false
+        },
+        "sale_price": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Sale Price of the SKU"
+        },
+        "retail_price": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Retail Price of the SKU"
+        },
+        "currency": {
+          "type": "string",
+          "description": "The starting currency of this SKU"
+        },
+        "taxable": {
+          "type": "boolean",
+          "description": "Is the product taxable",
+          "default": false
+        },
+        "tax_type": {
+          "type": "string",
+          "description": "Type of Tax on this SKU",
+          "enum": ["default", "apparel", "service"]
+        },
+        "albums": {
+          "type": "array",
+          "description": "Sku Albums",
+          "unique_items": true,
+          "items": {
+            "$ref": "#/definitions/Album"
+          }
+        },
+        "variant_values": {
+          "type": "array",
+          "description": "Variant Values that apply to this SKU",
+          "unique_items": true,
+          "items": {
+            "$ref": "#/definitions/SkuVariantValue"
+          }
+        },
+        "type": {
+          "type": "string",
+          "enum": ["physical", "digital", "virtual"]
+        },
+        "status": {
+          "type": "string",
+          "description": "SKU Status",
+          "enum": ["enabled", "disabled"]
+        },
+        "date_created": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Date of SKU creation"
+        },
+        "date_last_modified": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Date of last SKU update"
+        },
+        "sku_dimensions": {
+          "description": "Dimensions of the SKU",
+          "$ref": "#/definitions/Sku Dimensions"
+        }
+      },
+      "description": "Stock Keeping Unit"
+    },
+    "Order": {
+      "type": "object",
+      "required": ["status"],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "read_only": true
+        },
+        "token": {
+          "type": "string",
+          "read_only": true
+        },
+        "seller_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "ID of the Seller"
+        },
+        "user_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "ID of the User placing the order"
+        },
+        "app_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "ID of the App creating the order"
+        },
+        "customer": {
+          "description": "Customer placing the order",
+          "$ref": "#/definitions/OrderCustomer"
+        },
+        "bags": {
+          "type": "array",
+          "description": "Bags in the Order",
+          "items": {
+            "$ref": "#/definitions/Bag"
+          }
+        },
+        "shipping_address": {
+          "description": "Shipping Address of the Order",
+          "$ref": "#/definitions/OrderAddress"
+        },
+        "billing_address": {
+          "description": "Billing Address of the Order",
+          "$ref": "#/definitions/OrderAddress"
+        },
+        "payment_method": {
+          "description": "Payment Method of the Order",
+          "$ref": "#/definitions/OrderPaymentMethod"
+        },
+        "sub_total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Subtotal of the Order"
+        },
+        "shipping_total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Shipping Total of the Order"
+        },
+        "tax_total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Tax Total of the Order"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total of the Order"
+        },
+        "app_customer_id": {
+          "type": "string",
+          "description": "App Customer ID"
+        },
+        "app_order_id": {
+          "type": "string",
+          "description": "App Order ID"
+        },
+        "status": {
+          "type": "string",
+          "description": "Status of the Order",
+          "enum": [
+            "in_progress",
+            "processing",
+            "completed",
+            "canceled",
+            "partially_refunded",
+            "refunded"
+          ]
+        },
+        "date_created": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Date of order creation"
+        },
+        "date_last_modified": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Date of last order update"
+        },
+        "guest": {
+          "type": "boolean",
+          "description": "Is the customer a guest or an authed user.",
+          "default": false
+        },
+        "referral_id": {
+          "type": "string",
+          "description": "Optional value used to represent an identifier in your system. Max length of 128 characters."
+        }
+      },
+      "description": "Order"
+    },
+    "OrderTax": {
+      "type": "object",
+      "required": ["amount", "merchant_id", "order_id", "rate", "state"],
+      "properties": {
+        "order_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "ID of the Order the Tax belongs to"
+        },
+        "merchant_id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "ID of the Merchant the Bag belongs to"
+        },
+        "skus": {
+          "type": "array",
+          "description": "SKUs covered by the Tax",
+          "items": {
+            "type": "string"
+          }
+        },
+        "state": {
+          "type": "string",
+          "description": "State abbreviation"
+        },
+        "postal_code": {
+          "type": "string",
+          "description": "Postal/Zip Code"
+        },
+        "rate": {
+          "type": "number",
+          "format": "double",
+          "description": "Tax Rate"
+        },
+        "amount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total Tax amount on Bag"
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the Tax",
+          "min_length": 0,
+          "max_length": 255
+        }
+      },
+      "description": "Taxes belonging to an Order Bag"
+    },
+    "BagShippingMethod": {
+      "type": "object",
+      "properties": {
+        "bag_id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "shipping_method_id": {
+          "type": "string"
+        }
+      },
+      "description": "Shipping Method applied to a Bag"
+    },
+    "OrderSearchRequest": {
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "User ID"
+        },
+        "merchant_id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Merchant ID"
+        },
+        "referral_id": {
+          "type": "string",
+          "description": "Referral ID"
+        }
+      },
+      "description": "Search Request"
+    },
+    "OrderCustomer": {
+      "type": "object",
+      "required": ["first_name", "last_name", "email"],
+      "properties": {
+        "user_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "ID of the User the Order Customer references"
+        },
+        "first_name": {
+          "type": "string",
+          "description": "First Name"
+        },
+        "last_name": {
+          "type": "string",
+          "description": "Last Name"
+        },
+        "email": {
+          "type": "string",
+          "description": "Email Address of Customer"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "description": "The Customer Placing the Order"
+    },
+    "GuestOrderCustomer": {
+      "type": "object",
+      "required": ["first_name", "last_name", "email"],
+      "properties": {
+        "first_name": {
+          "type": "string",
+          "description": "First Name"
+        },
+        "last_name": {
+          "type": "string",
+          "description": "Last Name"
+        },
+        "email": {
+          "type": "string",
+          "description": "Email Address of Customer"
+        }
+      },
+      "description": "The Guest Customer Placing the Order"
+    },
+    "OrderSku": {
+      "type": "object",
+      "required": ["sku_id"],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "merchant_id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "ID of the Merchant the SKU belongs to"
+        },
+        "app_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "ID of the App creating the Order"
+        },
+        "product_id": {
+          "type": "string",
+          "description": "ID of the Product"
+        },
+        "sku_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "ID of the referenced SKU"
+        },
+        "external_id": {
+          "type": "string",
+          "description": "ID of the SKU on the External Ecommerce Platform"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the SKU",
+          "read_only": true
+        },
+        "thumbnail": {
+          "type": "string",
+          "description": "URL of the thumbnail image",
+          "read_only": true
+        },
+        "quantity": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Quantity of the SKU being purchased"
+        },
+        "price": {
+          "type": "integer",
+          "format": "int32",
+          "description": "SKU Price",
+          "read_only": true
+        }
+      },
+      "description": "SKUs belonging to an Order"
+    },
+    "Transaction": {
+      "type": "object",
+      "required": ["app_id", "bag_id", "merchant_id", "payment_method_id"],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "read_only": true
+        },
+        "merchant_id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "ID of the Merchant receiving the transaction"
+        },
+        "seller_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "ID of the User who facilitated the transaction"
+        },
+        "app_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "ID of the App that created the Order"
+        },
+        "order_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "ID of the Order the Transaction applies to"
+        },
+        "bag_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "ID of the Bag the Transaction applies to"
+        },
+        "payment_method_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "ID of the referenced Payment Method"
+        },
+        "gateway_transaction_id": {
+          "type": "string",
+          "description": "ID of the Transaction in the Payment Gateway"
+        },
+        "gateway": {
+          "type": "string",
+          "description": "Gateway processing the Transaction"
+        },
+        "amount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total amount being transacted"
+        },
+        "currency": {
+          "type": "string",
+          "description": "Currency the Transaction takes place in"
+        },
+        "type": {
+          "type": "string",
+          "description": "Transaction Type",
+          "enum": ["authorization", "capture", "sale", "void", "refund"]
+        },
+        "error_code": {
+          "type": "string",
+          "description": "Error Code from gateway if error occurred"
+        },
+        "status": {
+          "type": "string",
+          "description": "Transaction Status",
+          "enum": ["processing", "completed"]
+        },
+        "test": {
+          "type": "boolean",
+          "description": "Is this a test Transaction",
+          "default": false
+        },
+        "date_created": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Date of transaction creation"
+        },
+        "date_last_modified": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Date of last transaction update"
+        },
+        "orderPaymentMethod": {
+          "$ref": "#/definitions/OrderPaymentMethod"
+        }
+      },
+      "description": "Order Transaction"
+    },
+    "Bag": {
+      "type": "object",
+      "required": [
+        "app_id",
+        "merchant_id",
+        "order_id",
+        "shipping_method",
+        "taxes"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "read_only": true
+        },
+        "order_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "ID of the Order the Bag belongs to"
+        },
+        "merchant_id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "ID of the Merchant the Bag references"
+        },
+        "app_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "ID of the App creating this Bag"
+        },
+        "external_id": {
+          "type": "string",
+          "description": "ID of the Order on the External Ecommerce Platform"
+        },
+        "status": {
+          "type": "string",
+          "description": "Status",
+          "enum": [
+            "in_progress",
+            "submitted",
+            "accepted",
+            "shipped",
+            "completed",
+            "rejected",
+            "canceled"
+          ]
+        },
+        "fulfillment_status": {
+          "type": "string",
+          "description": "Fulfillment Status",
+          "enum": ["unshipped", "shipped", "partially_shipped", "returned"]
+        },
+        "financial_status": {
+          "type": "string",
+          "description": "Financial Status",
+          "enum": [
+            "unpaid",
+            "authorized",
+            "pending",
+            "paid",
+            "partially_paid",
+            "refunded",
+            "partially_refunded",
+            "voided"
+          ]
+        },
+        "skus": {
+          "type": "array",
+          "description": "SKUs added to the bag",
+          "items": {
+            "$ref": "#/definitions/OrderSku"
+          }
+        },
+        "shipping_method": {
+          "description": "Shipping Method of the Bag",
+          "$ref": "#/definitions/OrderShippingMethod"
+        },
+        "taxes": {
+          "type": "array",
+          "description": "Taxes applied to the bag",
+          "items": {
+            "$ref": "#/definitions/OrderTax"
+          }
+        },
+        "sub_total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Subtotal of the bag"
+        },
+        "shipping_total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Shipping Total of the bag"
+        },
+        "tax_total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Tax Total of the bag"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total price of the bag"
+        },
+        "transactions": {
+          "type": "array",
+          "description": "Transactions of the bag",
+          "items": {
+            "$ref": "#/definitions/Transaction"
+          }
+        },
+        "external_checkout": {
+          "type": "boolean",
+          "description": "If bag is tracked externally",
+          "default": false
+        },
+        "merchant_name": {
+          "type": "string",
+          "description": "Name of Merchant"
+        }
+      },
+      "description": "Per Merchant Bag in Order"
+    },
+    "CurrentPaymentToken": {
+      "type": "object",
+      "properties": {
+        "stripe_token": {
+          "type": "string",
+          "description": "Stripe Public Token"
+        }
+      },
+      "description": "The shipping or billing address of a user placing an order"
+    },
+    "OrderAddress": {
+      "type": "object",
+      "required": [
+        "address_1",
+        "city",
+        "country",
+        "postal_code",
+        "state",
+        "type"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name on Address"
+        },
+        "city": {
+          "type": "string",
+          "description": "City"
+        },
+        "state": {
+          "type": "string",
+          "description": "State Abbreviation"
+        },
+        "country": {
+          "type": "string",
+          "description": "Country ISO2 Code"
+        },
+        "postal_code": {
+          "type": "string",
+          "description": "Postal/Zip Code"
+        },
+        "phone": {
+          "type": "string",
+          "description": "Phone Number"
+        },
+        "type": {
+          "type": "string",
+          "description": "Address Type",
+          "enum": ["shipping", "billing"]
+        },
+        "address_1": {
+          "type": "string",
+          "description": "First line of the Address"
+        },
+        "address_2": {
+          "type": "string",
+          "description": "Second line of the Address"
+        }
+      },
+      "description": "The shipping or billing address of a user placing an order"
+    },
+    "OrderShippingMethod": {
+      "type": "object",
+      "required": [
+        "bag_id",
+        "merchant_id",
+        "price",
+        "shipping_method_id",
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Type of Shipping Method",
+          "enum": ["variable", "flat_rate"]
+        },
+        "carrier": {
+          "type": "string",
+          "enum": ["ups", "usps", "fedex", "dhl", "ontrac"]
+        },
+        "label": {
+          "type": "string",
+          "description": "Shipping Method Label"
+        },
+        "price": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total cost of the Shipping Method"
+        },
+        "min_subtotal": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Minimum Subtotal"
+        },
+        "max_subtotal": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "min_weight": {
+          "type": "number",
+          "format": "double",
+          "description": "Minimum Weight"
+        },
+        "max_weight": {
+          "type": "number",
+          "format": "double",
+          "description": "Maximum Weight"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "read_only": true
+        },
+        "shipping_method_id": {
+          "type": "string",
+          "description": "ID of the referenced Shipping Method"
+        },
+        "bag_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "ID of the Bag the Shipping Method applies to"
+        },
+        "merchant_id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "ID of the merchant the bag belongs to"
+        },
+        "tracking_number": {
+          "type": "string",
+          "description": "Carrier Tracking Number"
+        }
+      },
+      "description": "Shipping Methods belonging to an Order"
+    },
+    "OrderShippingMethodWrapper": {
+      "type": "object",
+      "properties": {
+        "bag_id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "shipping_methods": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/OrderShippingMethod"
+          }
+        }
+      },
+      "description": "Order Shipping Method Wrapper"
+    },
+    "CartPaymentMethod": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string",
+          "description": "Generated payment token."
+        },
+        "card_number": {
+          "type": "string",
+          "description": "Number on the credit or debit card."
+        },
+        "card_cvc": {
+          "type": "integer",
+          "format": "int32",
+          "description": "CVC code on the credit or debit card."
+        },
+        "card_exp_month": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Expiration month of the credit or debit card."
+        },
+        "card_exp_year": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Expiration year of the credit or debit card."
+        },
+        "card_postal_code": {
+          "type": "string",
+          "description": "Postal Code of the credit or debit card."
+        }
+      },
+      "description": "The payment method request for a cart. If the token is provided no card data is required."
+    },
+    "OrderPaymentMethod": {
+      "type": "object",
+      "required": ["payment_method_id"],
+      "properties": {
+        "brand": {
+          "type": "string",
+          "description": "Brand of Card"
+        },
+        "last_four": {
+          "type": "string",
+          "description": "Last Four Numbers on Card"
+        },
+        "exp_month": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Card Expiration Month"
+        },
+        "exp_year": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Card Expiration Year"
+        },
+        "cardholder_name": {
+          "type": "string",
+          "description": "Name as it appears on card."
+        },
+        "payment_method_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "ID of the referenced Payment Method"
+        },
+        "default": {
+          "type": "boolean",
+          "description": "Is Default Method",
+          "default": false
+        }
+      },
+      "description": "Payment Method belonging to an Order"
+    },
+    "CustomerAddress": {
+      "type": "object",
+      "properties": {
+        "customer": {
+          "description": "Customer",
+          "$ref": "#/definitions/OrderCustomer"
+        },
+        "shipping_address": {
+          "description": "Customer Shipping Address",
+          "$ref": "#/definitions/OrderAddress"
+        },
+        "billing_address": {
+          "description": "Customer Billing Address",
+          "$ref": "#/definitions/OrderAddress"
+        }
+      },
+      "description": "Customer Address"
+    },
+    "Role": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the Role",
+          "min_length": 1,
+          "max_length": 50,
+          "pattern": "[A-Za-z]+"
+        },
+        "description": {
+          "type": "string",
+          "description": "Brief description of the Role",
+          "min_length": 0,
+          "max_length": 255
+        },
+        "permissions": {
+          "type": "array",
+          "description": "Permissions available to this Role",
+          "unique_items": true,
+          "items": {
+            "$ref": "#/definitions/Permission"
+          }
+        }
+      }
+    },
+    "LoginResponse": {
+      "type": "object",
+      "required": ["email", "first_name", "last_name", "password", "type"],
+      "properties": {
+        "id": {
+          "read_only": true,
+          "type": "integer",
+          "format": "int64"
+        },
+        "first_name": {
+          "type": "string",
+          "description": "The users first name"
+        },
+        "last_name": {
+          "type": "string",
+          "description": "The users last name"
+        },
+        "password": {
+          "type": "string",
+          "description": "The users raw desired password"
+        },
+        "email": {
+          "type": "string",
+          "description": "The users unique email address"
+        },
+        "merchant_id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The Id of the Store the User is associated to."
+        },
+        "type": {
+          "type": "string",
+          "description": "The allowed values for the user type",
+          "enum": ["ADMIN", "MERCHANT", "USER", "DEVELOPER"]
+        },
+        "verified": {
+          "type": "boolean",
+          "description": "If a user has verified their emailed address",
+          "default": false
+        },
+        "status": {
+          "type": "string",
+          "description": "The status of the user",
+          "enum": ["INACTIVE", "ACTIVE", "DISABLED"]
+        },
+        "date_created": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Date of account creation"
+        },
+        "date_last_modified": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Date of last account update"
+        },
+        "roles": {
+          "type": "array",
+          "unique_items": true,
+          "items": {
+            "$ref": "#/definitions/Role"
+          }
+        },
+        "token": {
+          "type": "string",
+          "description": "Users Access Token. Currently expires after 1440 minutes."
+        },
+        "refresh_token": {
+          "type": "string",
+          "description": "Users Refresh Token. Never expires."
+        }
+      },
+      "description": "Login Response"
+    },
+    "Permission": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the Permission",
+          "min_length": 1,
+          "max_length": 50,
+          "pattern": "[A-Za-z]+"
+        },
+        "description": {
+          "type": "string",
+          "description": "Brief description of the Permission",
+          "min_length": 0,
+          "max_length": 255
+        }
+      }
+    },
+    "LoginRequest": {
+      "type": "object",
+      "required": ["password", "username"],
+      "properties": {
+        "username": {
+          "type": "string",
+          "description": "User Email Address"
+        },
+        "password": {
+          "type": "string",
+          "description": "User Password"
+        }
+      },
+      "description": "Login Request"
+    },
+    "RefreshTokenResponse": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string",
+          "description": "Token"
+        }
+      },
+      "description": "Refresh Token Response"
+    },
+    "Webhook": {
+      "type": "object",
+      "required": ["event", "remote_endpoint"],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "read_only": true
+        },
+        "app_id": {
+          "type": "integer",
+          "format": "int64",
+          "read_only": true
+        },
+        "event": {
+          "type": "string",
+          "description": "The event being triggered",
+          "enum": [
+            "order_updated",
+            "order_shipped",
+            "order_completed",
+            "order_canceled"
+          ]
+        },
+        "remote_endpoint": {
+          "type": "string",
+          "description": "Remote endpoint the webhook posts against."
+        },
+        "status": {
+          "type": "string",
+          "description": "Status of the webhook",
+          "enum": ["inactive", "active", "disabled"]
+        },
+        "date_created": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Date of webhook creation",
+          "read_only": true
+        },
+        "date_last_modified": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Date of last webhook update",
+          "read_only": true
+        }
+      },
+      "description": "External Hook Event"
+    },
+    "Event": {
+      "type": "object",
+      "required": ["app_id", "message", "type", "user_id"],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "read_only": true
+        },
+        "app_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "App ID"
+        },
+        "user_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "User ID"
+        },
+        "type": {
+          "type": "string",
+          "description": "The type of event",
+          "enum": ["create", "update", "delete"]
+        },
+        "message": {
+          "type": "string",
+          "description": "Message event body",
+          "min_length": 0,
+          "max_length": 255
+        },
+        "date_created": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Date of account creation",
+          "read_only": true
+        },
+        "date_last_modified": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Date of last account update",
+          "read_only": true
+        }
+      }
+    },
+    "WebhookHeader": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "read_only": true
+        },
+        "app_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "App ID"
+        },
+        "webhook_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "ID of the webhook the header belongs to"
+        },
+        "key": {
+          "type": "string",
+          "description": "Header Key"
+        },
+        "value": {
+          "type": "string",
+          "description": "Header Value"
+        },
+        "date_created": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Date of webhook header creation",
+          "read_only": true
+        },
+        "date_last_modified": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Date of last webhook header update",
+          "read_only": true
+        }
+      },
+      "description": "Webhook Header"
+    },
+    "WebhookError": {
+      "type": "object",
+      "required": ["status_code"],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "read_only": true
+        },
+        "app_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "App ID"
+        },
+        "webhook_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "ID of the webhook the error occurred on"
+        },
+        "status_code": {
+          "type": "integer",
+          "format": "int32",
+          "description": "HTTP Status Code"
+        },
+        "response": {
+          "type": "string",
+          "description": "Response from the remote url"
+        },
+        "date_created": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Date of webhook error creation",
+          "read_only": true
+        },
+        "date_last_modified": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Date of last webhook error update",
+          "read_only": true
+        }
+      },
+      "description": "Webhook Error"
+    },
+    "App": {
+      "type": "object",
+      "required": ["app_secret", "name", "owner_id"],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "read_only": true
+        },
+        "owner_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "User ID of Owner"
+        },
+        "app_secret": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the team/business/project"
+        },
+        "description": {
+          "type": "string",
+          "description": "App description"
+        },
+        "auth_callback_url": {
+          "type": "string",
+          "description": "Remote Callback URL"
+        },
+        "auth_redirect_url": {
+          "type": "string",
+          "description": "Auth Redirect URL"
+        },
+        "icon_url": {
+          "type": "string",
+          "description": "Remote url of the icon file."
+        },
+        "api_version": {
+          "type": "string",
+          "description": "API Version"
+        },
+        "status": {
+          "type": "string",
+          "description": "App Status",
+          "enum": ["inactive", "active", "disabled"]
+        },
+        "date_created": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Date of account creation",
+          "read_only": true
+        },
+        "date_last_modified": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Date of last account update",
+          "read_only": true
+        }
+      },
+      "description": "Developer Application"
+    },
+    "AuthRequest": {
+      "type": "object",
+      "required": ["app_id", "user_id"],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "read_only": true
+        },
+        "app_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "App ID"
+        },
+        "user_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "ID of User authorizing the App"
+        },
+        "code": {
+          "type": "string",
+          "description": "Code used to confirm the request"
+        },
+        "token": {
+          "type": "string",
+          "description": "Authorization Token"
+        },
+        "status": {
+          "type": "string",
+          "description": "Status of the request",
+          "enum": ["pending", "completed", "expired"]
+        },
+        "scope": {
+          "type": "string",
+          "description": "Scope of the requested permissions"
+        },
+        "date_expires": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Time the request expires",
+          "read_only": true
+        }
+      }
+    }
+  }
+}
