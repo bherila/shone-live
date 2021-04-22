@@ -9,8 +9,8 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
-import { MediaService } from './media.service'
 import { Media } from './media.entity'
+import { MediaService } from './media.service'
 
 @Resolver(() => Media)
 export class MediaResolver {

@@ -5,6 +5,7 @@
  */
 
 import { EntityRepository, Repository } from 'typeorm'
+
 import { LoginResponse } from './login-response.entity'
 
 @EntityRepository(LoginResponse)

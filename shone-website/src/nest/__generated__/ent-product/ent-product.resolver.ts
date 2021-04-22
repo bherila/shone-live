@@ -9,8 +9,8 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
-import { EntProductsService } from './ent-product.service'
 import { EntProduct } from './ent-product.entity'
+import { EntProductsService } from './ent-product.service'
 
 @Resolver(() => EntProduct)
 export class EntProductsResolver {

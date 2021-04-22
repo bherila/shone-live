@@ -9,8 +9,8 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
-import { PermissionsService } from './permission.service'
 import { Permission } from './permission.entity'
+import { PermissionsService } from './permission.service'
 
 @Resolver(() => Permission)
 export class PermissionsResolver {

@@ -5,6 +5,7 @@
  */
 
 import { EntityRepository, Repository } from 'typeorm'
+
 import { Bag } from './bag.entity'
 
 @EntityRepository(Bag)

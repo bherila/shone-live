@@ -9,8 +9,8 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
-import { SkusService } from './sku.service'
 import { Sku } from './sku.entity'
+import { SkusService } from './sku.service'
 
 @Resolver(() => Sku)
 export class SkusResolver {

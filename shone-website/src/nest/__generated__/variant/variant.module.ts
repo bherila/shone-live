@@ -7,10 +7,10 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
+import { Variant } from './variant.entity'
 import { VariantsRepository } from './variant.repository'
 import { VariantsResolver } from './variant.resolver'
 import { VariantsService } from './variant.service'
-import { Variant } from './variant.entity'
 
 @Module({
   imports: [TypeOrmModule.forFeature([Variant, VariantsRepository])],

@@ -7,10 +7,10 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
+import { GuestOrderCustomer } from './guest-order-customer.entity'
 import { GuestOrderCustomersRepository } from './guest-order-customer.repository'
 import { GuestOrderCustomersResolver } from './guest-order-customer.resolver'
 import { GuestOrderCustomersService } from './guest-order-customer.service'
-import { GuestOrderCustomer } from './guest-order-customer.entity'
 
 @Module({
   imports: [

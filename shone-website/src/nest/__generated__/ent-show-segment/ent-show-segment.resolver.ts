@@ -9,8 +9,8 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
-import { EntShowSegmentsService } from './ent-show-segment.service'
 import { EntShowSegment } from './ent-show-segment.entity'
+import { EntShowSegmentsService } from './ent-show-segment.service'
 
 @Resolver(() => EntShowSegment)
 export class EntShowSegmentsResolver {

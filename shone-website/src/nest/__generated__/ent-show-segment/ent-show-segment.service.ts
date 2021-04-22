@@ -10,9 +10,9 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
-import { EntShowSegmentsRepository } from './ent-show-segment.repository'
 import { CreateEntShowSegmentDto } from './create-ent-show-segment.dto'
 import { EntShowSegment } from './ent-show-segment.entity'
+import { EntShowSegmentsRepository } from './ent-show-segment.repository'
 
 @Injectable()
 export class EntShowSegmentsService {

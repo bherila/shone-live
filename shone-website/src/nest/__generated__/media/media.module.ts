@@ -7,10 +7,10 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
+import { Media } from './media.entity'
 import { MediaRepository } from './media.repository'
 import { MediaResolver } from './media.resolver'
 import { MediaService } from './media.service'
-import { Media } from './media.entity'
 
 @Module({
   imports: [TypeOrmModule.forFeature([Media, MediaRepository])],

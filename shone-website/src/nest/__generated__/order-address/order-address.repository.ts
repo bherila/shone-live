@@ -5,6 +5,7 @@
  */
 
 import { EntityRepository, Repository } from 'typeorm'
+
 import { OrderAddress } from './order-address.entity'
 
 @EntityRepository(OrderAddress)

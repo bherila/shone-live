@@ -9,8 +9,8 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
-import { WebhookHeadersService } from './webhook-header.service'
 import { WebhookHeader } from './webhook-header.entity'
+import { WebhookHeadersService } from './webhook-header.service'
 
 @Resolver(() => WebhookHeader)
 export class WebhookHeadersResolver {

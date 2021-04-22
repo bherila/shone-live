@@ -9,11 +9,11 @@
 import { Field, ObjectType } from '@nestjs/graphql'
 import {
   Column,
-  JoinColumn,
   CreateDateColumn,
-  UpdateDateColumn,
   Entity,
+  JoinColumn,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm'
 
 @ObjectType()

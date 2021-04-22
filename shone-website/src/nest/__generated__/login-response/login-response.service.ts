@@ -10,9 +10,9 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
-import { LoginResponsesRepository } from './login-response.repository'
 import { CreateLoginResponseDto } from './create-login-response.dto'
 import { LoginResponse } from './login-response.entity'
+import { LoginResponsesRepository } from './login-response.repository'
 
 @Injectable()
 export class LoginResponsesService {

@@ -9,8 +9,8 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
-import { EventsService } from './event.service'
 import { Event } from './event.entity'
+import { EventsService } from './event.service'
 
 @Resolver(() => Event)
 export class EventsResolver {

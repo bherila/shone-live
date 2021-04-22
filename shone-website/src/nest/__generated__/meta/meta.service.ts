@@ -10,9 +10,9 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
-import { MetasRepository } from './meta.repository'
 import { CreateMetaDto } from './create-meta.dto'
 import { Meta } from './meta.entity'
+import { MetasRepository } from './meta.repository'
 
 @Injectable()
 export class MetasService {

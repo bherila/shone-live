@@ -7,10 +7,10 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
+import { RefreshTokenResponse } from './refresh-token-response.entity'
 import { RefreshTokenResponsesRepository } from './refresh-token-response.repository'
 import { RefreshTokenResponsesResolver } from './refresh-token-response.resolver'
 import { RefreshTokenResponsesService } from './refresh-token-response.service'
-import { RefreshTokenResponse } from './refresh-token-response.entity'
 
 @Module({
   imports: [

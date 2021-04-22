@@ -9,8 +9,8 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
-import { CurrentPaymentTokensService } from './current-payment-token.service'
 import { CurrentPaymentToken } from './current-payment-token.entity'
+import { CurrentPaymentTokensService } from './current-payment-token.service'
 
 @Resolver(() => CurrentPaymentToken)
 export class CurrentPaymentTokensResolver {

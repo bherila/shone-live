@@ -5,6 +5,7 @@
  */
 
 import { EntityRepository, Repository } from 'typeorm'
+
 import { App } from './app.entity'
 
 @EntityRepository(App)

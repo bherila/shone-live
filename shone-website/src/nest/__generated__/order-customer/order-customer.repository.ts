@@ -5,6 +5,7 @@
  */
 
 import { EntityRepository, Repository } from 'typeorm'
+
 import { OrderCustomer } from './order-customer.entity'
 
 @EntityRepository(OrderCustomer)

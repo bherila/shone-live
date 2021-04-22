@@ -7,10 +7,10 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
+import { LoginRequest } from './login-request.entity'
 import { LoginRequestsRepository } from './login-request.repository'
 import { LoginRequestsResolver } from './login-request.resolver'
 import { LoginRequestsService } from './login-request.service'
-import { LoginRequest } from './login-request.entity'
 
 @Module({
   imports: [TypeOrmModule.forFeature([LoginRequest, LoginRequestsRepository])],

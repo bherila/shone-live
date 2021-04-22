@@ -5,6 +5,7 @@
  */
 
 import { EntityRepository, Repository } from 'typeorm'
+
 import { Dimension } from './dimension.entity'
 
 @EntityRepository(Dimension)

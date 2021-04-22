@@ -7,10 +7,10 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
+import { SkuVariantValue } from './sku-variant-value.entity'
 import { SkuVariantValuesRepository } from './sku-variant-value.repository'
 import { SkuVariantValuesResolver } from './sku-variant-value.resolver'
 import { SkuVariantValuesService } from './sku-variant-value.service'
-import { SkuVariantValue } from './sku-variant-value.entity'
 
 @Module({
   imports: [

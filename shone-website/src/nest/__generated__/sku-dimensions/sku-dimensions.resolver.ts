@@ -9,8 +9,8 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
-import { SkuDimensionsService } from './sku-dimensions.service'
 import { SkuDimensions } from './sku-dimensions.entity'
+import { SkuDimensionsService } from './sku-dimensions.service'
 
 @Resolver(() => SkuDimensions)
 export class SkuDimensionsResolver {

@@ -9,8 +9,8 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
-import { ProductVariantsService } from './product-variant.service'
 import { ProductVariant } from './product-variant.entity'
+import { ProductVariantsService } from './product-variant.service'
 
 @Resolver(() => ProductVariant)
 export class ProductVariantsResolver {

@@ -10,9 +10,9 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
-import { MediaRepository } from './media.repository'
 import { CreateMediaDto } from './create-media.dto'
 import { Media } from './media.entity'
+import { MediaRepository } from './media.repository'
 
 @Injectable()
 export class MediaService {

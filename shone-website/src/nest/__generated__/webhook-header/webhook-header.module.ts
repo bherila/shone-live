@@ -7,10 +7,10 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
+import { WebhookHeader } from './webhook-header.entity'
 import { WebhookHeadersRepository } from './webhook-header.repository'
 import { WebhookHeadersResolver } from './webhook-header.resolver'
 import { WebhookHeadersService } from './webhook-header.service'
-import { WebhookHeader } from './webhook-header.entity'
 
 @Module({
   imports: [

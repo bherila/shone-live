@@ -7,10 +7,10 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
+import { Bag } from './bag.entity'
 import { BagsRepository } from './bag.repository'
 import { BagsResolver } from './bag.resolver'
 import { BagsService } from './bag.service'
-import { Bag } from './bag.entity'
 
 @Module({
   imports: [TypeOrmModule.forFeature([Bag, BagsRepository])],

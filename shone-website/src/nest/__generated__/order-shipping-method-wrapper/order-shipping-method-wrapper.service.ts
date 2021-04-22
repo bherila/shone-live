@@ -10,9 +10,9 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
-import { OrderShippingMethodWrappersRepository } from './order-shipping-method-wrapper.repository'
 import { CreateOrderShippingMethodWrapperDto } from './create-order-shipping-method-wrapper.dto'
 import { OrderShippingMethodWrapper } from './order-shipping-method-wrapper.entity'
+import { OrderShippingMethodWrappersRepository } from './order-shipping-method-wrapper.repository'
 
 @Injectable()
 export class OrderShippingMethodWrappersService {

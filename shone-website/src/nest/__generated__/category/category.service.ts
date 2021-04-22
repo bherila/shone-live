@@ -10,9 +10,9 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
+import { Category } from './category.entity'
 import { CategoriesRepository } from './category.repository'
 import { CreateCategoryDto } from './create-category.dto'
-import { Category } from './category.entity'
 
 @Injectable()
 export class CategoriesService {

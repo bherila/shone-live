@@ -5,6 +5,7 @@
  */
 
 import { EntityRepository, Repository } from 'typeorm'
+
 import { ProductVariantValue } from './product-variant-value.entity'
 
 @EntityRepository(ProductVariantValue)

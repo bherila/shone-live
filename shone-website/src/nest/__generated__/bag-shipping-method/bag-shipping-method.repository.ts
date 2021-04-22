@@ -5,6 +5,7 @@
  */
 
 import { EntityRepository, Repository } from 'typeorm'
+
 import { BagShippingMethod } from './bag-shipping-method.entity'
 
 @EntityRepository(BagShippingMethod)

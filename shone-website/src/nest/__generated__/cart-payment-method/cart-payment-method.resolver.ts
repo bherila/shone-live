@@ -9,8 +9,8 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
-import { CartPaymentMethodsService } from './cart-payment-method.service'
 import { CartPaymentMethod } from './cart-payment-method.entity'
+import { CartPaymentMethodsService } from './cart-payment-method.service'
 
 @Resolver(() => CartPaymentMethod)
 export class CartPaymentMethodsResolver {

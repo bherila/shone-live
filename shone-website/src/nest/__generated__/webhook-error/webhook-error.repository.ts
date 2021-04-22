@@ -5,6 +5,7 @@
  */
 
 import { EntityRepository, Repository } from 'typeorm'
+
 import { WebhookError } from './webhook-error.entity'
 
 @EntityRepository(WebhookError)

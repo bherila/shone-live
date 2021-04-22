@@ -10,9 +10,9 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
+import { Bag } from './bag.entity'
 import { BagsRepository } from './bag.repository'
 import { CreateBagDto } from './create-bag.dto'
-import { Bag } from './bag.entity'
 
 @Injectable()
 export class BagsService {

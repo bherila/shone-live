@@ -5,6 +5,7 @@
  */
 
 import { EntityRepository, Repository } from 'typeorm'
+
 import { CartPaymentMethod } from './cart-payment-method.entity'
 
 @EntityRepository(CartPaymentMethod)

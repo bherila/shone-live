@@ -10,9 +10,9 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
-import { WebhookErrorsRepository } from './webhook-error.repository'
 import { CreateWebhookErrorDto } from './create-webhook-error.dto'
 import { WebhookError } from './webhook-error.entity'
+import { WebhookErrorsRepository } from './webhook-error.repository'
 
 @Injectable()
 export class WebhookErrorsService {

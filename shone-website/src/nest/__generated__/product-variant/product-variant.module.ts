@@ -7,10 +7,10 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
+import { ProductVariant } from './product-variant.entity'
 import { ProductVariantsRepository } from './product-variant.repository'
 import { ProductVariantsResolver } from './product-variant.resolver'
 import { ProductVariantsService } from './product-variant.service'
-import { ProductVariant } from './product-variant.entity'
 
 @Module({
   imports: [
