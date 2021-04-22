@@ -9,8 +9,8 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
-import { BagShippingMethodsService } from './bag-shipping-method.service'
 import { BagShippingMethod } from './bag-shipping-method.entity'
+import { BagShippingMethodsService } from './bag-shipping-method.service'
 
 @Resolver(() => BagShippingMethod)
 export class BagShippingMethodsResolver {

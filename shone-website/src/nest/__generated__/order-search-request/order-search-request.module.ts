@@ -7,10 +7,10 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
+import { OrderSearchRequest } from './order-search-request.entity'
 import { OrderSearchRequestsRepository } from './order-search-request.repository'
 import { OrderSearchRequestsResolver } from './order-search-request.resolver'
 import { OrderSearchRequestsService } from './order-search-request.service'
-import { OrderSearchRequest } from './order-search-request.entity'
 
 @Module({
   imports: [

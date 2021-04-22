@@ -5,6 +5,7 @@
  */
 
 import { EntityRepository, Repository } from 'typeorm'
+
 import { CurrentPaymentToken } from './current-payment-token.entity'
 
 @EntityRepository(CurrentPaymentToken)

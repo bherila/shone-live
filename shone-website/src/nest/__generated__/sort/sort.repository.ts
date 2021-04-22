@@ -5,6 +5,7 @@
  */
 
 import { EntityRepository, Repository } from 'typeorm'
+
 import { Sort } from './sort.entity'
 
 @EntityRepository(Sort)

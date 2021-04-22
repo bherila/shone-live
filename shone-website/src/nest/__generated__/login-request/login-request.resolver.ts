@@ -9,8 +9,8 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
-import { LoginRequestsService } from './login-request.service'
 import { LoginRequest } from './login-request.entity'
+import { LoginRequestsService } from './login-request.service'
 
 @Resolver(() => LoginRequest)
 export class LoginRequestsResolver {

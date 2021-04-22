@@ -10,9 +10,9 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
-import { SkuDimensionsRepository } from './sku-dimensions.repository'
 import { CreateSkuDimensionsDto } from './create-sku-dimensions.dto'
 import { SkuDimensions } from './sku-dimensions.entity'
+import { SkuDimensionsRepository } from './sku-dimensions.repository'
 
 @Injectable()
 export class SkuDimensionsService {

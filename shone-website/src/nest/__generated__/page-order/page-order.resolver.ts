@@ -9,8 +9,8 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
-import { PageOrdersService } from './page-order.service'
 import { PageOrder } from './page-order.entity'
+import { PageOrdersService } from './page-order.service'
 
 @Resolver(() => PageOrder)
 export class PageOrdersResolver {

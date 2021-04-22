@@ -10,9 +10,9 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
-import { SkuVariantValuesRepository } from './sku-variant-value.repository'
 import { CreateSkuVariantValueDto } from './create-sku-variant-value.dto'
 import { SkuVariantValue } from './sku-variant-value.entity'
+import { SkuVariantValuesRepository } from './sku-variant-value.repository'
 
 @Injectable()
 export class SkuVariantValuesService {

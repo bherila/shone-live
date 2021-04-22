@@ -7,10 +7,10 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
+import { CurrentPaymentToken } from './current-payment-token.entity'
 import { CurrentPaymentTokensRepository } from './current-payment-token.repository'
 import { CurrentPaymentTokensResolver } from './current-payment-token.resolver'
 import { CurrentPaymentTokensService } from './current-payment-token.service'
-import { CurrentPaymentToken } from './current-payment-token.entity'
 
 @Module({
   imports: [

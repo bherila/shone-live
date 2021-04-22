@@ -5,6 +5,7 @@
  */
 
 import { EntityRepository, Repository } from 'typeorm'
+
 import { PageProduct } from './page-product.entity'
 
 @EntityRepository(PageProduct)

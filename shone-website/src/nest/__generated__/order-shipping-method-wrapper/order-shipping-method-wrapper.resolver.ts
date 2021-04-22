@@ -9,8 +9,8 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
-import { OrderShippingMethodWrappersService } from './order-shipping-method-wrapper.service'
 import { OrderShippingMethodWrapper } from './order-shipping-method-wrapper.entity'
+import { OrderShippingMethodWrappersService } from './order-shipping-method-wrapper.service'
 
 @Resolver(() => OrderShippingMethodWrapper)
 export class OrderShippingMethodWrappersResolver {

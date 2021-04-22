@@ -7,10 +7,10 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
+import { Sort } from './sort.entity'
 import { SortsRepository } from './sort.repository'
 import { SortsResolver } from './sort.resolver'
 import { SortsService } from './sort.service'
-import { Sort } from './sort.entity'
 
 @Module({
   imports: [TypeOrmModule.forFeature([Sort, SortsRepository])],

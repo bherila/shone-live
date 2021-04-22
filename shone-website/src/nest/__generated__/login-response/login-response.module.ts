@@ -7,10 +7,10 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
+import { LoginResponse } from './login-response.entity'
 import { LoginResponsesRepository } from './login-response.repository'
 import { LoginResponsesResolver } from './login-response.resolver'
 import { LoginResponsesService } from './login-response.service'
-import { LoginResponse } from './login-response.entity'
 
 @Module({
   imports: [

@@ -5,6 +5,7 @@
  */
 
 import { EntityRepository, Repository } from 'typeorm'
+
 import { OrderShippingMethodWrapper } from './order-shipping-method-wrapper.entity'
 
 @EntityRepository(OrderShippingMethodWrapper)

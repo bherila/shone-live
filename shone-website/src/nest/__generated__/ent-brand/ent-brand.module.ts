@@ -7,10 +7,10 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
+import { EntBrand } from './ent-brand.entity'
 import { EntBrandsRepository } from './ent-brand.repository'
 import { EntBrandsResolver } from './ent-brand.resolver'
 import { EntBrandsService } from './ent-brand.service'
-import { EntBrand } from './ent-brand.entity'
 
 @Module({
   imports: [TypeOrmModule.forFeature([EntBrand, EntBrandsRepository])],

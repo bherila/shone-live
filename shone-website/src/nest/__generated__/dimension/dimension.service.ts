@@ -10,9 +10,9 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
-import { DimensionsRepository } from './dimension.repository'
 import { CreateDimensionDto } from './create-dimension.dto'
 import { Dimension } from './dimension.entity'
+import { DimensionsRepository } from './dimension.repository'
 
 @Injectable()
 export class DimensionsService {

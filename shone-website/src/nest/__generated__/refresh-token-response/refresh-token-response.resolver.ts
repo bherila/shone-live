@@ -9,8 +9,8 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
-import { RefreshTokenResponsesService } from './refresh-token-response.service'
 import { RefreshTokenResponse } from './refresh-token-response.entity'
+import { RefreshTokenResponsesService } from './refresh-token-response.service'
 
 @Resolver(() => RefreshTokenResponse)
 export class RefreshTokenResponsesResolver {

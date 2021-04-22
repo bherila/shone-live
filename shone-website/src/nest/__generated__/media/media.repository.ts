@@ -5,6 +5,7 @@
  */
 
 import { EntityRepository, Repository } from 'typeorm'
+
 import { Media } from './media.entity'
 
 @EntityRepository(Media)

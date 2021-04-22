@@ -5,6 +5,7 @@
  */
 
 import { EntityRepository, Repository } from 'typeorm'
+
 import { AuthRequest } from './auth-request.entity'
 
 @EntityRepository(AuthRequest)

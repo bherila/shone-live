@@ -7,10 +7,10 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
+import { Webhook } from './webhook.entity'
 import { WebhooksRepository } from './webhook.repository'
 import { WebhooksResolver } from './webhook.resolver'
 import { WebhooksService } from './webhook.service'
-import { Webhook } from './webhook.entity'
 
 @Module({
   imports: [TypeOrmModule.forFeature([Webhook, WebhooksRepository])],

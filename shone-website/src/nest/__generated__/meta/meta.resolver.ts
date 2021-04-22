@@ -9,8 +9,8 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
-import { MetasService } from './meta.service'
 import { Meta } from './meta.entity'
+import { MetasService } from './meta.service'
 
 @Resolver(() => Meta)
 export class MetasResolver {

@@ -7,10 +7,10 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
+import { OrderTax } from './order-tax.entity'
 import { OrderTaxesRepository } from './order-tax.repository'
 import { OrderTaxesResolver } from './order-tax.resolver'
 import { OrderTaxesService } from './order-tax.service'
-import { OrderTax } from './order-tax.entity'
 
 @Module({
   imports: [TypeOrmModule.forFeature([OrderTax, OrderTaxesRepository])],

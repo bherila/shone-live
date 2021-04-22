@@ -5,6 +5,7 @@
  */
 
 import { EntityRepository, Repository } from 'typeorm'
+
 import { OrderTax } from './order-tax.entity'
 
 @EntityRepository(OrderTax)

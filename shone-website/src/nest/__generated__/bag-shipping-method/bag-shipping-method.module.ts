@@ -7,10 +7,10 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
+import { BagShippingMethod } from './bag-shipping-method.entity'
 import { BagShippingMethodsRepository } from './bag-shipping-method.repository'
 import { BagShippingMethodsResolver } from './bag-shipping-method.resolver'
 import { BagShippingMethodsService } from './bag-shipping-method.service'
-import { BagShippingMethod } from './bag-shipping-method.entity'
 
 @Module({
   imports: [

@@ -99,13 +99,8 @@ export class UserService {
 
   async update(user: any) {
     const temoData: any = {}
-<<<<<<< Updated upstream
     const checkUserExist = await this.findOne(user.id)
     if (!checkUserExist)
-=======
-    const checkUserExists = await this.findOne(user.id)
-    if (!checkUserExists)
->>>>>>> Stashed changes
       throw new UnprocessableEntityException(message.userNotExist)
     if (user.username) {
       temoData.username = user.username
@@ -119,15 +114,9 @@ export class UserService {
         const profileUrl = await fileUpload(await user.file)
         temoData.profileUrl = profileUrl
       }
-<<<<<<< Updated upstream
       const payload = {
         id: checkUserExist.id,
         phone: checkUserExist.phone,
-=======
-      const Payload = {
-        id: checkUserExists.id,
-        phone: checkUserExists.phone,
->>>>>>> Stashed changes
       }
       const token = await jwt.sign(payload, process.env.JWT_SECRET)
       temoData.token = token
