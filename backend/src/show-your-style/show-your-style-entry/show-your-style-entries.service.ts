@@ -11,7 +11,7 @@ import { UserRepository } from '../../user/user.repository'
 import { CreateShowYourStyleEntryDto } from './dto/create-show-your-style-entry.dto'
 import { CreateShowYourStyleVideoIdEntryDto } from './dto/create-show-your-style-entry.dto'
 import { ShowYourStyleEntry } from './entities/show-your-style-entry.entity'
-import { ShowYourStyleVideoIdEntry } from './entities/show-your-style-entry.entity'
+import { ShowYourStyleVideoIdEntry } from './entities/show-your-style-video-entry.entity'
 import { ShowYourStyleEntriesRepository } from './show-your-style-entries.repository'
 import { ShowYourStyleVideoIdEntriesRepository } from './show-your-style-entries.repository'
 

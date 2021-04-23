@@ -5,7 +5,7 @@ import { AuthGuard } from '../../common/auth.guards'
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
 import { User } from '../../user/entities/user.entity'
 import { ShowYourStyleEntry } from './entities/show-your-style-entry.entity'
-import { ShowYourStyleVideoIdEntry } from './entities/show-your-style-entry.entity'
+import { ShowYourStyleVideoIdEntry } from './entities/show-your-style-video-entry.entity'
 import { ShowYourStyleEntriesService } from './show-your-style-entries.service'
 
 @Resolver(() => ShowYourStyleEntry)
