@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Image, View, TouchableOpacity } from 'react-native'
-import theme from './../../utils/colors'
+import theme, { AppColors } from './../../utils/colors'
 import styles from './styles'
 import { Header, Left, Button, Icon, Right, Body } from 'native-base'
 import Text from './../../components/Text'
@@ -44,7 +44,7 @@ export default function ConfirmSms() {
     verifyCode({
       variables: {
         code: otp,
-        phone: `+1${params?.phone}`
+        phone: `+91${params?.phone}`
       }
     })
     dispatch(userInit())
@@ -94,7 +94,7 @@ export default function ConfirmSms() {
         <Header style={{ elevation: 0, backgroundColor: 'transparent' }}>
           <Left style={{ flex: 1 }}>
             <Button transparent onPress={() => navigation.goBack()}>
-              <Icon name="arrow-back" style={{ color: 'black' }} />
+              <Icon name="arrow-back" style={{ color: AppColors.BLACK }} />
             </Button>
           </Left>
           <Body

@@ -20,7 +20,7 @@ export type Scalars = {
 
 export type Address = {
   __typename?: 'Address';
-  id: Scalars['Float'];
+  id: Scalars['String'];
   city: Scalars['String'];
   country: Scalars['String'];
   line1: Scalars['String'];
@@ -31,9 +31,17 @@ export type Address = {
   phone: Scalars['String'];
 };
 
+export type Brand = {
+  __typename?: 'Brand';
+  id: Scalars['String'];
+  name: Scalars['String'];
+  description: Scalars['String'];
+  ownerUser: User;
+};
+
 export type ConsumerLead = {
   __typename?: 'ConsumerLead';
-  id: Scalars['Float'];
+  id: Scalars['String'];
   email: Scalars['String'];
   submitted_timestamp: Scalars['DateTime'];
 };
@@ -50,34 +58,52 @@ export type CreateAddressDto = {
   phone: Scalars['String'];
 };
 
-export type CreateProductDto = {
-  userId: Scalars['String'];
-  showId: Scalars['Float'];
+export type CreateBrandDto = {
   name: Scalars['String'];
   description: Scalars['String'];
 };
 
-export type CreateShowInput = {
+export type CreateProductDto = {
+  showSegmentId?: Maybe<Scalars['String']>;
+  brandId?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+  description: Scalars['String'];
+};
+
+export type CreateShowDto = {
   title: Scalars['String'];
-  image_url?: Maybe<Scalars['String']>;
+  imageUrl: Scalars['String'];
   startDate: Scalars['DateTime'];
   endDate: Scalars['DateTime'];
 };
 
-
-export type Hello = {
-  __typename?: 'Hello';
-  id: Scalars['Int'];
-  message: Scalars['String'];
+export type CreateShowSegmentDto = {
+  showId: Scalars['String'];
+  brandId: Scalars['String'];
+  title: Scalars['String'];
 };
 
-export type HelloInput = {
-  message: Scalars['String'];
+export type CreateUserBrandRoleDto = {
+  brandId: Scalars['String'];
+  userId: Scalars['String'];
+  read: Scalars['Boolean'];
+  write: Scalars['Boolean'];
+  admin: Scalars['Boolean'];
 };
+
+export type CreateUserShowRoleDto = {
+  showId: Scalars['String'];
+  userId: Scalars['String'];
+  read: Scalars['Boolean'];
+  write: Scalars['Boolean'];
+  admin: Scalars['Boolean'];
+  streamTo: Scalars['Boolean'];
+};
+
 
 export type MessageEntity = {
   __typename?: 'MessageEntity';
-  id: Scalars['ID'];
+  id: Scalars['String'];
   timestamp: Scalars['DateTime'];
   message: Scalars['String'];
   alias: Scalars['String'];
@@ -86,19 +112,26 @@ export type MessageEntity = {
 export type Mutation = {
   __typename?: 'Mutation';
   add_address: Address;
+  add_brand: Brand;
+  update_brand: Brand;
   addConsumerLead: ConsumerLead;
-  addHello: Hello;
-  removeHello: Scalars['Boolean'];
   add_message: MessageEntity;
-  add_products: Product;
+  addProduct: Product;
+  update_product: Product;
   add_payment: Payment;
   add_show: Show;
+  addShowSegment: ShowSegment;
+  updateShowSegment: ShowSegment;
   add_show_your_style_entry: ShowYourStyleEntry;
   add_video_id_from_transloadit: ShowYourStyleVideoIdEntry;
   add_show_your_style_vote: ShowYourStyleVote;
   add_show_your_style_view_record: ShowYourStyleViewRecord;
   add_user: Scalars['String'];
   update_user: User;
+  add_userbrandrole: UserBrandRole;
+  update_userbrandrole: UserBrandRole;
+  add_usershowrole: UserShowRole;
+  update_usershowrole: UserShowRole;
 };
 
 
@@ -107,40 +140,55 @@ export type MutationAdd_AddressArgs = {
 };
 
 
+export type MutationAdd_BrandArgs = {
+  data: CreateBrandDto;
+};
+
+
+export type MutationUpdate_BrandArgs = {
+  data: UpdateBrandDto;
+};
+
+
 export type MutationAddConsumerLeadArgs = {
   email: Scalars['String'];
 };
 
 
-export type MutationAddHelloArgs = {
-  newHelloData: HelloInput;
-};
-
-
-export type MutationRemoveHelloArgs = {
-  id: Scalars['Float'];
-};
-
-
 export type MutationAdd_MessageArgs = {
   message: Scalars['String'];
-  showId: Scalars['Float'];
+  showId: Scalars['String'];
 };
 
 
-export type MutationAdd_ProductsArgs = {
+export type MutationAddProductArgs = {
   data: CreateProductDto;
+};
+
+
+export type MutationUpdate_ProductArgs = {
+  data: UpdateProductDto;
 };
 
 
 export type MutationAdd_PaymentArgs = {
   quantity: Scalars['String'];
-  productId: Scalars['Float'];
+  productId: Scalars['String'];
 };
 
 
 export type MutationAdd_ShowArgs = {
-  data: CreateShowInput;
+  data: CreateShowDto;
+};
+
+
+export type MutationAddShowSegmentArgs = {
+  data: CreateShowSegmentDto;
+};
+
+
+export type MutationUpdateShowSegmentArgs = {
+  data: UpdateShowSegmentDto;
 };
 
 
@@ -155,14 +203,14 @@ export type MutationAdd_Video_Id_From_TransloaditArgs = {
 
 
 export type MutationAdd_Show_Your_Style_VoteArgs = {
-  entryId: Scalars['Float'];
+  entryId: Scalars['String'];
   viewDuration: Scalars['Float'];
   vote: Scalars['Float'];
 };
 
 
 export type MutationAdd_Show_Your_Style_View_RecordArgs = {
-  entryId: Scalars['Float'];
+  entryId: Scalars['String'];
 };
 
 
@@ -175,6 +223,26 @@ export type MutationUpdate_UserArgs = {
   user: UpdateUserEntityDto;
 };
 
+
+export type MutationAdd_UserbrandroleArgs = {
+  data: CreateUserBrandRoleDto;
+};
+
+
+export type MutationUpdate_UserbrandroleArgs = {
+  data: UpdateUserBrandRoleDto;
+};
+
+
+export type MutationAdd_UsershowroleArgs = {
+  data: CreateUserShowRoleDto;
+};
+
+
+export type MutationUpdate_UsershowroleArgs = {
+  data: UpdateUserShowRoleDto;
+};
+
 export type PaginationQueryDto = {
   limit: Scalars['Float'];
   offset: Scalars['Float'];
@@ -182,7 +250,7 @@ export type PaginationQueryDto = {
 
 export type Payment = {
   __typename?: 'Payment';
-  id: Scalars['ID'];
+  id: Scalars['String'];
   product: Product;
   user: User;
   quantity: Scalars['Float'];
@@ -190,29 +258,35 @@ export type Payment = {
 
 export type Product = {
   __typename?: 'Product';
-  id: Scalars['Float'];
+  id: Scalars['String'];
   name: Scalars['String'];
   description: Scalars['String'];
   user: User;
-  show: Show;
+  showSegments: Array<ShowSegment>;
+  brand?: Maybe<Brand>;
 };
 
 export type Query = {
   __typename?: 'Query';
   address?: Maybe<Address>;
   addresses: Array<Address>;
+  brand?: Maybe<Brand>;
+  brands: Array<Brand>;
+  my_brands: Array<Brand>;
   consumerLead?: Maybe<ConsumerLead>;
   consumerLeads: Array<ConsumerLead>;
-  hello: Hello;
-  hellos: Array<Hello>;
   messageEntity?: Maybe<MessageEntity>;
   messageEntities: Array<MessageEntity>;
   product?: Maybe<Product>;
   products: Array<Product>;
+  myProducts: Array<Product>;
+  brandProducts: Array<Product>;
   payment?: Maybe<Payment>;
   payments: Array<Payment>;
   show?: Maybe<Show>;
   shows: Array<Show>;
+  showSegment?: Maybe<ShowSegment>;
+  showSegments: Array<ShowSegment>;
   show_your_style_Entry?: Maybe<ShowYourStyleEntry>;
   get_random_show_your_style_entry?: Maybe<ShowYourStyleEntry>;
   show_your_style_entries: Array<ShowYourStyleEntry>;
@@ -223,16 +297,37 @@ export type Query = {
   user?: Maybe<User>;
   users: Array<User>;
   verify_code: User;
+  userbrandrole?: Maybe<UserBrandRole>;
+  userbrandroles: Array<UserBrandRole>;
+  my_userbrandroles: Array<UserBrandRole>;
+  usershowrole?: Maybe<UserShowRole>;
+  usershowroles: Array<UserShowRole>;
+  my_usershowroles: Array<UserShowRole>;
 };
 
 
 export type QueryAddressArgs = {
-  addressId: Scalars['Float'];
+  addressId: Scalars['String'];
+};
+
+
+export type QueryBrandArgs = {
+  brandId: Scalars['String'];
+};
+
+
+export type QueryBrandsArgs = {
+  paginationQuery: PaginationQueryDto;
+};
+
+
+export type QueryMy_BrandsArgs = {
+  paginationQuery: PaginationQueryDto;
 };
 
 
 export type QueryConsumerLeadArgs = {
-  consumerLeadId: Scalars['Float'];
+  consumerLeadId: Scalars['String'];
 };
 
 
@@ -241,24 +336,13 @@ export type QueryConsumerLeadsArgs = {
 };
 
 
-export type QueryHelloArgs = {
-  id: Scalars['Float'];
-};
-
-
-export type QueryHellosArgs = {
-  skip?: Maybe<Scalars['Int']>;
-  take?: Maybe<Scalars['Int']>;
-};
-
-
 export type QueryMessageEntityArgs = {
-  messageEntityId: Scalars['Float'];
+  messageEntityId: Scalars['String'];
 };
 
 
 export type QueryProductArgs = {
-  productId: Scalars['Float'];
+  productId: Scalars['String'];
 };
 
 
@@ -267,18 +351,34 @@ export type QueryProductsArgs = {
 };
 
 
+export type QueryMyProductsArgs = {
+  paginationQuery: PaginationQueryDto;
+};
+
+
+export type QueryBrandProductsArgs = {
+  paginationQuery: PaginationQueryDto;
+  brandId: Scalars['String'];
+};
+
+
 export type QueryPaymentArgs = {
-  PaymentId: Scalars['Float'];
+  PaymentId: Scalars['String'];
 };
 
 
 export type QueryShowArgs = {
-  showId: Scalars['Float'];
+  showId: Scalars['String'];
+};
+
+
+export type QueryShowSegmentArgs = {
+  showsegmentId: Scalars['String'];
 };
 
 
 export type QueryShow_Your_Style_EntryArgs = {
-  showId: Scalars['Float'];
+  showId: Scalars['String'];
 };
 
 
@@ -288,7 +388,7 @@ export type QueryShow_Your_Style_EntriesArgs = {
 
 
 export type QueryShow_Your_Style_VoteArgs = {
-  showId: Scalars['Float'];
+  showId: Scalars['String'];
 };
 
 
@@ -298,7 +398,7 @@ export type QueryShow_Your_Style_VotesArgs = {
 
 
 export type QueryShow_Your_Style_View_RecordArgs = {
-  showId: Scalars['Float'];
+  showId: Scalars['String'];
 };
 
 
@@ -308,13 +408,43 @@ export type QueryShow_Your_Style_View_RecordsArgs = {
 
 
 export type QueryUserArgs = {
-  userId: Scalars['Float'];
+  userId: Scalars['String'];
 };
 
 
 export type QueryVerify_CodeArgs = {
   code: Scalars['String'];
   phone: Scalars['String'];
+};
+
+
+export type QueryUserbrandroleArgs = {
+  userbrandroleId: Scalars['String'];
+};
+
+
+export type QueryUserbrandrolesArgs = {
+  paginationQuery: PaginationQueryDto;
+};
+
+
+export type QueryMy_UserbrandrolesArgs = {
+  paginationQuery: PaginationQueryDto;
+};
+
+
+export type QueryUsershowroleArgs = {
+  usershowroleId: Scalars['String'];
+};
+
+
+export type QueryUsershowrolesArgs = {
+  paginationQuery: PaginationQueryDto;
+};
+
+
+export type QueryMy_UsershowrolesArgs = {
+  paginationQuery: PaginationQueryDto;
 };
 
 export type Show = {
@@ -325,11 +455,24 @@ export type Show = {
   start_date: Scalars['DateTime'];
   end_date: Scalars['DateTime'];
   chatMessages?: Maybe<Array<MessageEntity>>;
+  showSegments?: Maybe<Array<ShowSegment>>;
+  userShowRoles?: Maybe<Array<UserShowRole>>;
+  owner_user: User;
+};
+
+export type ShowSegment = {
+  __typename?: 'ShowSegment';
+  id: Scalars['String'];
+  title: Scalars['String'];
+  brand: Brand;
+  show: Show;
+  ownerUser: User;
+  products: Array<Product>;
 };
 
 export type ShowYourStyleEntry = {
   __typename?: 'ShowYourStyleEntry';
-  id: Scalars['Float'];
+  id: Scalars['String'];
   user: User;
   video_url: Scalars['String'];
   submitted_timestamp: Scalars['DateTime'];
@@ -344,11 +487,13 @@ export type ShowYourStyleVideoIdEntry = {
   video_url?: Maybe<Scalars['String']>;
   is_viewable: Scalars['Boolean'];
   error?: Maybe<Scalars['String']>;
+  json_data?: Maybe<Scalars['String']>;
+  urls?: Maybe<Scalars['String']>;
 };
 
 export type ShowYourStyleViewRecord = {
   __typename?: 'ShowYourStyleViewRecord';
-  id: Scalars['Float'];
+  id: Scalars['String'];
   entry: ShowYourStyleEntry;
   user: User;
   view_time: Scalars['DateTime'];
@@ -356,11 +501,35 @@ export type ShowYourStyleViewRecord = {
 
 export type ShowYourStyleVote = {
   __typename?: 'ShowYourStyleVote';
-  id: Scalars['Float'];
+  id: Scalars['String'];
   entry: ShowYourStyleEntry;
   user: User;
   vote: Scalars['Float'];
   view_duration: Scalars['Float'];
+};
+
+export type UpdateBrandDto = {
+  id: Scalars['String'];
+  name: Scalars['String'];
+  description: Scalars['String'];
+};
+
+export type UpdateProductDto = {
+  id: Scalars['String'];
+  name: Scalars['String'];
+  description: Scalars['String'];
+};
+
+export type UpdateShowSegmentDto = {
+  id: Scalars['String'];
+  title: Scalars['String'];
+};
+
+export type UpdateUserBrandRoleDto = {
+  id: Scalars['String'];
+  read: Scalars['Boolean'];
+  write: Scalars['Boolean'];
+  admin: Scalars['Boolean'];
 };
 
 export type UpdateUserEntityDto = {
@@ -368,6 +537,14 @@ export type UpdateUserEntityDto = {
   username?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
   file?: Maybe<Scalars['Upload']>;
+};
+
+export type UpdateUserShowRoleDto = {
+  id: Scalars['String'];
+  read: Scalars['Boolean'];
+  write: Scalars['Boolean'];
+  admin: Scalars['Boolean'];
+  stream_to: Scalars['Boolean'];
 };
 
 
@@ -382,9 +559,30 @@ export type User = {
   profileUrl?: Maybe<Scalars['String']>;
 };
 
+export type UserBrandRole = {
+  __typename?: 'UserBrandRole';
+  id: Scalars['String'];
+  read: Scalars['Boolean'];
+  write: Scalars['Boolean'];
+  admin: Scalars['Boolean'];
+  user: User;
+  brand: Brand;
+};
+
+export type UserShowRole = {
+  __typename?: 'UserShowRole';
+  id: Scalars['String'];
+  read: Scalars['Boolean'];
+  write: Scalars['Boolean'];
+  admin: Scalars['Boolean'];
+  stream_to: Scalars['Boolean'];
+  user: User;
+  show: Show;
+};
+
 export type AddMessageMutationVariables = Exact<{
   message: Scalars['String'];
-  showID: Scalars['Float'];
+  showID: Scalars['String'];
 }>;
 
 
@@ -420,7 +618,7 @@ export type UpdateUserMutation = (
 );
 
 export type GetShowQueryVariables = Exact<{
-  ID: Scalars['Float'];
+  ID: Scalars['String'];
 }>;
 
 
@@ -467,7 +665,7 @@ export type VerifyCodeQuery = (
 
 
 export const AddMessageDocument = gql`
-    mutation AddMessage($message: String!, $showID: Float!) {
+    mutation AddMessage($message: String!, $showID: String!) {
   add_message(message: $message, showId: $showID) {
     id
     timestamp
@@ -574,7 +772,7 @@ export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutati
 export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>;
 export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
 export const GetShowDocument = gql`
-    query GetShow($ID: Float!) {
+    query GetShow($ID: String!) {
   show(showId: $ID) {
     id
     title

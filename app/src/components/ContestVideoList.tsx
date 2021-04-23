@@ -8,6 +8,7 @@ interface Props {
   scrollable?: boolean
   renderHeader?: () => JSX.Element
   renderFooter?: () => JSX.Element
+  contentContainerStyle?: StyleProp<ViewStyle>
 }
 
 const renderItem = ({ item, index }) => (
@@ -20,7 +21,8 @@ const ContestVideoList = ({
   data,
   renderFooter,
   renderHeader,
-  scrollable
+  scrollable,
+  contentContainerStyle
 }: Props) => {
   const footer = () => {
     return <View style={styles.footer}></View>
@@ -29,6 +31,7 @@ const ContestVideoList = ({
   return (
     <FlatList
       data={data}
+      contentContainerStyle={contentContainerStyle}
       scrollEnabled={scrollable}
       showsVerticalScrollIndicator={false}
       numColumns={2}

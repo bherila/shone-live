@@ -3,6 +3,7 @@ import React from 'react'
 import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import { AntDesign } from '@expo/vector-icons'
 import { ScreenNames } from '../utils/ScreenNames'
+import { AppColors } from '../utils/colors'
 
 interface IHeader {
   data: {
@@ -86,13 +87,13 @@ const styles = StyleSheet.create({
   shop_btn_text: {
     fontWeight: 'bold',
     textAlign: 'center',
-    color: 'white'
+    color: AppColors.WHITE
   },
   _name: {
-    color: 'white',
+    color: AppColors.WHITE,
     fontWeight: 'bold'
   },
   _handle: {
-    color: 'white'
+    color: AppColors.WHITE
   }
 })

@@ -22,7 +22,7 @@ export default function Login() {
 
   const [addUser, { data, error, loading }] = useAddUserMutation({
     variables: {
-      phone: `+1${mobile}`
+      phone: `+91${mobile}`
     }
   })
 
