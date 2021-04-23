@@ -1,12 +1,9 @@
 import { ValidationPipe } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
-import { DocumentBuilder } from '@nestjs/swagger/dist/document-builder'
-import { SwaggerModule } from '@nestjs/swagger/dist/swagger-module'
 import { json } from 'body-parser'
 import cloneBuffer from 'clone-buffer'
 import dotenv from 'dotenv'
 import expressListRoutes from 'express-list-routes'
-import fs from 'fs'
 
 import { AppModule } from './app.module'
 

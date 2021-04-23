@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, UseGuards } from '@nestjs/common'
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql'
 
 import { AuthGuard } from '../common/auth.guards'
-import { updateUserEntityDto } from './dto/update-user.dto'
+import { UpdateUserEntityDto } from './dto/update-user.dto'
 import { User } from './entities/user.entity'
 import { UserService } from './user.service'
 
@@ -37,7 +37,7 @@ export class UserResolver {
   }
 
   @Mutation(() => User)
-  async update_user(@Args('user') user: updateUserEntityDto) {
+  async update_user(@Args('user') user: UpdateUserEntityDto) {
     const file = user.file
     if (file) {
       if (file.mimetype === ('image/jpeg' || 'image/jpg' || 'image/png'))
