@@ -1,13 +1,6 @@
 import { useNavigation } from '@react-navigation/core'
-import React, { useCallback, useState } from 'react'
-import {
-  View,
-  Text,
-  Image,
-  FlatList,
-  TouchableOpacity,
-  Button
-} from 'react-native'
+import React, { useCallback } from 'react'
+import { View, Text, Image } from 'react-native'
 import AppButton from '../../components/AppButton'
 import ContestVideoList from '../../components/ContestVideoList'
 import YourRankingComp from '../../components/YourRankingComp'
@@ -81,12 +74,14 @@ const index = () => {
   }, [])
 
   return (
-    <View style={[globalStyles.container, styles.container]}>
-      <ContestVideoList
-        data={IMAGE_MOCK_DATA}
-        renderHeader={renderHeader}
-        renderFooter={renderFooter}
-      />
+    <View style={globalStyles.container}>
+      <View style={styles.container}>
+        <ContestVideoList
+          data={IMAGE_MOCK_DATA}
+          renderHeader={renderHeader}
+          renderFooter={renderFooter}
+        />
+      </View>
     </View>
   )
 }

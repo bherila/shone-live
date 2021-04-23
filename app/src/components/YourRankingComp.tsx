@@ -10,8 +10,6 @@ interface Props {
 }
 
 const YourRankingComp = ({ ranking, votes, onPress }: Props) => {
-  console.log('YourRanking comp')
-
   return (
     <TouchableOpacity
       style={styles.rankingContainer}

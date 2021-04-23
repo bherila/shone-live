@@ -36,8 +36,6 @@ const WatchStyle = () => {
       <Video
         ref={video}
         source={{
-          // uri:
-          //   'https://firebasestorage.googleapis.com/v0/b/gasalertdemo.appspot.com/o/Screen%20Recording%202021-04-16%20at%206.57.05%20PM.mov?alt=media&token=8a67bae2-3686-4aa7-8f38-9ccc5ea41fdf'
           uri:
             'https://firebasestorage.googleapis.com/v0/b/gasalertdemo.appspot.com/o/Screen%20Recording%202021-04-20%20at%206.39.16%20PM.mov?alt=media&token=3bd5ba48-b630-4272-bcde-c771905399ba'
         }}

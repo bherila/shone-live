@@ -13,6 +13,7 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp
 } from 'react-native-responsive-screen'
+import { AppColors } from '../utils/colors'
 import FontNames from '../utils/Fonts/FontNames'
 import { globalStyles } from '../utils/globalStyles'
 import RoundIconButton from './RoundIconButton'
@@ -41,7 +42,7 @@ const ContestListItem = ({
       >
         <RoundIconButton
           containerStyle={[styles.playButton]}
-          iconStyle={{ height: 19, width: 13 }}
+          iconStyle={styles.playIcon}
           iconUri={require('../../assets/play.png')}
           onPress={() => {}}
         />
@@ -69,6 +70,10 @@ const ContestListItem = ({
 export default ContestListItem
 
 const styles = StyleSheet.create({
+  playIcon: {
+    height: 19,
+    width: 13
+  },
   container: {
     height: hp(27),
     width: wp(40),
@@ -102,7 +107,7 @@ const styles = StyleSheet.create({
     fontFamily: FontNames.POPPINS_SEMIBOLD,
     fontSize: RFValue(10),
     marginHorizontal: wp(1),
-    color: 'white'
+    color: AppColors.WHITE
   },
   image: {
     width: '100%',

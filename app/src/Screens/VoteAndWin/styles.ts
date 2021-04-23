@@ -6,6 +6,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from 'react-native-responsive-screen'
+import { AppColors } from '../../utils/colors'
 
 const PROFILE_PIC_SIZE = 80
 
@@ -29,13 +30,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: wp(6)
   },
   buttonStyle: {
-    backgroundColor: 'black',
+    backgroundColor: AppColors.BLACK,
     flex: 0,
     margin: 0,
     marginVertical: hp(1)
   },
   buttonTextStyle: {
-    color: 'white',
+    color: AppColors.WHITE,
     fontSize: RFValue(18),
     fontFamily: FontNames.POPPINS_MEDIUM
   },

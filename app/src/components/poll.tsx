@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-use-before-define
 import React from 'react'
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
+import { AppColors } from '../utils/colors'
 
 export default function Poll(props: any) {
   return (
@@ -25,7 +26,7 @@ export default function Poll(props: any) {
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
-    padding: 20,
+    padding: 20
   },
   _options: {
     backgroundColor: '#b9764f9e',
@@ -34,7 +35,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 10,
     justifyContent: 'center',
-    marginVertical: 1,
+    marginVertical: 1
   },
   _shop_all: {
     backgroundColor: 'rgb(249,160,63)',
@@ -43,14 +44,14 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     position: 'absolute',
     top: -20,
-    paddingHorizontal: 25,
+    paddingHorizontal: 25
   },
   shop_btn_text: {
-    color: 'white',
+    color: AppColors.WHITE,
     textAlign: 'center',
     fontWeight: 'bold',
     fontSize: 12,
-    elevation: 5,
+    elevation: 5
   },
   _question_view: {
     backgroundColor: '#00000069',
@@ -58,18 +59,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 15,
     borderRadius: 15,
-    marginBottom: 2,
+    marginBottom: 2
   },
   _question: {
-    color: 'white',
+    color: AppColors.WHITE,
     fontWeight: 'bold',
     fontSize: 22,
-    textAlign: 'center',
+    textAlign: 'center'
   },
   _options_text: {
-    color: 'white',
+    color: AppColors.WHITE,
     textAlign: 'center',
     fontWeight: 'bold',
-    fontSize: 22,
-  },
+    fontSize: 22
+  }
 })

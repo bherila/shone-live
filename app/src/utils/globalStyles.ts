@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native'
 import { RFValue } from 'react-native-responsive-fontsize'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import theme from './colors'
+import theme, { AppColors } from './colors'
 import FontNames from './Fonts/FontNames'
 
 const ROUNDED_BUTTON_CONTAINER_SIZE = 80
@@ -9,7 +9,8 @@ const ROUNDED_BUTTON_CONTAINER_SIZE = 80
 export const globalStyles = StyleSheet.create({
   container: {
     flex: 1,
-    position: 'relative'
+    position: 'relative',
+    backgroundColor: AppColors.WHITE
   },
   absoluteView: {
     position: 'absolute'
@@ -52,7 +53,7 @@ export const globalStyles = StyleSheet.create({
   primaryButtonText: {
     fontSize: RFValue(20),
     fontFamily: 'bahnscift',
-    color: 'black',
+    color: AppColors.BLACK,
     textAlign: 'center'
   },
   profileLogo: {
@@ -71,6 +72,8 @@ export const globalStyles = StyleSheet.create({
   },
   primaryText: {
     fontFamily: FontNames.POPPINS_REGULAR,
-    fontSize: RFValue(18)
-  }
+    fontSize: RFValue(18),
+    color: AppColors.BLACK
+  },
+  transparentBackground: { backgroundColor: '#00000000' }
 })

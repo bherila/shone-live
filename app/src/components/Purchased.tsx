@@ -1,6 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 import React from 'react'
 import { Text, View, StyleSheet, Image } from 'react-native'
+import { AppColors } from '../utils/colors'
 // <<<<<<<<<<<<<<<<<<< ACTIVE POLL COMPONENT >>>>>>>>>>>>>>>>>>>
 export default function PurchasedItems() {
   return (
@@ -23,7 +24,7 @@ export default function PurchasedItems() {
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
-    padding: 20,
+    padding: 20
   },
   _description: {
     backgroundColor: '#00000069',
@@ -32,7 +33,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 15,
     justifyContent: 'center',
-    marginVertical: 1,
+    marginVertical: 1
   },
   _profile_view: {
     backgroundColor: '#00000069',
@@ -42,23 +43,23 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
-    zIndex: 1,
+    zIndex: 1
   },
   _question: {
-    color: 'white',
+    color: AppColors.WHITE,
     fontWeight: 'bold',
     fontSize: 22,
-    textAlign: 'center',
+    textAlign: 'center'
   },
   _options_text: {
-    color: 'white',
+    color: AppColors.WHITE,
     textAlign: 'center',
     fontWeight: 'bold',
-    fontSize: 22,
+    fontSize: 22
   },
   _user_pic: {
     height: 90,
     width: 90,
-    borderRadius: 45,
-  },
+    borderRadius: 45
+  }
 })

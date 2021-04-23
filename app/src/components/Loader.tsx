@@ -1,6 +1,6 @@
 import React from 'react'
 import { ActivityIndicator, Text, View } from 'react-native'
-import theme from '../utils/colors'
+import theme, { AppColors } from '../utils/colors'
 import { globalStyles } from '../utils/globalStyles'
 
 interface Props {
@@ -21,7 +21,9 @@ const Loader = ({ isLoading, progress, total, isProgressShown }: Props) => {
     >
       <ActivityIndicator size="large" color={theme.textColor.color} />
       {isProgressShown && (
-        <Text style={{ fontSize: 30, color: 'white' }}>{progress}/100</Text>
+        <Text style={{ fontSize: 30, color: AppColors.WHITE }}>
+          {progress}/100
+        </Text>
       )}
     </View>
   ) : null

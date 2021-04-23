@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/core'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import { View, FlatList, ScrollView } from 'react-native'
 import AppButton from '../../components/AppButton'
 import ContestVideoList from '../../components/ContestVideoList'
@@ -10,6 +10,7 @@ import VoteStyles from '../VoteAndWin/styles'
 import styles from './styles'
 import { heightPercentageToDP } from 'react-native-responsive-screen'
 import TopCreatorItem from '../../components/TopCreatorItem'
+import { Tab, Tabs } from 'native-base'
 
 const IMAGE_MOCK_DATA = [
   {
@@ -82,6 +83,7 @@ const CREATOR_MOCK_DATA = [
 
 const index = () => {
   const navigation = useNavigation()
+  const tabRef = useRef<Tabs>(null)
 
   const [position, setPosition] = useState(0)
 
@@ -116,6 +118,7 @@ const index = () => {
             containerStyle={[
               VoteStyles.buttonStyle,
               styles.buttonStyle,
+              styles.tabHeaderButton,
               position == 0
                 ? styles.selectedTabHeader
                 : styles.nonSelectedTabHeader
@@ -135,6 +138,7 @@ const index = () => {
             containerStyle={[
               VoteStyles.buttonStyle,
               styles.buttonStyle,
+              styles.tabHeaderButton,
               position == 1
                 ? styles.selectedTabHeader
                 : styles.nonSelectedTabHeader
@@ -155,44 +159,51 @@ const index = () => {
     )
   }, [position])
 
-  return (
-    <View style={[globalStyles.container, VoteStyles.container]}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {renderHeader()}
+  const renderCreator = ({ item, index }) => (
+    <TopCreatorItem creator={item} index={index} />
+  )
 
-        <View style={{ marginTop: heightPercentageToDP(7) }}>
-          <View
-            key="1"
-            style={{
-              opacity: position == 0 ? 1 : 0,
-              position: 'absolute',
-              zIndex: position == 0 ? 1 : 0,
-              width: '100%'
-            }}
-          >
+  const renderCreatorSeparator = () => (
+    <View style={{ height: heightPercentageToDP(1.8) }} />
+  )
+
+  return (
+    <View style={globalStyles.container}>
+      <ScrollView
+        contentContainerStyle={VoteStyles.container}
+        showsVerticalScrollIndicator={false}
+      >
+        {renderHeader()}
+        <Tabs
+          tabContainerStyle={styles.tabContainerStyle}
+          ref={tabRef}
+          tabBarUnderlineStyle={globalStyles.transparentBackground}
+          onChangeTab={({ i }) => setPosition(i)}
+          locked
+          page={position}
+        >
+          <Tab heading={''} activeTabStyle={globalStyles.transparentBackground}>
             <FlatList
               listKey={'1'}
               data={CREATOR_MOCK_DATA}
               showsVerticalScrollIndicator={false}
-              keyExtractor={(item, index) => `keyasdasd${index}`}
-              ItemSeparatorComponent={() => (
-                <View style={{ height: heightPercentageToDP(1.8) }} />
-              )}
-              renderItem={({ item, index }) => (
-                <TopCreatorItem creator={item} index={index} />
-              )}
+              keyExtractor={(item, index) => `key${index}`}
+              ItemSeparatorComponent={renderCreatorSeparator}
+              renderItem={renderCreator}
             />
-          </View>
-          <View
-            key="2"
-            style={{
-              opacity: position == 1 ? 1 : 0,
-              zIndex: position == 1 ? 1 : 0
-            }}
+          </Tab>
+          <Tab
+            heading={'1'}
+            tabStyle={globalStyles.transparentBackground}
+            activeTabStyle={globalStyles.transparentBackground}
           >
-            <ContestVideoList data={IMAGE_MOCK_DATA} scrollable={false} />
-          </View>
-        </View>
+            <ContestVideoList
+              data={IMAGE_MOCK_DATA}
+              scrollable={false}
+              contentContainerStyle={globalStyles.transparentBackground}
+            />
+          </Tab>
+        </Tabs>
       </ScrollView>
     </View>
   )

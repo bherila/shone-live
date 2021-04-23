@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Image, View, TouchableOpacity, Alert } from 'react-native'
-import theme from './../../utils/colors'
+import theme, { AppColors } from './../../utils/colors'
 import styles from './styles'
 import { MaterialIcons } from '@expo/vector-icons'
 import { Body, Icon, Button, Header, Left, Right } from 'native-base'
@@ -98,7 +98,7 @@ export default function ProfilePhoto() {
           <Header style={{ elevation: 0, backgroundColor: 'transparent' }}>
             <Left style={{ flex: 1 }}>
               <Button transparent onPress={() => navigation.goBack()}>
-                <Icon name="arrow-back" style={{ color: 'black' }} />
+                <Icon name="arrow-back" style={{ color: AppColors.BLACK }} />
               </Button>
             </Left>
             <Body

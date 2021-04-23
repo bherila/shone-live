@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native'
 import FontNames from '../../utils/Fonts/FontNames'
 import { RFValue } from 'react-native-responsive-fontsize'
+import { AppColors } from '../../utils/colors'
 
 export default StyleSheet.create({
   video: {
@@ -30,12 +31,12 @@ export default StyleSheet.create({
   },
   textStyle: {
     fontFamily: FontNames.POPPINS_REGULAR,
-    color: 'white',
+    color: AppColors.WHITE,
     fontSize: RFValue(16)
   },
 
   seePriceButtonContainer: {
-    backgroundColor: 'black',
+    backgroundColor: AppColors.BLACK,
     flex: 0,
     paddingVertical: 8
   },

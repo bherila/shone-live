@@ -108,7 +108,7 @@ const LiveShow = () => {
 
   const { data: show, error, loading } = useGetShowQuery({
     variables: {
-      ID: parseFloat(route.params?.showId)
+      ID: route.params?.showId
     },
     pollInterval: 2000
   })
@@ -119,7 +119,7 @@ const LiveShow = () => {
   ] = useAddMessageMutation({
     variables: {
       message,
-      showID: parseFloat(route.params?.showId)
+      showID: route.params?.showId
     }
   })
 

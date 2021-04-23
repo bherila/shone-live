@@ -72,7 +72,7 @@ export default function NewAccount() {
           <Header style={{ elevation: 0, backgroundColor: 'transparent' }}>
             <Left style={{ flex: 1 }}>
               <Button transparent onPress={() => navigation.goBack()}>
-                <Icon name="arrow-back" style={{ color: 'black' }} />
+                <Icon name="arrow-back" style={{ color: AppColors.BLACK }} />
               </Button>
             </Left>
             <Body
