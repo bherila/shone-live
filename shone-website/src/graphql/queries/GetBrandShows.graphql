@@ -1,0 +1,11 @@
+query GetBrandShows($brandId: String!, $limit: Float!, $offset: Float!) {
+  brandShows(
+    paginationQuery: { limit: $limit, offset: $offset }
+    brandId: $brandId
+  ) {
+    id
+    title
+    start_date
+    end_date
+  }
+}

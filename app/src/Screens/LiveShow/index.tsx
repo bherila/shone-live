@@ -10,7 +10,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ImageBackground,
-  Modal,
+  Modal
 } from 'react-native'
 import { Video } from 'expo-av'
 // css
@@ -64,35 +64,35 @@ export default function Home() {
         qtyLeft: 2,
         imageUrl: 'TODO',
         price: 129,
-        currency: 'USD',
-      },
+        currency: 'USD'
+      }
     ],
     chats: [
       {
         name: 'iglit',
         message: 'comment',
-        profileImage: 'TODO',
+        profileImage: 'TODO'
       },
       {
         name: 'iglit',
         message: 'comment',
-        profileImage: 'TODO',
+        profileImage: 'TODO'
       },
       {
         name: 'iglit',
         message: 'comment',
-        profileImage: 'TODO',
+        profileImage: 'TODO'
       },
       {
         name: 'iglit',
         message: 'comment',
-        profileImage: 'TODO',
-      },
+        profileImage: 'TODO'
+      }
     ],
     activePoll: {
       question: 'What metal should I use next?',
-      options: ['Rose Gold', 'Platinum', 'Silver'],
-    },
+      options: ['Rose Gold', 'Platinum', 'Silver']
+    }
   }
 
   return (
@@ -103,7 +103,7 @@ export default function Home() {
       <Video
         source={{
           uri:
-            'https://s3-eu-west-1.amazonaws.com/video.gallereplay.com/artistarea/Lighthouse%20stands%20in%20Istanbul%E2%80%99s%20harbour_0554659b-5dc1-43d6-8a93-b31ec6b67f63/Cinemagraph_plain/1920x1080/cinemagraph.mp4',
+            'https://s3-eu-west-1.amazonaws.com/video.gallereplay.com/artistarea/Lighthouse%20stands%20in%20Istanbul%E2%80%99s%20harbour_0554659b-5dc1-43d6-8a93-b31ec6b67f63/Cinemagraph_plain/1920x1080/cinemagraph.mp4'
         }}
         style={styles.backgroundVideo}
         rate={1}
@@ -126,7 +126,7 @@ export default function Home() {
                 width: 25,
                 height: 25,
                 marginLeft: 10,
-                tintColor: 'white',
+                tintColor: 'white'
               }}
               source={require('../../../assets/view.png')}
             />
@@ -135,7 +135,7 @@ export default function Home() {
                 textAlign: 'center',
                 marginLeft: 3,
                 fontSize: 12,
-                color: 'white',
+                color: 'white'
               }}
             >
               29.1K
@@ -190,7 +190,7 @@ export default function Home() {
                               style={{
                                 justifyContent: 'flex-end',
                                 alignItems: 'center',
-                                flex: 1,
+                                flex: 1
                               }}
                             >
                               <Text style={{ fontSize: 10, fontWeight: '200' }}>
@@ -199,7 +199,7 @@ export default function Home() {
                               <View
                                 style={{
                                   flexDirection: 'row',
-                                  paddingVertical: 6,
+                                  paddingVertical: 6
                                 }}
                               >
                                 <Text
@@ -273,7 +273,7 @@ export default function Home() {
               style={{
                 flexDirection: 'row',
                 marginTop: 15,
-                alignSelf: 'center',
+                alignSelf: 'center'
               }}
             >
               <View>

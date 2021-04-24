@@ -2,9 +2,9 @@ import { Button, Grid } from '@material-ui/core'
 import Router from 'next/router'
 import React from 'react'
 
-import StoreSection from '../../../../../components/StoreSection'
-import { Brand } from '../../../../../generated/graphql'
-import useInput from '../../../../../hooks/useInput'
+import StoreSection from '../../../../../../components/StoreSection'
+import { Brand } from '../../../../../../generated/graphql'
+import useInput from '../../../../../../hooks/useInput'
 
 export async function getServerSideProps() {
   return {
@@ -36,7 +36,7 @@ export default function ProductsPage({ store }: { store: Brand }) {
 
   const handleSubmit = () => {
     Router.push({
-      pathname: `/seller/store/${store.id}/products`,
+      pathname: `/seller/store/details/${store.id}/products`,
       query: { SKU, title, SRP, stock },
     })
   }

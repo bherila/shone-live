@@ -1,7 +1,7 @@
 import React from 'react'
 
-import StoreSection from '../../../../components/StoreSection'
-import { Brand } from '../../../../generated/graphql'
+import StoreSection from '../../../../../components/StoreSection'
+import { Brand } from '../../../../../generated/graphql'
 
 export async function getServerSideProps() {
   return {

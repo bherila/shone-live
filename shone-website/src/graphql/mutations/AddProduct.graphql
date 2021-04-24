@@ -1,5 +1,5 @@
 mutation AddProduct($brandId: String, $showSegmentId: String, $name: String!, $description: String!) {
-  add_product(
+  addProduct(
     data: { brandId: $brandId, showSegmentId: $showSegmentId, name: $name, description: $description }
   ) {
     id,

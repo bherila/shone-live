@@ -24,7 +24,7 @@ export class ShowSegment {
   @Column()
   title: string
 
-  @Field()
+  @Field(() => Brand)
   @ManyToOne(() => Brand)
   @JoinColumn({ name: 'brand_id' })
   brand: Brand

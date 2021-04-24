@@ -1,5 +1,7 @@
 **/node_modules/*
 **/out/*
 **/src.old/*
+**/static/*
 **/src/__generated__/*
+**/dist/*
 **/.next/*
