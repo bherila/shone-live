@@ -1,0 +1,10 @@
+query GetProduct($productId: String!){
+  product(productId:$productId) {
+    name,
+    description,
+    brand{
+      id
+      name
+    }
+  }
+}

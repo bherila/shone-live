@@ -64,31 +64,39 @@ export default function StoreSection({
             <Box>
               <Button
                 className={classes.buttonText}
-                onClick={() => Router.push(`/seller/store/${pid}/`)}
+                onClick={() => Router.push(`/seller/store/details/${pid}/`)}
               >
                 Orders
               </Button>
               <Button
                 className={classes.buttonText}
-                onClick={() => Router.push(`/seller/store/${pid}/products`)}
+                onClick={() =>
+                  Router.push(`/seller/store/details/${pid}/products`)
+                }
               >
                 Products
               </Button>
               <Button
                 className={classes.buttonText}
-                onClick={() => Router.push(`/seller/store/${pid}/customers`)}
+                onClick={() =>
+                  Router.push(`/seller/store/details/${pid}/customers`)
+                }
               >
                 Customers
               </Button>
               <Button
                 className={classes.buttonText}
-                onClick={() => Router.push(`/seller/store/${pid}/analytics`)}
+                onClick={() =>
+                  Router.push(`/seller/store/details/${pid}/analytics`)
+                }
               >
                 Analytics
               </Button>
               <Button
                 className={classes.buttonText}
-                onClick={() => Router.push(`/seller/store/${pid}/shows`)}
+                onClick={() =>
+                  Router.push(`/seller/store/details/${pid}/shows`)
+                }
               >
                 Shows
               </Button>

@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form'
 
 import {
   useAddUserMutation,
+  useUpdateUserMutation,
   useVerifyCodeLazyQuery,
 } from '../generated/graphql'
 
@@ -20,6 +21,11 @@ const Login = ({ redirectPath }: LoginPageProps) => {
   } = useForm()
 
   const [addUser, { loading: loadingAddUser }] = useAddUserMutation()
+
+  const [
+    updateUser,
+    { data: updatedUser, loading: loadingUpdateUser },
+  ] = useUpdateUserMutation()
 
   const [
     verifyCode,
@@ -51,18 +57,37 @@ const Login = ({ redirectPath }: LoginPageProps) => {
     })
   }
 
+  const handleUpdateUser = ({ username, email }) => {
+    updateUser({
+      variables: {
+        user: { id: verify.verify_code.id, email, username },
+      },
+    })
+  }
+
   useEffect(() => {
-    if (verify) {
+    if (verify?.verify_code?.token) {
       localStorage.setItem('token', verify.verify_code.token)
       window.location.href = redirectPath ?? '/seller'
+    } else if (verify) {
+      setStep(3)
     }
   }, [verify])
+
+  useEffect(() => {
+    if (updatedUser) {
+      localStorage.setItem('token', updatedUser.update_user.token)
+      window.location.href = redirectPath ?? '/seller'
+    }
+  }, [updatedUser])
 
   const onSubmit = (data) => {
     if (step === 1) {
       handleAddUser(data.phone)
-    } else {
+    } else if (step === 2) {
       handleVerifyCode(data)
+    } else {
+      handleUpdateUser(data)
     }
   }
 
@@ -93,12 +118,28 @@ const Login = ({ redirectPath }: LoginPageProps) => {
               {errors['code'] && 'error'}
             </>
           )}
+          {step === 3 && (
+            <>
+              <TextField
+                variant="outlined"
+                label="Username"
+                {...register('username', { required: true })}
+              />
+              {errors['username'] && 'error'}
+              <TextField
+                variant="outlined"
+                label="Mail"
+                {...register('mail', { required: true })}
+              />
+              {errors['mail'] && 'error'}
+            </>
+          )}
         </Grid>
         <Grid item>
           <button
             type="submit"
             className="mt-3 bg-green-400 text-white p-2 font-bold rounded hover:bg-green-600"
-            disabled={loadingAddUser || loadingVerifyCode}
+            disabled={loadingAddUser || loadingVerifyCode || loadingUpdateUser}
           >
             {step === 1 ? 'Send' : 'Verify'}
           </button>

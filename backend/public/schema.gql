@@ -24,13 +24,6 @@ type Address {
   phone: String!
 }
 
-type Brand {
-  id: String!
-  name: String!
-  description: String!
-  ownerUser: User!
-}
-
 type MessageEntity {
   id: String!
   timestamp: DateTime!
@@ -74,15 +67,6 @@ type ShowSegment {
   products: [Product!]!
 }
 
-type Product {
-  id: String!
-  name: String!
-  description: String!
-  user: User!
-  showSegments: [ShowSegment!]!
-  brand: Brand
-}
-
 type UserBrandRole {
   id: String!
   read: Boolean!
@@ -90,6 +74,24 @@ type UserBrandRole {
   admin: Boolean!
   user: User!
   brand: Brand!
+}
+
+type Brand {
+  id: String!
+  name: String!
+  description: String!
+  showSegments: [ShowSegment!]
+  userBrandRoles: [UserBrandRole!]
+  ownerUser: User!
+}
+
+type Product {
+  id: String!
+  name: String!
+  description: String!
+  user: User!
+  showSegments: [ShowSegment!]
+  brand: Brand
 }
 
 type ConsumerLead {
@@ -153,10 +155,12 @@ type Query {
   products(paginationQuery: PaginationQueryDto!): [Product!]!
   myProducts(paginationQuery: PaginationQueryDto!): [Product!]!
   brandProducts(paginationQuery: PaginationQueryDto!, brandId: String!): [Product!]!
+  showProducts(paginationQuery: PaginationQueryDto!, showId: String!): [Product!]!
   payment(PaymentId: String!): Payment
   payments: [Payment!]!
   show(showId: String!): Show
   shows: [Show!]!
+  brandShows(paginationQuery: PaginationQueryDto!, brandId: String!): [Show!]!
   showSegment(showsegmentId: String!): ShowSegment
   showSegments: [ShowSegment!]!
   show_your_style_Entry(showId: String!): ShowYourStyleEntry
@@ -184,8 +188,8 @@ input PaginationQueryDto {
 
 type Mutation {
   add_address(data: CreateAddressDto!): Address!
-  add_brand(data: CreateBrandDto!): Brand!
-  update_brand(data: UpdateBrandDto!): Brand!
+  addBrand(data: CreateBrandDto!): Brand!
+  updateBrand(data: UpdateBrandDto!): Brand!
   addConsumerLead(email: String!): ConsumerLead!
   add_message(message: String!, showId: String!): MessageEntity!
   addProduct(data: CreateProductDto!): Product!
@@ -199,7 +203,7 @@ type Mutation {
   add_show_your_style_vote(entryId: String!, viewDuration: Float!, vote: Float!): ShowYourStyleVote!
   add_show_your_style_view_record(entryId: String!): ShowYourStyleViewRecord!
   add_user(phone: String!): String!
-  update_user(user: updateUserEntityDto!): User!
+  update_user(user: UpdateUserEntityDto!): User!
   add_userbrandrole(data: CreateUserBrandRoleDto!): UserBrandRole!
   update_userbrandrole(data: UpdateUserBrandRoleDto!): UserBrandRole!
   add_usershowrole(data: CreateUserShowRoleDto!): UserShowRole!
@@ -260,7 +264,7 @@ input UpdateShowSegmentDto {
   title: String!
 }
 
-input updateUserEntityDto {
+input UpdateUserEntityDto {
   id: String!
   username: String
   email: String

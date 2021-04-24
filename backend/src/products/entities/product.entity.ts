@@ -35,7 +35,7 @@ export class Product {
   })
   user: User
 
-  @Field(() => [ShowSegment])
+  @Field(() => [ShowSegment], { nullable: true })
   @ManyToMany(
     () => ShowSegment,
     showSegment => showSegment.products,

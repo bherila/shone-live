@@ -1,6 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 
+import { PaginationQueryDto } from '../common/dto/pagination-query.dto'
 import { User } from '../user/entities/user.entity'
 import { UserRepository } from '../user/user.repository'
 import { UserShowRole } from '../user-show-role/entities/user-show-role.entity'
@@ -20,10 +21,7 @@ export class ShowService {
   ) {}
 
   async create(data: CreateShowDto, userId: string): Promise<Show> {
-    const user = await this.userRepository.findOne(userId)
-    if (!user) {
-      throw new NotFoundException(`User #${userId} not found`)
-    }
+    const user = await this.userRepository.findOrFail(userId)
     const show = this.showRepository.create({
       ownerUser: user,
       ...data,
@@ -51,5 +49,23 @@ export class ShowService {
     return this.showRepository.find({
       relations: ['chatMessages', 'showSegments', 'userShowRoles'],
     })
+  }
+
+  async findByBrand(
+    paginationQuery: PaginationQueryDto,
+    brandId: string,
+    userId: string,
+  ) {
+    const { limit, offset } = paginationQuery
+    const show = await this.showRepository
+      .createQueryBuilder('show')
+      .leftJoinAndSelect('show.showSegments', 'showSegments')
+      .leftJoin('brand', 'brand', 'brand.id = showSegments.brand_id ')
+      .where('brand.id = :brandId', { brandId })
+      .skip(offset)
+      .take(limit)
+      .getMany()
+    console.log(show)
+    return show
   }
 }

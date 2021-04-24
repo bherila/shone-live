@@ -32,31 +32,18 @@ export class ShowSegmentsService {
   }
 
   async findOne(id: string) {
-    const showSegment = await this.showSegmentRepository.findOne(id, {
+    return await this.showSegmentRepository.findOrFail(id, {
       relations: ['brand', 'show'],
     })
-    if (!showSegment) {
-      throw new NotFoundException(`ShowSegment id: ${id} not found`)
-    }
-    return showSegment
   }
 
   async create(
     { brandId, showId, title }: CreateShowSegmentDto,
     userId: string,
   ) {
-    const user = await this.userRepository.findOne(userId)
-    if (!user) {
-      throw new NotFoundException(`User #${userId} not found`)
-    }
-    const brand = await this.brandRepository.findOne(brandId)
-    if (!brand) {
-      throw new NotFoundException(`Brand #${userId} not found`)
-    }
-    const show = await this.showRepository.findOne(showId)
-    if (!show) {
-      throw new NotFoundException(`Show #${userId} not found`)
-    }
+    const user = await this.userRepository.findOrFail(userId)
+    const brand = await this.brandRepository.findOrFail(brandId)
+    const show = await this.showRepository.findOrFail(showId)
     const showSegment = this.showSegmentRepository.create({
       ownerUser: user,
       brand,
