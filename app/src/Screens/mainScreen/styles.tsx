@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { AppColors } from '../../utils/colors'
 
 const styles = StyleSheet.create({
@@ -7,6 +8,12 @@ const styles = StyleSheet.create({
     // justifyContent: "center",
     // alignItems: "center",
     padding: 10
+  },
+  tabContainerStyle: {
+    elevation: 0,
+    borderColor: 'transparent',
+    height: 0
+    // marginTop: hp(7)
   },
   _screenHeading: {
     fontSize: 20,
@@ -124,6 +131,11 @@ const styles = StyleSheet.create({
     height: 40,
     width: 40,
     borderRadius: 20
+  },
+  headerBody: {
+    flex: 3,
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 })
 

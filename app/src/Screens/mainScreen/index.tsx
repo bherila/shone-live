@@ -13,7 +13,7 @@ import {
 import theme from './../../utils/colors'
 import styles from './styles'
 import { Feather, Entypo } from '@expo/vector-icons'
-import { Body, Header, Left, Right } from 'native-base'
+import { Body, Header, Left, Right, Tab, Tabs } from 'native-base'
 import Menu, { MenuItem } from 'react-native-material-menu'
 import Text from './../../components/Text'
 import { useNavigation } from '@react-navigation/native'
@@ -29,6 +29,7 @@ import * as ImagePicker from 'expo-image-picker'
 import { Show, useGetShowsQuery } from '../../generated/graphql'
 import { UppyClient } from '../../utils/TransloaditApi'
 import * as FileSystem from 'expo-file-system'
+import ContestVideoVote from '../ContestVideoVote'
 
 interface ListItem {
   item: Show
@@ -39,14 +40,14 @@ export default function MainScreen() {
   const uppy = UppyClient().uppy
 
   const navigation = useNavigation()
-
   const dispatch = useDispatch()
-
   const { setItem } = useSecureStore()
+
+  const tabRef = useRef<Tabs>(null)
+  const [position, setPosition] = useState(1)
 
   const [isVideoUploading, setIsVideoUploading] = useState(false)
   const [modalVisible, setModalVisible] = useState(false)
-
   const [progress, setProgress] = useState(0)
 
   const {
@@ -56,15 +57,27 @@ export default function MainScreen() {
   } = useGetShowsQuery()
 
   const commingSoon = [
-    { img: require('./../../../assets/comingone.png') },
-    { img: require('./../../../assets/comingtwo.png') },
-    { img: require('./../../../assets/comingthree.png') }
+    {
+      img: require('./../../../assets/comingone.png')
+    },
+    {
+      img: require('./../../../assets/comingtwo.png')
+    },
+    {
+      img: require('./../../../assets/comingthree.png')
+    }
   ]
 
   const moreShows = [
-    { img: require('../../../assets/moreone.png') },
-    { img: require('../../../assets/moretwo.png') },
-    { img: require('../../../assets/morethree.png') }
+    {
+      img: require('../../../assets/moreone.png')
+    },
+    {
+      img: require('../../../assets/moretwo.png')
+    },
+    {
+      img: require('../../../assets/morethree.png')
+    }
   ]
 
   useEffect(() => {
@@ -165,7 +178,11 @@ export default function MainScreen() {
       uppy.on('complete', (a, b, c) => {
         setVideoProgressComplete()
         navigation.navigate(ScreenNames.HomeScreens.WATCH_STYLE)
-        console.log('Complete', { a, b, c })
+        console.log('Complete', {
+          a,
+          b,
+          c
+        })
       })
       uppy.addFile({
         name: uri.split('/').pop(),
@@ -231,41 +248,56 @@ export default function MainScreen() {
         total={100}
       />
 
-      <Header style={globalStyles.header}>
-        <Left />
-        <Body
-          style={{
-            flex: 3,
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}
-        >
-          <Image
-            source={require('./../../../assets/logo.png')}
-            style={globalStyles.profileLogo}
-          />
-        </Body>
-        <Right style={globalStyles.container}>
-          <Menu
-            ref={menu}
-            button={
-              <TouchableOpacity style={styles._userAvatar} onPress={showMenu}>
-                <Image
-                  source={require('./../../../assets/avatar.jpg')}
-                  style={styles._profilePic}
-                />
-              </TouchableOpacity>
-            }
-          >
-            <MenuItem onPress={navigateToVoteScreen}>Vote and Win</MenuItem>
-            <MenuItem onPress={() => ViewProfile()}>View Profile</MenuItem>
+      <Tabs
+        tabContainerStyle={styles.tabContainerStyle}
+        ref={tabRef}
+        tabBarUnderlineStyle={globalStyles.transparentBackground}
+        onChangeTab={({ i }) => setPosition(i)}
+        page={position}
+      >
+        <Tab heading="0">
+          <ContestVideoVote />
+        </Tab>
+        <Tab heading="1">
+          <Header style={globalStyles.header}>
+            <Left />
+            <Body style={styles.headerBody}>
+              <Image
+                source={require('./../../../assets/logo.png')}
+                style={globalStyles.profileLogo}
+              />
+            </Body>
+            <Right style={globalStyles.container}>
+              <Menu
+                ref={menu}
+                button={
+                  <TouchableOpacity
+                    style={styles._userAvatar}
+                    onPress={showMenu}
+                  >
+                    <Image
+                      source={require('./../../../assets/avatar.jpg')}
+                      style={styles._profilePic}
+                    />
+                  </TouchableOpacity>
+                }
+              >
+                <MenuItem onPress={navigateToVoteScreen}>Vote and Win</MenuItem>
+                <MenuItem onPress={() => ViewProfile()}>View Profile</MenuItem>
 
-            <MenuItem onPress={() => Logout()}>Logout</MenuItem>
-          </Menu>
-        </Right>
-      </Header>
+                <MenuItem onPress={() => Logout()}>Logout</MenuItem>
+              </Menu>
+            </Right>
+          </Header>
 
-      <ScrollView showsVerticalScrollIndicator={false}>
+          <ContestVideoVote />
+        </Tab>
+        <Tab heading="2">
+          <ContestVideoVote />
+        </Tab>
+      </Tabs>
+
+      {/* <ScrollView showsVerticalScrollIndicator={false}>
         <View style={globalStyles.rowContainer}>
           <AppButton title="Show Your Style" onPress={pickVideo} />
 
@@ -338,7 +370,7 @@ export default function MainScreen() {
             })}
           </ScrollView>
         </View>
-      </ScrollView>
+      </ScrollView> */}
       {/* modal */}
       <Modal
         animationType="slide"
@@ -372,7 +404,12 @@ export default function MainScreen() {
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={[styles._confirmBtn, { backgroundColor: '#e4e4e4' }]}
+              style={[
+                styles._confirmBtn,
+                {
+                  backgroundColor: '#e4e4e4'
+                }
+              ]}
               onPress={() => setModalVisible(false)}
             >
               <Text style={[styles._confirmBtn_text, { color: '#525252' }]}>
