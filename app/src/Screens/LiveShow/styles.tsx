@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native'
+import { AppColors } from '../../utils/colors'
 
 const styles = StyleSheet.create({
   container: {
@@ -23,7 +24,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   _title: {
-    color: 'white',
+    color: AppColors.WHITE,
     fontSize: 25,
     fontWeight: 'bold',
   },
@@ -44,7 +45,7 @@ const styles = StyleSheet.create({
   },
   _textbrand: {
     marginTop: 8,
-    color: 'white',
+    color: AppColors.WHITE,
     fontSize: 14,
     fontWeight: '200',
   },
@@ -58,7 +59,7 @@ const styles = StyleSheet.create({
   },
   _textbuy: {
     fontSize: 12,
-    color: 'white',
+    color: AppColors.WHITE,
     textAlign: 'center',
     fontWeight: '300',
   },
@@ -75,14 +76,14 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   _name: {
-    color: 'white',
+    color: AppColors.WHITE,
     // fontWeight: 'bold',
     flex: 1,
     fontWeight: '200',
     fontSize: 14,
   },
   _message: {
-    color: 'white',
+    color: AppColors.WHITE,
     fontWeight: '300',
     fontSize: 14,
   },
@@ -99,7 +100,7 @@ const styles = StyleSheet.create({
     height: 80,
     width: 80,
     borderRadius: 20,
-    backgroundColor: 'white',
+    backgroundColor: AppColors.WHITE,
   },
   _footer_inner_section: {
     flexDirection: 'row',
@@ -118,7 +119,7 @@ const styles = StyleSheet.create({
   _heading: {
     backgroundColor: 'rgb(43,65,98)',
     borderRadius: 10,
-    color: 'white',
+    color: AppColors.WHITE,
     textAlign: 'center',
     padding: 2,
     marginHorizontal: 4,
@@ -134,14 +135,14 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
   },
   shop_btn_text: {
-    color: 'white',
+    color: AppColors.WHITE,
     textAlign: 'center',
     fontWeight: 'bold',
     fontSize: 12,
     elevation: 5,
   },
   _text_input: {
-    color: 'white',
+    color: AppColors.WHITE,
     paddingVertical: 10,
     // marginBottom:15,
     paddingLeft: 30,

@@ -47,6 +47,7 @@ function Navigation() {
           !data
             ? ScreenNames.AuthScreens.LOGIN
             : ScreenNames.HomeScreens.MAIN_SCREEN
+          // ScreenNames.HomeScreens.VOTE_AND_WIN
         }
         screenOptions={{ gestureEnabled: true }}
       >

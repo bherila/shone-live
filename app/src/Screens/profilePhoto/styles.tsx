@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native'
+import { AppColors } from '../../utils/colors'
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -45,7 +46,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
     padding: 5,
-    color: 'white',
+    color: AppColors.WHITE,
     fontSize: 16,
   },
   _circle: {
@@ -74,7 +75,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 10,
     right: 0,
-    backgroundColor: 'white',
+    backgroundColor: AppColors.WHITE,
     borderRadius: 20,
     height: 30,
     width: 30,
@@ -83,7 +84,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   _orText: {
-    color: 'white',
+    color: AppColors.WHITE,
     fontSize: 8,
   },
 })

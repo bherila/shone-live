@@ -22,8 +22,8 @@ export default function Login() {
 
   const [addUser, { data, error, loading }] = useAddUserMutation({
     variables: {
-      phone: `+1${mobile}`
-    }
+      phone: `+1${mobile}`,
+    },
   })
 
   useEffect(() => {
@@ -36,7 +36,7 @@ export default function Login() {
     if (error) return Alert.alert(error.message)
     if (data?.add_user) {
       navigation.navigate(ScreenNames.AuthScreens.CONFIRM_SMS, {
-        phone: mobile
+        phone: mobile,
       })
     }
   }, [data, error, loading])
@@ -44,7 +44,6 @@ export default function Login() {
   const onContinue = () => {
     if (mobile.replace(/-/g, '')?.length === 10) {
       addUser()
-      // navigation.navigate('ConfirmSms')
     } else {
       alert('Please enter correct mobile number')
     }
@@ -53,7 +52,7 @@ export default function Login() {
   return (
     <KeyboardAwareScrollView contentContainerStyle={globalStyles.container}>
       <Loader isLoading={loading} />
-      <View style={{ flex: 1 }}>
+      <View style={globalStyles.colorlessContainer}>
         <View style={styles._logView}>
           <Image
             source={require('../../../assets/logo.png')}
@@ -61,7 +60,7 @@ export default function Login() {
           />
         </View>
         <View style={[styles._bodyView, theme.bg]}>
-          <View style={{ flex: 1 }}>
+          <View style={globalStyles.colorlessContainer}>
             <Card style={styles._card}>
               <CardItem>
                 <Body>
@@ -73,11 +72,7 @@ export default function Login() {
               </CardItem>
               <Item style={[styles._inputFiled, theme.borderColor]}>
                 <Icon active name="call" style={theme.iconColor} />
-                <Text
-                  style={{ fontWeight: 'bold', fontSize: 18, color: 'grey' }}
-                >
-                  +1
-                </Text>
+                <Text style={styles.countryCodeText}>+1</Text>
 
                 <TextInputMask
                   style={styles._input}
@@ -87,10 +82,10 @@ export default function Login() {
                     //@ts-ignore
                     maskType: 'BRL', // for international set it -&amp;nbsp;INTERNATIONAL type masking
                     withDDD: true,
-                    dddMask: '999-999-9999' // this is a your define formatting you use according to your requirment
+                    dddMask: '999-999-9999', // this is a your define formatting you use according to your requirment
                   }}
                   maxLength={12} // set length according to your input requirment
-                  onChangeText={text => {
+                  onChangeText={(text) => {
                     setMobile(text)
                   }}
                   value={mobile}
@@ -107,7 +102,7 @@ export default function Login() {
                 <Text style={styles._btn_text}>Continue</Text>
               </Button>
             </Card>
-            <View style={{ flex: 1 }}>
+            <View style={globalStyles.colorlessContainer}>
               <Text style={styles._footer_text}>Or sign in with</Text>
 
               <View style={styles._fotter_row}>

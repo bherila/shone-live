@@ -3,6 +3,7 @@ import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import { AntDesign } from '@expo/vector-icons'
 import { ScreenNames } from '../utils/ScreenNames'
 import { useNavigation } from '@react-navigation/native'
+import { AppColors } from '../utils/colors'
 
 export default function Header(props: any) {
   const navigation = useNavigation()
@@ -84,13 +85,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     alignSelf: 'center',
-    color: 'white',
+    color: AppColors.WHITE,
   },
   _name: {
-    color: 'white',
+    color: AppColors.WHITE,
     fontWeight: 'bold',
   },
   _handle: {
-    color: 'white',
+    color: AppColors.WHITE,
   },
 })

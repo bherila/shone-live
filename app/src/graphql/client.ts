@@ -10,7 +10,7 @@ const link = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
     graphQLErrors.forEach(({ message, locations, path }) => {
       console.error(
-        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
       )
     })
   }
@@ -36,18 +36,18 @@ const authLink = setContext(async (_, { headers }) => {
       ...headers,
       'content-type': 'application/json',
       accept: 'application/json',
-      authorization: token ? `Bearer ${token}` : ''
-    }
+      authorization: token ? `Bearer ${token}` : '',
+    },
   }
 })
 const client = new ApolloClient({
   link: ApolloLink.from([
     authLink,
     link as any,
-    createUploadLink({ uri: 'http://192.168.0.38:4000/api/graphql' })
-    // createUploadLink({ uri: API })
+    // createUploadLink({ uri: 'http://localhost:4000/api/graphql' })
+    createUploadLink({ uri: API }),
   ]),
-  cache: new InMemoryCache()
+  cache: new InMemoryCache(),
 })
 
 export default client

@@ -6,7 +6,7 @@ import RtcEngine, {
   RtcRemoteView,
   ChannelProfile,
   ClientRole,
-  VideoRenderMode
+  VideoRenderMode,
 } from 'react-native-agora'
 import { requestCameraAndAudioPermission } from '../../utils/helper'
 import styles from './styles'
@@ -24,9 +24,10 @@ const LiveStream = (props: Props) => {
 
   const [peerIds, setPeerIds] = useState<any[]>([])
   const [joined, setJoined] = useState(false)
-  const [broadcasterVideoState, setBroadcasterVideoState] = useState<
-    VideoRemoteState
-  >(VideoRemoteState.Starting)
+  const [
+    broadcasterVideoState,
+    setBroadcasterVideoState,
+  ] = useState<VideoRemoteState>(VideoRemoteState.Starting)
   const [isBroadcaster] = useState(isHost)
 
   useEffect(() => {
@@ -44,13 +45,13 @@ const LiveStream = (props: Props) => {
           'RemoteVideoStateChanged',
           (uid, state: VideoRemoteState) => {
             if (uid === 1) setBroadcasterVideoState(state)
-          }
+          },
         )
       })
-      .catch(e => console.error('Initialization Error : ', { e }))
+      .catch((e) => console.error('Initialization Error : ', { e }))
 
     return () => {
-      (async () => {
+      ;(async () => {
         try {
           await AgoraEngine.current?.stopPreview()
           await AgoraEngine.current?.destroy()
@@ -86,7 +87,7 @@ const LiveStream = (props: Props) => {
       await AgoraEngine.current.startPreview()
 
       await AgoraEngine.current.setChannelProfile(
-        ChannelProfile.LiveBroadcasting
+        ChannelProfile.LiveBroadcasting,
       )
 
       if (isBroadcaster) {
@@ -94,7 +95,7 @@ const LiveStream = (props: Props) => {
       }
 
       // This callback will triggered when the remote user successfully joins the channel.
-      AgoraEngine.current.addListener('UserJoined', uid => {
+      AgoraEngine.current.addListener('UserJoined', (uid) => {
         setBroadcasterVideoState(VideoRemoteState.Decoding)
         if (peerIds.indexOf(uid) === -1) {
           setPeerIds([...peerIds, uid])
@@ -102,8 +103,8 @@ const LiveStream = (props: Props) => {
       })
 
       // This callback will triggered when the remote user leaves the channel or drops offline.
-      AgoraEngine.current.addListener('UserOffline', uid => {
-        const ids = peerIds.filter(id => id !== uid)
+      AgoraEngine.current.addListener('UserOffline', (uid) => {
+        const ids = peerIds.filter((id) => id !== uid)
         setPeerIds(ids)
       })
 
@@ -150,7 +151,7 @@ const LiveStream = (props: Props) => {
               <View
                 style={[
                   styles.backgroundVideo,
-                  { alignItems: 'center', justifyContent: 'center' }
+                  { alignItems: 'center', justifyContent: 'center' },
                 ]}
               >
                 <Text>{videoStateMessage(broadcasterVideoState)}</Text>

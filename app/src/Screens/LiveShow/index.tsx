@@ -20,6 +20,7 @@ import styles from './styles'
 import { Poll } from '../../components'
 import { LinearGradient } from 'expo-linear-gradient'
 import { Ionicons } from '@expo/vector-icons'
+import { AppColors } from '../../utils/colors'
 
 // purchased component is available but right now its not used
 export default function Home() {
@@ -126,7 +127,7 @@ export default function Home() {
                 width: 25,
                 height: 25,
                 marginLeft: 10,
-                tintColor: 'white',
+                tintColor: AppColors.WHITE,
               }}
               source={require('../../../assets/view.png')}
             />
@@ -135,7 +136,7 @@ export default function Home() {
                 textAlign: 'center',
                 marginLeft: 3,
                 fontSize: 12,
-                color: 'white',
+                color: AppColors.WHITE,
               }}
             >
               29.1K
