@@ -22,8 +22,8 @@ export default function Login() {
 
   const [addUser, { data, error, loading }] = useAddUserMutation({
     variables: {
-      phone: `+1${mobile}`
-    }
+      phone: `+1${mobile}`,
+    },
   })
 
   useEffect(() => {
@@ -36,7 +36,7 @@ export default function Login() {
     if (error) return Alert.alert(error.message)
     if (data?.add_user) {
       navigation.navigate(ScreenNames.AuthScreens.CONFIRM_SMS, {
-        phone: mobile
+        phone: mobile,
       })
     }
   }, [data, error, loading])
@@ -82,10 +82,10 @@ export default function Login() {
                     //@ts-ignore
                     maskType: 'BRL', // for international set it -&amp;nbsp;INTERNATIONAL type masking
                     withDDD: true,
-                    dddMask: '999-999-9999' // this is a your define formatting you use according to your requirment
+                    dddMask: '999-999-9999', // this is a your define formatting you use according to your requirment
                   }}
                   maxLength={12} // set length according to your input requirment
-                  onChangeText={text => {
+                  onChangeText={(text) => {
                     setMobile(text)
                   }}
                   value={mobile}

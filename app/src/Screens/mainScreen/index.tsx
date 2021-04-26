@@ -8,7 +8,7 @@ import {
   Modal,
   FlatList,
   Platform,
-  Alert
+  Alert,
 } from 'react-native'
 import theme from './../../utils/colors'
 import styles from './styles'
@@ -53,31 +53,31 @@ export default function MainScreen() {
   const {
     data: shows,
     error: showsError,
-    loading: isShowsLoading
+    loading: isShowsLoading,
   } = useGetShowsQuery()
 
   const commingSoon = [
     {
-      img: require('./../../../assets/comingone.png')
+      img: require('./../../../assets/comingone.png'),
     },
     {
-      img: require('./../../../assets/comingtwo.png')
+      img: require('./../../../assets/comingtwo.png'),
     },
     {
-      img: require('./../../../assets/comingthree.png')
-    }
+      img: require('./../../../assets/comingthree.png'),
+    },
   ]
 
   const moreShows = [
     {
-      img: require('../../../assets/moreone.png')
+      img: require('../../../assets/moreone.png'),
     },
     {
-      img: require('../../../assets/moretwo.png')
+      img: require('../../../assets/moretwo.png'),
     },
     {
-      img: require('../../../assets/morethree.png')
-    }
+      img: require('../../../assets/morethree.png'),
+    },
   ]
 
   useEffect(() => {
@@ -112,9 +112,9 @@ export default function MainScreen() {
       index: 0,
       routes: [
         {
-          name: ScreenNames.AuthScreens.LOGIN
-        }
-      ]
+          name: ScreenNames.AuthScreens.LOGIN,
+        },
+      ],
     })
 
     hideMenu()
@@ -124,7 +124,7 @@ export default function MainScreen() {
     ;(async () => {
       if (Platform.OS !== 'web') {
         const {
-          status
+          status,
         } = await ImagePicker.requestMediaLibraryPermissionsAsync()
         if (status === ImagePicker.PermissionStatus.DENIED) {
           alert('Sorry, we need camera roll permissions to make this work!')
@@ -136,7 +136,7 @@ export default function MainScreen() {
   //Needed to convert video file to base64 and then to blob, Since Transloadit only allows blob or file data
   const urlToBlob = async (uri: string) => {
     const fileBase64 = await FileSystem.readAsStringAsync(uri, {
-      encoding: 'base64'
+      encoding: 'base64',
     })
 
     return new Promise<Blob | File>((resolve, reject) => {
@@ -181,7 +181,7 @@ export default function MainScreen() {
         console.log('Complete', {
           a,
           b,
-          c
+          c,
         })
       })
       uppy.addFile({
@@ -189,7 +189,7 @@ export default function MainScreen() {
         type: 'video/*',
         data: blobData,
         source: 'Local',
-        isRemote: false
+        isRemote: false,
       })
       uppy.upload()
     } catch (e) {
@@ -203,7 +203,7 @@ export default function MainScreen() {
       mediaTypes: ImagePicker.MediaTypeOptions.Videos,
       allowsEditing: true,
       quality: 1,
-      videoMaxDuration: 60
+      videoMaxDuration: 60,
     })
 
     if (!result.cancelled) {
@@ -223,7 +223,7 @@ export default function MainScreen() {
         onPress={() => {
           navigation.navigate(ScreenNames.HomeScreens.HOME, {
             type: 'join',
-            showId: item.id
+            showId: item.id,
           })
         }}
       >
@@ -231,7 +231,7 @@ export default function MainScreen() {
           source={{
             uri: item.image_url
               ? item.image_url
-              : 'https://picsum.photos/200/300'
+              : 'https://picsum.photos/200/300',
           }}
           style={styles._image}
         />
@@ -407,8 +407,8 @@ export default function MainScreen() {
               style={[
                 styles._confirmBtn,
                 {
-                  backgroundColor: '#e4e4e4'
-                }
+                  backgroundColor: '#e4e4e4',
+                },
               ]}
               onPress={() => setModalVisible(false)}
             >

@@ -6,7 +6,7 @@ export async function requestCameraAndAudioPermission() {
   try {
     const granted = await PermissionsAndroid.requestMultiple([
       PermissionsAndroid.PERMISSIONS.CAMERA,
-      PermissionsAndroid.PERMISSIONS.RECORD_AUDIO
+      PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
     ])
     if (
       granted['android.permission.RECORD_AUDIO'] ===
@@ -29,7 +29,7 @@ export const generateRNFile = (uri: string, name: string) => {
     ? new ReactNativeFile({
         uri,
         type: mimeType ? mimeType : 'image/jpeg',
-        name
+        name,
       })
     : null
 }

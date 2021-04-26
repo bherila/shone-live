@@ -13,7 +13,9 @@ const Message = ({ profilePic, alias, message }: Props) => {
     <View style={styles._chatRow}>
       <Image
         source={{
-          uri: profilePic ? profilePic : require('../../../assets/chatIcon.png')
+          uri: profilePic
+            ? profilePic
+            : require('../../../assets/chatIcon.png'),
         }}
         style={styles._userProfile}
       />

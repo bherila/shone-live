@@ -16,20 +16,20 @@ export default function Payment() {
       name: 'JESSICA SMITH',
       type: 'Default payment method',
       card: 'Mastercard (0000)',
-      exp: '02/21'
+      exp: '02/21',
     },
     {
       name: 'JESSICA',
       type: 'Set as default payment method',
       card: 'Mastercard (0000)',
-      exp: '02/21'
+      exp: '02/21',
     },
     {
       name: 'JESSICA SMITH',
       type: 'Set as default payment method',
       card: 'Mastercard (0000)',
-      exp: '03/21'
-    }
+      exp: '03/21',
+    },
   ]
 
   const renderItem = ({ item }: any) => {
@@ -38,7 +38,7 @@ export default function Payment() {
         <Text
           style={[
             item.type === 'Default payment method' ? null : { color: 'blue' },
-            styles._texttype
+            styles._texttype,
           ]}
         >
           {item.type}
@@ -80,7 +80,7 @@ export default function Payment() {
             flex: 6,
             justifyContent: 'center',
             alignItems: 'center',
-            marginRight: 20
+            marginRight: 20,
           }}
         >
           <Title style={{ fontSize: 20, alignSelf: 'center' }}>Payments</Title>

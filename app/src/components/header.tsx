@@ -25,8 +25,8 @@ export default function Header(props: any) {
             {
               alignSelf: 'center',
               justifyContent: 'center',
-              paddingVertical: 8
-            }
+              paddingVertical: 8,
+            },
           ]}
           onPress={() => navigation.navigate(ScreenNames.HomeScreens.LIVE_SHOW)}
         >
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginTop: 40,
-    paddingHorizontal: 15
+    paddingHorizontal: 15,
   },
   _userData: {
     height: 50,
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 10,
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   _circle: {
     height: 50,
@@ -66,12 +66,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#00000069'
+    backgroundColor: '#00000069',
   },
   _user_profile: {
     height: 40,
     width: 40,
-    borderRadius: 35 / 2
+    borderRadius: 35 / 2,
   },
   _shop_all: {
     backgroundColor: 'rgb(0,196,154)',
@@ -79,19 +79,19 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     paddingVertical: 7,
     paddingHorizontal: 15,
-    height: 40
+    height: 40,
   },
   shop_btn_text: {
     fontWeight: 'bold',
     textAlign: 'center',
     alignSelf: 'center',
-    color: AppColors.WHITE
+    color: AppColors.WHITE,
   },
   _name: {
     color: AppColors.WHITE,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   _handle: {
-    color: AppColors.WHITE
-  }
+    color: AppColors.WHITE,
+  },
 })

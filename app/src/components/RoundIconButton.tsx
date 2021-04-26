@@ -5,7 +5,7 @@ import {
   ImageSourcePropType,
   ImageStyle,
   ViewStyle,
-  StyleProp
+  StyleProp,
 } from 'react-native'
 import { globalStyles } from '../utils/globalStyles'
 
@@ -20,7 +20,7 @@ const RoundIconButton = ({
   iconUri,
   onPress,
   iconStyle,
-  containerStyle
+  containerStyle,
 }: Props) => {
   return (
     <TouchableOpacity

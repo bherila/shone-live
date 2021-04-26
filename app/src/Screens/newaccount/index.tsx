@@ -39,14 +39,14 @@ export default function NewAccount() {
             user: {
               id: route.params?.user.id,
               username,
-              email
-            }
-          }
-        }).then(async updatedUser => {
+              email,
+            },
+          },
+        }).then(async (updatedUser) => {
           await setItem(StorageKeys.USER, updatedUser.data?.update_user)
           await setItem(
             StorageKeys.AUTH_TOKEN,
-            updatedUser.data?.update_user.token
+            updatedUser.data?.update_user.token,
           )
           navigateToProfileScreen()
         })
@@ -61,7 +61,7 @@ export default function NewAccount() {
   const navigateToProfileScreen = async () => {
     navigation.navigate(ScreenNames.AuthScreens.PROFILE_PHOTO, {
       username,
-      email
+      email,
     })
   }
 
@@ -79,7 +79,7 @@ export default function NewAccount() {
               style={{
                 flex: 3,
                 justifyContent: 'center',
-                alignItems: 'center'
+                alignItems: 'center',
               }}
             >
               <Image
@@ -134,7 +134,7 @@ export default function NewAccount() {
                 placeholder="Username"
                 placeholderTextColor={'grey'}
                 style={styles._textinput}
-                onChangeText={text => {
+                onChangeText={(text) => {
                   setUsername(text)
                 }}
                 autoCapitalize={'none'}
@@ -154,7 +154,7 @@ export default function NewAccount() {
                 style={styles._textinput}
                 keyboardType="email-address"
                 autoCapitalize={'none'}
-                onChangeText={text => {
+                onChangeText={(text) => {
                   setEmail(text)
                 }}
                 returnKeyType={'done'}

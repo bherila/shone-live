@@ -57,31 +57,31 @@ const styles = StyleSheet.create({
   barIcon: {
     width: wp(4.5),
     height: wp(4.5),
-    tintColor: 'black'
+    tintColor: 'black',
   },
   numOfLikes: {
     minWidth: wp(8),
     maxWidth: wp(10),
-    fontFamily: FontNames.POPPINS_MEDIUM
+    fontFamily: FontNames.POPPINS_MEDIUM,
   },
   likeIcon: {
     tintColor: 'black',
     width: wp(5),
     height: wp(5),
     marginHorizontal: wp(1),
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   likeContainer: { paddingHorizontal: wp(3) },
   creatorName: {
     padding: wp(2),
-    fontFamily: FontNames.POPPINS_MEDIUM
+    fontFamily: FontNames.POPPINS_MEDIUM,
   },
   creatorProfilePic: {
     width: wp(10),
     height: wp(10),
     borderRadius: wp(10) / 2,
     margin: wp(0.5),
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   creatorDetailsContainer: {
     justifyContent: 'space-between',
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: wp(10),
     marginStart: wp(6),
-    alignItems: 'center'
+    alignItems: 'center',
   },
   rankTextStyle: {
     position: 'absolute',
@@ -99,12 +99,12 @@ const styles = StyleSheet.create({
     zIndex: 15,
     fontSize: RFValue(15),
     fontWeight: 'bold',
-    fontFamily: FontNames.POPPINS_SEMIBOLD
+    fontFamily: FontNames.POPPINS_SEMIBOLD,
   },
   barRankIcon: {
     width: wp(7),
     height: wp(7),
     alignSelf: 'center',
-    top: wp(2)
-  }
+    top: wp(2),
+  },
 })

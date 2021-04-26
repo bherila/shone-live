@@ -6,12 +6,12 @@ import {
   ImageBackground,
   Image,
   ImageSourcePropType,
-  TouchableOpacity
+  TouchableOpacity,
 } from 'react-native'
 import { RFValue } from 'react-native-responsive-fontsize'
 import {
   heightPercentageToDP as hp,
-  widthPercentageToDP as wp
+  widthPercentageToDP as wp,
 } from 'react-native-responsive-screen'
 import { AppColors } from '../utils/colors'
 import FontNames from '../utils/Fonts/FontNames'
@@ -29,7 +29,7 @@ interface Props {
 
 const ContestListItem = ({
   item: { image_url, likes, bar_count },
-  index
+  index,
 }: Props) => {
   const dim = index % 2 == 0 ? { marginRight: wp(5) } : { marginLeft: wp(5) }
   return (
@@ -72,7 +72,7 @@ export default ContestListItem
 const styles = StyleSheet.create({
   playIcon: {
     height: 19,
-    width: 13
+    width: 13,
   },
   container: {
     height: hp(27),
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     borderRadius: wp(2.5),
     overflow: 'hidden',
     backgroundColor: 'grey',
-    position: 'relative'
+    position: 'relative',
   },
   likeBarcontainer: {
     position: 'absolute',
@@ -91,28 +91,28 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     justifyContent: 'space-between',
-    backgroundColor: '#ffffff30'
+    backgroundColor: '#ffffff30',
   },
   item: {
     flexDirection: 'row',
     paddingHorizontal: wp(3),
     paddingVertical: wp(2),
-    alignItems: 'center'
+    alignItems: 'center',
   },
   icon: {
     width: wp(3),
-    height: wp(3)
+    height: wp(3),
   },
   text: {
     fontFamily: FontNames.POPPINS_SEMIBOLD,
     fontSize: RFValue(10),
     marginHorizontal: wp(1),
-    color: AppColors.WHITE
+    color: AppColors.WHITE,
   },
   image: {
     width: '100%',
     height: '100%',
-    borderRadius: wp(2.5)
+    borderRadius: wp(2.5),
   },
   playButton: {
     position: 'absolute',
@@ -124,6 +124,6 @@ const styles = StyleSheet.create({
     top: 100,
     bottom: 100,
     left: 50,
-    right: 50
-  }
+    right: 50,
+  },
 })
