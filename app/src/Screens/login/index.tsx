@@ -44,7 +44,6 @@ export default function Login() {
   const onContinue = () => {
     if (mobile.replace(/-/g, '')?.length === 10) {
       addUser()
-      // navigation.navigate('ConfirmSms')
     } else {
       alert('Please enter correct mobile number')
     }
@@ -53,7 +52,7 @@ export default function Login() {
   return (
     <KeyboardAwareScrollView contentContainerStyle={globalStyles.container}>
       <Loader isLoading={loading} />
-      <View style={{ flex: 1 }}>
+      <View style={globalStyles.colorlessContainer}>
         <View style={styles._logView}>
           <Image
             source={require('../../../assets/logo.png')}
@@ -61,7 +60,7 @@ export default function Login() {
           />
         </View>
         <View style={[styles._bodyView, theme.bg]}>
-          <View style={{ flex: 1 }}>
+          <View style={globalStyles.colorlessContainer}>
             <Card style={styles._card}>
               <CardItem>
                 <Body>
@@ -73,11 +72,7 @@ export default function Login() {
               </CardItem>
               <Item style={[styles._inputFiled, theme.borderColor]}>
                 <Icon active name="call" style={theme.iconColor} />
-                <Text
-                  style={{ fontWeight: 'bold', fontSize: 18, color: 'grey' }}
-                >
-                  +1
-                </Text>
+                <Text style={styles.countryCodeText}>+1</Text>
 
                 <TextInputMask
                   style={styles._input}
@@ -107,7 +102,7 @@ export default function Login() {
                 <Text style={styles._btn_text}>Continue</Text>
               </Button>
             </Card>
-            <View style={{ flex: 1 }}>
+            <View style={globalStyles.colorlessContainer}>
               <Text style={styles._footer_text}>Or sign in with</Text>
 
               <View style={styles._fotter_row}>

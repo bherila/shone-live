@@ -12,6 +12,9 @@ export const globalStyles = StyleSheet.create({
     position: 'relative',
     backgroundColor: AppColors.WHITE
   },
+  colorlessContainer: {
+    flex: 1
+  },
   absoluteView: {
     position: 'absolute'
   },

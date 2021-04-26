@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     flexWrap: 'nowrap'
   },
   _circle: {
-    color: AppColors.WHITE,
+    backgroundColor: AppColors.WHITE,
     height: 40,
     width: 40,
     borderRadius: 20,
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    color: AppColors.WHITE,
+    backgroundColor: AppColors.WHITE,
     borderRadius: 20,
     padding: 15,
     alignItems: 'center',
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     justifyContent: 'center',
     alignItems: 'center',
-    color: AppColors.WHITE,
+    backgroundColor: AppColors.WHITE,
     elevation: 10,
     position: 'absolute',
     right: -5,

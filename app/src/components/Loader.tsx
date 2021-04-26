@@ -1,5 +1,5 @@
 import React from 'react'
-import { ActivityIndicator, Text, View } from 'react-native'
+import { ActivityIndicator, Text, View, StyleSheet } from 'react-native'
 import theme, { AppColors } from '../utils/colors'
 import { globalStyles } from '../utils/globalStyles'
 
@@ -16,17 +16,19 @@ const Loader = ({ isLoading, progress, total, isProgressShown }: Props) => {
       style={[
         globalStyles.absoluteView,
         globalStyles.absolouteCenter,
-        globalStyles.loader
+        globalStyles.loader,
       ]}
     >
       <ActivityIndicator size="large" color={theme.textColor.color} />
       {isProgressShown && (
-        <Text style={{ fontSize: 30, color: AppColors.WHITE }}>
-          {progress}/100
-        </Text>
+        <Text style={styles.progressText}>{progress}/100</Text>
       )}
     </View>
   ) : null
 }
 
 export default Loader
+
+const styles = StyleSheet.create({
+  progressText: { fontSize: 30, color: AppColors.WHITE },
+})
