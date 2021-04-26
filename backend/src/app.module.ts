@@ -12,6 +12,7 @@ import { ProductsModule } from './products/products.module'
 import { ShowModule } from './show/show.module'
 import { ShowSegmentsModule } from './show-segment/show-segments.module'
 import { ShowYourStylesModule } from './show-your-style/show-your-style.module'
+import { StyleVideoEntryModule } from './show-your-style/show-your-style-video/show-your-style-video.module'
 import { UserModule } from './user/user.module'
 import { UserBrandRolesModule } from './user-brand-role/user-brand-roles.module'
 import { UserShowRolesModule } from './user-show-role/user-show-roles.module'
@@ -42,6 +43,7 @@ import { UserShowRolesModule } from './user-show-role/user-show-roles.module'
     UserModule,
     UserBrandRolesModule,
     UserShowRolesModule,
+    StyleVideoEntryModule,
     GraphQLModule.forRoot({
       path: '/api/graphql',
       installSubscriptionHandlers: false,
