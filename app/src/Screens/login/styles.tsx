@@ -11,6 +11,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: 'grey'
   },
+  countryCodeText: {
+    fontWeight: 'bold',
+    fontSize: 18,
+    color: 'grey',
+  },
   _logView: {
     flex: 1,
     justifyContent: 'center',

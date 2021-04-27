@@ -15,13 +15,13 @@ import { ScreenNames } from '../../utils/ScreenNames'
 import {
   userInit,
   userInitFailure,
-  userInitSuccess
+  userInitSuccess,
 } from '../../redux/actions/userActions'
 import { useDispatch } from 'react-redux'
 import {
   User,
   VerifyCodeQuery,
-  useVerifyCodeLazyQuery
+  useVerifyCodeLazyQuery,
 } from '../../generated/graphql'
 
 export default function ConfirmSms() {
@@ -31,7 +31,7 @@ export default function ConfirmSms() {
 
   const [
     verifyCode,
-    { data, loading, error: errorVerifyCode }
+    { data, loading, error: errorVerifyCode },
   ] = useVerifyCodeLazyQuery()
 
   const dispatch = useDispatch()
@@ -42,8 +42,8 @@ export default function ConfirmSms() {
     verifyCode({
       variables: {
         code: otp,
-        phone: `+1${params?.phone}`
-      }
+        phone: `+1${params?.phone}`,
+      },
     })
     dispatch(userInit())
   }
@@ -72,13 +72,13 @@ export default function ConfirmSms() {
         index: 0,
         routes: [
           {
-            name: ScreenNames.HomeScreens.MAIN_SCREEN
-          }
-        ]
+            name: ScreenNames.HomeScreens.MAIN_SCREEN,
+          },
+        ],
       })
     } else {
       navigation.navigate(ScreenNames.AuthScreens.NEW_ACCOUNT, {
-        user: data?.verify_code
+        user: data?.verify_code,
       })
     }
   }

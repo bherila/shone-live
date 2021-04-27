@@ -11,37 +11,37 @@ export default StyleSheet.create({
     left: 0,
     bottom: 0,
     right: 0,
-    backgroundColor: '#00000099'
+    backgroundColor: '#00000099',
   },
   bottomView: {
     alignSelf: 'center',
     width: '100%',
     bottom: 0,
-    paddingBottom: 50
+    paddingBottom: 50,
   },
   bottomTextButtonShareContainer: {
     alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'space-around',
-    width: '100%'
+    width: '100%',
   },
   bottomViewWrapper: {
     alignSelf: 'center',
-    paddingBottom: 100
+    paddingBottom: 100,
   },
   textStyle: {
     fontFamily: FontNames.POPPINS_REGULAR,
     color: AppColors.WHITE,
-    fontSize: RFValue(16)
+    fontSize: RFValue(16),
   },
 
   seePriceButtonContainer: {
     backgroundColor: AppColors.BLACK,
     flex: 0,
-    paddingVertical: 8
+    paddingVertical: 8,
   },
   shareIcon: {
     width: 43,
-    height: 38
-  }
+    height: 38,
+  },
 })

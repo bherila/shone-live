@@ -7,12 +7,15 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core'
-import Router from 'next/router'
+import Router, { useRouter } from 'next/router'
 import React from 'react'
 
-import { StoreModel } from '../pages/seller'
+import { Brand } from '../generated/graphql'
 
 const useStyles = makeStyles((theme) => ({
+  toolbar: {
+    backgroundColor: theme.palette.common.black,
+  },
   root: {
     flexGrow: 1,
   },
@@ -31,15 +34,17 @@ export default function StoreSection({
   store,
   children,
 }: {
-  store: StoreModel
+  store: Brand
   children: React.ReactNode
 }) {
+  const router = useRouter()
+  const { pid }: { pid?: string } = router.query
   const classes = useStyles()
 
   return (
     <>
       <AppBar position="static">
-        <Toolbar>
+        <Toolbar className={classes.toolbar}>
           <Box
             display="flex"
             alignItems="center"
@@ -59,37 +64,31 @@ export default function StoreSection({
             <Box>
               <Button
                 className={classes.buttonText}
-                onClick={() => Router.push(`/seller/store/${store.id}/`)}
+                onClick={() => Router.push(`/seller/store/${pid}/`)}
               >
                 Orders
               </Button>
               <Button
                 className={classes.buttonText}
-                onClick={() =>
-                  Router.push(`/seller/store/${store.id}/products`)
-                }
+                onClick={() => Router.push(`/seller/store/${pid}/products`)}
               >
                 Products
               </Button>
               <Button
                 className={classes.buttonText}
-                onClick={() =>
-                  Router.push(`/seller/store/${store.id}/customers`)
-                }
+                onClick={() => Router.push(`/seller/store/${pid}/customers`)}
               >
                 Customers
               </Button>
               <Button
                 className={classes.buttonText}
-                onClick={() =>
-                  Router.push(`/seller/store/${store.id}/analytics`)
-                }
+                onClick={() => Router.push(`/seller/store/${pid}/analytics`)}
               >
                 Analytics
               </Button>
               <Button
                 className={classes.buttonText}
-                onClick={() => Router.push(`/seller/store/${store.id}/shows`)}
+                onClick={() => Router.push(`/seller/store/${pid}/shows`)}
               >
                 Shows
               </Button>

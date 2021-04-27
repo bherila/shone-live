@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql'
+import { Field, ObjectType } from '@nestjs/graphql'
 import {
   Column,
   Entity,
@@ -13,11 +13,9 @@ import { User } from '../../user/entities/user.entity'
 @ObjectType()
 @Entity()
 export class Payment {
-  @Field(() => ID)
-  @PrimaryGeneratedColumn({
-    type: 'bigint',
-  })
-  readonly id: number
+  @Field()
+  @PrimaryGeneratedColumn('uuid')
+  readonly id: string
 
   @Field()
   @ManyToOne(() => Product)

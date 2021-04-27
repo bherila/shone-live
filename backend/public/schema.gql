@@ -13,7 +13,7 @@ type User {
 }
 
 type Address {
-  id: Float!
+  id: String!
   city: String!
   country: String!
   line1: String!
@@ -24,16 +24,34 @@ type Address {
   phone: String!
 }
 
-type ConsumerLead {
-  id: Float!
-  email: String!
-  submitted_timestamp: DateTime!
+type Brand {
+  id: String!
+  name: String!
+  description: String!
+  ownerUser: User!
+}
+
+type MessageEntity {
+  id: String!
+  timestamp: DateTime!
+  message: String!
+  alias: String!
 }
 
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+type UserShowRole {
+  id: String!
+  read: Boolean!
+  write: Boolean!
+  admin: Boolean!
+  stream_to: Boolean!
+  user: User!
+  show: Show!
+}
 
 type Show {
   id: ID!
@@ -42,32 +60,53 @@ type Show {
   start_date: DateTime!
   end_date: DateTime!
   chatMessages: [MessageEntity!]
+  showSegments: [ShowSegment!]
+  userShowRoles: [UserShowRole!]
+  owner_user: User!
 }
 
-type MessageEntity {
-  id: ID!
-  timestamp: DateTime!
-  message: String!
-  alias: String!
+type ShowSegment {
+  id: String!
+  title: String!
+  brand: Brand!
+  show: Show!
+  ownerUser: User!
+  products: [Product!]!
 }
 
 type Product {
-  id: Float!
+  id: String!
   name: String!
   description: String!
   user: User!
-  show: Show!
+  showSegments: [ShowSegment!]!
+  brand: Brand
+}
+
+type UserBrandRole {
+  id: String!
+  read: Boolean!
+  write: Boolean!
+  admin: Boolean!
+  user: User!
+  brand: Brand!
+}
+
+type ConsumerLead {
+  id: String!
+  email: String!
+  submitted_timestamp: DateTime!
 }
 
 type Payment {
-  id: ID!
+  id: String!
   product: Product!
   user: User!
   quantity: Float!
 }
 
 type ShowYourStyleEntry {
-  id: Float!
+  id: String!
   user: User!
   video_url: String!
   submitted_timestamp: DateTime!
@@ -81,17 +120,19 @@ type ShowYourStyleVideoIdEntry {
   video_url: String
   is_viewable: Boolean!
   error: String
+  json_data: String
+  urls: String
 }
 
 type ShowYourStyleViewRecord {
-  id: Float!
+  id: String!
   entry: ShowYourStyleEntry!
   user: User!
   view_time: DateTime!
 }
 
 type ShowYourStyleVote {
-  id: Float!
+  id: String!
   entry: ShowYourStyleEntry!
   user: User!
   vote: Float!
@@ -99,28 +140,41 @@ type ShowYourStyleVote {
 }
 
 type Query {
-  address(addressId: Float!): Address
+  address(addressId: String!): Address
   addresses: [Address!]!
-  consumerLead(consumerLeadId: Float!): ConsumerLead
+  brand(brandId: String!): Brand
+  brands(paginationQuery: PaginationQueryDto!): [Brand!]!
+  my_brands(paginationQuery: PaginationQueryDto!): [Brand!]!
+  consumerLead(consumerLeadId: String!): ConsumerLead
   consumerLeads(paginationQuery: PaginationQueryDto!): [ConsumerLead!]!
-  messageEntity(messageEntityId: Float!): MessageEntity
+  messageEntity(messageEntityId: String!): MessageEntity
   messageEntities: [MessageEntity!]!
-  product(productId: Float!): Product
+  product(productId: String!): Product
   products(paginationQuery: PaginationQueryDto!): [Product!]!
-  payment(PaymentId: Float!): Payment
+  myProducts(paginationQuery: PaginationQueryDto!): [Product!]!
+  brandProducts(paginationQuery: PaginationQueryDto!, brandId: String!): [Product!]!
+  payment(PaymentId: String!): Payment
   payments: [Payment!]!
-  show(showId: Float!): Show
+  show(showId: String!): Show
   shows: [Show!]!
-  show_your_style_Entry(showId: Float!): ShowYourStyleEntry
+  showSegment(showsegmentId: String!): ShowSegment
+  showSegments: [ShowSegment!]!
+  show_your_style_Entry(showId: String!): ShowYourStyleEntry
   get_random_show_your_style_entry: ShowYourStyleEntry
   show_your_style_entries(paginationQuery: PaginationQueryDto!): [ShowYourStyleEntry!]!
-  show_your_style_vote(showId: Float!): ShowYourStyleVote
+  show_your_style_vote(showId: String!): ShowYourStyleVote
   show_your_style_votes(paginationQuery: PaginationQueryDto!): [ShowYourStyleVote!]!
-  show_your_style_view_record(showId: Float!): ShowYourStyleViewRecord
+  show_your_style_view_record(showId: String!): ShowYourStyleViewRecord
   show_your_style_view_records(paginationQuery: PaginationQueryDto!): [ShowYourStyleViewRecord!]!
-  user(userId: Float!): User
+  user(userId: String!): User
   users: [User!]!
   verify_code(code: String!, phone: String!): User!
+  userbrandrole(userbrandroleId: String!): UserBrandRole
+  userbrandroles(paginationQuery: PaginationQueryDto!): [UserBrandRole!]!
+  my_userbrandroles(paginationQuery: PaginationQueryDto!): [UserBrandRole!]!
+  usershowrole(usershowroleId: String!): UserShowRole
+  usershowroles(paginationQuery: PaginationQueryDto!): [UserShowRole!]!
+  my_usershowroles(paginationQuery: PaginationQueryDto!): [UserShowRole!]!
 }
 
 input PaginationQueryDto {
@@ -130,17 +184,26 @@ input PaginationQueryDto {
 
 type Mutation {
   add_address(data: CreateAddressDto!): Address!
+  add_brand(data: CreateBrandDto!): Brand!
+  update_brand(data: UpdateBrandDto!): Brand!
   addConsumerLead(email: String!): ConsumerLead!
-  add_message(message: String!, showId: Float!): MessageEntity!
-  add_products(data: CreateProductDto!): Product!
-  add_payment(quantity: String!, productId: Float!): Payment!
-  add_show(data: CreateShowInput!): Show!
+  add_message(message: String!, showId: String!): MessageEntity!
+  addProduct(data: CreateProductDto!): Product!
+  update_product(data: UpdateProductDto!): Product!
+  add_payment(quantity: String!, productId: String!): Payment!
+  add_show(data: CreateShowDto!): Show!
+  addShowSegment(data: CreateShowSegmentDto!): ShowSegment!
+  updateShowSegment(data: UpdateShowSegmentDto!): ShowSegment!
   add_show_your_style_entry(videoUrl: String!): ShowYourStyleEntry!
   add_video_id_from_transloadit(videoId: String!): ShowYourStyleVideoIdEntry!
-  add_show_your_style_vote(entryId: Float!, viewDuration: Float!, vote: Float!): ShowYourStyleVote!
-  add_show_your_style_view_record(entryId: Float!): ShowYourStyleViewRecord!
+  add_show_your_style_vote(entryId: String!, viewDuration: Float!, vote: Float!): ShowYourStyleVote!
+  add_show_your_style_view_record(entryId: String!): ShowYourStyleViewRecord!
   add_user(phone: String!): String!
   update_user(user: UpdateUserEntityDto!): User!
+  add_userbrandrole(data: CreateUserBrandRoleDto!): UserBrandRole!
+  update_userbrandrole(data: UpdateUserBrandRoleDto!): UserBrandRole!
+  add_usershowrole(data: CreateUserShowRoleDto!): UserShowRole!
+  update_usershowrole(data: UpdateUserShowRoleDto!): UserShowRole!
 }
 
 input CreateAddressDto {
@@ -155,18 +218,46 @@ input CreateAddressDto {
   phone: String!
 }
 
-input CreateProductDto {
-  userId: String!
-  showId: Float!
+input CreateBrandDto {
   name: String!
   description: String!
 }
 
-input CreateShowInput {
+input UpdateBrandDto {
+  id: String!
+  name: String!
+  description: String!
+}
+
+input CreateProductDto {
+  showSegmentId: String
+  brandId: String
+  name: String!
+  description: String!
+}
+
+input UpdateProductDto {
+  id: String!
+  name: String!
+  description: String!
+}
+
+input CreateShowDto {
   title: String!
-  image_url: String
+  imageUrl: String!
   startDate: DateTime!
   endDate: DateTime!
+}
+
+input CreateShowSegmentDto {
+  showId: String!
+  brandId: String!
+  title: String!
+}
+
+input UpdateShowSegmentDto {
+  id: String!
+  title: String!
 }
 
 input UpdateUserEntityDto {
@@ -178,3 +269,35 @@ input UpdateUserEntityDto {
 
 """The `Upload` scalar type represents a file upload."""
 scalar Upload
+
+input CreateUserBrandRoleDto {
+  brandId: String!
+  userId: String!
+  read: Boolean!
+  write: Boolean!
+  admin: Boolean!
+}
+
+input UpdateUserBrandRoleDto {
+  id: String!
+  read: Boolean!
+  write: Boolean!
+  admin: Boolean!
+}
+
+input CreateUserShowRoleDto {
+  showId: String!
+  userId: String!
+  read: Boolean!
+  write: Boolean!
+  admin: Boolean!
+  streamTo: Boolean!
+}
+
+input UpdateUserShowRoleDto {
+  id: String!
+  read: Boolean!
+  write: Boolean!
+  admin: Boolean!
+  stream_to: Boolean!
+}

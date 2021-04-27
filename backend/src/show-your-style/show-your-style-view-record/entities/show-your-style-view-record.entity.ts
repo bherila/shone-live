@@ -18,8 +18,8 @@ import { ShowYourStyleEntry } from '../../show-your-style-entry/entities/show-yo
 })
 export class ShowYourStyleViewRecord {
   @Field()
-  @PrimaryGeneratedColumn()
-  readonly id: number
+  @PrimaryGeneratedColumn('uuid')
+  readonly id: string
 
   @Field()
   @ManyToOne(() => ShowYourStyleEntry)

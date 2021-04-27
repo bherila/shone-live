@@ -4,7 +4,7 @@ import {
   Text,
   TextStyle,
   TouchableOpacity,
-  ViewStyle
+  ViewStyle,
 } from 'react-native'
 import { globalStyles } from '../utils/globalStyles'
 

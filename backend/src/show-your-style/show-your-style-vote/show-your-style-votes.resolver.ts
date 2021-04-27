@@ -14,7 +14,7 @@ export class ShowYourStyleVotesResolver {
   ) {}
 
   @Query(() => ShowYourStyleVote, { nullable: true })
-  show_your_style_vote(@Args('showId') showId: number) {
+  show_your_style_vote(@Args('showId') showId: string) {
     return this.showYourStyleVotesService.findOne(showId)
   }
 
@@ -31,7 +31,7 @@ export class ShowYourStyleVotesResolver {
     @Context('user') user: User,
     @Args('vote') vote: number,
     @Args('viewDuration') viewDuration: number,
-    @Args('entryId') entryId: number,
+    @Args('entryId') entryId: string,
   ) {
     return await this.showYourStyleVotesService.create({
       vote,

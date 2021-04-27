@@ -21,7 +21,7 @@ export class ConsumerLeadsService {
     })
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     const consumerLead = await this.consumerLeadsRepository.findOne(id)
     if (!consumerLead) {
       throw new NotFoundException(`Consumer Lead id: ${id} not found`)
@@ -39,7 +39,7 @@ export class ConsumerLeadsService {
     return savedConsumerLead
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     const consumerLead = await this.findOne(id)
     return this.consumerLeadsRepository.remove(consumerLead)
   }

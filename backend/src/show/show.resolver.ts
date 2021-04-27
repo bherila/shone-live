@@ -1,6 +1,8 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
+import { UseGuards } from '@nestjs/common'
+import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql'
 
-import { CreateShowInput } from './entities/createShow.entity'
+import { AuthGuard } from '../common/auth.guards'
+import { CreateShowDto } from './dto/create-show.dto'
 import { Show } from './entities/show.entity'
 import { ShowService } from './show.service'
 
@@ -9,7 +11,7 @@ export class ShowResolver {
   constructor(private readonly showsService: ShowService) {}
 
   @Query(() => Show, { nullable: true })
-  show(@Args('showId') showId: number) {
+  show(@Args('showId') showId: string) {
     return this.showsService.findOne(showId)
   }
 
@@ -19,7 +21,8 @@ export class ShowResolver {
   }
 
   @Mutation(() => Show)
-  async add_show(@Args('data') data: CreateShowInput) {
-    return await this.showsService.create(data)
+  @UseGuards(new AuthGuard())
+  async add_show(@Context('user') user, @Args('data') data: CreateShowDto) {
+    return await this.showsService.create(data, user.id)
   }
 }

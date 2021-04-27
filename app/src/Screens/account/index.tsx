@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
-  Platform
+  Platform,
 } from 'react-native'
 import theme, { AppColors } from './../../utils/colors'
 import styles from './styles'
@@ -13,7 +13,7 @@ import {
   MaterialIcons,
   AntDesign,
   Entypo,
-  SimpleLineIcons
+  SimpleLineIcons,
 } from '@expo/vector-icons'
 import { Body, Icon, Button, Header, Left, Right, ListItem } from 'native-base'
 
@@ -38,7 +38,7 @@ export default function Account() {
 
   const [
     updateUser,
-    { data, error: userUpdateError, loading: userUpdateLoading }
+    { data, error: userUpdateError, loading: userUpdateLoading },
   ] = useUpdateUserMutation()
 
   useEffect(() => {
@@ -49,7 +49,7 @@ export default function Account() {
     }
   }, [data, userUpdateError, userUpdateLoading])
 
-  const user = useAppSelector(state => state.user.user)
+  const user = useAppSelector((state) => state.user.user)
 
   const generateRNFile = async (uri: string, name: string) => {
     const mimeType = mime.lookup(uri)
@@ -57,7 +57,7 @@ export default function Account() {
       ? new ReactNativeFile({
           uri: Platform.OS === 'ios' ? uri.replace('file:///', 'file:/') : uri,
           type: mimeType ? mimeType : 'image/jpeg',
-          name
+          name,
         })
       : null
   }
@@ -68,15 +68,15 @@ export default function Account() {
 
       const file = await generateRNFile(
         image.uri,
-        name ? name : `picture${Date.now()}`
+        name ? name : `picture${Date.now()}`,
       )
 
       await updateUser({
         variables: {
           user: {
-            file: file
-          }
-        }
+            file: file,
+          },
+        },
       })
     }
   }
@@ -101,7 +101,7 @@ export default function Account() {
           style={{
             flex: 3,
             justifyContent: 'center',
-            alignItems: 'center'
+            alignItems: 'center',
           }}
         >
           <Image

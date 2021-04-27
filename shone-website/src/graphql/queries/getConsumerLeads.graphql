@@ -1,7 +1,0 @@
-query getConsumerLeads {
-  consumerLeads(paginationQuery: { limit: 10, offset: 0 }) {
-    id
-    email
-    submitted_timestamp
-  }
-}

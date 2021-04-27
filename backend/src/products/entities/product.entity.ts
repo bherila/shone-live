@@ -3,46 +3,30 @@ import {
   Column,
   Entity,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm'
 
-import { Show } from '../../show/entities/show.entity'
+import { Brand } from '../../brands/entities/brand.entity'
+import { ShowSegment } from '../../show-segment/entities/show-segment.entity'
 import { User } from '../../user/entities/user.entity'
 
 @ObjectType()
 @Entity()
 export class Product {
   @Field()
-  @PrimaryGeneratedColumn()
-  readonly id: number
+  @PrimaryGeneratedColumn('uuid')
+  readonly id: string
 
   @Field()
-  @Column({
-    comment: 'product name',
-  })
+  @Column({ comment: 'product name' })
   name: string
 
   @Field()
-  @Column({
-    comment: 'product description',
-  })
+  @Column({ comment: 'product description' })
   description: string
-
-  // @Column({
-  //     comment: "base retail price for the show",
-  // })
-  // price: number;
-
-  // @Column({
-  //     comment: "quantity available to sell for associated show",
-  // })
-  // quantity: number;
-
-  // @Column({
-  //     comment: "currently available quantity. updated after each successful transaction"
-  // })
-  // current_quantity: number;
 
   @Field()
   @ManyToOne(() => User)
@@ -51,14 +35,28 @@ export class Product {
   })
   user: User
 
-  @Field()
-  @ManyToOne(() => Show)
-  @JoinColumn({
-    name: 'show_id',
+  @Field(() => [ShowSegment])
+  @ManyToMany(
+    () => ShowSegment,
+    showSegment => showSegment.products,
+  )
+  @JoinTable({
+    name: 'product_show_segments', // table name for the junction table of this relation
+    joinColumn: {
+      name: 'product_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'show_segment_id',
+      referencedColumnName: 'id',
+    },
   })
-  show: Show
+  showSegments: ShowSegment[]
 
-  // @Field()
-  // @ManyToOne(() => Payment)
-  // paymnet: Payment
+  @Field({ nullable: true })
+  @ManyToOne(() => Brand)
+  @JoinColumn({
+    name: 'brand_id',
+  })
+  brand: Brand
 }

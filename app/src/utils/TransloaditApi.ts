@@ -5,12 +5,12 @@ import { useAppSelector } from '../redux/store'
 //https://api2.transloadit.com/assemblies
 
 const UppyClient = () => {
-  const user = useAppSelector(state => state.user.user?.id)
+  const user = useAppSelector((state) => state.user.user?.id)
 
   const uppy: Uppy.Uppy = Uppy().use(Transloadit, {
     params: {
       auth: { key: TRANSLOADIT_KEY },
-      template_id: TRANSLOADIT_TEMPLATE_ID
+      template_id: TRANSLOADIT_TEMPLATE_ID,
     },
     limit: 1,
     waitForEncoding: false,
@@ -19,13 +19,13 @@ const UppyClient = () => {
     alwaysRunAssembly: false,
     signature: null,
     fields: {
-      user_id: user
+      user_id: user,
     },
-    notify_url: 'http://aae32d36da18.ngrok.io/api/transload_notify'
+    notify_url: 'http://aae32d36da18.ngrok.io/api/transload_notify',
   })
 
   return {
-    uppy
+    uppy,
   }
 }
 

@@ -1,12 +1,9 @@
 import { ValidationPipe } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
-import { DocumentBuilder } from '@nestjs/swagger/dist/document-builder'
-import { SwaggerModule } from '@nestjs/swagger/dist/swagger-module'
 import { json } from 'body-parser'
 import cloneBuffer from 'clone-buffer'
 import dotenv from 'dotenv'
 import expressListRoutes from 'express-list-routes'
-import fs from 'fs'
 
 import { AppModule } from './app.module'
 
@@ -31,16 +28,6 @@ async function bootstrap() {
     }),
   )
 
-  // SWAGGER
-  const options = new DocumentBuilder()
-    .setTitle('Piki')
-    .setDescription('Piki Server')
-    .setVersion('0.1')
-    .build()
-  const document = SwaggerModule.createDocument(app, options)
-
-  fs.writeFileSync('./open-api.json', JSON.stringify(document))
-
   // https://yanndanthu.github.io/2019/07/04/Checking-Stripe-Webhook-Signatures-from-NestJS.html
   app.use(
     json({
@@ -53,28 +40,6 @@ async function bootstrap() {
       },
     }),
   )
-
-  // todo: this works, but we should move the PW to the env at least so it's not in the repo
-  // app.use(
-  //   "/api",
-  //   basicAuth({
-  //     challenge: true,
-  //     users: { ["admin"]: "admin" }
-  //   })
-  // );
-  SwaggerModule.setup('/api', app, document, {
-    swaggerOptions: {
-      tagsSorter: 'alpha',
-      operationsSorter: 'alpha',
-    },
-  })
-
-  // const configService = app.get(ConfigService);
-  // config.update({
-  //   accessKeyId: configService.get("AWS_ACCESS_KEY_ID"),
-  //   secretAccessKey: configService.get("AWS_SECRET_ACCESS_KEY"),
-  //   region: configService.get("AWS_REGION")
-  // });
 
   await app.listen(process.env.SERVER_PORT || 4000)
 

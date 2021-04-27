@@ -49,7 +49,7 @@ export class UserService {
         process.env.TWILIO_ACCOUNT_SID,
         process.env.TWILIO_AUTH_TOKEN,
       )
-      const message = await client.messages.create({
+      await client.messages.create({
         body: `Your SHONE verification code is ${code}`,
         from: process.env.TWILIO_PHONE_NUMBER,
         to: phone,
@@ -77,11 +77,11 @@ export class UserService {
     if (userDetail.verificationCode !== code)
       throw new HttpException(message.wrongCode, HttpStatus.BAD_REQUEST)
     if (userDetail.username) {
-      const Payload = {
+      const payload = {
         id: userDetail.id,
         phone,
       }
-      const token = await jwt.sign(Payload, process.env.JWT_SECRET)
+      const token = await jwt.sign(payload, process.env.JWT_SECRET)
       await this.userRepository.update(userDetail.id, { token })
       userDetail = await this.findOne(userDetail.id)
     }
@@ -98,32 +98,32 @@ export class UserService {
   }
 
   async update(user: any) {
-    const temoData: any = {}
+    const tempData: any = {}
     const checkUserExist = await this.findOne(user.id)
     if (!checkUserExist)
       throw new UnprocessableEntityException(message.userNotExist)
     if (user.username) {
-      temoData.username = user.username
+      tempData.username = user.username
       const checkusernameExistsOrNot = await this.findOne(user.username)
       if (checkusernameExistsOrNot)
         throw new UnprocessableEntityException(message.usernameAlreadyExist)
     }
-    if (user.email) temoData.email = user.email
+    if (user.email) tempData.email = user.email
     try {
       if (user.file) {
         const profileUrl = await fileUpload(await user.file)
-        temoData.profileUrl = profileUrl
+        tempData.profileUrl = profileUrl
       }
-      const Payload = {
+      const payload = {
         id: checkUserExist.id,
         phone: checkUserExist.phone,
       }
-      const token = await jwt.sign(Payload, process.env.JWT_SECRET)
-      temoData.token = token
-      await this.userRepository.update(user.id, temoData)
+      const token = await jwt.sign(payload, process.env.JWT_SECRET)
+      tempData.token = token
+      await this.userRepository.update(user.id, tempData)
       return await this.findOne(user.id)
     } catch (e) {
-      throw Error(e)
+      return e
     }
   }
 }

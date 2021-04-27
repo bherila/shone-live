@@ -5,7 +5,7 @@ import { AuthGuard } from '../../common/auth.guards'
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
 import { User } from '../../user/entities/user.entity'
 import { ShowYourStyleEntry } from './entities/show-your-style-entry.entity'
-import { ShowYourStyleVideoIdEntry } from './entities/show-your-style-entry.entity'
+import { ShowYourStyleVideoIdEntry } from './entities/show-your-style-video-entry.entity'
 import { ShowYourStyleEntriesService } from './show-your-style-entries.service'
 
 @Resolver(() => ShowYourStyleEntry)
@@ -15,7 +15,7 @@ export class ShowYourStyleEntriesResolver {
   ) {}
 
   @Query(() => ShowYourStyleEntry, { nullable: true })
-  show_your_style_Entry(@Args('showId') showId: number) {
+  show_your_style_Entry(@Args('showId') showId: string) {
     return this.showYourStyleEntriesService.findOne(showId)
   }
 

@@ -1,0 +1,10 @@
+mutation UpdateUser($userID: String!, $username: String!, $email: String!, $file: Upload!) {
+  update_user(user: {id: $userID, username: $username, email: $email, file: $file}) {
+    id
+    email
+    phone
+    username
+    verification_code_time_sent
+    token
+  }
+}

@@ -16,48 +16,48 @@ const IMAGE_MOCK_DATA = [
   {
     image_url: 'https://picsum.photos/200/300',
     likes: 150,
-    bar_count: 80
+    bar_count: 80,
   },
   {
     image_url: 'https://picsum.photos/200/300',
     likes: 80,
-    bar_count: 55
+    bar_count: 55,
   },
   {
     image_url: 'https://picsum.photos/200/300',
     likes: 245,
-    bar_count: 60
+    bar_count: 60,
   },
   {
     image_url: 'https://picsum.photos/200/300',
     likes: 150,
-    bar_count: 80
+    bar_count: 80,
   },
   {
     image_url: 'https://picsum.photos/200/300',
     likes: 80,
-    bar_count: 55
+    bar_count: 55,
   },
   {
     image_url: 'https://picsum.photos/200/300',
     likes: 245,
-    bar_count: 60
+    bar_count: 60,
   },
   {
     image_url: 'https://picsum.photos/200/300',
     likes: 150,
-    bar_count: 80
+    bar_count: 80,
   },
   {
     image_url: 'https://picsum.photos/200/300',
     likes: 80,
-    bar_count: 55
+    bar_count: 55,
   },
   {
     image_url: 'https://picsum.photos/200/300',
     likes: 245,
-    bar_count: 60
-  }
+    bar_count: 60,
+  },
 ]
 
 const CREATOR_MOCK_DATA = [
@@ -65,20 +65,20 @@ const CREATOR_MOCK_DATA = [
     rank: 1,
     profile_pic: 'https://picsum.photos/200',
     name: 'John Doe',
-    numOfLikes: 120
+    numOfLikes: 120,
   },
   {
     rank: 2,
     profile_pic: 'https://picsum.photos/200',
     name: 'James Doe',
-    numOfLikes: 105
+    numOfLikes: 105,
   },
   {
     rank: 3,
     profile_pic: 'https://picsum.photos/200',
     name: 'Ed Doe',
-    numOfLikes: 85
-  }
+    numOfLikes: 85,
+  },
 ]
 
 const index = () => {
@@ -121,13 +121,13 @@ const index = () => {
               styles.tabHeaderButton,
               position == 0
                 ? styles.selectedTabHeader
-                : styles.nonSelectedTabHeader
+                : styles.nonSelectedTabHeader,
             ]}
             textStyle={[
               VoteStyles.buttonTextStyle,
               position == 0
                 ? styles.selectedTabHeaderText
-                : styles.nonSelectedTabHeaderText
+                : styles.nonSelectedTabHeaderText,
             ]}
             title="Top Creators"
             onPress={() => {
@@ -141,13 +141,13 @@ const index = () => {
               styles.tabHeaderButton,
               position == 1
                 ? styles.selectedTabHeader
-                : styles.nonSelectedTabHeader
+                : styles.nonSelectedTabHeader,
             ]}
             textStyle={[
               VoteStyles.buttonTextStyle,
               position == 1
                 ? styles.selectedTabHeaderText
-                : styles.nonSelectedTabHeaderText
+                : styles.nonSelectedTabHeaderText,
             ]}
             title="Top Videos"
             onPress={() => {

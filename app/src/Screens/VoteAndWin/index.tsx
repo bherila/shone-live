@@ -13,18 +13,18 @@ const IMAGE_MOCK_DATA = [
   {
     image_url: 'https://picsum.photos/200/300',
     likes: 150,
-    bar_count: 80
+    bar_count: 80,
   },
   {
     image_url: 'https://picsum.photos/200/300',
     likes: 80,
-    bar_count: 55
+    bar_count: 55,
   },
   {
     image_url: 'https://picsum.photos/200/300',
     likes: 245,
-    bar_count: 60
-  }
+    bar_count: 60,
+  },
 ]
 
 const index = () => {

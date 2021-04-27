@@ -22,7 +22,7 @@ const ContestVideoList = ({
   renderFooter,
   renderHeader,
   scrollable,
-  contentContainerStyle
+  contentContainerStyle,
 }: Props) => {
   const footer = () => {
     return <View style={styles.footer}></View>
