@@ -3,9 +3,23 @@ import { StyleSheet } from 'react-native'
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+<<<<<<< Updated upstream
     // justifyContent: "center",
     // alignItems: "center",
     padding: 10,
+=======
+    padding: 10,
+    backgroundColor: AppColors.PRIMARY_BACKGROUND
+  },
+  header: {
+    backgroundColor: AppColors.PRIMARY_BACKGROUND
+  },
+  tabContainerStyle: {
+    elevation: 0,
+    borderColor: 'transparent',
+    height: 0
+    // marginTop: hp(7)
+>>>>>>> Stashed changes
   },
   _screenHeading: {
     fontSize: 20,
@@ -124,6 +138,11 @@ const styles = StyleSheet.create({
     width: 40,
     borderRadius: 20,
   },
+  headerBody: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
 })
 
 export default styles

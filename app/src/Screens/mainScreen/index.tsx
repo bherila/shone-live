@@ -1,19 +1,17 @@
 /* eslint-disable no-use-before-define */
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import {
   Image,
   View,
   TouchableOpacity,
-  ScrollView,
   Modal,
-  FlatList,
   Platform,
   Alert
 } from 'react-native'
-import theme from './../../utils/colors'
+import theme, { AppColors } from './../../utils/colors'
 import styles from './styles'
-import { Feather, Entypo } from '@expo/vector-icons'
-import { Body, Header, Left, Right } from 'native-base'
+import { Entypo } from '@expo/vector-icons'
+import { Body, Header, Left, Right, Tab, Tabs } from 'native-base'
 import Menu, { MenuItem } from 'react-native-material-menu'
 import Text from './../../components/Text'
 import { useNavigation } from '@react-navigation/native'
@@ -24,11 +22,13 @@ import { useSecureStore } from '../../hooks/useSecureStore'
 import { ScreenNames } from '../../utils/ScreenNames'
 import { useDispatch } from 'react-redux'
 import { userLogout } from '../../redux/actions/userActions'
-import AppButton from '../../components/AppButton'
 import * as ImagePicker from 'expo-image-picker'
 import { Show, useGetShowsQuery } from '../../generated/graphql'
 import { UppyClient } from '../../utils/TransloaditApi'
 import * as FileSystem from 'expo-file-system'
+import ContestVideoVote from '../ContestVideoVote'
+import { StatusBar } from 'expo-status-bar'
+import RoundIconButton from '../../components/RoundIconButton'
 
 interface ListItem {
   item: Show
@@ -49,11 +49,11 @@ export default function MainScreen() {
 
   const [progress, setProgress] = useState(0)
 
-  const {
-    data: shows,
-    error: showsError,
-    loading: isShowsLoading
-  } = useGetShowsQuery()
+  // const {
+  //   data: shows,
+  //   error: showsError,
+  //   loading: isShowsLoading
+  // } = useGetShowsQuery()
 
   const commingSoon = [
     { img: require('./../../../assets/comingone.png') },
@@ -71,9 +71,9 @@ export default function MainScreen() {
     setModalVisible(true)
   }, [])
 
-  useEffect(() => {
-    if (showsError) Alert.alert(showsError?.message)
-  }, [showsError])
+  // useEffect(() => {
+  //   if (showsError) Alert.alert(showsError?.message)
+  // }, [showsError])
 
   const menu = useRef<any>()
 
@@ -108,7 +108,7 @@ export default function MainScreen() {
   }
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       if (Platform.OS !== 'web') {
         const {
           status
@@ -220,30 +220,31 @@ export default function MainScreen() {
     )
   }
 
-  return (
-    <View style={globalStyles.container}>
-      <Loader
-        isLoading={isShowsLoading || isVideoUploading}
-        isProgressShown={isVideoUploading}
-        progress={progress}
-        total={100}
-      />
-
-      <Header style={globalStyles.header}>
-        <Left />
-        <Body
-          style={{
-            flex: 3,
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}
-        >
+  const renderHeader = () => {
+    return (
+      <Header style={[globalStyles.header, styles.header]} transparent>
+        <Left style={globalStyles.colorlessContainer}>
+          <RoundIconButton
+            containerStyle={{
+              borderWidth: 2,
+              backgroundColor: AppColors.DARK_GREY,
+              width: 53,
+              height: 53,
+              borderColor: AppColors.DARK_GREY_BORDER
+            }}
+            iconStyle={{ width: 24, height: 24 }}
+            iconUri={require('../../../assets/gift_yellow.png')}
+            onPress={() => {}}
+          />
+        </Left>
+        <Body style={styles.headerBody}>
           <Image
-            source={require('./../../../assets/logo.png')}
+            source={require('./../../../assets/shone_logo_light.png')}
             style={globalStyles.profileLogo}
+            resizeMode="contain"
           />
         </Body>
-        <Right style={globalStyles.container}>
+        <Right style={globalStyles.colorlessContainer}>
           <Menu
             ref={menu}
             button={
@@ -257,13 +258,43 @@ export default function MainScreen() {
           >
             <MenuItem onPress={navigateToVoteScreen}>Vote and Win</MenuItem>
             <MenuItem onPress={() => ViewProfile()}>View Profile</MenuItem>
-
             <MenuItem onPress={() => Logout()}>Logout</MenuItem>
           </Menu>
         </Right>
       </Header>
+    )
+  }
 
-      <ScrollView showsVerticalScrollIndicator={false}>
+  return (
+    <View style={[styles.container]}>
+      <StatusBar style="inverted" />
+      {/* <Loader
+        isLoading={isShowsLoading || isVideoUploading}
+        isProgressShown={isVideoUploading}
+        progress={progress}
+        total={100}
+      /> */}
+
+      <Tabs
+        tabContainerStyle={styles.tabContainerStyle}
+        ref={tabRef}
+        tabBarUnderlineStyle={globalStyles.transparentBackground}
+        onChangeTab={({ i }) => setPosition(i)}
+        page={position}
+      >
+        <Tab heading="0">
+          <ContestVideoVote />
+        </Tab>
+        <Tab heading="1">
+          {renderHeader()}
+          <ContestVideoVote />
+        </Tab>
+        <Tab heading="2">
+          <ContestVideoVote />
+        </Tab>
+      </Tabs>
+
+      {/* <ScrollView showsVerticalScrollIndicator={false}>
         <View style={globalStyles.rowContainer}>
           <AppButton title="Show Your Style" onPress={pickVideo} />
 
