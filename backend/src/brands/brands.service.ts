@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto'
@@ -33,29 +33,26 @@ export class BrandsService {
 
   findByUser(paginationQuery: PaginationQueryDto, userId: string) {
     const { limit, offset } = paginationQuery
-    return this.brandRepository.find({
-      relations: ['ownerUser'],
-      skip: offset,
-      take: limit,
-      where: { ownerUser: { id: userId } },
-    })
+    return this.brandRepository
+      .createQueryBuilder('brand')
+      .leftJoin('brand.userBrandRoles', 'userBrandRoles')
+      .where(
+        'userBrandRoles.user_id = :userId AND userBrandRoles.read = true',
+        { userId },
+      )
+      .skip(offset)
+      .take(limit)
+      .getMany()
   }
 
   async findOne(id: string) {
-    const brand = await this.brandRepository.findOne(id, {
+    return await this.brandRepository.findOrFail(id, {
       relations: ['ownerUser'],
     })
-    if (!brand) {
-      throw new NotFoundException(`Brand id: ${id} not found`)
-    }
-    return brand
   }
 
   async create(createBrandDto: CreateBrandDto, userId: string) {
-    const user = await this.userRepository.findOne(userId)
-    if (!user) {
-      throw new NotFoundException(`User #${userId} not found`)
-    }
+    const user = await this.userRepository.findOrFail(userId)
     const brand = this.brandRepository.create({
       ownerUser: user,
       ...createBrandDto,

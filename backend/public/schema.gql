@@ -24,13 +24,6 @@ type Address {
   phone: String!
 }
 
-type Brand {
-  id: String!
-  name: String!
-  description: String!
-  ownerUser: User!
-}
-
 type MessageEntity {
   id: String!
   timestamp: DateTime!
@@ -74,15 +67,6 @@ type ShowSegment {
   products: [Product!]!
 }
 
-type Product {
-  id: String!
-  name: String!
-  description: String!
-  user: User!
-  showSegments: [ShowSegment!]!
-  brand: Brand
-}
-
 type UserBrandRole {
   id: String!
   read: Boolean!
@@ -90,6 +74,24 @@ type UserBrandRole {
   admin: Boolean!
   user: User!
   brand: Brand!
+}
+
+type Brand {
+  id: String!
+  name: String!
+  description: String!
+  showSegments: [ShowSegment!]
+  userBrandRoles: [UserBrandRole!]
+  ownerUser: User!
+}
+
+type Product {
+  id: String!
+  name: String!
+  description: String!
+  user: User!
+  showSegments: [ShowSegment!]
+  brand: Brand
 }
 
 type ConsumerLead {
@@ -153,12 +155,15 @@ type Query {
   products(paginationQuery: PaginationQueryDto!): [Product!]!
   myProducts(paginationQuery: PaginationQueryDto!): [Product!]!
   brandProducts(paginationQuery: PaginationQueryDto!, brandId: String!): [Product!]!
+  showProducts(paginationQuery: PaginationQueryDto!, showId: String!): [Product!]!
   payment(PaymentId: String!): Payment
   payments: [Payment!]!
   show(showId: String!): Show
   shows: [Show!]!
+  brandShows(paginationQuery: PaginationQueryDto!, brandId: String!): [Show!]!
   showSegment(showsegmentId: String!): ShowSegment
   showSegments: [ShowSegment!]!
+  showSegmentByBrandAndShow(showId: String!, brandId: String!): [ShowSegment!]!
   show_your_style_Entry(showId: String!): ShowYourStyleEntry
   get_random_show_your_style_entry: ShowYourStyleEntry
   show_your_style_entries(paginationQuery: PaginationQueryDto!): [ShowYourStyleEntry!]!
@@ -184,14 +189,15 @@ input PaginationQueryDto {
 
 type Mutation {
   add_address(data: CreateAddressDto!): Address!
-  add_brand(data: CreateBrandDto!): Brand!
-  update_brand(data: UpdateBrandDto!): Brand!
+  addBrand(data: CreateBrandDto!): Brand!
+  updateBrand(data: UpdateBrandDto!): Brand!
   addConsumerLead(email: String!): ConsumerLead!
   add_message(message: String!, showId: String!): MessageEntity!
   addProduct(data: CreateProductDto!): Product!
   update_product(data: UpdateProductDto!): Product!
   add_payment(quantity: String!, productId: String!): Payment!
   add_show(data: CreateShowDto!): Show!
+  addShowWithSegment(data: CreateShowWithSegmentDto!): Show!
   addShowSegment(data: CreateShowSegmentDto!): ShowSegment!
   updateShowSegment(data: UpdateShowSegmentDto!): ShowSegment!
   add_show_your_style_entry(videoUrl: String!): ShowYourStyleEntry!
@@ -249,10 +255,25 @@ input CreateShowDto {
   endDate: DateTime!
 }
 
+input CreateShowWithSegmentDto {
+  brandId: String!
+  title: String!
+  imageUrl: String!
+  startDate: DateTime!
+  endDate: DateTime!
+  showSegment: ShowSegmentDto!
+}
+
+input ShowSegmentDto {
+  title: String!
+  productsIds: [String!]!
+}
+
 input CreateShowSegmentDto {
   showId: String!
   brandId: String!
   title: String!
+  productsIds: [String!]!
 }
 
 input UpdateShowSegmentDto {

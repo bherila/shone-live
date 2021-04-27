@@ -34,7 +34,7 @@ export class UserBrandRole {
   @JoinColumn({ name: 'user_id' })
   user: User
 
-  @Field()
+  @Field(() => Brand)
   @ManyToOne(() => Brand)
   @JoinColumn({ name: 'brand_id' })
   brand: Brand

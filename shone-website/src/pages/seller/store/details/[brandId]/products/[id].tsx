@@ -2,18 +2,18 @@ import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 
-import Input from '../../components/Input'
-import Select from '../../components/Select'
+import Input from '../../../../../../components/Input'
+import Select from '../../../../../../components/Select'
 import {
   useAddProductMutation,
   useGetMyBrandsQuery,
   useGetProductLazyQuery,
   useUpdateProductMutation,
-} from '../../generated/graphql'
+} from '../../../../../../generated/graphql'
 
-export default function ProductsPage() {
+export default function AddEditProductPage() {
   const router = useRouter()
-  const { id }: { id?: string } = router.query
+  const { id, brandId }: { id?: string; brandId?: string } = router.query
 
   const {
     handleSubmit,
@@ -48,7 +48,6 @@ export default function ProductsPage() {
       reset({
         name: productData.product.name,
         description: productData.product.description,
-        brandId: productData.product.brand?.id,
       })
     }
   }, [data, productData])
@@ -60,7 +59,7 @@ export default function ProductsPage() {
       await (isNew ? addProduct : updateProduct)({
         variables: {
           ...product,
-          brandId: newProduct.brandId,
+          brandId,
         },
       })
       router.push('/products')

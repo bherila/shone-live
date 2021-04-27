@@ -9,6 +9,8 @@ export default function Select({
   register,
   registerOptions,
   error,
+  multiple,
+  defaultValue,
 }: {
   children: React.ReactNode
   label: string
@@ -17,6 +19,8 @@ export default function Select({
   register: any
   registerOptions?: RegisterOptions
   error?: any
+  multiple?: boolean
+  defaultValue?: string | string[]
 }) {
   return (
     <div className="mb-6">
@@ -24,6 +28,8 @@ export default function Select({
         {label}
       </label>
       <select
+        defaultValue={defaultValue}
+        multiple={multiple}
         placeholder={placeholder || label}
         className="shadow appearance-none border bg-white rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         {...register(name, registerOptions)}

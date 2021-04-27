@@ -1,46 +1,25 @@
 import Router, { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 
-import ProductsTable from '../../../../../components/ProductTable'
-import StoreSection from '../../../../../components/StoreSection'
+import ProductsTable from '../../../../../../components/ProductTable'
+import StoreSection from '../../../../../../components/StoreSection'
 import {
   Brand,
   Product,
   useGetBrandProductsLazyQuery,
-} from '../../../../../generated/graphql'
+} from '../../../../../../generated/graphql'
 
 export async function getServerSideProps() {
   return {
     props: {
       store: { name: "Bretton's Store", id: 'S00001' },
-      products: [
-        {
-          SKU: 'K19371',
-          title: 'Cool Sweatshirt',
-          SRP: 75,
-          stock: 132,
-        },
-      ],
     },
   }
 }
 
-export interface ProductModel {
-  SKU: string
-  title: string
-  SRP: number
-  stock: number
-}
-
-export default function ProductsPage({
-  store,
-  products,
-}: {
-  store: Brand
-  products: ProductModel[]
-}) {
+export default function ProductsPage({ store }: { store: Brand }) {
   const router = useRouter()
-  const { pid }: { pid?: string } = router.query
+  const { brandId }: { brandId?: string } = router.query
   const [limit, setLimit] = useState(10)
   const [offset, setOffset] = useState(0)
 
@@ -49,7 +28,7 @@ export default function ProductsPage({
   useEffect(() => {
     if (limit !== undefined && offset !== undefined)
       getBrandProducts({
-        variables: { limit, offset, brandId: pid },
+        variables: { limit, offset, brandId },
       })
   }, [limit, offset])
 
@@ -76,7 +55,8 @@ export default function ProductsPage({
         products={(data?.brandProducts as Product[]) || []}
         bottomActions={[
           {
-            handleClick: () => Router.push(`/products/new`),
+            handleClick: (row) =>
+              Router.push(`/seller/store/detals/${brandId}/products/${row.id}`),
             name: 'New Product',
           },
         ]}

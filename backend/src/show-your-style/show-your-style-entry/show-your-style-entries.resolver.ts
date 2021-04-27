@@ -45,7 +45,7 @@ export class ShowYourStyleEntriesResolver {
   }
 
   @Mutation(() => ShowYourStyleVideoIdEntry)
-  @UseGuards(AuthGuard)
+  @UseGuards(new AuthGuard())
   async add_video_id_from_transloadit(
     @Context('user') user: User,
     @Args('videoId') videoId: string,

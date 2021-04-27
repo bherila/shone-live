@@ -1,12 +1,18 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 
 import { BrandRepository } from '../brands/brands.repository'
 import { Brand } from '../brands/entities/brand.entity'
+import { Product } from '../products/entities/product.entity'
+import { ProductRepository } from '../products/products.repository'
 import { Show } from '../show/entities/show.entity'
 import { ShowRepository } from '../show/show.repository'
 import { User } from '../user/entities/user.entity'
 import { UserRepository } from '../user/user.repository'
+import { UserBrandRole } from '../user-brand-role/entities/user-brand-role.entity'
+import { UserBrandRoleRepository } from '../user-brand-role/user-brand-roles.repository'
+import { UserShowRole } from '../user-show-role/entities/user-show-role.entity'
+import { UserShowRoleRepository } from '../user-show-role/user-show-roles.repository'
 import { CreateShowSegmentDto } from './dto/create-show-segment.dto'
 import { UpdateShowSegmentDto } from './dto/update-show-segment.dto'
 import { ShowSegment } from './entities/show-segment.entity'
@@ -23,45 +29,49 @@ export class ShowSegmentsService {
     private readonly showRepository: ShowRepository,
     @InjectRepository(User)
     private readonly userRepository: UserRepository,
+    @InjectRepository(UserBrandRole)
+    private readonly userBrandRoleRepository: UserBrandRoleRepository,
+    @InjectRepository(UserShowRole)
+    private readonly userShowRoleRepository: UserShowRoleRepository,
+    @InjectRepository(Product)
+    private readonly productRepository: ProductRepository,
   ) {}
 
   findAll() {
     return this.showSegmentRepository.find({
-      relations: ['brand', 'show'],
+      relations: ['brand', 'show', 'products'],
+    })
+  }
+
+  async findByBrandAndShow(brandId: string, showId: string, userId: string) {
+    await this.userBrandRoleRepository.checkPermission(brandId, userId, 'read')
+    await this.userShowRoleRepository.checkPermission(showId, userId, 'read')
+    return this.showSegmentRepository.find({
+      where: { brand: { id: brandId }, show: { id: showId } },
+      relations: ['brand', 'show', 'products'],
     })
   }
 
   async findOne(id: string) {
-    const showSegment = await this.showSegmentRepository.findOne(id, {
-      relations: ['brand', 'show'],
+    return await this.showSegmentRepository.findOrFail(id, {
+      relations: ['brand', 'show', 'products'],
     })
-    if (!showSegment) {
-      throw new NotFoundException(`ShowSegment id: ${id} not found`)
-    }
-    return showSegment
   }
 
   async create(
-    { brandId, showId, title }: CreateShowSegmentDto,
+    { brandId, showId, title, productsIds }: CreateShowSegmentDto,
     userId: string,
   ) {
-    const user = await this.userRepository.findOne(userId)
-    if (!user) {
-      throw new NotFoundException(`User #${userId} not found`)
-    }
-    const brand = await this.brandRepository.findOne(brandId)
-    if (!brand) {
-      throw new NotFoundException(`Brand #${userId} not found`)
-    }
-    const show = await this.showRepository.findOne(showId)
-    if (!show) {
-      throw new NotFoundException(`Show #${userId} not found`)
-    }
+    const user = await this.userRepository.findOrFail(userId)
+    const brand = await this.brandRepository.findOrFail(brandId)
+    const show = await this.showRepository.findOrFail(showId)
+    const products = await this.productRepository.findAllOrFail(productsIds)
     const showSegment = this.showSegmentRepository.create({
       ownerUser: user,
       brand,
       show,
       title,
+      products,
     })
     const savedShowSegment = await this.showSegmentRepository.save(showSegment)
     return savedShowSegment

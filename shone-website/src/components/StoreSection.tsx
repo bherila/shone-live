@@ -38,7 +38,7 @@ export default function StoreSection({
   children: React.ReactNode
 }) {
   const router = useRouter()
-  const { pid }: { pid?: string } = router.query
+  const { brandId }: { brandId?: string } = router.query
   const classes = useStyles()
 
   return (
@@ -64,31 +64,39 @@ export default function StoreSection({
             <Box>
               <Button
                 className={classes.buttonText}
-                onClick={() => Router.push(`/seller/store/${pid}/`)}
+                onClick={() => Router.push(`/seller/store/details/${brandId}/`)}
               >
                 Orders
               </Button>
               <Button
                 className={classes.buttonText}
-                onClick={() => Router.push(`/seller/store/${pid}/products`)}
+                onClick={() =>
+                  Router.push(`/seller/store/details/${brandId}/products`)
+                }
               >
                 Products
               </Button>
               <Button
                 className={classes.buttonText}
-                onClick={() => Router.push(`/seller/store/${pid}/customers`)}
+                onClick={() =>
+                  Router.push(`/seller/store/details/${brandId}/customers`)
+                }
               >
                 Customers
               </Button>
               <Button
                 className={classes.buttonText}
-                onClick={() => Router.push(`/seller/store/${pid}/analytics`)}
+                onClick={() =>
+                  Router.push(`/seller/store/details/${brandId}/analytics`)
+                }
               >
                 Analytics
               </Button>
               <Button
                 className={classes.buttonText}
-                onClick={() => Router.push(`/seller/store/${pid}/shows`)}
+                onClick={() =>
+                  Router.push(`/seller/store/details/${brandId}/shows`)
+                }
               >
                 Shows
               </Button>
