@@ -2,9 +2,17 @@ query GetProduct($productId: String!){
   product(productId:$productId) {
     name,
     description,
-    brand{
-      id
-      name
+    variants {
+      id,
+      name,
+      description,
+      skus {
+        id,
+        name,
+        friendlyName,
+        COGS,
+        stock
+      }
     }
   }
 }

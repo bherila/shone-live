@@ -69,11 +69,18 @@ export type CreateBrandDto = {
   description: Scalars['String']
 }
 
+export type CreateLineItemsDto = {
+  orderId: Scalars['String']
+  skuId: Scalars['String']
+  amount: Scalars['Float']
+}
+
 export type CreateProductDto = {
   showSegmentId?: Maybe<Scalars['String']>
   brandId?: Maybe<Scalars['String']>
   name: Scalars['String']
   description: Scalars['String']
+  variantData: CreateVariantDto
 }
 
 export type CreateShowDto = {
@@ -99,6 +106,14 @@ export type CreateShowWithSegmentDto = {
   showSegment: ShowSegmentDto
 }
 
+export type CreateSkuDto = {
+  variantId?: Maybe<Scalars['String']>
+  name: Scalars['String']
+  COGS: Scalars['String']
+  friendlyName: Scalars['String']
+  stock: Scalars['Float']
+}
+
 export type CreateUserBrandRoleDto = {
   brandId: Scalars['String']
   userId: Scalars['String']
@@ -116,6 +131,27 @@ export type CreateUserShowRoleDto = {
   streamTo: Scalars['Boolean']
 }
 
+export type CreateVariantDto = {
+  productId?: Maybe<Scalars['String']>
+  name: Scalars['String']
+  description: Scalars['String']
+  skuData: CreateSkuDto
+}
+
+export type CreateorderDto = {
+  showSegmentId: Scalars['String']
+  name: Scalars['String']
+  description: Scalars['String']
+}
+
+export type LineItem = {
+  __typename?: 'LineItem'
+  id: Scalars['String']
+  amount: Scalars['Float']
+  order: Order
+  sku: Sku
+}
+
 export type MessageEntity = {
   __typename?: 'MessageEntity'
   id: Scalars['String']
@@ -131,8 +167,16 @@ export type Mutation = {
   updateBrand: Brand
   addConsumerLead: ConsumerLead
   add_message: MessageEntity
+  addLineItems: LineItem
+  updateLineItems: LineItem
+  addOrder: Order
+  updateOrder: Order
   addProduct: Product
   update_product: Product
+  addVariant: Variant
+  update_variant: Variant
+  addSku: Sku
+  updateSku: Sku
   add_payment: Payment
   add_show: Show
   addShowWithSegment: Show
@@ -171,12 +215,44 @@ export type MutationAdd_MessageArgs = {
   showId: Scalars['String']
 }
 
+export type MutationAddLineItemsArgs = {
+  data: CreateLineItemsDto
+}
+
+export type MutationUpdateLineItemsArgs = {
+  data: UpdateLineItemsDto
+}
+
+export type MutationAddOrderArgs = {
+  data: CreateorderDto
+}
+
+export type MutationUpdateOrderArgs = {
+  data: UpdateorderDto
+}
+
 export type MutationAddProductArgs = {
   data: CreateProductDto
 }
 
 export type MutationUpdate_ProductArgs = {
   data: UpdateProductDto
+}
+
+export type MutationAddVariantArgs = {
+  data: CreateVariantDto
+}
+
+export type MutationUpdate_VariantArgs = {
+  data: UpdateVariantDto
+}
+
+export type MutationAddSkuArgs = {
+  data: CreateSkuDto
+}
+
+export type MutationUpdateSkuArgs = {
+  data: UpdateSkuDto
 }
 
 export type MutationAdd_PaymentArgs = {
@@ -242,6 +318,16 @@ export type MutationUpdate_UsershowroleArgs = {
   data: UpdateUserShowRoleDto
 }
 
+export type Order = {
+  __typename?: 'Order'
+  id: Scalars['String']
+  name: Scalars['String']
+  description: Scalars['String']
+  user: User
+  showSegment: ShowSegment
+  lineItems?: Maybe<Array<LineItem>>
+}
+
 export type PaginationQueryDto = {
   limit: Scalars['Float']
   offset: Scalars['Float']
@@ -263,6 +349,7 @@ export type Product = {
   user: User
   showSegments?: Maybe<Array<ShowSegment>>
   brand?: Maybe<Brand>
+  variants?: Maybe<Array<Variant>>
 }
 
 export type Query = {
@@ -276,11 +363,23 @@ export type Query = {
   consumerLeads: Array<ConsumerLead>
   messageEntity?: Maybe<MessageEntity>
   messageEntities: Array<MessageEntity>
+  lineItem?: Maybe<LineItem>
+  lineItems: Array<LineItem>
+  orderLineItems: Array<LineItem>
+  order?: Maybe<Order>
+  orders: Array<Order>
+  myOrders: Array<Order>
   product?: Maybe<Product>
   products: Array<Product>
   myProducts: Array<Product>
   brandProducts: Array<Product>
   showProducts: Array<Product>
+  variant?: Maybe<Variant>
+  variants: Array<Variant>
+  brandVariants: Array<Variant>
+  sku?: Maybe<Sku>
+  skus: Array<Sku>
+  variantSkus: Array<Sku>
   payment?: Maybe<Payment>
   payments: Array<Payment>
   show?: Maybe<Show>
@@ -335,6 +434,31 @@ export type QueryMessageEntityArgs = {
   messageEntityId: Scalars['String']
 }
 
+export type QueryLineItemArgs = {
+  lineitemsId: Scalars['String']
+}
+
+export type QueryLineItemsArgs = {
+  paginationQuery: PaginationQueryDto
+}
+
+export type QueryOrderLineItemsArgs = {
+  paginationQuery: PaginationQueryDto
+  orderId: Scalars['String']
+}
+
+export type QueryOrderArgs = {
+  orderId: Scalars['String']
+}
+
+export type QueryOrdersArgs = {
+  paginationQuery: PaginationQueryDto
+}
+
+export type QueryMyOrdersArgs = {
+  paginationQuery: PaginationQueryDto
+}
+
 export type QueryProductArgs = {
   productId: Scalars['String']
 }
@@ -355,6 +479,32 @@ export type QueryBrandProductsArgs = {
 export type QueryShowProductsArgs = {
   paginationQuery: PaginationQueryDto
   showId: Scalars['String']
+}
+
+export type QueryVariantArgs = {
+  variantId: Scalars['String']
+}
+
+export type QueryVariantsArgs = {
+  paginationQuery: PaginationQueryDto
+}
+
+export type QueryBrandVariantsArgs = {
+  paginationQuery: PaginationQueryDto
+  productId: Scalars['String']
+}
+
+export type QuerySkuArgs = {
+  skuId: Scalars['String']
+}
+
+export type QuerySkusArgs = {
+  paginationQuery: PaginationQueryDto
+}
+
+export type QueryVariantSkusArgs = {
+  paginationQuery: PaginationQueryDto
+  variantId: Scalars['String']
 }
 
 export type QueryPaymentArgs = {
@@ -457,6 +607,7 @@ export type ShowSegment = {
   show: Show
   ownerUser: User
   products: Array<Product>
+  orders?: Maybe<Array<Order>>
 }
 
 export type ShowSegmentDto = {
@@ -502,10 +653,26 @@ export type ShowYourStyleVote = {
   view_duration: Scalars['Float']
 }
 
+export type Sku = {
+  __typename?: 'Sku'
+  id: Scalars['String']
+  name: Scalars['String']
+  friendlyName: Scalars['String']
+  COGS: Scalars['String']
+  stock: Scalars['Float']
+  variant: Variant
+  skus?: Maybe<Array<LineItem>>
+}
+
 export type UpdateBrandDto = {
   id: Scalars['String']
   name: Scalars['String']
   description: Scalars['String']
+}
+
+export type UpdateLineItemsDto = {
+  id: Scalars['String']
+  amount: Scalars['Float']
 }
 
 export type UpdateProductDto = {
@@ -517,6 +684,13 @@ export type UpdateProductDto = {
 export type UpdateShowSegmentDto = {
   id: Scalars['String']
   title: Scalars['String']
+}
+
+export type UpdateSkuDto = {
+  id: Scalars['String']
+  friendlyName: Scalars['String']
+  COGS: Scalars['String']
+  stock: Scalars['Float']
 }
 
 export type UpdateUserBrandRoleDto = {
@@ -539,6 +713,18 @@ export type UpdateUserShowRoleDto = {
   write: Scalars['Boolean']
   admin: Scalars['Boolean']
   stream_to: Scalars['Boolean']
+}
+
+export type UpdateVariantDto = {
+  id: Scalars['String']
+  name: Scalars['String']
+  description: Scalars['String']
+}
+
+export type UpdateorderDto = {
+  id: Scalars['String']
+  name: Scalars['String']
+  description: Scalars['String']
 }
 
 export type User = {
@@ -573,6 +759,15 @@ export type UserShowRole = {
   show: Show
 }
 
+export type Variant = {
+  __typename?: 'Variant'
+  id: Scalars['String']
+  name: Scalars['String']
+  description: Scalars['String']
+  product: Product
+  skus?: Maybe<Array<Sku>>
+}
+
 export type AddBrandMutationVariables = Exact<{
   name: Scalars['String']
   description: Scalars['String']
@@ -590,13 +785,11 @@ export type AddProductMutationVariables = Exact<{
   showSegmentId?: Maybe<Scalars['String']>
   name: Scalars['String']
   description: Scalars['String']
+  variantData: CreateVariantDto
 }>
 
 export type AddProductMutation = { __typename?: 'Mutation' } & {
-  addProduct: { __typename?: 'Product' } & Pick<
-    Product,
-    'id' | 'name' | 'description'
-  >
+  addProduct: { __typename?: 'Product' } & Pick<Product, 'id'>
 }
 
 export type AddShowSegmentMutationVariables = Exact<{
@@ -764,7 +957,23 @@ export type GetProductQueryVariables = Exact<{
 export type GetProductQuery = { __typename?: 'Query' } & {
   product?: Maybe<
     { __typename?: 'Product' } & Pick<Product, 'name' | 'description'> & {
-        brand?: Maybe<{ __typename?: 'Brand' } & Pick<Brand, 'id' | 'name'>>
+        variants?: Maybe<
+          Array<
+            { __typename?: 'Variant' } & Pick<
+              Variant,
+              'id' | 'name' | 'description'
+            > & {
+                skus?: Maybe<
+                  Array<
+                    { __typename?: 'Sku' } & Pick<
+                      Sku,
+                      'id' | 'name' | 'friendlyName' | 'COGS' | 'stock'
+                    >
+                  >
+                >
+              }
+          >
+        >
       }
   >
 }
@@ -813,8 +1022,13 @@ export type GetShowsQueryVariables = Exact<{ [key: string]: never }>
 export type GetShowsQuery = { __typename?: 'Query' } & {
   shows: Array<
     { __typename?: 'Show' } & Pick<Show, 'id' | 'title' | 'image_url'> & {
-        showSegments?: Maybe<
-          Array<{ __typename?: 'ShowSegment' } & Pick<ShowSegment, 'title'>>
+        chatMessages?: Maybe<
+          Array<
+            { __typename?: 'MessageEntity' } & Pick<
+              MessageEntity,
+              'id' | 'message' | 'alias'
+            >
+          >
         >
       }
   >
@@ -900,6 +1114,7 @@ export const AddProductDocument = gql`
     $showSegmentId: String
     $name: String!
     $description: String!
+    $variantData: CreateVariantDto!
   ) {
     addProduct(
       data: {
@@ -907,11 +1122,10 @@ export const AddProductDocument = gql`
         showSegmentId: $showSegmentId
         name: $name
         description: $description
+        variantData: $variantData
       }
     ) {
       id
-      name
-      description
     }
   }
 `
@@ -937,6 +1151,7 @@ export type AddProductMutationFn = Apollo.MutationFunction<
  *      showSegmentId: // value for 'showSegmentId'
  *      name: // value for 'name'
  *      description: // value for 'description'
+ *      variantData: // value for 'variantData'
  *   },
  * });
  */
@@ -1722,9 +1937,17 @@ export const GetProductDocument = gql`
     product(productId: $productId) {
       name
       description
-      brand {
+      variants {
         id
         name
+        description
+        skus {
+          id
+          name
+          friendlyName
+          COGS
+          stock
+        }
       }
     }
   }
@@ -1908,8 +2131,10 @@ export const GetShowsDocument = gql`
       id
       title
       image_url
-      showSegments {
-        title
+      chatMessages {
+        id
+        message
+        alias
       }
     }
   }

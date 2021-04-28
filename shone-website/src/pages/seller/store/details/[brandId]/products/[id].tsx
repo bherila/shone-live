@@ -1,17 +1,20 @@
 import { useRouter } from 'next/router'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { FaArrowLeft, FaPencilAlt } from 'react-icons/fa'
 
+import FormButton from '../../../../../../components/FormButton'
 import Input from '../../../../../../components/Input'
-import Select from '../../../../../../components/Select'
+import Table from '../../../../../../components/Table'
+import VariantForm from '../../../../../../components/VariantForm'
 import {
   useAddProductMutation,
-  useGetMyBrandsQuery,
   useGetProductLazyQuery,
   useUpdateProductMutation,
 } from '../../../../../../generated/graphql'
 
 export default function AddEditProductPage() {
+  const [selectedVariant, setSelectedVariant] = useState<number>()
   const router = useRouter()
   const { id, brandId }: { id?: string; brandId?: string } = router.query
 
@@ -22,10 +25,7 @@ export default function AddEditProductPage() {
     register,
   } = useForm({ reValidateMode: 'onChange', mode: 'onChange' })
 
-  const { data } = useGetMyBrandsQuery({
-    variables: { limit: 10, offset: 0 },
-  })
-  const isNew = id === 'new'
+  const isNewProduct = id === 'new'
 
   const [addProduct, { loading: loadingAddProduct }] = useAddProductMutation()
   const [updateProduct, { loading: loadingUpdate }] = useUpdateProductMutation()
@@ -37,82 +37,147 @@ export default function AddEditProductPage() {
   const loading = loadingAddProduct || loadingUpdate || loadingGetProduct
 
   useEffect(() => {
-    if (!isNew)
+    if (!isNewProduct)
       getProduct({
         variables: { productId: id },
       })
   }, [id])
 
   useEffect(() => {
-    if (productData && data) {
+    if (productData) {
       reset({
         name: productData.product.name,
         description: productData.product.description,
       })
     }
-  }, [data, productData])
+  }, [productData])
 
   const onSubmit = async (newProduct) => {
     try {
-      const product = isNew ? newProduct : { id: id, ...newProduct }
+      const product = isNewProduct ? newProduct : { id: id, ...newProduct }
 
-      await (isNew ? addProduct : updateProduct)({
+      await (isNewProduct ? addProduct : updateProduct)({
         variables: {
           ...product,
           brandId,
         },
       })
-      router.push('/products')
+      router.push(`/seller/store/details/${brandId}/products/`)
     } catch (e) {
       console.error(e)
     }
   }
 
+  const selectVariant = (e, row) => {
+    e.stopPropagation()
+    setSelectedVariant(
+      productData.product.variants.findIndex(({ id }) => id === row.id),
+    )
+    reset({
+      variantData: row,
+    })
+  }
+
+  const onAddVariantClick = () => {
+    setSelectedVariant(-1)
+    reset({
+      variantData: {},
+    })
+  }
+
   return (
     <div className="w-full flex flex-col items-center">
+      <FaArrowLeft
+        onClick={() =>
+          router.push(`/seller/store/details/${brandId}/products/`)
+        }
+        className="hover:text-blue-700 self-start text-blue-500 font-bold m-8 absolute"
+      />
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="bg-white w-4/12 shadow-md rounded px-8 pt-6 pb-8 my-4"
       >
-        <Input
-          label="Name"
-          name="name"
-          register={register}
-          registerOptions={{ required: true }}
-          error={errors.name && 'is required'}
-        />
-        <Input
-          label="Description"
-          name="description"
-          register={register}
-          registerOptions={{ required: true }}
-          error={errors.description && 'is required'}
-        />
-        {isNew && (
-          <Select
-            label="Brand Id"
-            name="brandId"
-            register={register}
-            registerOptions={{ required: true }}
-            error={errors.brandId && 'is required'}
-          >
-            <option className="text-gray-200" value="" />
-            {data?.my_brands.map((brand) => (
-              <option key={brand.id} value={brand.id}>
-                {brand.name}
-              </option>
-            ))}
-          </Select>
+        {!isNewProduct && productData?.product && (
+          <div className="flex flex-col items-center">
+            <div className="text-2xl capitalize">
+              {productData.product.name}
+            </div>
+            <div className="text-lg">{productData.product.description}</div>
+            {selectedVariant === undefined && (
+              <Table
+                rows={productData.product.variants || []}
+                columns={[
+                  {
+                    title: 'Name',
+                    field: 'name',
+                  },
+                  {
+                    title: 'Skus',
+                    field: 'skus',
+                    renderField: (row) =>
+                      row.skus?.map(({ name }) => name).join(', '),
+                  },
+                  {
+                    title: 'Actions',
+                    renderField: (row) => (
+                      <FaPencilAlt
+                        onClick={(e) => selectVariant(e, row)}
+                        size={20}
+                      />
+                    ),
+                    field: 'actions',
+                  },
+                ]}
+                bottomActions={[
+                  {
+                    handleClick: onAddVariantClick,
+                    name: 'Add Variant',
+                  },
+                ]}
+                rowId="id"
+                tableWidth="100%"
+                styleProps={{ height: 300 }}
+              />
+            )}
+          </div>
         )}
-        <div className="flex items-center justify-center">
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            type="submit"
-            disabled={loading}
-          >
-            {isNew ? 'Create' : 'Edit'}
-          </button>
-        </div>
+        {isNewProduct && (
+          <>
+            <Input
+              label="Name"
+              name="name"
+              register={register}
+              registerOptions={{ required: true }}
+              error={errors.name && 'is required'}
+            />
+            <Input
+              label="Description"
+              name="description"
+              register={register}
+              registerOptions={{ required: true }}
+              error={errors.description && 'is required'}
+            />
+          </>
+        )}
+        {(isNewProduct || selectedVariant !== undefined) && (
+          <VariantForm
+            cancelEdit={() => setSelectedVariant(undefined)}
+            variant={
+              selectedVariant >= 0 &&
+              productData?.product?.variants[selectedVariant]
+            }
+            isNewVariant={selectedVariant === -1}
+            isNewProduct={isNewProduct}
+            register={register}
+            errors={errors}
+            reset={reset}
+          />
+        )}
+        {selectedVariant === undefined && (
+          <FormButton disabled={loading}>
+            {isNewProduct ? 'Create' : 'Edit'}
+          </FormButton>
+        )}
       </form>
     </div>
   )

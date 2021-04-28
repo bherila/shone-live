@@ -29,7 +29,7 @@ export class ShowResolver {
     @Args('brandId') brandId: string,
     @Args('paginationQuery') paginationQuery: PaginationQueryDto,
   ): Promise<Show[]> {
-    return this.showsService.findByBrand(paginationQuery, brandId, user.id)
+    return this.showsService.findByBrand(paginationQuery, brandId)
   }
 
   @Mutation(() => Show)

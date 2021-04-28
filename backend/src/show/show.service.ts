@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto'
@@ -85,11 +85,7 @@ export class ShowService {
     })
   }
 
-  async findByBrand(
-    paginationQuery: PaginationQueryDto,
-    brandId: string,
-    userId: string,
-  ) {
+  async findByBrand(paginationQuery: PaginationQueryDto, brandId: string) {
     const { limit, offset } = paginationQuery
     const show = await this.showRepository
       .createQueryBuilder('show')

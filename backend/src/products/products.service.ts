@@ -12,6 +12,7 @@ import { UserBrandRole } from '../user-brand-role/entities/user-brand-role.entit
 import { UserBrandRoleRepository } from '../user-brand-role/user-brand-roles.repository'
 import { UserShowRole } from '../user-show-role/entities/user-show-role.entity'
 import { UserShowRoleRepository } from '../user-show-role/user-show-roles.repository'
+import { VariantsService } from '../variants/variants.service'
 import { CreateProductDto } from './dto/create-product.dto'
 import { UpdateProductDto } from './dto/update-product.dto'
 import { Product } from './entities/product.entity'
@@ -32,6 +33,7 @@ export class ProductsService {
     private readonly userBrandRoleRepository: UserBrandRoleRepository,
     @InjectRepository(UserShowRole)
     private readonly userShowRoleRepository: UserShowRoleRepository,
+    private readonly variantsService: VariantsService,
   ) {}
 
   findAll(paginationQuery: PaginationQueryDto) {
@@ -92,11 +94,18 @@ export class ProductsService {
   }
 
   async findOne(id: string) {
-    return await this.productRepository.findOrFail(id)
+    return await this.productRepository.findOrFail(id, {
+      relations: ['variants', 'variants.skus'],
+    })
   }
 
   async create(
-    { brandId, showSegmentId, ...createProductDto }: CreateProductDto,
+    {
+      brandId,
+      showSegmentId,
+      variantData,
+      ...createProductDto
+    }: CreateProductDto,
     userId: string,
   ) {
     if (!showSegmentId && !brandId) {
@@ -135,6 +144,10 @@ export class ProductsService {
       ...createProductDto,
     })
     const savedProduct = await this.productRepository.save(product)
+    await this.variantsService.create({
+      productId: savedProduct.id,
+      ...variantData,
+    })
     return savedProduct
   }
 

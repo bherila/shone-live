@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import { FaTrashAlt } from 'react-icons/fa'
+import { FaArrowLeft, FaTrashAlt } from 'react-icons/fa'
 
 import Input from '../../../../../../components/Input'
 import Select from '../../../../../../components/Select'
@@ -27,8 +27,6 @@ export default function AddEditShow() {
     getShow,
     { data: showData, loading: loadingGetShow },
   ] = useGetShowLazyQuery({ fetchPolicy: 'no-cache' })
-
-  console.log(showData)
 
   const {
     formState: { errors },
@@ -76,6 +74,10 @@ export default function AddEditShow() {
 
   return (
     <div className="w-full flex flex-col items-center">
+      <FaArrowLeft
+        onClick={() => router.push(`/seller/store/details/${brandId}/shows/`)}
+        className="hover:text-blue-700 self-start text-blue-500 font-bold m-8 absolute"
+      />
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="bg-white w-4/12 shadow-md rounded px-8 pt-6 pb-8 my-4"

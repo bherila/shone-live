@@ -9,6 +9,8 @@ import { User } from '../user/entities/user.entity'
 import { UserRepository } from '../user/user.repository'
 import { UserBrandRoleRepository } from '../user-brand-role/user-brand-roles.repository'
 import { UserShowRoleRepository } from '../user-show-role/user-show-roles.repository'
+import { Variant } from '../variants/entities/variant.entity'
+import { VariantsModule } from '../variants/variants.module'
 import { Product } from './entities/product.entity'
 import { ProductRepository } from './products.repository'
 import { ProductResolver } from './products.resolver'
@@ -18,16 +20,18 @@ import { ProductsService } from './products.service'
   imports: [
     TypeOrmModule.forFeature([
       Brand,
-      Product,
-      User,
-      ShowSegment,
       BrandRepository,
+      Product,
       ProductRepository,
+      ShowSegment,
       ShowSegmentRepository,
+      User,
       UserRepository,
       UserBrandRoleRepository,
       UserShowRoleRepository,
+      Variant,
     ]),
+    VariantsModule,
   ],
   providers: [ProductsService, ProductResolver],
 })

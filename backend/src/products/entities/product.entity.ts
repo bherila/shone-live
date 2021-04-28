@@ -6,12 +6,14 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm'
 
 import { Brand } from '../../brands/entities/brand.entity'
 import { ShowSegment } from '../../show-segment/entities/show-segment.entity'
 import { User } from '../../user/entities/user.entity'
+import { Variant } from '../../variants/entities/variant.entity'
 
 @ObjectType()
 @Entity()
@@ -59,4 +61,11 @@ export class Product {
     name: 'brand_id',
   })
   brand: Brand
+
+  @Field(() => [Variant], { nullable: true })
+  @OneToMany(
+    () => Variant,
+    variant => variant.product,
+  )
+  variants: Variant[]
 }

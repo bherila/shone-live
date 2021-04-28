@@ -37,12 +37,9 @@ export default function ShowsPage({ store }: { store: Brand }) {
     setOffset(page * limit)
   }
   const onChangeRowsPerPage = (rowsPerPage) => {
-    console.log(rowsPerPage)
     setOffset(0)
     setLimit(rowsPerPage)
   }
-
-  console.log(data)
 
   return (
     <StoreSection store={store}>

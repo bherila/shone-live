@@ -5,10 +5,12 @@ import {
   JoinColumn,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm'
 
 import { Brand } from '../../brands/entities/brand.entity'
+import { Order } from '../../orders/entities/order.entity'
 import { Product } from '../../products/entities/product.entity'
 import { Show } from '../../show/entities/show.entity'
 import { User } from '../../user/entities/user.entity'
@@ -45,4 +47,11 @@ export class ShowSegment {
     product => product.showSegments,
   )
   products: Product[]
+
+  @Field(() => [Order], { nullable: true })
+  @OneToMany(
+    () => Order,
+    order => order.showSegment,
+  )
+  orders: Order[]
 }

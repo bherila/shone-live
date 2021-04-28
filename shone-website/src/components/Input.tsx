@@ -18,7 +18,7 @@ export default function Input({
   register: any
   registerOptions?: RegisterOptions
   error?: any
-  type?: 'time' | 'date' | 'datetime-local'
+  type?: 'time' | 'date' | 'datetime-local' | 'number'
 }) {
   return (
     <div className="mb-6">

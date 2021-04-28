@@ -36,12 +36,9 @@ export default function ProductsPage({ store }: { store: Brand }) {
     setOffset(page * limit)
   }
   const onChangeRowsPerPage = (rowsPerPage) => {
-    console.log(rowsPerPage)
     setOffset(0)
     setLimit(rowsPerPage)
   }
-
-  console.log(data)
 
   const [newProducts, setNewProducts] = useState([])
   useEffect(() => {
@@ -55,12 +52,14 @@ export default function ProductsPage({ store }: { store: Brand }) {
         products={(data?.brandProducts as Product[]) || []}
         bottomActions={[
           {
-            handleClick: (row) =>
-              Router.push(`/seller/store/detals/${brandId}/products/${row.id}`),
+            handleClick: () =>
+              Router.push(`/seller/store/details/${brandId}/products/new`),
             name: 'New Product',
           },
         ]}
-        handleEdit={(id) => Router.push(`/products/${id}`)}
+        handleEdit={(id) =>
+          Router.push(`/seller/store/details/${brandId}/products/${id}`)
+        }
         onChangePage={onChangePage}
         onChangeRowsPerPage={onChangeRowsPerPage}
       />
