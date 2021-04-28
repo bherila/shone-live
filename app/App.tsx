@@ -15,7 +15,9 @@ export default function App() {
     bahnscift: require('./src/utils/Fonts/Bahnschrift-Font-Family/BAHNSCHRIFT1.ttf'),
     poppins_semibold: require('./src/utils/Fonts/Poppins-SemiBold.ttf'),
     poppins_regular: require('./src/utils/Fonts/Poppins-Regular.ttf'),
-    poppins_medium: require('./src/utils/Fonts/Poppins-Medium.ttf')
+    poppins_medium: require('./src/utils/Fonts/Poppins-Medium.ttf'),
+    montserrat_regular: require('./src/utils/Fonts/Montserrat-Regular.ttf'),
+    montserrat_bold: require('./src/utils/Fonts/Montserrat-Bold.ttf'),
   })
 
   useEffect(() => {
@@ -43,7 +45,7 @@ export default function App() {
               loop={false}
               style={{
                 width: '100%',
-                backgroundColor: '#fff'
+                backgroundColor: '#fff',
               }}
               source={require('./assets/shone-lottie-animation-black.json')}
             />
@@ -59,9 +61,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    flex: 1
+    flex: 1,
   },
   buttonContainer: {
-    paddingTop: 20
-  }
+    paddingTop: 20,
+  },
 })

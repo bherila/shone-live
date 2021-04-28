@@ -59,9 +59,10 @@ export const globalStyles = StyleSheet.create({
     color: AppColors.BLACK,
     textAlign: 'center',
   },
-  profileLogo: {
-    height: 60,
-    width: 120,
+  shoneLogo: {
+    height: wp(15),
+    width: wp(30),
+    alignSelf: 'center',
   },
   roundIconButtonContainer: {
     width: ROUNDED_BUTTON_CONTAINER_SIZE,
@@ -77,6 +78,11 @@ export const globalStyles = StyleSheet.create({
     fontFamily: FontNames.POPPINS_REGULAR,
     fontSize: RFValue(18),
     color: AppColors.BLACK,
+  },
+  primaryTextMontserrat: {
+    fontFamily: FontNames.MONTSERRAT_BOLD,
+    fontSize: RFValue(18),
+    color: AppColors.PRIMARY_GREY_TEXT,
   },
   transparentBackground: { backgroundColor: '#00000000' },
 })

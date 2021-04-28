@@ -1,18 +1,26 @@
 import { StyleSheet } from 'react-native'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen'
 import { AppColors } from '../../utils/colors'
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // justifyContent: "center",
-    // alignItems: "center",
-    padding: 10,
+
+    backgroundColor: AppColors.PRIMARY_BACKGROUND,
+  },
+  header: {
+    marginHorizontal: wp(4),
+    marginBottom: wp(5),
+    backgroundColor: AppColors.PRIMARY_BACKGROUND,
   },
   tabContainerStyle: {
     elevation: 0,
     borderColor: 'transparent',
     height: 0,
+
     // marginTop: hp(7)
   },
   _screenHeading: {
@@ -133,10 +141,18 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   headerBody: {
-    flex: 3,
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
+  iconContainerStyle: {
+    borderWidth: 2,
+    backgroundColor: AppColors.DARK_GREY,
+    width: wp(14),
+    height: wp(14),
+    borderColor: AppColors.DARK_GREY_BORDER,
+  },
+  iconStyle: { width: wp(6), height: wp(6) },
 })
 
 export default styles
