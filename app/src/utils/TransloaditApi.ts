@@ -4,7 +4,7 @@ import Uppy from '@uppy/core'
 import { useAppSelector } from '../redux/store'
 
 const UppyClient = () => {
-  const user = useAppSelector(state => state.user.user?.id)
+  const user = useAppSelector((state) => state.user.user?.id)
 
   const uppy: Uppy.Uppy = Uppy().use(Transloadit, {
     params: {

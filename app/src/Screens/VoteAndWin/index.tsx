@@ -28,7 +28,7 @@ const IMAGE_MOCK_DATA = [
 ]
 
 const index = () => {
-  const user = useAppSelector(state => state.user.user)
+  const user = useAppSelector((state) => state.user.user)
   const navigation = useNavigation()
 
   const renderHeader = useCallback(() => {
