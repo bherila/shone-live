@@ -4,7 +4,6 @@ import theme from './../../utils/colors'
 import styles from './styles'
 import { Header, Left, Button, Icon, Right, Body } from 'native-base'
 import Text from './../../components/Text'
-
 import OTPTextInput from 'react-native-otp-textinput'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
 import { useNavigation, useRoute } from '@react-navigation/native'
@@ -16,15 +15,14 @@ import { ScreenNames } from '../../utils/ScreenNames'
 import {
   userInit,
   userInitFailure,
-  userInitSuccess
+  userInitSuccess,
 } from '../../redux/actions/userActions'
 import { useDispatch } from 'react-redux'
 import {
   User,
   VerifyCodeQuery,
-  useVerifyCodeLazyQuery
+  useVerifyCodeLazyQuery,
 } from '../../generated/graphql'
-import client from '../../graphql/client'
 
 export default function ConfirmSms() {
   const navigation = useNavigation()
@@ -33,7 +31,7 @@ export default function ConfirmSms() {
 
   const [
     verifyCode,
-    { data, loading, error: errorVerifyCode }
+    { data, loading, error: errorVerifyCode },
   ] = useVerifyCodeLazyQuery()
 
   const dispatch = useDispatch()
@@ -44,8 +42,8 @@ export default function ConfirmSms() {
     verifyCode({
       variables: {
         code: otp,
-        phone: `+1${params?.phone}`
-      }
+        phone: `+1${params?.phone}`,
+      },
     })
     dispatch(userInit())
   }
@@ -74,13 +72,13 @@ export default function ConfirmSms() {
         index: 0,
         routes: [
           {
-            name: ScreenNames.HomeScreens.MAIN_SCREEN
-          }
-        ]
+            name: ScreenNames.HomeScreens.MAIN_SCREEN,
+          },
+        ],
       })
     } else {
       navigation.navigate(ScreenNames.AuthScreens.NEW_ACCOUNT, {
-        user: data?.verify_code
+        user: data?.verify_code,
       })
     }
   }
@@ -88,28 +86,20 @@ export default function ConfirmSms() {
   return (
     <View style={globalStyles.container}>
       <Loader isLoading={loading} />
-      <KeyboardAwareScrollView
-        contentContainerStyle={{ justifyContent: 'center' }}
-      >
-        <Header style={{ elevation: 0, backgroundColor: 'transparent' }}>
-          <Left style={{ flex: 1 }}>
+      <KeyboardAwareScrollView contentContainerStyle={styles.justifyCenter}>
+        <Header style={styles.headerStyle}>
+          <Left style={globalStyles.colorlessContainer}>
             <Button transparent onPress={() => navigation.goBack()}>
-              <Icon name="arrow-back" style={{ color: 'black' }} />
+              <Icon name="arrow-back" style={styles.iconStyle} />
             </Button>
           </Left>
-          <Body
-            style={{
-              flex: 3,
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}
-          >
+          <Body style={styles.headerBody}>
             <Image
               source={require('./../../../assets/logo.png')}
-              style={{ height: 60, width: 120 }}
+              style={styles.headerLogo}
             />
           </Body>
-          <Right style={{ flex: 1 }}></Right>
+          <Right style={globalStyles.colorlessContainer}></Right>
         </Header>
         <View style={[styles._innerView]}>
           <Image
@@ -119,15 +109,9 @@ export default function ConfirmSms() {
           <Text style={styles._desc}>
             We just texted you a code to confirm your identity
           </Text>
-          <View
-            style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '100%'
-            }}
-          >
+          <View style={styles.otpInputWrapper}>
             <OTPTextInput
-              textInputStyle={{ borderWidth: 1, borderRadius: 5 }}
+              textInputStyle={styles.otpInput}
               inputCount={6}
               autoFocus={true}
               handleTextChange={(text: string) => {

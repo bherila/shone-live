@@ -1,11 +1,24 @@
 import { StyleSheet } from 'react-native'
+import { AppColors } from '../../utils/colors'
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 0,
-    backgroundColor: 'white',
+    backgroundColor: AppColors.WHITE,
   },
+  headerBody: {
+    flex: 3,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  otpInputWrapper: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+  },
+  otpInput: { borderWidth: 1, borderRadius: 5 },
+  headerLogo: { height: 60, width: 120 },
   _innerView: {
     // flex: 1,
     // justifyContent: "center",
@@ -45,7 +58,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
     padding: 10,
-    color: 'white',
+    color: AppColors.WHITE,
     fontSize: 18,
     width: '100%',
   },
@@ -53,6 +66,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
   },
+  justifyCenter: {
+    justifyContent: 'center',
+  },
+  headerStyle: { elevation: 0, backgroundColor: 'transparent' },
+  iconStyle: { color: AppColors.BLACK },
 })
 
 export default styles

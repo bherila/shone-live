@@ -1,4 +1,6 @@
 import { StyleSheet } from 'react-native'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import { AppColors } from '../../utils/colors'
 
 const styles = StyleSheet.create({
   container: {
@@ -7,6 +9,13 @@ const styles = StyleSheet.create({
     // alignItems: "center",
     padding: 10,
   },
+  tabContainerStyle: {
+    elevation: 0,
+    borderColor: 'transparent',
+    height: 0,
+    // marginTop: hp(7)
+  },
+
   _screenHeading: {
     fontSize: 20,
     color: '#525252',
@@ -34,7 +43,7 @@ const styles = StyleSheet.create({
     flexWrap: 'nowrap',
   },
   _circle: {
-    backgroundColor: 'white',
+    backgroundColor: AppColors.WHITE,
     height: 40,
     width: 40,
     borderRadius: 20,
@@ -50,7 +59,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    backgroundColor: 'white',
+    backgroundColor: AppColors.WHITE,
     borderRadius: 20,
     padding: 15,
     alignItems: 'center',
@@ -96,7 +105,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
     padding: 5,
-    color: 'white',
+    color: AppColors.WHITE,
     fontSize: 18,
   },
   _crossCircle: {
@@ -105,7 +114,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'white',
+    backgroundColor: AppColors.WHITE,
     elevation: 10,
     position: 'absolute',
     right: -5,
@@ -123,6 +132,11 @@ const styles = StyleSheet.create({
     height: 40,
     width: 40,
     borderRadius: 20,
+  },
+  headerBody: {
+    flex: 3,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 })
 

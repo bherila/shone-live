@@ -74,9 +74,9 @@ export type CreateProductDto = {
   description: Scalars['String']
 }
 
-export type CreateShowInput = {
+export type CreateShowDto = {
   title: Scalars['String']
-  image_url?: Maybe<Scalars['String']>
+  imageUrl: Scalars['String']
   startDate: Scalars['DateTime']
   endDate: Scalars['DateTime']
 }
@@ -104,16 +104,6 @@ export type CreateUserShowRoleDto = {
   streamTo: Scalars['Boolean']
 }
 
-export type Hello = {
-  __typename?: 'Hello'
-  id: Scalars['Int']
-  message: Scalars['String']
-}
-
-export type HelloInput = {
-  message: Scalars['String']
-}
-
 export type MessageEntity = {
   __typename?: 'MessageEntity'
   id: Scalars['String']
@@ -128,10 +118,8 @@ export type Mutation = {
   add_brand: Brand
   update_brand: Brand
   addConsumerLead: ConsumerLead
-  addHello: Hello
-  removeHello: Scalars['Boolean']
   add_message: MessageEntity
-  add_product: Product
+  addProduct: Product
   update_product: Product
   add_payment: Payment
   add_show: Show
@@ -149,28 +137,72 @@ export type Mutation = {
   update_usershowrole: UserShowRole
 }
 
-export type MutationAdd_AddressArgs = {
-  data: CreateAddressDto
+export type CreateShowSegmentDto = {
+  showId: Scalars['String']
+  brandId: Scalars['String']
+  title: Scalars['String']
+}
+
+export type CreateUserBrandRoleDto = {
+  brandId: Scalars['String']
+  userId: Scalars['String']
+  read: Scalars['Boolean']
+  write: Scalars['Boolean']
+  admin: Scalars['Boolean']
+}
+
+export type CreateUserShowRoleDto = {
+  showId: Scalars['String']
+  userId: Scalars['String']
+  read: Scalars['Boolean']
+  write: Scalars['Boolean']
+  admin: Scalars['Boolean']
+  streamTo: Scalars['Boolean']
 }
 
 export type MutationAdd_BrandArgs = {
   data: CreateBrandDto
 }
 
+export type Mutation = {
+  __typename?: 'Mutation'
+  add_address: Address
+  add_brand: Brand
+  update_brand: Brand
+  addConsumerLead: ConsumerLead
+  add_message: MessageEntity
+  addProduct: Product
+  update_product: Product
+  add_payment: Payment
+  add_show: Show
+  addShowSegment: ShowSegment
+  updateShowSegment: ShowSegment
+  add_show_your_style_entry: ShowYourStyleEntry
+  add_video_id_from_transloadit: ShowYourStyleVideoIdEntry
+  add_show_your_style_vote: ShowYourStyleVote
+  add_show_your_style_view_record: ShowYourStyleViewRecord
+  add_user: Scalars['String']
+  update_user: User
+  add_userbrandrole: UserBrandRole
+  update_userbrandrole: UserBrandRole
+  add_usershowrole: UserShowRole
+  update_usershowrole: UserShowRole
+}
+
 export type MutationUpdate_BrandArgs = {
   data: UpdateBrandDto
+}
+
+export type MutationAdd_BrandArgs = {
+  data: CreateBrandDto
 }
 
 export type MutationAddConsumerLeadArgs = {
   email: Scalars['String']
 }
 
-export type MutationAddHelloArgs = {
-  newHelloData: HelloInput
-}
-
-export type MutationRemoveHelloArgs = {
-  id: Scalars['String']
+export type MutationAddConsumerLeadArgs = {
+  email: Scalars['String']
 }
 
 export type MutationAdd_MessageArgs = {
@@ -178,8 +210,12 @@ export type MutationAdd_MessageArgs = {
   showId: Scalars['String']
 }
 
-export type MutationAdd_ProductArgs = {
+export type MutationAddProductArgs = {
   data: CreateProductDto
+}
+
+export type MutationUpdate_ProductArgs = {
+  data: UpdateProductDto
 }
 
 export type MutationUpdate_ProductArgs = {
@@ -192,7 +228,15 @@ export type MutationAdd_PaymentArgs = {
 }
 
 export type MutationAdd_ShowArgs = {
-  data: CreateShowInput
+  data: CreateShowDto
+}
+
+export type MutationAddShowSegmentArgs = {
+  data: CreateShowSegmentDto
+}
+
+export type MutationUpdateShowSegmentArgs = {
+  data: UpdateShowSegmentDto
 }
 
 export type MutationAddShowSegmentArgs = {
@@ -245,6 +289,22 @@ export type MutationUpdate_UsershowroleArgs = {
   data: UpdateUserShowRoleDto
 }
 
+export type MutationAdd_UserbrandroleArgs = {
+  data: CreateUserBrandRoleDto
+}
+
+export type MutationUpdate_UserbrandroleArgs = {
+  data: UpdateUserBrandRoleDto
+}
+
+export type MutationAdd_UsershowroleArgs = {
+  data: CreateUserShowRoleDto
+}
+
+export type MutationUpdate_UsershowroleArgs = {
+  data: UpdateUserShowRoleDto
+}
+
 export type PaginationQueryDto = {
   limit: Scalars['Float']
   offset: Scalars['Float']
@@ -277,13 +337,12 @@ export type Query = {
   my_brands: Array<Brand>
   consumerLead?: Maybe<ConsumerLead>
   consumerLeads: Array<ConsumerLead>
-  hello: Hello
-  hellos: Array<Hello>
   messageEntity?: Maybe<MessageEntity>
   messageEntities: Array<MessageEntity>
   product?: Maybe<Product>
   products: Array<Product>
-  my_products: Array<Product>
+  myProducts: Array<Product>
+  brandProducts: Array<Product>
   payment?: Maybe<Payment>
   payments: Array<Payment>
   show?: Maybe<Show>
@@ -324,21 +383,24 @@ export type QueryMy_BrandsArgs = {
   paginationQuery: PaginationQueryDto
 }
 
+export type QueryBrandArgs = {
+  brandId: Scalars['String']
+}
+
 export type QueryConsumerLeadArgs = {
   consumerLeadId: Scalars['String']
+}
+
+export type QueryMy_BrandsArgs = {
+  paginationQuery: PaginationQueryDto
 }
 
 export type QueryConsumerLeadsArgs = {
   paginationQuery: PaginationQueryDto
 }
 
-export type QueryHelloArgs = {
-  id: Scalars['String']
-}
-
-export type QueryHellosArgs = {
-  skip?: Maybe<Scalars['Int']>
-  take?: Maybe<Scalars['Int']>
+export type QueryConsumerLeadsArgs = {
+  paginationQuery: PaginationQueryDto
 }
 
 export type QueryMessageEntityArgs = {
@@ -353,8 +415,21 @@ export type QueryProductsArgs = {
   paginationQuery: PaginationQueryDto
 }
 
-export type QueryMy_ProductsArgs = {
+export type QueryMyProductsArgs = {
   paginationQuery: PaginationQueryDto
+}
+
+export type QueryMyProductsArgs = {
+  paginationQuery: PaginationQueryDto
+}
+
+export type QueryBrandProductsArgs = {
+  paginationQuery: PaginationQueryDto
+  brandId: Scalars['String']
+}
+
+export type QueryPaymentArgs = {
+  PaymentId: Scalars['String']
 }
 
 export type QueryPaymentArgs = {
@@ -363,6 +438,10 @@ export type QueryPaymentArgs = {
 
 export type QueryShowArgs = {
   showId: Scalars['String']
+}
+
+export type QueryShowSegmentArgs = {
+  showsegmentId: Scalars['String']
 }
 
 export type QueryShowSegmentArgs = {
@@ -426,6 +505,30 @@ export type QueryMy_UsershowrolesArgs = {
   paginationQuery: PaginationQueryDto
 }
 
+export type QueryUserbrandroleArgs = {
+  userbrandroleId: Scalars['String']
+}
+
+export type QueryUserbrandrolesArgs = {
+  paginationQuery: PaginationQueryDto
+}
+
+export type QueryMy_UserbrandrolesArgs = {
+  paginationQuery: PaginationQueryDto
+}
+
+export type QueryUsershowroleArgs = {
+  usershowroleId: Scalars['String']
+}
+
+export type QueryUsershowrolesArgs = {
+  paginationQuery: PaginationQueryDto
+}
+
+export type QueryMy_UsershowrolesArgs = {
+  paginationQuery: PaginationQueryDto
+}
+
 export type Show = {
   __typename?: 'Show'
   id: Scalars['ID']
@@ -434,6 +537,8 @@ export type Show = {
   start_date: Scalars['DateTime']
   end_date: Scalars['DateTime']
   chatMessages?: Maybe<Array<MessageEntity>>
+  showSegments?: Maybe<Array<ShowSegment>>
+  userShowRoles?: Maybe<Array<UserShowRole>>
   owner_user: User
 }
 
@@ -444,6 +549,7 @@ export type ShowSegment = {
   brand: Brand
   show: Show
   ownerUser: User
+  products: Array<Product>
 }
 
 export type ShowYourStyleEntry = {
@@ -463,6 +569,8 @@ export type ShowYourStyleVideoIdEntry = {
   video_url?: Maybe<Scalars['String']>
   is_viewable: Scalars['Boolean']
   error?: Maybe<Scalars['String']>
+  json_data?: Maybe<Scalars['String']>
+  urls?: Maybe<Scalars['String']>
 }
 
 export type ShowYourStyleViewRecord = {
@@ -501,14 +609,24 @@ export type UpdateShowSegmentDto = {
 
 export type UpdateUserBrandRoleDto = {
   id: Scalars['String']
-  name: Scalars['String']
-  description: Scalars['String']
+  read: Scalars['Boolean']
+  write: Scalars['Boolean']
+  admin: Scalars['Boolean']
+}
+
+export type UpdateUserEntityDto = {
+  id: Scalars['String']
+  username?: Maybe<Scalars['String']>
+  email?: Maybe<Scalars['String']>
+  file?: Maybe<Scalars['Upload']>
 }
 
 export type UpdateUserShowRoleDto = {
   id: Scalars['String']
-  name: Scalars['String']
-  description: Scalars['String']
+  read: Scalars['Boolean']
+  write: Scalars['Boolean']
+  admin: Scalars['Boolean']
+  stream_to: Scalars['Boolean']
 }
 
 export type User = {
@@ -543,11 +661,20 @@ export type UserShowRole = {
   show: Show
 }
 
-export type UpdateUserEntityDto = {
+export type AddMessageMutationVariables = Exact<{
+  message: Scalars['String']
+  showID: Scalars['String']
+}>
+
+export type UserShowRole = {
+  __typename?: 'UserShowRole'
   id: Scalars['String']
-  username?: Maybe<Scalars['String']>
-  email?: Maybe<Scalars['String']>
-  file?: Maybe<Scalars['Upload']>
+  read: Scalars['Boolean']
+  write: Scalars['Boolean']
+  admin: Scalars['Boolean']
+  stream_to: Scalars['Boolean']
+  user: User
+  show: Show
 }
 
 export type AddMessageMutationVariables = Exact<{
@@ -632,6 +759,28 @@ export type VerifyCodeQueryVariables = Exact<{
   phone: Scalars['String']
 }>
 
+export type GetShowsQueryVariables = Exact<{ [key: string]: never }>
+
+export type GetShowsQuery = { __typename?: 'Query' } & {
+  shows: Array<
+    { __typename?: 'Show' } & Pick<Show, 'id' | 'title' | 'image_url'> & {
+        chatMessages?: Maybe<
+          Array<
+            { __typename?: 'MessageEntity' } & Pick<
+              MessageEntity,
+              'id' | 'message' | 'alias'
+            >
+          >
+        >
+      }
+  >
+}
+
+export type VerifyCodeQueryVariables = Exact<{
+  code: Scalars['String']
+  phone: Scalars['String']
+}>
+
 export type VerifyCodeQuery = { __typename?: 'Query' } & {
   verify_code: { __typename?: 'User' } & Pick<
     User,
@@ -646,13 +795,12 @@ export type VerifyCodeQuery = { __typename?: 'Query' } & {
 }
 
 export const AddMessageDocument = gql`
-  mutation AddMessage($message: String!, $showID: String!) {
-    add_message(message: $message, showId: $showID) {
-      id
-      timestamp
-      message
-      alias
-    }
+    mutation AddMessage($message: String!, $showID: String!) {
+  add_message(message: $message, showId: $showID) {
+    id
+    timestamp
+    message
+    alias
   }
 `
 export type AddMessageMutationFn = Apollo.MutationFunction<
@@ -682,12 +830,12 @@ export function useAddMessageMutation(
   baseOptions?: Apollo.MutationHookOptions<
     AddMessageMutation,
     AddMessageMutationVariables
-  >
+  >,
 ) {
   const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useMutation<AddMessageMutation, AddMessageMutationVariables>(
     AddMessageDocument,
-    options
+    options,
   )
 }
 export type AddMessageMutationHookResult = ReturnType<
@@ -729,12 +877,12 @@ export function useAddUserMutation(
   baseOptions?: Apollo.MutationHookOptions<
     AddUserMutation,
     AddUserMutationVariables
-  >
+  >,
 ) {
   const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useMutation<AddUserMutation, AddUserMutationVariables>(
     AddUserDocument,
-    options
+    options,
   )
 }
 export type AddUserMutationHookResult = ReturnType<typeof useAddUserMutation>
@@ -744,7 +892,7 @@ export type AddUserMutationOptions = Apollo.BaseMutationOptions<
   AddUserMutationVariables
 >
 export const UpdateUserDocument = gql`
-  mutation UpdateUser($user: updateUserEntityDto!) {
+  mutation UpdateUser($user: UpdateUserEntityDto!) {
     update_user(user: $user) {
       email
       id
@@ -782,12 +930,12 @@ export function useUpdateUserMutation(
   baseOptions?: Apollo.MutationHookOptions<
     UpdateUserMutation,
     UpdateUserMutationVariables
-  >
+  >,
 ) {
   const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useMutation<UpdateUserMutation, UpdateUserMutationVariables>(
     UpdateUserDocument,
-    options
+    options,
   )
 }
 export type UpdateUserMutationHookResult = ReturnType<
@@ -799,8 +947,14 @@ export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<
   UpdateUserMutationVariables
 >
 export const GetShowDocument = gql`
-  query GetShow($ID: String!) {
-    show(showId: $ID) {
+    query GetShow($ID: String!) {
+  show(showId: $ID) {
+    id
+    title
+    image_url
+    start_date
+    end_date
+    chatMessages {
       id
       title
       image_url
@@ -834,21 +988,24 @@ export const GetShowDocument = gql`
  * });
  */
 export function useGetShowQuery(
-  baseOptions: Apollo.QueryHookOptions<GetShowQuery, GetShowQueryVariables>
+  baseOptions: Apollo.QueryHookOptions<GetShowQuery, GetShowQueryVariables>,
 ) {
   const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useQuery<GetShowQuery, GetShowQueryVariables>(
     GetShowDocument,
-    options
+    options,
   )
 }
 export function useGetShowLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<GetShowQuery, GetShowQueryVariables>
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetShowQuery,
+    GetShowQueryVariables
+  >,
 ) {
   const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useLazyQuery<GetShowQuery, GetShowQueryVariables>(
     GetShowDocument,
-    options
+    options,
   )
 }
 export type GetShowQueryHookResult = ReturnType<typeof useGetShowQuery>
@@ -888,24 +1045,24 @@ export const GetShowsDocument = gql`
  * });
  */
 export function useGetShowsQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetShowsQuery, GetShowsQueryVariables>
+  baseOptions?: Apollo.QueryHookOptions<GetShowsQuery, GetShowsQueryVariables>,
 ) {
   const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useQuery<GetShowsQuery, GetShowsQueryVariables>(
     GetShowsDocument,
-    options
+    options,
   )
 }
 export function useGetShowsLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
     GetShowsQuery,
     GetShowsQueryVariables
-  >
+  >,
 ) {
   const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useLazyQuery<GetShowsQuery, GetShowsQueryVariables>(
     GetShowsDocument,
-    options
+    options,
   )
 }
 export type GetShowsQueryHookResult = ReturnType<typeof useGetShowsQuery>
@@ -951,24 +1108,24 @@ export function useVerifyCodeQuery(
   baseOptions: Apollo.QueryHookOptions<
     VerifyCodeQuery,
     VerifyCodeQueryVariables
-  >
+  >,
 ) {
   const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useQuery<VerifyCodeQuery, VerifyCodeQueryVariables>(
     VerifyCodeDocument,
-    options
+    options,
   )
 }
 export function useVerifyCodeLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
     VerifyCodeQuery,
     VerifyCodeQueryVariables
-  >
+  >,
 ) {
   const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useLazyQuery<VerifyCodeQuery, VerifyCodeQueryVariables>(
     VerifyCodeDocument,
-    options
+    options,
   )
 }
 export type VerifyCodeQueryHookResult = ReturnType<typeof useVerifyCodeQuery>

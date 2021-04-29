@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native'
+import { AppColors } from '../../utils/colors'
 
 const styles = StyleSheet.create({
   container: {
@@ -49,7 +50,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
     padding: 10,
-    color: 'white',
+    color: AppColors.WHITE,
     fontSize: 18,
   },
 })

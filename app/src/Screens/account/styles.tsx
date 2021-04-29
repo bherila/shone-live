@@ -1,10 +1,11 @@
 import { StyleSheet } from 'react-native'
+import { AppColors } from '../../utils/colors'
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-    backgroundColor: 'white',
+    backgroundColor: AppColors.WHITE,
   },
   _circle: {
     height: 125,
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 10,
     right: 0,
-    backgroundColor: 'white',
+    backgroundColor: AppColors.WHITE,
     borderRadius: 20,
     height: 30,
     width: 30,

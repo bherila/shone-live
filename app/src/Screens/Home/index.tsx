@@ -11,7 +11,7 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   Alert,
-  FlatList
+  FlatList,
 } from 'react-native'
 import styles from './styles'
 import { FontAwesome, Entypo } from '@expo/vector-icons'
@@ -63,31 +63,31 @@ const exampleShow: ILiveShow = {
       qtyLeft: 2,
       imageUrl: 'TODO',
       price: 129,
-      currency: 'USD'
-    }
+      currency: 'USD',
+    },
   ],
   chats: [
     {
       name: 'Mike A.',
       message: 'DOPE!!!',
-      profileImage: 'TODO'
+      profileImage: 'TODO',
     },
     {
       name: 'Allison H.',
       message: 'YAAASSSSS!!!',
-      profileImage: 'TODO'
+      profileImage: 'TODO',
     },
     {
       name: 'Sarah M.',
       message:
         "This makes me so happy to see. I've always wanted something like this in Platinum. Bling... bling...",
-      profileImage: 'TODO'
-    }
+      profileImage: 'TODO',
+    },
   ],
   activePoll: {
     question: 'What metal should I use next?',
-    options: ['Rose Gold', 'Platinum', 'Silver']
-  }
+    options: ['Rose Gold', 'Platinum', 'Silver'],
+  },
 }
 
 interface RouteParams extends ParamListBase {
@@ -108,19 +108,19 @@ const LiveShow = () => {
 
   const { data: show, error, loading } = useGetShowQuery({
     variables: {
-      ID: parseFloat(route.params?.showId)
+      ID: route.params?.showId,
     },
-    pollInterval: 2000
+    pollInterval: 2000,
   })
 
   const [
     addMessage,
-    { data: messageData, error: messageError, loading: messageLoading }
+    { data: messageData, error: messageError, loading: messageLoading },
   ] = useAddMessageMutation({
     variables: {
       message,
-      showID: parseFloat(route.params?.showId)
-    }
+      showID: route.params?.showId,
+    },
   })
 
   useEffect(() => {
@@ -144,8 +144,8 @@ const LiveShow = () => {
           alias: user?.username,
           id: '20',
           message: message,
-          timestamp: new Date().toUTCString()
-        }
+          timestamp: new Date().toUTCString(),
+        },
       ]
 
       setMessageList(data)
@@ -205,7 +205,7 @@ const LiveShow = () => {
                       ref={flatlist}
                       showsVerticalScrollIndicator={false}
                       contentContainerStyle={{
-                        flexGrow: 1
+                        flexGrow: 1,
                       }}
                       keyExtractor={(item, index) => `key${index}`}
                       data={messageList}
