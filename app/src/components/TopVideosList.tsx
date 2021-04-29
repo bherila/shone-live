@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, FlatList, StyleProp, ViewStyle } from 'react-native'
 import styles from '../Screens/VoteAndWin/styles'
-import ContestListItem from './ContestListItem'
+import ContestListItem from './TopVideosListItem'
 
 interface Props {
   data: any[]

@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/core'
 import React, { useCallback } from 'react'
 import { View, Text, Image } from 'react-native'
 import AppButton from '../../components/AppButton'
-import ContestVideoList from '../../components/ContestVideoList'
+import ContestVideoList from '../../components/TopVideosList'
 import YourRankingComp from '../../components/YourRankingComp'
 import { useAppSelector } from '../../redux/store'
 import { globalStyles } from '../../utils/globalStyles'
@@ -28,7 +28,7 @@ const IMAGE_MOCK_DATA = [
 ]
 
 const index = () => {
-  const user = useAppSelector((state) => state.user.user)
+  const user = useAppSelector(state => state.user.user)
   const navigation = useNavigation()
 
   const renderHeader = useCallback(() => {

@@ -15,5 +15,11 @@ export const ScreenNames = {
     WATCH_STYLE: 'WatchStyle',
     VOTE_AND_WIN: 'VoteAndWin',
     RANKING_DETAILS_SCREEN: 'RankingDetails',
+    CONTEST_TAB_SCREEN: 'ContestTabScreen',
+    GIFT_SCREEN: 'GiftScreen',
+  },
+  MainScreenTabs: {
+    CONTEST_VIDEO_VOTE: 'ContestVideoVote',
+    CONTEST_VIDEO_LIST_SCREEN: 'ContestVideoListScreen',
   },
 }

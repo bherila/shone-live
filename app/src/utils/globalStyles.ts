@@ -12,6 +12,11 @@ export const globalStyles = StyleSheet.create({
     position: 'relative',
     backgroundColor: AppColors.WHITE,
   },
+  darkContainer: {
+    flex: 1,
+    position: 'relative',
+    backgroundColor: AppColors.PRIMARY_BACKGROUND,
+  },
   colorlessContainer: {
     flex: 1,
   },

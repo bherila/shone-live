@@ -12,80 +12,92 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen'
-import { VoteItem } from '../Screens/ContestVideoVote'
+import { VoteItem } from '../Screens/ContestVideoScreen'
 import { AppColors } from '../utils/colors'
 import FontNames from '../utils/Fonts/FontNames'
 import { globalStyles } from '../utils/globalStyles'
 
 interface Props {
   voteItem: VoteItem
-  index?: number
+  isLastIndex: boolean
+  onPress?: () => void
 }
 
 const ContestVideoVoteItem = ({
   voteItem: { title, heading, description, isNew, thumbnailImage, expiry },
+  isLastIndex,
+  onPress,
 }: Props) => {
   return (
     <View>
-      <View style={styles.container}>
-        <ImageBackground
-          source={{ uri: thumbnailImage }}
-          style={styles.imageThumbnail}
-        >
-          <View
-            style={[globalStyles.viewCenter, styles.playButtonAbsoluteWrapper]}
+      <View>
+        <View style={styles.container}>
+          <ImageBackground
+            source={{ uri: thumbnailImage }}
+            style={styles.imageThumbnail}
           >
-            <TouchableOpacity style={[styles.playButtonContainer]}>
-              <Image
-                style={{ width: '100%', height: '100%' }}
-                source={require('../../assets/play_round.png')}
-              />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.imageContentContainer}>
-            <TouchableOpacity style={styles.expiryContainer}>
-              <Text style={[globalStyles.primaryText, styles.expiryText]}>
-                {expiry}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </ImageBackground>
-        <View style={[globalStyles.rowContainer, styles.dayNewContainer]}>
-          <View style={globalStyles.rowContainer}>
-            <Image
-              source={require('../../assets/calendar.png')}
-              style={styles.calanderIcon}
-            />
-            <Text style={styles.dayText}>{title}</Text>
-          </View>
-          {isNew && (
-            <View style={styles.newTextContainer}>
-              <Text style={[styles.dayText, styles.newText]}>New</Text>
+            <View
+              style={[
+                globalStyles.viewCenter,
+                styles.playButtonAbsoluteWrapper,
+              ]}
+            >
+              <TouchableOpacity style={[styles.playButtonContainer]}>
+                <Image
+                  style={{ width: '100%', height: '100%' }}
+                  source={require('../../assets/play_round.png')}
+                />
+              </TouchableOpacity>
             </View>
-          )}
-        </View>
+            <View style={styles.imageContentContainer}>
+              <TouchableOpacity style={styles.expiryContainer}>
+                <Text style={[globalStyles.primaryText, styles.expiryText]}>
+                  {expiry}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </ImageBackground>
+          <View style={[globalStyles.rowContainer, styles.dayNewContainer]}>
+            <View style={globalStyles.rowContainer}>
+              <Image
+                source={require('../../assets/calendar.png')}
+                style={styles.calanderIcon}
+              />
+              <Text style={styles.dayText}>{title}</Text>
+            </View>
+            {isNew && (
+              <View style={styles.newTextContainer}>
+                <Text style={[styles.dayText, styles.newText]}>New</Text>
+              </View>
+            )}
+          </View>
 
-        <Text
-          style={[globalStyles.primaryTextMontserrat, styles.heading]}
-          numberOfLines={1}
-        >
-          {heading}
-        </Text>
-        <Text
-          style={[globalStyles.primaryTextMontserrat, styles.descriptionText]}
-          numberOfLines={3}
-        >
-          {description}
-        </Text>
+          <Text
+            style={[globalStyles.primaryTextMontserrat, styles.heading]}
+            numberOfLines={1}
+          >
+            {heading}
+          </Text>
+          <Text
+            style={[globalStyles.primaryTextMontserrat, styles.descriptionText]}
+            numberOfLines={3}
+          >
+            {description}
+          </Text>
+        </View>
+        <View style={styles.uploadContainer}>
+          <TouchableOpacity
+            style={styles.uploadIconContainer}
+            onPress={onPress}
+          >
+            <Image
+              source={require('../../assets/upload.png')}
+              style={styles.uploadIcon}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
-      <View style={styles.uploadContainer}>
-        <TouchableOpacity style={styles.uploadIconContainer}>
-          <Image
-            source={require('../../assets/upload.png')}
-            style={styles.uploadIcon}
-          />
-        </TouchableOpacity>
-      </View>
+      {isLastIndex && <View style={styles.footerSpace}></View>}
     </View>
   )
 }
@@ -99,6 +111,10 @@ const styles = StyleSheet.create({
     borderRadius: wp(11),
     paddingBottom: hp(6),
     marginHorizontal: wp(5),
+  },
+  footerSpace: {
+    height: hp(10),
+    zIndex: -10,
   },
   uploadContainer: {
     alignSelf: 'center',

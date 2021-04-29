@@ -2,10 +2,9 @@ import { TRANSLOADIT_KEY, TRANSLOADIT_TEMPLATE_ID } from '@env'
 import Transloadit from '@uppy/transloadit'
 import Uppy from '@uppy/core'
 import { useAppSelector } from '../redux/store'
-//https://api2.transloadit.com/assemblies
 
 const UppyClient = () => {
-  const user = useAppSelector((state) => state.user.user?.id)
+  const user = useAppSelector(state => state.user.user?.id)
 
   const uppy: Uppy.Uppy = Uppy().use(Transloadit, {
     params: {

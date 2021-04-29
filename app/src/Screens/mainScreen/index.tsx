@@ -1,17 +1,17 @@
 /* eslint-disable no-use-before-define */
-import React, { useState, useEffect, useRef, useCallback } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import {
   Image,
   View,
   TouchableOpacity,
   Modal,
   Platform,
-  Alert,
+  StatusBar,
 } from 'react-native'
-import theme, { AppColors } from './../../utils/colors'
+import theme from './../../utils/colors'
 import styles from './styles'
 import { Entypo } from '@expo/vector-icons'
-import { Body, Header, Left, Right, Tab, Tabs } from 'native-base'
+import { Body, Header, Left, Right } from 'native-base'
 import Menu, { MenuItem } from 'react-native-material-menu'
 import Text from './../../components/Text'
 import { useNavigation } from '@react-navigation/native'
@@ -25,9 +25,6 @@ import { userLogout } from '../../redux/actions/userActions'
 import * as ImagePicker from 'expo-image-picker'
 import { Show, useGetShowsQuery } from '../../generated/graphql'
 import { UppyClient } from '../../utils/TransloaditApi'
-import * as FileSystem from 'expo-file-system'
-import ContestVideoVote from '../ContestVideoVote'
-import { StatusBar } from 'expo-status-bar'
 import RoundIconButton from '../../components/RoundIconButton'
 
 interface ListItem {
@@ -42,12 +39,7 @@ export default function MainScreen() {
   const dispatch = useDispatch()
   const { setItem } = useSecureStore()
 
-  const tabRef = useRef<Tabs>(null)
-  const [position, setPosition] = useState(1)
-
-  const [isVideoUploading, setIsVideoUploading] = useState(false)
   const [modalVisible, setModalVisible] = useState(false)
-  const [progress, setProgress] = useState(0)
 
   // const {
   //   data: shows,
@@ -132,84 +124,6 @@ export default function MainScreen() {
     })()
   }, [])
 
-  //Needed to convert video file to base64 and then to blob, Since Transloadit only allows blob or file data
-  const urlToBlob = async (uri: string) => {
-    const fileBase64 = await FileSystem.readAsStringAsync(uri, {
-      encoding: 'base64',
-    })
-
-    return new Promise<Blob | File>((resolve, reject) => {
-      const xhr = new XMLHttpRequest()
-      xhr.onerror = reject
-      xhr.onreadystatechange = () => {
-        if (xhr.readyState === 4) {
-          resolve(xhr.response)
-        }
-      }
-      xhr.open('GET', 'data:image/jpeg;base64,' + fileBase64, true)
-      xhr.responseType = 'blob' // convert type
-      xhr.send()
-    })
-  }
-
-  const setVideoProgressComplete = () => {
-    setIsVideoUploading(false)
-    setProgress(0)
-  }
-
-  const uploadVideoToTransloadit = async (uri: string) => {
-    setIsVideoUploading(true)
-    try {
-      const blobData = await urlToBlob(uri)
-      console.log({ blobData })
-
-      uppy.on('upload-error', (a, { message }, c) => {
-        Alert.alert('An Error Occured', message)
-      })
-      uppy.on('upload-progress', (source, { bytesTotal, bytesUploaded }, c) => {
-        setProgress(Math.ceil((bytesUploaded / bytesTotal) * 100))
-      })
-
-      uppy.on('upload-success', (a, b, c) => {
-        setVideoProgressComplete()
-        console.log({ a, b, c })
-      })
-      uppy.on('complete', (a, b, c) => {
-        setVideoProgressComplete()
-        navigation.navigate(ScreenNames.HomeScreens.WATCH_STYLE)
-        console.log('Complete', {
-          a,
-          b,
-          c,
-        })
-      })
-      uppy.addFile({
-        name: uri.split('/').pop(),
-        type: 'video/*',
-        data: blobData,
-        source: 'Local',
-        isRemote: false,
-      })
-      uppy.upload()
-    } catch (e) {
-      console.error('UPPY ERROR ', { e })
-      setIsVideoUploading(false)
-    }
-  }
-
-  const pickVideo = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Videos,
-      allowsEditing: true,
-      quality: 1,
-      videoMaxDuration: 60,
-    })
-
-    if (!result.cancelled) {
-      uploadVideoToTransloadit(result.uri)
-    }
-  }
-
   const navigateToVoteScreen = () => {
     navigation.navigate(ScreenNames.HomeScreens.VOTE_AND_WIN)
     hideMenu()
@@ -279,28 +193,13 @@ export default function MainScreen() {
 
   return (
     <View style={styles.container}>
+      <StatusBar barStyle="light-content" />
       {/* <Loader
         isLoading={isShowsLoading || isVideoUploading}
         isProgressShown={isVideoUploading}
         progress={progress}
         total={100}
       /> */}
-
-      <Tabs
-        tabContainerStyle={styles.tabContainerStyle}
-        ref={tabRef}
-        tabBarUnderlineStyle={globalStyles.transparentBackground}
-        onChangeTab={({ i }) => setPosition(i)}
-        page={position}
-        initialPage={position}
-      >
-        <Tab heading="0">{/* <ContestVideoVote /> */}</Tab>
-        <Tab heading="1">
-          {/* renderHeader() */}
-          <ContestVideoVote renderHeader={renderHeader} />
-        </Tab>
-        <Tab heading="2">{/* <ContestVideoVote /> */}</Tab>
-      </Tabs>
 
       {/* <ScrollView showsVerticalScrollIndicator={false}>
         <View style={globalStyles.rowContainer}>
