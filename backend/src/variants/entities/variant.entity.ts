@@ -34,6 +34,9 @@ export class Variant {
   product: Product
 
   @Field(() => [Sku], { nullable: true })
-  @OneToMany(() => Sku, (sku) => sku.variant)
+  @OneToMany(
+    () => Sku,
+    sku => sku.variant,
+  )
   skus: Sku[]
 }

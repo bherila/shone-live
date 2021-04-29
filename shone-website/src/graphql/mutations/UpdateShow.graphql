@@ -1,0 +1,18 @@
+mutation UpdateShow(
+  $id: String!
+  $title: String!
+  $startDate: DateTime!
+  $endDate: DateTime!
+) {
+  updateShow(
+    data: {
+      id: $id
+      title: $title
+      imageUrl: ""
+      startDate: $startDate
+      endDate: $endDate
+    }
+  ) {
+    id
+  }
+}

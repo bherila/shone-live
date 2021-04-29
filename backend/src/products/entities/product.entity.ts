@@ -38,7 +38,10 @@ export class Product {
   user: User
 
   @Field(() => [ShowSegment], { nullable: true })
-  @ManyToMany(() => ShowSegment, (showSegment) => showSegment.products)
+  @ManyToMany(
+    () => ShowSegment,
+    showSegment => showSegment.products,
+  )
   @JoinTable({
     name: 'product_show_segments', // table name for the junction table of this relation
     joinColumn: {
@@ -60,6 +63,9 @@ export class Product {
   brand: Brand
 
   @Field(() => [Variant], { nullable: true })
-  @OneToMany(() => Variant, (variant) => variant.product)
+  @OneToMany(
+    () => Variant,
+    variant => variant.product,
+  )
   variants: Variant[]
 }

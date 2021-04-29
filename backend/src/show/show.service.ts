@@ -9,6 +9,7 @@ import { UserShowRole } from '../user-show-role/entities/user-show-role.entity'
 import { UserShowRoleRepository } from '../user-show-role/user-show-roles.repository'
 import { CreateShowDto } from './dto/create-show.dto'
 import { CreateShowWithSegmentDto } from './dto/create-show-with-segment'
+import { UpdateShowDto } from './dto/update-show.dto'
 import { Show } from './entities/show.entity'
 import { ShowRepository } from './show.repository'
 
@@ -68,8 +69,8 @@ export class ShowService {
     return savedShow
   }
 
-  findOne(userId) {
-    return this.showRepository.findOne(userId, {
+  findOne(id) {
+    return this.showRepository.findOne(id, {
       relations: [
         'chatMessages',
         'showSegments',
@@ -96,5 +97,10 @@ export class ShowService {
       .take(limit)
       .getMany()
     return show
+  }
+
+  async update(updateShowDto: UpdateShowDto) {
+    await this.showRepository.save(updateShowDto)
+    return await this.findOne(updateShowDto.id)
   }
 }

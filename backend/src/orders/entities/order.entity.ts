@@ -34,6 +34,9 @@ export class Order {
   user: User
 
   @Field(() => [LineItem], { nullable: true })
-  @OneToMany(() => LineItem, (lineItem) => lineItem.order)
+  @OneToMany(
+    () => LineItem,
+    lineItem => lineItem.order,
+  )
   lineItems: LineItem[]
 }

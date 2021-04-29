@@ -28,11 +28,17 @@ export class Brand {
   description: string
 
   @Field(() => [ShowSegment], { nullable: true })
-  @OneToMany(() => ShowSegment, (showSegment) => showSegment.brand)
+  @OneToMany(
+    () => ShowSegment,
+    showSegment => showSegment.brand,
+  )
   showSegments: ShowSegment[]
 
   @Field(() => [UserBrandRole], { nullable: true })
-  @OneToMany(() => UserBrandRole, (userBrandRole) => userBrandRole.brand)
+  @OneToMany(
+    () => UserBrandRole,
+    userBrandRole => userBrandRole.brand,
+  )
   userBrandRoles: UserBrandRole[]
 
   @Field()

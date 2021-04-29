@@ -256,6 +256,7 @@ type Mutation {
   add_payment(quantity: String!, productId: String!): Payment!
   add_show(data: CreateShowDto!): Show!
   addShowWithSegment(data: CreateShowWithSegmentDto!): Show!
+  updateShow(data: UpdateShowDto!): Show!
   addShowSegment(data: CreateShowSegmentDto!): ShowSegment!
   updateShowSegment(data: UpdateShowSegmentDto!): ShowSegment!
   add_show_your_style_entry(videoUrl: String!): ShowYourStyleEntry!
@@ -379,6 +380,14 @@ input ShowSegmentDto {
   productsIds: [String!]!
 }
 
+input UpdateShowDto {
+  id: String!
+  title: String!
+  imageUrl: String!
+  startDate: DateTime!
+  endDate: DateTime!
+}
+
 input CreateShowSegmentDto {
   showId: String!
   brandId: String!
@@ -389,6 +398,7 @@ input CreateShowSegmentDto {
 input UpdateShowSegmentDto {
   id: String!
   title: String!
+  productsIds: [String!]!
 }
 
 input UpdateUserEntityDto {

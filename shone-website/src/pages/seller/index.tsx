@@ -62,8 +62,6 @@ export default function SellerPage() {
             rowId="id"
             tableTitle="My Stores"
             tableWidth="75%"
-            // onChangePage={onChangePage}
-            // onChangeRowsPerPage={onChangeRowsPerPage}
           />
         )}
       </Grid>

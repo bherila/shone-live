@@ -42,6 +42,9 @@ export class Sku {
   variant: Variant
 
   @Field(() => [LineItem], { nullable: true })
-  @OneToMany(() => LineItem, (lineItem) => lineItem.order)
+  @OneToMany(
+    () => LineItem,
+    lineItem => lineItem.order,
+  )
   skus: LineItem[]
 }

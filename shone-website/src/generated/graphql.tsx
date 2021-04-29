@@ -181,6 +181,7 @@ export type Mutation = {
   add_payment: Payment
   add_show: Show
   addShowWithSegment: Show
+  updateShow: Show
   addShowSegment: ShowSegment
   updateShowSegment: ShowSegment
   add_show_your_style_entry: ShowYourStyleEntry
@@ -267,6 +268,10 @@ export type MutationAdd_ShowArgs = {
 
 export type MutationAddShowWithSegmentArgs = {
   data: CreateShowWithSegmentDto
+}
+
+export type MutationUpdateShowArgs = {
+  data: UpdateShowDto
 }
 
 export type MutationAddShowSegmentArgs = {
@@ -687,9 +692,18 @@ export type UpdateProductDto = {
   description: Scalars['String']
 }
 
+export type UpdateShowDto = {
+  id: Scalars['String']
+  title: Scalars['String']
+  imageUrl: Scalars['String']
+  startDate: Scalars['DateTime']
+  endDate: Scalars['DateTime']
+}
+
 export type UpdateShowSegmentDto = {
   id: Scalars['String']
   title: Scalars['String']
+  productsIds: Array<Scalars['String']>
 }
 
 export type UpdateSkuDto = {
@@ -888,6 +902,27 @@ export type UpdateProductMutation = { __typename?: 'Mutation' } & {
   >
 }
 
+export type UpdateShowMutationVariables = Exact<{
+  id: Scalars['String']
+  title: Scalars['String']
+  startDate: Scalars['DateTime']
+  endDate: Scalars['DateTime']
+}>
+
+export type UpdateShowMutation = { __typename?: 'Mutation' } & {
+  updateShow: { __typename?: 'Show' } & Pick<Show, 'id'>
+}
+
+export type UpdateShowSegmentMutationVariables = Exact<{
+  id: Scalars['String']
+  title: Scalars['String']
+  productsIds: Array<Scalars['String']> | Scalars['String']
+}>
+
+export type UpdateShowSegmentMutation = { __typename?: 'Mutation' } & {
+  updateShowSegment: { __typename?: 'ShowSegment' } & Pick<ShowSegment, 'id'>
+}
+
 export type UpdateSkuMutationVariables = Exact<{
   id: Scalars['String']
   name: Scalars['String']
@@ -1063,7 +1098,7 @@ export type GetShowQuery = { __typename?: 'Query' } & {
               'id' | 'title'
             > & {
                 products: Array<
-                  { __typename?: 'Product' } & Pick<Product, 'name'>
+                  { __typename?: 'Product' } & Pick<Product, 'id' | 'name'>
                 >
               }
           >
@@ -1703,6 +1738,128 @@ export type UpdateProductMutationResult = Apollo.MutationResult<UpdateProductMut
 export type UpdateProductMutationOptions = Apollo.BaseMutationOptions<
   UpdateProductMutation,
   UpdateProductMutationVariables
+>
+export const UpdateShowDocument = gql`
+  mutation UpdateShow(
+    $id: String!
+    $title: String!
+    $startDate: DateTime!
+    $endDate: DateTime!
+  ) {
+    updateShow(
+      data: {
+        id: $id
+        title: $title
+        imageUrl: ""
+        startDate: $startDate
+        endDate: $endDate
+      }
+    ) {
+      id
+    }
+  }
+`
+export type UpdateShowMutationFn = Apollo.MutationFunction<
+  UpdateShowMutation,
+  UpdateShowMutationVariables
+>
+
+/**
+ * __useUpdateShowMutation__
+ *
+ * To run a mutation, you first call `useUpdateShowMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateShowMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateShowMutation, { data, loading, error }] = useUpdateShowMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      title: // value for 'title'
+ *      startDate: // value for 'startDate'
+ *      endDate: // value for 'endDate'
+ *   },
+ * });
+ */
+export function useUpdateShowMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateShowMutation,
+    UpdateShowMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<UpdateShowMutation, UpdateShowMutationVariables>(
+    UpdateShowDocument,
+    options,
+  )
+}
+export type UpdateShowMutationHookResult = ReturnType<
+  typeof useUpdateShowMutation
+>
+export type UpdateShowMutationResult = Apollo.MutationResult<UpdateShowMutation>
+export type UpdateShowMutationOptions = Apollo.BaseMutationOptions<
+  UpdateShowMutation,
+  UpdateShowMutationVariables
+>
+export const UpdateShowSegmentDocument = gql`
+  mutation UpdateShowSegment(
+    $id: String!
+    $title: String!
+    $productsIds: [String!]!
+  ) {
+    updateShowSegment(
+      data: { id: $id, title: $title, productsIds: $productsIds }
+    ) {
+      id
+    }
+  }
+`
+export type UpdateShowSegmentMutationFn = Apollo.MutationFunction<
+  UpdateShowSegmentMutation,
+  UpdateShowSegmentMutationVariables
+>
+
+/**
+ * __useUpdateShowSegmentMutation__
+ *
+ * To run a mutation, you first call `useUpdateShowSegmentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateShowSegmentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateShowSegmentMutation, { data, loading, error }] = useUpdateShowSegmentMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      title: // value for 'title'
+ *      productsIds: // value for 'productsIds'
+ *   },
+ * });
+ */
+export function useUpdateShowSegmentMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateShowSegmentMutation,
+    UpdateShowSegmentMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<
+    UpdateShowSegmentMutation,
+    UpdateShowSegmentMutationVariables
+  >(UpdateShowSegmentDocument, options)
+}
+export type UpdateShowSegmentMutationHookResult = ReturnType<
+  typeof useUpdateShowSegmentMutation
+>
+export type UpdateShowSegmentMutationResult = Apollo.MutationResult<UpdateShowSegmentMutation>
+export type UpdateShowSegmentMutationOptions = Apollo.BaseMutationOptions<
+  UpdateShowSegmentMutation,
+  UpdateShowSegmentMutationVariables
 >
 export const UpdateSkuDocument = gql`
   mutation UpdateSku(
@@ -2395,6 +2552,7 @@ export const GetShowDocument = gql`
         id
         title
         products {
+          id
           name
         }
       }

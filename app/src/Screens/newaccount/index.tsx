@@ -1,7 +1,7 @@
 /* eslint-disable no-useless-escape */
 import React, { createRef, useState } from 'react'
 import { View, TouchableOpacity, Image, TextInput } from 'react-native'
-import theme from './../../utils/colors'
+import theme, { AppColors } from './../../utils/colors'
 import styles from './styles'
 import { Body, Item, Icon, Button, Header, Left, Right } from 'native-base'
 import Text from './../../components/Text'

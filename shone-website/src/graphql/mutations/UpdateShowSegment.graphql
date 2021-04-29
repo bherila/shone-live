@@ -1,0 +1,15 @@
+mutation UpdateShowSegment(
+  $id: String!
+  $title: String!
+  $productsIds: [String!]!
+) {
+  updateShowSegment(
+    data: {
+      id: $id
+      title: $title
+      productsIds: $productsIds
+    }
+  ) {
+    id
+  }
+}

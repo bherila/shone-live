@@ -2,7 +2,7 @@ import AWS from 'aws-sdk'
 import path from 'path'
 import { v4 as uuidv4 } from 'uuid'
 
-export const fileUpload = async (file) => {
+export const fileUpload = async file => {
   try {
     if (file) {
       const spacesEndpoint = new AWS.Endpoint(process.env.BUCKET_ENDPOINT)

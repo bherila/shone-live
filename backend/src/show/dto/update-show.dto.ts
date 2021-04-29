@@ -1,5 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql'
-import { IsString } from 'class-validator'
+import { IsDate, IsString } from 'class-validator'
 
 @InputType()
 export class UpdateShowDto {
@@ -9,13 +9,17 @@ export class UpdateShowDto {
 
   @Field()
   @IsString()
-  readonly brandId: string
+  readonly title: string
 
   @Field()
   @IsString()
-  readonly name: string
+  readonly imageUrl: string
 
   @Field()
-  @IsString()
-  readonly description: string
+  @IsDate()
+  readonly startDate: Date
+
+  @Field()
+  @IsDate()
+  readonly endDate: Date
 }

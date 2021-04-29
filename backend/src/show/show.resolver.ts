@@ -5,6 +5,7 @@ import { AuthGuard } from '../common/auth.guards'
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto'
 import { CreateShowDto } from './dto/create-show.dto'
 import { CreateShowWithSegmentDto } from './dto/create-show-with-segment'
+import { UpdateShowDto } from './dto/update-show.dto'
 import { Show } from './entities/show.entity'
 import { ShowService } from './show.service'
 
@@ -45,5 +46,11 @@ export class ShowResolver {
     @Args('data') data: CreateShowWithSegmentDto,
   ) {
     return await this.showsService.createWithSegment(data, user.id)
+  }
+
+  @Mutation(() => Show)
+  @UseGuards(new AuthGuard())
+  async updateShow(@Args('data') data: UpdateShowDto) {
+    return await this.showsService.update(data)
   }
 }

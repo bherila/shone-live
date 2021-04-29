@@ -1,5 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql'
-import { IsString } from 'class-validator'
+import { IsArray, IsString } from 'class-validator'
 
 @InputType()
 export class UpdateShowSegmentDto {
@@ -10,4 +10,8 @@ export class UpdateShowSegmentDto {
   @Field()
   @IsString()
   readonly title: string
+
+  @Field(() => [String])
+  @IsArray()
+  readonly productsIds: string[]
 }

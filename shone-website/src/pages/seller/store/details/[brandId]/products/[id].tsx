@@ -78,7 +78,6 @@ export default function AddEditProductPage() {
           id: productData.product.variants[selectedVariant].id,
           ...product.variantData,
         }
-    debugger
     await (isNewVariant ? addVariant : updateVariant)({
       variables: {
         ...variant,

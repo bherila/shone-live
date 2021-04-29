@@ -4,6 +4,9 @@ import { FindOneOptions, In, Repository } from 'typeorm'
 export class FindOrFailRepository<T> extends Repository<T> {
   entityName = ''
   async findOrFail(id: string, options?: FindOneOptions) {
+    if (!id) {
+      throw new NotFoundException(`${this.entityName} #${id} not found`)
+    }
     const record = await this.findOne(id, options)
     if (!record) {
       throw new NotFoundException(`${this.entityName} #${id} not found`)

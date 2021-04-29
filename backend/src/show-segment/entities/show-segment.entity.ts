@@ -42,10 +42,16 @@ export class ShowSegment {
   ownerUser: User
 
   @Field(() => [Product])
-  @ManyToMany(() => Product, (product) => product.showSegments)
+  @ManyToMany(
+    () => Product,
+    product => product.showSegments,
+  )
   products: Product[]
 
   @Field(() => [LineItem], { nullable: true })
-  @OneToMany(() => LineItem, (lineItem) => lineItem.showSegment)
+  @OneToMany(
+    () => LineItem,
+    lineItem => lineItem.showSegment,
+  )
   lineItems: LineItem[]
 }

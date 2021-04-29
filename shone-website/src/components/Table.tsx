@@ -41,11 +41,12 @@ const useStyles = makeStyles({
 })
 
 const StyledTableRow = withStyles((theme) => ({
-  root: {
+  root: ({ onClick }: { onClick: (e) => void }) => ({
     '&:nth-of-type(odd)': {
       backgroundColor: theme.palette.action.hover,
     },
-  },
+    cursor: onClick && 'pointer',
+  }),
 }))(TableRow)
 
 export default function BasicTable({
@@ -138,7 +139,7 @@ export default function BasicTable({
             <TableBody>
               {rows.map((row) => (
                 <StyledTableRow
-                  onClick={() => handleRowClick && handleRowClick(row[rowId])}
+                  onClick={handleRowClick && (() => handleRowClick(row[rowId]))}
                   key={row[rowId]}
                 >
                   {columns.map(({ renderField, field }, index) => (

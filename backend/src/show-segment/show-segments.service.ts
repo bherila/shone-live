@@ -77,9 +77,12 @@ export class ShowSegmentsService {
     return savedShowSegment
   }
 
-  async update({ id, title }: UpdateShowSegmentDto) {
-    await this.showSegmentRepository.update(id, {
+  async update({ id, title, productsIds }: UpdateShowSegmentDto) {
+    const products = await this.productRepository.findAllOrFail(productsIds)
+    await this.showSegmentRepository.save({
+      id,
       title,
+      products,
     })
     return await this.findOne(id)
   }

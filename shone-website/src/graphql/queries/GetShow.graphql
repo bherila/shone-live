@@ -8,6 +8,7 @@ query GetShow($showId: String!) {
       id
       title
       products {
+        id
         name
       }
     }
