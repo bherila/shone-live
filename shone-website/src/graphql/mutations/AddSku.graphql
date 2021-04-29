@@ -1,0 +1,19 @@
+mutation AddSku(
+  $name: String!
+  $COGS: String!
+  $friendlyName: String!
+  $stock: Float!
+  $variantId: String!
+) {
+  addSku(
+    data: {
+      name: $name
+      COGS: $COGS
+      friendlyName: $friendlyName
+      stock: $stock
+      variantId: $variantId
+    }
+  ) {
+    id
+  }
+}

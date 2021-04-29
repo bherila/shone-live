@@ -3,9 +3,9 @@ import Router, { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { FaPencilAlt } from 'react-icons/fa'
 
-import CenteredContainer from '../../../../../../components/CenteredContainer'
-import Table from '../../../../../../components/Table'
-import { useGetBrandShowsLazyQuery } from '../../../../../../generated/graphql'
+import CenteredContainer from '../../../../../components/CenteredContainer'
+import Table from '../../../../../components/Table'
+import { useGetBrandOrdersLazyQuery } from '../../../../../generated/graphql'
 
 export default function ShowsPage() {
   const router = useRouter()
@@ -13,14 +13,14 @@ export default function ShowsPage() {
   const [limit, setLimit] = useState(10)
   const [offset, setOffset] = useState(0)
 
-  const [getMyShows, { data, loading }] = useGetBrandShowsLazyQuery()
+  const [getBrandOrders, { data, loading }] = useGetBrandOrdersLazyQuery()
 
   useEffect(() => {
-    if (limit !== undefined && offset !== undefined)
-      getMyShows({
+    if (limit !== undefined && offset !== undefined && brandId)
+      getBrandOrders({
         variables: { limit, offset, brandId },
       })
-  }, [limit, offset])
+  }, [limit, offset, brandId])
 
   const onChangePage = (page) => {
     setOffset(page * limit)
@@ -36,17 +36,15 @@ export default function ShowsPage() {
         <CircularProgress />
       ) : (
         <Table
-          rows={data?.brandShows || []}
+          rows={data?.brandOrders || []}
           columns={[
             {
-              title: 'Title',
-              field: 'title',
+              title: 'Name',
+              field: 'name',
             },
             {
-              title: 'Show Segments',
-              field: 'showSegments',
-              renderField: (row) =>
-                row.showSegments?.map(({ title }) => title).join(', '),
+              title: 'Description',
+              field: 'description',
             },
             {
               title: 'Actions',
@@ -64,15 +62,8 @@ export default function ShowsPage() {
               field: 'actions',
             },
           ]}
-          bottomActions={[
-            {
-              handleClick: () =>
-                Router.push(`/seller/store/details/${brandId}/shows/new`),
-              name: 'Add Show',
-            },
-          ]}
           rowId="id"
-          tableTitle="My Shows"
+          tableTitle="My Orders"
           tableWidth="75%"
           onChangePage={onChangePage}
           onChangeRowsPerPage={onChangeRowsPerPage}

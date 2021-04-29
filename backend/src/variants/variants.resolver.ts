@@ -41,7 +41,7 @@ export class VariantResolver {
 
   @Mutation(() => Variant)
   @UseGuards(new AuthGuard())
-  async update_variant(@Args('data') data: UpdateVariantDto) {
+  async updateVariant(@Args('data') data: UpdateVariantDto) {
     return await this.variantsService.update(data)
   }
 }

@@ -1,0 +1,19 @@
+mutation UpdateSku(
+  $id: String!
+  $name: String!
+  $COGS: String!
+  $friendlyName: String!
+  $stock: Float!
+) {
+  updateSku(
+    data: {
+      id: $id
+      name: $name
+      COGS: $COGS
+      friendlyName: $friendlyName
+      stock: $stock
+    }
+  ) {
+    id
+  }
+}

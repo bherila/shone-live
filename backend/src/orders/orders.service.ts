@@ -47,17 +47,23 @@ export class OrdersService {
     })
   }
 
-  async create(
-    { showSegmentId, ...createorderDto }: CreateorderDto,
-    userId: string,
-  ) {
+  findByBrand(paginationQuery: PaginationQueryDto, brandId: string) {
+    const { limit, offset } = paginationQuery
+    return this.orderRepository
+      .createQueryBuilder('order')
+      .leftJoinAndSelect('order.lineItems', 'lineItems')
+      .where('lineItems.brand_id = :brandId', {
+        brandId,
+      })
+      .skip(offset)
+      .take(limit)
+      .getMany()
+  }
+
+  async create(createorderDto: CreateorderDto, userId: string) {
     const user = await this.userRepository.findOrFail(userId)
-    const showSegment = await this.showSegmentRepository.findOrFail(
-      showSegmentId,
-    )
     const order = this.orderRepository.create({
       user,
-      showSegment,
       ...createorderDto,
     })
     const savedOrder = await this.orderRepository.save(order)

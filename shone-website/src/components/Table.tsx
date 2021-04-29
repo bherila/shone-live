@@ -110,7 +110,7 @@ export default function BasicTable({
           {tableTitle}
         </Typography>
       )}
-      <Box width={tableWidth} mt={4}>
+      <Box width={tableWidth} mt={2}>
         <TableContainer className={classes.container} component={Paper}>
           <Table aria-label="simple table" stickyHeader>
             <TableHead>

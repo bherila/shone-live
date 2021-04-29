@@ -9,7 +9,6 @@ import {
 } from 'typeorm'
 
 import { LineItem } from '../../line-items/entities/line-item.entity'
-import { ShowSegment } from '../../show-segment/entities/show-segment.entity'
 import { User } from '../../user/entities/user.entity'
 
 @ObjectType()
@@ -34,17 +33,7 @@ export class Order {
   })
   user: User
 
-  @Field(() => ShowSegment)
-  @ManyToOne(() => ShowSegment)
-  @JoinColumn({
-    name: 'show_segment_id',
-  })
-  showSegment: ShowSegment
-
   @Field(() => [LineItem], { nullable: true })
-  @OneToMany(
-    () => LineItem,
-    lineItem => lineItem.order,
-  )
+  @OneToMany(() => LineItem, (lineItem) => lineItem.order)
   lineItems: LineItem[]
 }

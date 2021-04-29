@@ -1,6 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
+import {
+  DeepMap,
+  FieldError,
+  FieldValues,
+  UseFormRegister,
+  UseFormReset,
+} from 'react-hook-form'
 import { FaArrowLeft, FaPencilAlt } from 'react-icons/fa'
 
+import { Variant } from '../generated/graphql'
 import FormButton from './FormButton'
 import Input from './Input'
 import SkuForm from './SkuForm'
@@ -8,14 +16,32 @@ import Table from './Table'
 
 export default function VariantForm({
   cancelEdit,
-  variant,
+  errors,
   isNewProduct,
   isNewVariant,
   register,
   reset,
-  errors,
-}: any) {
-  const [selectedSku, setSelectedSku] = useState<number>()
+  variant,
+  selectedSku,
+  setSelectedSku,
+}: {
+  cancelEdit: () => void
+  errors: DeepMap<FieldValues, FieldError>
+  isNewProduct: boolean
+  isNewVariant: boolean
+  register: UseFormRegister<FieldValues>
+  reset: UseFormReset<FieldValues>
+  variant: Variant
+  selectedSku: number
+  setSelectedSku: (val: number) => void
+}) {
+  useEffect(() => {
+    if (variant && selectedSku === undefined) {
+      reset({
+        variantData: variant,
+      })
+    }
+  }, [selectedSku])
 
   const selectSku = (e, row) => {
     e.stopPropagation()
@@ -35,6 +61,7 @@ export default function VariantForm({
       },
     })
   }
+
   return (
     <>
       {!isNewProduct && selectedSku === undefined && (
@@ -66,20 +93,30 @@ export default function VariantForm({
           />
         </>
       )}
+      {selectedSku === undefined && !isNewProduct && !isNewVariant && (
+        <FormButton>Edit</FormButton>
+      )}
       {variant && selectedSku === undefined && (
         <div className="flex flex-col items-center">
           <Table
             rows={variant.skus || []}
+            tableTitle="Skus"
             columns={[
               {
                 title: 'Name',
                 field: 'name',
               },
               {
-                title: 'Skus',
-                field: 'skus',
-                renderField: (row) =>
-                  row.skus?.map(({ name }) => name).join(', '),
+                title: 'Friendly Name',
+                field: 'friendlyName',
+              },
+              {
+                title: 'COGS',
+                field: 'COGS',
+              },
+              {
+                title: 'Stock',
+                field: 'stock',
               },
               {
                 title: 'Actions',
@@ -111,8 +148,8 @@ export default function VariantForm({
           errors={errors}
         />
       )}
-      {selectedSku === undefined && !isNewProduct && (
-        <FormButton>{isNewVariant ? 'Add Variant' : 'Edit'}</FormButton>
+      {selectedSku === undefined && !isNewProduct && isNewVariant && (
+        <FormButton>Add Variant</FormButton>
       )}
     </>
   )

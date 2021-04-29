@@ -1,23 +1,14 @@
 import Router, { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 
+import CenteredContainer from '../../../../../../components/CenteredContainer'
 import ProductsTable from '../../../../../../components/ProductTable'
-import StoreSection from '../../../../../../components/StoreSection'
 import {
-  Brand,
   Product,
   useGetBrandProductsLazyQuery,
 } from '../../../../../../generated/graphql'
 
-export async function getServerSideProps() {
-  return {
-    props: {
-      store: { name: "Bretton's Store", id: 'S00001' },
-    },
-  }
-}
-
-export default function ProductsPage({ store }: { store: Brand }) {
+export default function ProductsPage() {
   const router = useRouter()
   const { brandId }: { brandId?: string } = router.query
   const [limit, setLimit] = useState(10)
@@ -47,7 +38,7 @@ export default function ProductsPage({ store }: { store: Brand }) {
     setNewProducts([...newProducts, { SKU, title, SRP, stock }])
   }, [])
   return (
-    <StoreSection store={store}>
+    <CenteredContainer>
       <ProductsTable
         products={(data?.brandProducts as Product[]) || []}
         bottomActions={[
@@ -63,6 +54,6 @@ export default function ProductsPage({ store }: { store: Brand }) {
         onChangePage={onChangePage}
         onChangeRowsPerPage={onChangeRowsPerPage}
       />
-    </StoreSection>
+    </CenteredContainer>
   )
 }

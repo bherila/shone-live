@@ -1,8 +1,7 @@
 import React from 'react'
 
-import StoreSection from '../../../../../components/StoreSection'
+import CenteredContainer from '../../../../../components/CenteredContainer'
 import Table from '../../../../../components/Table'
-import { Brand } from '../../../../../generated/graphql'
 
 export async function getServerSideProps() {
   return {
@@ -53,16 +52,14 @@ interface ShowModel {
 }
 
 export default function OrdersPage({
-  store,
   orders,
   shows,
 }: {
-  store: Brand
   orders: OrderModel[]
   shows: ShowModel[]
 }) {
   return (
-    <StoreSection store={store}>
+    <CenteredContainer>
       <Table
         rows={orders}
         columns={[
@@ -106,6 +103,6 @@ export default function OrdersPage({
         tableTitle="Upcoming Shows"
         bottomActions={[{ name: 'Schedule a show' }]}
       />
-    </StoreSection>
+    </CenteredContainer>
   )
 }

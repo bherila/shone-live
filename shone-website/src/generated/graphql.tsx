@@ -139,7 +139,6 @@ export type CreateVariantDto = {
 }
 
 export type CreateorderDto = {
-  showSegmentId: Scalars['String']
   name: Scalars['String']
   description: Scalars['String']
 }
@@ -150,6 +149,8 @@ export type LineItem = {
   amount: Scalars['Float']
   order: Order
   sku: Sku
+  brand: Brand
+  showSegment: ShowSegment
 }
 
 export type MessageEntity = {
@@ -174,7 +175,7 @@ export type Mutation = {
   addProduct: Product
   update_product: Product
   addVariant: Variant
-  update_variant: Variant
+  updateVariant: Variant
   addSku: Sku
   updateSku: Sku
   add_payment: Payment
@@ -243,7 +244,7 @@ export type MutationAddVariantArgs = {
   data: CreateVariantDto
 }
 
-export type MutationUpdate_VariantArgs = {
+export type MutationUpdateVariantArgs = {
   data: UpdateVariantDto
 }
 
@@ -324,7 +325,6 @@ export type Order = {
   name: Scalars['String']
   description: Scalars['String']
   user: User
-  showSegment: ShowSegment
   lineItems?: Maybe<Array<LineItem>>
 }
 
@@ -369,6 +369,7 @@ export type Query = {
   order?: Maybe<Order>
   orders: Array<Order>
   myOrders: Array<Order>
+  brandOrders: Array<Order>
   product?: Maybe<Product>
   products: Array<Product>
   myProducts: Array<Product>
@@ -456,6 +457,11 @@ export type QueryOrdersArgs = {
 }
 
 export type QueryMyOrdersArgs = {
+  paginationQuery: PaginationQueryDto
+}
+
+export type QueryBrandOrdersArgs = {
+  brandId: Scalars['String']
   paginationQuery: PaginationQueryDto
 }
 
@@ -607,7 +613,7 @@ export type ShowSegment = {
   show: Show
   ownerUser: User
   products: Array<Product>
-  orders?: Maybe<Array<Order>>
+  lineItems?: Maybe<Array<LineItem>>
 }
 
 export type ShowSegmentDto = {
@@ -688,6 +694,7 @@ export type UpdateShowSegmentDto = {
 
 export type UpdateSkuDto = {
   id: Scalars['String']
+  name: Scalars['String']
   friendlyName: Scalars['String']
   COGS: Scalars['String']
   stock: Scalars['Float']
@@ -815,6 +822,18 @@ export type AddShowWithSegmentMutation = { __typename?: 'Mutation' } & {
   addShowWithSegment: { __typename?: 'Show' } & Pick<Show, 'id'>
 }
 
+export type AddSkuMutationVariables = Exact<{
+  name: Scalars['String']
+  COGS: Scalars['String']
+  friendlyName: Scalars['String']
+  stock: Scalars['Float']
+  variantId: Scalars['String']
+}>
+
+export type AddSkuMutation = { __typename?: 'Mutation' } & {
+  addSku: { __typename?: 'Sku' } & Pick<Sku, 'id'>
+}
+
 export type AddUserMutationVariables = Exact<{
   phone: Scalars['String']
 }>
@@ -823,6 +842,17 @@ export type AddUserMutation = { __typename?: 'Mutation' } & Pick<
   Mutation,
   'add_user'
 >
+
+export type AddVariantMutationVariables = Exact<{
+  productId: Scalars['String']
+  name: Scalars['String']
+  description: Scalars['String']
+  skuData: CreateSkuDto
+}>
+
+export type AddVariantMutation = { __typename?: 'Mutation' } & {
+  addVariant: { __typename?: 'Variant' } & Pick<Variant, 'id'>
+}
 
 export type SubscribeToWaitlistMutationVariables = Exact<{
   email: Scalars['String']
@@ -858,6 +888,18 @@ export type UpdateProductMutation = { __typename?: 'Mutation' } & {
   >
 }
 
+export type UpdateSkuMutationVariables = Exact<{
+  id: Scalars['String']
+  name: Scalars['String']
+  COGS: Scalars['String']
+  friendlyName: Scalars['String']
+  stock: Scalars['Float']
+}>
+
+export type UpdateSkuMutation = { __typename?: 'Mutation' } & {
+  updateSku: { __typename?: 'Sku' } & Pick<Sku, 'id'>
+}
+
 export type UpdateUserMutationVariables = Exact<{
   user: UpdateUserEntityDto
 }>
@@ -875,12 +917,38 @@ export type UpdateUserMutation = { __typename?: 'Mutation' } & {
   >
 }
 
+export type UpdateVariantMutationVariables = Exact<{
+  id: Scalars['String']
+  name: Scalars['String']
+  description: Scalars['String']
+}>
+
+export type UpdateVariantMutation = { __typename?: 'Mutation' } & {
+  updateVariant: { __typename?: 'Variant' } & Pick<Variant, 'id'>
+}
+
 export type GetBrandQueryVariables = Exact<{
   brandId: Scalars['String']
 }>
 
 export type GetBrandQuery = { __typename?: 'Query' } & {
   brand?: Maybe<{ __typename?: 'Brand' } & Pick<Brand, 'name' | 'description'>>
+}
+
+export type GetBrandOrdersQueryVariables = Exact<{
+  brandId: Scalars['String']
+  limit: Scalars['Float']
+  offset: Scalars['Float']
+}>
+
+export type GetBrandOrdersQuery = { __typename?: 'Query' } & {
+  brandOrders: Array<
+    { __typename?: 'Order' } & Pick<Order, 'id' | 'name' | 'description'> & {
+        lineItems?: Maybe<
+          Array<{ __typename?: 'LineItem' } & Pick<LineItem, 'amount'>>
+        >
+      }
+  >
 }
 
 export type GetBrandProductsQueryVariables = Exact<{
@@ -1307,6 +1375,71 @@ export type AddShowWithSegmentMutationOptions = Apollo.BaseMutationOptions<
   AddShowWithSegmentMutation,
   AddShowWithSegmentMutationVariables
 >
+export const AddSkuDocument = gql`
+  mutation AddSku(
+    $name: String!
+    $COGS: String!
+    $friendlyName: String!
+    $stock: Float!
+    $variantId: String!
+  ) {
+    addSku(
+      data: {
+        name: $name
+        COGS: $COGS
+        friendlyName: $friendlyName
+        stock: $stock
+        variantId: $variantId
+      }
+    ) {
+      id
+    }
+  }
+`
+export type AddSkuMutationFn = Apollo.MutationFunction<
+  AddSkuMutation,
+  AddSkuMutationVariables
+>
+
+/**
+ * __useAddSkuMutation__
+ *
+ * To run a mutation, you first call `useAddSkuMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddSkuMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addSkuMutation, { data, loading, error }] = useAddSkuMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *      COGS: // value for 'COGS'
+ *      friendlyName: // value for 'friendlyName'
+ *      stock: // value for 'stock'
+ *      variantId: // value for 'variantId'
+ *   },
+ * });
+ */
+export function useAddSkuMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    AddSkuMutation,
+    AddSkuMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<AddSkuMutation, AddSkuMutationVariables>(
+    AddSkuDocument,
+    options,
+  )
+}
+export type AddSkuMutationHookResult = ReturnType<typeof useAddSkuMutation>
+export type AddSkuMutationResult = Apollo.MutationResult<AddSkuMutation>
+export type AddSkuMutationOptions = Apollo.BaseMutationOptions<
+  AddSkuMutation,
+  AddSkuMutationVariables
+>
 export const AddUserDocument = gql`
   mutation AddUser($phone: String!) {
     add_user(phone: $phone)
@@ -1351,6 +1484,70 @@ export type AddUserMutationResult = Apollo.MutationResult<AddUserMutation>
 export type AddUserMutationOptions = Apollo.BaseMutationOptions<
   AddUserMutation,
   AddUserMutationVariables
+>
+export const AddVariantDocument = gql`
+  mutation AddVariant(
+    $productId: String!
+    $name: String!
+    $description: String!
+    $skuData: CreateSkuDto!
+  ) {
+    addVariant(
+      data: {
+        productId: $productId
+        name: $name
+        description: $description
+        skuData: $skuData
+      }
+    ) {
+      id
+    }
+  }
+`
+export type AddVariantMutationFn = Apollo.MutationFunction<
+  AddVariantMutation,
+  AddVariantMutationVariables
+>
+
+/**
+ * __useAddVariantMutation__
+ *
+ * To run a mutation, you first call `useAddVariantMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddVariantMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addVariantMutation, { data, loading, error }] = useAddVariantMutation({
+ *   variables: {
+ *      productId: // value for 'productId'
+ *      name: // value for 'name'
+ *      description: // value for 'description'
+ *      skuData: // value for 'skuData'
+ *   },
+ * });
+ */
+export function useAddVariantMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    AddVariantMutation,
+    AddVariantMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<AddVariantMutation, AddVariantMutationVariables>(
+    AddVariantDocument,
+    options,
+  )
+}
+export type AddVariantMutationHookResult = ReturnType<
+  typeof useAddVariantMutation
+>
+export type AddVariantMutationResult = Apollo.MutationResult<AddVariantMutation>
+export type AddVariantMutationOptions = Apollo.BaseMutationOptions<
+  AddVariantMutation,
+  AddVariantMutationVariables
 >
 export const SubscribeToWaitlistDocument = gql`
   mutation SubscribeToWaitlist($email: String!) {
@@ -1507,6 +1704,73 @@ export type UpdateProductMutationOptions = Apollo.BaseMutationOptions<
   UpdateProductMutation,
   UpdateProductMutationVariables
 >
+export const UpdateSkuDocument = gql`
+  mutation UpdateSku(
+    $id: String!
+    $name: String!
+    $COGS: String!
+    $friendlyName: String!
+    $stock: Float!
+  ) {
+    updateSku(
+      data: {
+        id: $id
+        name: $name
+        COGS: $COGS
+        friendlyName: $friendlyName
+        stock: $stock
+      }
+    ) {
+      id
+    }
+  }
+`
+export type UpdateSkuMutationFn = Apollo.MutationFunction<
+  UpdateSkuMutation,
+  UpdateSkuMutationVariables
+>
+
+/**
+ * __useUpdateSkuMutation__
+ *
+ * To run a mutation, you first call `useUpdateSkuMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateSkuMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateSkuMutation, { data, loading, error }] = useUpdateSkuMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      name: // value for 'name'
+ *      COGS: // value for 'COGS'
+ *      friendlyName: // value for 'friendlyName'
+ *      stock: // value for 'stock'
+ *   },
+ * });
+ */
+export function useUpdateSkuMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateSkuMutation,
+    UpdateSkuMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<UpdateSkuMutation, UpdateSkuMutationVariables>(
+    UpdateSkuDocument,
+    options,
+  )
+}
+export type UpdateSkuMutationHookResult = ReturnType<
+  typeof useUpdateSkuMutation
+>
+export type UpdateSkuMutationResult = Apollo.MutationResult<UpdateSkuMutation>
+export type UpdateSkuMutationOptions = Apollo.BaseMutationOptions<
+  UpdateSkuMutation,
+  UpdateSkuMutationVariables
+>
 export const UpdateUserDocument = gql`
   mutation UpdateUser($user: UpdateUserEntityDto!) {
     update_user(user: $user) {
@@ -1562,6 +1826,57 @@ export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<
   UpdateUserMutation,
   UpdateUserMutationVariables
 >
+export const UpdateVariantDocument = gql`
+  mutation UpdateVariant($id: String!, $name: String!, $description: String!) {
+    updateVariant(data: { id: $id, name: $name, description: $description }) {
+      id
+    }
+  }
+`
+export type UpdateVariantMutationFn = Apollo.MutationFunction<
+  UpdateVariantMutation,
+  UpdateVariantMutationVariables
+>
+
+/**
+ * __useUpdateVariantMutation__
+ *
+ * To run a mutation, you first call `useUpdateVariantMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateVariantMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateVariantMutation, { data, loading, error }] = useUpdateVariantMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      name: // value for 'name'
+ *      description: // value for 'description'
+ *   },
+ * });
+ */
+export function useUpdateVariantMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateVariantMutation,
+    UpdateVariantMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<
+    UpdateVariantMutation,
+    UpdateVariantMutationVariables
+  >(UpdateVariantDocument, options)
+}
+export type UpdateVariantMutationHookResult = ReturnType<
+  typeof useUpdateVariantMutation
+>
+export type UpdateVariantMutationResult = Apollo.MutationResult<UpdateVariantMutation>
+export type UpdateVariantMutationOptions = Apollo.BaseMutationOptions<
+  UpdateVariantMutation,
+  UpdateVariantMutationVariables
+>
 export const GetBrandDocument = gql`
   query GetBrand($brandId: String!) {
     brand(brandId: $brandId) {
@@ -1615,6 +1930,74 @@ export type GetBrandLazyQueryHookResult = ReturnType<
 export type GetBrandQueryResult = Apollo.QueryResult<
   GetBrandQuery,
   GetBrandQueryVariables
+>
+export const GetBrandOrdersDocument = gql`
+  query GetBrandOrders($brandId: String!, $limit: Float!, $offset: Float!) {
+    brandOrders(
+      paginationQuery: { limit: $limit, offset: $offset }
+      brandId: $brandId
+    ) {
+      id
+      name
+      description
+      lineItems {
+        amount
+      }
+    }
+  }
+`
+
+/**
+ * __useGetBrandOrdersQuery__
+ *
+ * To run a query within a React component, call `useGetBrandOrdersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetBrandOrdersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetBrandOrdersQuery({
+ *   variables: {
+ *      brandId: // value for 'brandId'
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *   },
+ * });
+ */
+export function useGetBrandOrdersQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetBrandOrdersQuery,
+    GetBrandOrdersQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetBrandOrdersQuery, GetBrandOrdersQueryVariables>(
+    GetBrandOrdersDocument,
+    options,
+  )
+}
+export function useGetBrandOrdersLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetBrandOrdersQuery,
+    GetBrandOrdersQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetBrandOrdersQuery, GetBrandOrdersQueryVariables>(
+    GetBrandOrdersDocument,
+    options,
+  )
+}
+export type GetBrandOrdersQueryHookResult = ReturnType<
+  typeof useGetBrandOrdersQuery
+>
+export type GetBrandOrdersLazyQueryHookResult = ReturnType<
+  typeof useGetBrandOrdersLazyQuery
+>
+export type GetBrandOrdersQueryResult = Apollo.QueryResult<
+  GetBrandOrdersQuery,
+  GetBrandOrdersQueryVariables
 >
 export const GetBrandProductsDocument = gql`
   query GetBrandProducts($brandId: String!, $limit: Float!, $offset: Float!) {

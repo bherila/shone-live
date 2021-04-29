@@ -1,13 +1,13 @@
-query GetShow ($showId: String!){
+query GetShow($showId: String!) {
   show(showId: $showId) {
     id
     title
     start_date
     end_date
-    showSegments{
+    showSegments {
       id
       title
-      products{
+      products {
         name
       }
     }

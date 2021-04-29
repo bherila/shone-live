@@ -1,5 +1,5 @@
 import React from 'react'
-import { RegisterOptions } from 'react-hook-form'
+import { FieldValues, RegisterOptions, UseFormRegister } from 'react-hook-form'
 
 export default function Select({
   children,
@@ -16,7 +16,7 @@ export default function Select({
   label: string
   placeholder?: string
   name: string
-  register: any
+  register: UseFormRegister<FieldValues>
   registerOptions?: RegisterOptions
   error?: any
   multiple?: boolean

@@ -7,7 +7,9 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm'
 
+import { Brand } from '../../brands/entities/brand.entity'
 import { Order } from '../../orders/entities/order.entity'
+import { ShowSegment } from '../../show-segment/entities/show-segment.entity'
 import { Sku } from '../../skus/entities/sku.entity'
 
 @ObjectType()
@@ -34,4 +36,18 @@ export class LineItem {
     name: 'sku_id',
   })
   sku: Sku
+
+  @Field(() => Brand)
+  @ManyToOne(() => Brand)
+  @JoinColumn({
+    name: 'brand_id',
+  })
+  brand: Brand
+
+  @Field(() => ShowSegment)
+  @ManyToOne(() => ShowSegment)
+  @JoinColumn({
+    name: 'show_segment_id',
+  })
+  showSegment: ShowSegment
 }

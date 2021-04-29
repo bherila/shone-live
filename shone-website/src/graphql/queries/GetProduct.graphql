@@ -1,16 +1,16 @@
-query GetProduct($productId: String!){
-  product(productId:$productId) {
-    name,
-    description,
+query GetProduct($productId: String!) {
+  product(productId: $productId) {
+    name
+    description
     variants {
-      id,
-      name,
-      description,
+      id
+      name
+      description
       skus {
-        id,
-        name,
-        friendlyName,
-        COGS,
+        id
+        name
+        friendlyName
+        COGS
         stock
       }
     }

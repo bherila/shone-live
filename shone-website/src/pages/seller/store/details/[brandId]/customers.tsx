@@ -1,16 +1,7 @@
 import React from 'react'
 
-import StoreSection from '../../../../../components/StoreSection'
-import { Brand } from '../../../../../generated/graphql'
+import CenteredContainer from '../../../../../components/CenteredContainer'
 
-export async function getServerSideProps() {
-  return {
-    props: {
-      store: { name: "Bretton's Store", id: 'S00001' },
-    },
-  }
-}
-
-export default function CustomersPage({ store }: { store: Brand }) {
-  return <StoreSection store={store}>BUILDING CUSTOMERS PAGE</StoreSection>
+export default function CustomersPage() {
+  return <CenteredContainer> BUILDING CUSTOMERS PAGE</CenteredContainer>
 }

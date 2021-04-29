@@ -24,6 +24,14 @@ type Address {
   phone: String!
 }
 
+type Order {
+  id: String!
+  name: String!
+  description: String!
+  user: User!
+  lineItems: [LineItem!]
+}
+
 type Variant {
   id: String!
   name: String!
@@ -47,15 +55,8 @@ type LineItem {
   amount: Float!
   order: Order!
   sku: Sku!
-}
-
-type Order {
-  id: String!
-  name: String!
-  description: String!
-  user: User!
+  brand: Brand!
   showSegment: ShowSegment!
-  lineItems: [LineItem!]
 }
 
 type MessageEntity {
@@ -99,7 +100,7 @@ type ShowSegment {
   show: Show!
   ownerUser: User!
   products: [Product!]!
-  orders: [Order!]
+  lineItems: [LineItem!]
 }
 
 type UserBrandRole {
@@ -193,6 +194,7 @@ type Query {
   order(orderId: String!): Order
   orders(paginationQuery: PaginationQueryDto!): [Order!]!
   myOrders(paginationQuery: PaginationQueryDto!): [Order!]!
+  brandOrders(brandId: String!, paginationQuery: PaginationQueryDto!): [Order!]!
   product(productId: String!): Product
   products(paginationQuery: PaginationQueryDto!): [Product!]!
   myProducts(paginationQuery: PaginationQueryDto!): [Product!]!
@@ -248,7 +250,7 @@ type Mutation {
   addProduct(data: CreateProductDto!): Product!
   update_product(data: UpdateProductDto!): Product!
   addVariant(data: CreateVariantDto!): Variant!
-  update_variant(data: UpdateVariantDto!): Variant!
+  updateVariant(data: UpdateVariantDto!): Variant!
   addSku(data: CreateSkuDto!): Sku!
   updateSku(data: UpdateSkuDto!): Sku!
   add_payment(quantity: String!, productId: String!): Payment!
@@ -303,7 +305,6 @@ input UpdateLineItemsDto {
 }
 
 input CreateorderDto {
-  showSegmentId: String!
   name: String!
   description: String!
 }
@@ -351,6 +352,7 @@ input UpdateVariantDto {
 
 input UpdateSkuDto {
   id: String!
+  name: String!
   friendlyName: String!
   COGS: String!
   stock: Float!

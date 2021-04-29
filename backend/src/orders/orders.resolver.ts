@@ -33,6 +33,16 @@ export class OrderResolver {
     return this.ordersService.findByUser(paginationQuery, user.id)
   }
 
+  @Query(() => [Order])
+  @UseGuards(new AuthGuard())
+  brandOrders(
+    @Context('user') user,
+    @Args('paginationQuery') paginationQuery: PaginationQueryDto,
+    @Args('brandId') brandId: string,
+  ): Promise<Order[]> {
+    return this.ordersService.findByBrand(paginationQuery, brandId)
+  }
+
   @Mutation(() => Order)
   @UseGuards(new AuthGuard())
   async addOrder(@Context('user') user, @Args('data') data: CreateorderDto) {

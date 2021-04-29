@@ -9,6 +9,10 @@ export class UpdateSkuDto {
 
   @Field()
   @IsString()
+  readonly name: string
+
+  @Field()
+  @IsString()
   readonly friendlyName: string
 
   @Field()

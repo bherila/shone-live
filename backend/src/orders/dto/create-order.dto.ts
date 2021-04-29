@@ -5,10 +5,6 @@ import { IsString } from 'class-validator'
 export class CreateorderDto {
   @Field()
   @IsString()
-  readonly showSegmentId: string
-
-  @Field()
-  @IsString()
   readonly name: string
 
   @Field()

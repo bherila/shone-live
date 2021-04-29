@@ -127,7 +127,7 @@ export default function AddEditShow() {
               name="title"
               registerOptions={{ required: true }}
               register={register}
-              error={errors?.title && 'is required'}
+              error={errors?.title?.type}
             />
             <Input
               label="Start Date"
@@ -135,7 +135,7 @@ export default function AddEditShow() {
               type="datetime-local"
               registerOptions={{ required: true }}
               register={register}
-              error={errors?.startDate && 'is required'}
+              error={errors?.startDate?.type}
             />
             <Input
               label="End Date"
@@ -143,7 +143,7 @@ export default function AddEditShow() {
               type="datetime-local"
               registerOptions={{ required: true }}
               register={register}
-              error={errors?.endDate && 'is required'}
+              error={errors?.endDate?.type}
             />
           </>
         )}
@@ -153,14 +153,14 @@ export default function AddEditShow() {
             name="showSegment.title"
             registerOptions={{ required: true }}
             register={register}
-            error={errors?.showSegment?.title && 'is required'}
+            error={errors?.showSegment?.title?.type}
           />
           <Select
             label="Products"
             name="showSegment.productsIds"
             register={register}
             registerOptions={{ required: true }}
-            error={errors?.showSegment?.productsIds && 'is required'}
+            error={errors?.showSegment?.productsIds?.type}
             multiple
           >
             {data?.brandProducts.map((product) => (

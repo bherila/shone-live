@@ -1,5 +1,5 @@
 import React from 'react'
-import { RegisterOptions } from 'react-hook-form'
+import { FieldValues, RegisterOptions, UseFormRegister } from 'react-hook-form'
 
 export default function Input({
   defaultValue,
@@ -15,9 +15,9 @@ export default function Input({
   label: string
   placeholder?: string
   name: string
-  register: any
+  register: UseFormRegister<FieldValues>
   registerOptions?: RegisterOptions
-  error?: any
+  error?: string
   type?: 'time' | 'date' | 'datetime-local' | 'number'
 }) {
   return (
@@ -34,7 +34,7 @@ export default function Input({
         }`}
         {...register(name, registerOptions)}
       />
-      {error && <p className="text-red-500 pl-1 text-xs italic">{error}</p>}
+      <p className="text-red-500 pl-1 text-xs italic h-1">{error || ' '}</p>
     </div>
   )
 }

@@ -1,4 +1,10 @@
 import React from 'react'
+import {
+  DeepMap,
+  FieldError,
+  FieldValues,
+  UseFormRegister,
+} from 'react-hook-form'
 import { FaArrowLeft } from 'react-icons/fa'
 
 import FormButton from './FormButton'
@@ -6,13 +12,20 @@ import Input from './Input'
 import Select from './Select'
 
 export default function SkuForm({
-  selectedSku,
   cancelEdit,
+  errors,
   isNewProduct,
   isNewVariant,
   register,
-  errors,
-}: any) {
+  selectedSku,
+}: {
+  cancelEdit: () => void
+  errors: DeepMap<FieldValues, FieldError>
+  isNewProduct: boolean
+  isNewVariant: boolean
+  register: UseFormRegister<FieldValues>
+  selectedSku: number
+}) {
   return (
     <>
       {!isNewProduct && !isNewVariant && (

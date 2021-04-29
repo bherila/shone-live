@@ -1,0 +1,17 @@
+mutation AddVariant(
+  $productId: String!
+  $name: String!
+  $description: String!
+  $skuData: CreateSkuDto!
+) {
+  addVariant(
+    data: {
+      productId: $productId
+      name: $name
+      description: $description
+      skuData: $skuData
+    }
+  ) {
+    id
+  }
+}

@@ -1,0 +1,13 @@
+query GetBrandOrders($brandId: String!, $limit: Float!, $offset: Float!) {
+  brandOrders(
+    paginationQuery: { limit: $limit, offset: $offset }
+    brandId: $brandId
+  ) {
+    id
+    name
+    description
+    lineItems {
+      amount
+    }
+  }
+}

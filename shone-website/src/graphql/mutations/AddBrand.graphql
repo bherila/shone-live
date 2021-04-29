@@ -1,9 +1,7 @@
 mutation AddBrand($name: String!, $description: String!) {
-  addBrand(
-    data: { name: $name, description: $description }
-  ) {
-    id,
-    name,
-    description,
+  addBrand(data: { name: $name, description: $description }) {
+    id
+    name
+    description
   }
 }

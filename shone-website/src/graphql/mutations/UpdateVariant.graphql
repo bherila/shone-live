@@ -1,0 +1,5 @@
+mutation UpdateVariant($id: String!, $name: String!, $description: String!) {
+  updateVariant(data: { id: $id, name: $name, description: $description }) {
+    id
+  }
+}

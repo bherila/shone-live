@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
+import { BrandRepository } from '../brands/brands.repository'
 import { LineItem } from '../line-items/entities/line-item.entity'
 import { ShowSegment } from '../show-segment/entities/show-segment.entity'
 import { ShowSegmentRepository } from '../show-segment/show-segments.repository'
@@ -14,6 +15,7 @@ import { OrdersService } from './orders.service'
 @Module({
   imports: [
     TypeOrmModule.forFeature([
+      BrandRepository,
       Order,
       OrderRepository,
       LineItem,
