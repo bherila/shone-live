@@ -1,0 +1,20 @@
+mutation AddShowWithSegment(
+  $brandId: String!
+  $title: String!
+  $startDate: DateTime!
+  $endDate: DateTime!
+  $showSegment: ShowSegmentDto!
+) {
+  addShowWithSegment(
+    data: {
+      brandId: $brandId
+      title: $title
+      imageUrl: ""
+      startDate: $startDate
+      endDate: $endDate
+      showSegment: $showSegment
+    }
+  ) {
+    id
+  }
+}

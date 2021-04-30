@@ -23,7 +23,8 @@
     "test:e2e:auth": "jest --config ./test/jest-e2e.json ./test/auth-flow.e2e-spec.ts",
     "test:e2e:demo": "jest --config ./test/jest-e2e.json ./test/demo-coffees.e2e-spec.ts",
     "posttest:e2e": "docker-compose stop testdb && docker-compose rm -f testdb",
-    "db:reset": "docker-compose stop db && docker-compose rm -f db && docker-compose up -d db"
+    "db:reset": "docker-compose stop db && docker-compose rm -f db && docker-compose up -d db",
+    "gen2": "ts-node --project ./codegen/tsconfig.json ./codegen/index.ts"
   },
   "dependencies": {
     "@asyncapi/generator": "^1.0.2",
@@ -74,6 +75,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@elg/tscodegen": "^0.2.0",
     "@nestjs/cli": "^7.5.4",
     "@nestjs/schematics": "^7.2.5",
     "@nestjs/testing": "^7.6.1",
@@ -84,6 +86,7 @@
     "@types/node": "^13.13.35",
     "@types/passport-jwt": "^3.0.3",
     "@types/passport-local": "^1.0.33",
+    "@types/pluralize": "^0.0.29",
     "@types/socket.io": "^2.1.12",
     "@types/stripe": "^7.13.25",
     "@types/supertest": "^2.0.8",
@@ -95,6 +98,7 @@
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "jest": "26.0.1",
+    "pluralize": "^8.0.0",
     "prettier": "^1.19.1",
     "supertest": "^4.0.2",
     "ts-jest": "26.1.0",

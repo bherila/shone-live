@@ -4,15 +4,13 @@ import {
   Image,
   View,
   TouchableOpacity,
-  ScrollView,
   Modal,
-  FlatList,
   Platform,
-  Alert
+  StatusBar,
 } from 'react-native'
 import theme from './../../utils/colors'
 import styles from './styles'
-import { Feather, Entypo } from '@expo/vector-icons'
+import { Entypo } from '@expo/vector-icons'
 import { Body, Header, Left, Right } from 'native-base'
 import Menu, { MenuItem } from 'react-native-material-menu'
 import Text from './../../components/Text'
@@ -24,11 +22,10 @@ import { useSecureStore } from '../../hooks/useSecureStore'
 import { ScreenNames } from '../../utils/ScreenNames'
 import { useDispatch } from 'react-redux'
 import { userLogout } from '../../redux/actions/userActions'
-import AppButton from '../../components/AppButton'
 import * as ImagePicker from 'expo-image-picker'
 import { Show, useGetShowsQuery } from '../../generated/graphql'
 import { UppyClient } from '../../utils/TransloaditApi'
-import * as FileSystem from 'expo-file-system'
+import RoundIconButton from '../../components/RoundIconButton'
 
 interface ListItem {
   item: Show
@@ -39,41 +36,48 @@ export default function MainScreen() {
   const uppy = UppyClient().uppy
 
   const navigation = useNavigation()
-
   const dispatch = useDispatch()
-
   const { setItem } = useSecureStore()
 
-  const [isVideoUploading, setIsVideoUploading] = useState(false)
   const [modalVisible, setModalVisible] = useState(false)
 
-  const [progress, setProgress] = useState(0)
-
-  const {
-    data: shows,
-    error: showsError,
-    loading: isShowsLoading
-  } = useGetShowsQuery()
+  // const {
+  //   data: shows,
+  //   error: showsError,
+  //   loading: isShowsLoading
+  // } = useGetShowsQuery()
 
   const commingSoon = [
-    { img: require('./../../../assets/comingone.png') },
-    { img: require('./../../../assets/comingtwo.png') },
-    { img: require('./../../../assets/comingthree.png') }
+    {
+      img: require('./../../../assets/comingone.png'),
+    },
+    {
+      img: require('./../../../assets/comingtwo.png'),
+    },
+    {
+      img: require('./../../../assets/comingthree.png'),
+    },
   ]
 
   const moreShows = [
-    { img: require('../../../assets/moreone.png') },
-    { img: require('../../../assets/moretwo.png') },
-    { img: require('../../../assets/morethree.png') }
+    {
+      img: require('../../../assets/moreone.png'),
+    },
+    {
+      img: require('../../../assets/moretwo.png'),
+    },
+    {
+      img: require('../../../assets/morethree.png'),
+    },
   ]
 
   useEffect(() => {
     setModalVisible(true)
   }, [])
 
-  useEffect(() => {
-    if (showsError) Alert.alert(showsError?.message)
-  }, [showsError])
+  // useEffect(() => {
+  //   if (showsError) Alert.alert(showsError?.message)
+  // }, [showsError])
 
   const menu = useRef<any>()
 
@@ -99,19 +103,19 @@ export default function MainScreen() {
       index: 0,
       routes: [
         {
-          name: ScreenNames.AuthScreens.LOGIN
-        }
-      ]
+          name: ScreenNames.AuthScreens.LOGIN,
+        },
+      ],
     })
 
     hideMenu()
   }
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       if (Platform.OS !== 'web') {
         const {
-          status
+          status,
         } = await ImagePicker.requestMediaLibraryPermissionsAsync()
         if (status === ImagePicker.PermissionStatus.DENIED) {
           alert('Sorry, we need camera roll permissions to make this work!')
@@ -119,78 +123,6 @@ export default function MainScreen() {
       }
     })()
   }, [])
-
-  //Needed to convert video file to base64 and then to blob, Since Transloadit only allows blob or file data
-  const urlToBlob = async (uri: string) => {
-    const fileBase64 = await FileSystem.readAsStringAsync(uri, {
-      encoding: 'base64'
-    })
-
-    return new Promise<Blob | File>((resolve, reject) => {
-      const xhr = new XMLHttpRequest()
-      xhr.onerror = reject
-      xhr.onreadystatechange = () => {
-        if (xhr.readyState === 4) {
-          resolve(xhr.response)
-        }
-      }
-      xhr.open('GET', 'data:image/jpeg;base64,' + fileBase64, true)
-      xhr.responseType = 'blob' // convert type
-      xhr.send()
-    })
-  }
-
-  const setVideoProgressComplete = () => {
-    setIsVideoUploading(false)
-    setProgress(0)
-  }
-
-  const uploadVideoToTransloadit = async (uri: string) => {
-    setIsVideoUploading(true)
-    try {
-      const blobData = await urlToBlob(uri)
-      uppy.on('upload-error', (a, { message }, c) => {
-        Alert.alert('An Error Occured', message)
-      })
-      uppy.on('upload-progress', (source, { bytesTotal, bytesUploaded }, c) => {
-        setProgress(Math.ceil((bytesUploaded / bytesTotal) * 100))
-      })
-
-      uppy.on('upload-success', (a, b, c) => {
-        setVideoProgressComplete()
-        console.log({ a, b, c })
-      })
-      uppy.on('complete', (a, b, c) => {
-        setVideoProgressComplete()
-        navigation.navigate(ScreenNames.HomeScreens.WATCH_STYLE)
-        console.log('Complete', { a, b, c })
-      })
-      uppy.addFile({
-        name: uri.split('/').pop(),
-        type: 'video/*',
-        data: blobData,
-        source: 'Local',
-        isRemote: false
-      })
-      uppy.upload()
-    } catch (e) {
-      console.error('UPPY ERROR ', { e })
-      setIsVideoUploading(false)
-    }
-  }
-
-  const pickVideo = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Videos,
-      allowsEditing: true,
-      quality: 1,
-      videoMaxDuration: 60
-    })
-
-    if (!result.cancelled) {
-      uploadVideoToTransloadit(result.uri)
-    }
-  }
 
   const navigateToVoteScreen = () => {
     navigation.navigate(ScreenNames.HomeScreens.VOTE_AND_WIN)
@@ -204,7 +136,7 @@ export default function MainScreen() {
         onPress={() => {
           navigation.navigate(ScreenNames.HomeScreens.HOME, {
             type: 'join',
-            showId: item.id
+            showId: item.id,
           })
         }}
       >
@@ -212,7 +144,7 @@ export default function MainScreen() {
           source={{
             uri: item.image_url
               ? item.image_url
-              : 'https://picsum.photos/200/300'
+              : 'https://picsum.photos/200/300',
           }}
           style={styles._image}
         />
@@ -220,50 +152,56 @@ export default function MainScreen() {
     )
   }
 
-  return (
-    <View style={globalStyles.container}>
-      <Loader
-        isLoading={isShowsLoading || isVideoUploading}
-        isProgressShown={isVideoUploading}
-        progress={progress}
-        total={100}
-      />
-
-      <Header style={globalStyles.header}>
-        <Left />
-        <Body
-          style={{
-            flex: 3,
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}
-        >
+  const renderHeader = () => {
+    return (
+      <Header style={[globalStyles.header, styles.header]} transparent>
+        <Left style={globalStyles.colorlessContainer}>
+          <RoundIconButton
+            containerStyle={styles.iconContainerStyle}
+            iconStyle={styles.iconStyle}
+            iconUri={require('../../../assets/gift_yellow.png')}
+            onPress={() => {}}
+          />
+        </Left>
+        <Body style={styles.headerBody}>
           <Image
-            source={require('./../../../assets/logo.png')}
-            style={globalStyles.profileLogo}
+            source={require('./../../../assets/shone_logo_light.png')}
+            style={globalStyles.shoneLogo}
+            resizeMode="contain"
           />
         </Body>
-        <Right style={globalStyles.container}>
+        <Right style={globalStyles.colorlessContainer}>
           <Menu
             ref={menu}
             button={
-              <TouchableOpacity style={styles._userAvatar} onPress={showMenu}>
-                <Image
-                  source={require('./../../../assets/avatar.jpg')}
-                  style={styles._profilePic}
-                />
-              </TouchableOpacity>
+              <RoundIconButton
+                containerStyle={styles.iconContainerStyle}
+                onPress={showMenu}
+                iconStyle={styles.iconStyle}
+                iconUri={require('./../../../assets/profile_yellow.png')}
+              />
             }
           >
             <MenuItem onPress={navigateToVoteScreen}>Vote and Win</MenuItem>
             <MenuItem onPress={() => ViewProfile()}>View Profile</MenuItem>
-
             <MenuItem onPress={() => Logout()}>Logout</MenuItem>
           </Menu>
         </Right>
       </Header>
+    )
+  }
 
-      <ScrollView showsVerticalScrollIndicator={false}>
+  return (
+    <View style={styles.container}>
+      <StatusBar barStyle="light-content" />
+      {/* <Loader
+        isLoading={isShowsLoading || isVideoUploading}
+        isProgressShown={isVideoUploading}
+        progress={progress}
+        total={100}
+      /> */}
+
+      {/* <ScrollView showsVerticalScrollIndicator={false}>
         <View style={globalStyles.rowContainer}>
           <AppButton title="Show Your Style" onPress={pickVideo} />
 
@@ -336,7 +274,7 @@ export default function MainScreen() {
             })}
           </ScrollView>
         </View>
-      </ScrollView>
+      </ScrollView> */}
       {/* modal */}
       <Modal
         animationType="slide"
@@ -370,7 +308,12 @@ export default function MainScreen() {
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={[styles._confirmBtn, { backgroundColor: '#e4e4e4' }]}
+              style={[
+                styles._confirmBtn,
+                {
+                  backgroundColor: '#e4e4e4',
+                },
+              ]}
               onPress={() => setModalVisible(false)}
             >
               <Text style={[styles._confirmBtn_text, { color: '#525252' }]}>

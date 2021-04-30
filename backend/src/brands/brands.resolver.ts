@@ -35,13 +35,13 @@ export class BrandResolver {
 
   @Mutation(() => Brand)
   @UseGuards(new AuthGuard())
-  async add_brand(@Context('user') user, @Args('data') data: CreateBrandDto) {
+  async addBrand(@Context('user') user, @Args('data') data: CreateBrandDto) {
     return await this.brandsService.create(data, user.id)
   }
 
   @Mutation(() => Brand)
   @UseGuards(new AuthGuard())
-  async update_brand(@Args('data') data: UpdateBrandDto) {
+  async updateBrand(@Args('data') data: UpdateBrandDto) {
     return await this.brandsService.update(data)
   }
 }

@@ -5,6 +5,7 @@ import { MessageEntity } from '../message/entities/message.entity'
 import { MessageRepository } from '../message/message.repository'
 import { Product } from '../products/entities/product.entity'
 import { ShowSegment } from '../show-segment/entities/show-segment.entity'
+import { ShowSegmentsModule } from '../show-segment/show-segments.module'
 import { ShowSegmentRepository } from '../show-segment/show-segments.repository'
 import { User } from '../user/entities/user.entity'
 import { UserRepository } from '../user/user.repository'
@@ -29,6 +30,7 @@ import { ShowService } from './show.service'
       UserShowRole,
       UserShowRoleRepository,
     ]),
+    ShowSegmentsModule,
   ],
   providers: [ShowResolver, ShowService],
 })

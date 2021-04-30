@@ -1,5 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql'
-import { IsOptional, IsString } from 'class-validator'
+import { IsObject, IsOptional, IsString } from 'class-validator'
+
+import { CreateVariantDto } from '../../variants/dto/create-variant.dto'
 
 @InputType()
 export class CreateProductDto {
@@ -20,4 +22,8 @@ export class CreateProductDto {
   @Field()
   @IsString()
   readonly description: string
+
+  @Field()
+  @IsObject()
+  readonly variantData: CreateVariantDto
 }

@@ -1,9 +1,19 @@
-mutation AddProduct($brandId: String, $showSegmentId: String, $name: String!, $description: String!) {
-  add_product(
-    data: { brandId: $brandId, showSegmentId: $showSegmentId, name: $name, description: $description }
+mutation AddProduct(
+  $brandId: String
+  $showSegmentId: String
+  $name: String!
+  $description: String!
+  $variantData: CreateVariantDto!
+) {
+  addProduct(
+    data: {
+      brandId: $brandId
+      showSegmentId: $showSegmentId
+      name: $name
+      description: $description
+      variantData: $variantData
+    }
   ) {
-    id,
-    name,
-    description,
+    id
   }
 }

@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native'
+import { AppColors } from '../../utils/colors'
 
 const styles = StyleSheet.create({
   container: {
@@ -42,12 +43,12 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   _name: {
-    color: 'white',
+    color: AppColors.WHITE,
     fontWeight: 'bold',
     flex: 1,
   },
   _message: {
-    color: 'white',
+    color: AppColors.WHITE,
   },
   _footerChaRow: {
     borderTopWidth: 1,
@@ -62,7 +63,7 @@ const styles = StyleSheet.create({
     height: 80,
     width: 80,
     borderRadius: 20,
-    backgroundColor: 'white',
+    backgroundColor: AppColors.WHITE,
   },
   _footerInnerSection: {
     flexDirection: 'row',
@@ -82,7 +83,7 @@ const styles = StyleSheet.create({
   _heading: {
     backgroundColor: 'rgb(43,65,98)',
     borderRadius: 10,
-    color: 'white',
+    color: AppColors.WHITE,
     textAlign: 'center',
     padding: 2,
     marginHorizontal: 4,
@@ -98,14 +99,14 @@ const styles = StyleSheet.create({
     paddingVertical: 7,
   },
   shopBtnText: {
-    color: 'white',
+    color: AppColors.WHITE,
     textAlign: 'center',
     fontWeight: 'bold',
     fontSize: 12,
     elevation: 5,
   },
   _textInput: {
-    color: 'white',
+    color: AppColors.WHITE,
     paddingVertical: 10,
     // marginBottom:15,
     paddingLeft: 30,

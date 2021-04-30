@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Image, View, TouchableOpacity, Alert } from 'react-native'
-import theme from './../../utils/colors'
+import theme, { AppColors } from './../../utils/colors'
 import styles from './styles'
 import { MaterialIcons } from '@expo/vector-icons'
 import { Body, Icon, Button, Header, Left, Right } from 'native-base'
@@ -11,7 +11,7 @@ import { ScreenNames } from '../../utils/ScreenNames'
 import { useDispatch } from 'react-redux'
 import {
   UpdateUserMutation,
-  useUpdateUserMutation
+  useUpdateUserMutation,
 } from '../../generated/graphql'
 import useImagePicker from '../../hooks/useImagePicker'
 import { userUpdateStore } from '../../redux/actions/userActions'
@@ -33,9 +33,9 @@ export default function ProfilePhoto() {
 
   const [
     updateUser,
-    { data, error: userUpdateError, loading: userUpdateLoading }
+    { data, error: userUpdateError, loading: userUpdateLoading },
   ] = useUpdateUserMutation({
-    fetchPolicy: 'no-cache'
+    fetchPolicy: 'no-cache',
   })
 
   const setUserToStorage = async (data: UpdateUserMutation) => {
@@ -52,9 +52,9 @@ export default function ProfilePhoto() {
         index: 0,
         routes: [
           {
-            name: ScreenNames.HomeScreens.MAIN_SCREEN
-          }
-        ]
+            name: ScreenNames.HomeScreens.MAIN_SCREEN,
+          },
+        ],
       })
     }
   }, [data, userUpdateError, userUpdateLoading])
@@ -65,7 +65,7 @@ export default function ProfilePhoto() {
 
       const file = generateRNFile(
         image.uri,
-        name ? name : `picture${Date.now()}`
+        name ? name : `picture${Date.now()}`,
       )
 
       await updateUser({
@@ -73,9 +73,9 @@ export default function ProfilePhoto() {
           user: {
             email: route.params?.email || '',
             username: `${route.params?.username}`,
-            file: file
-          }
-        }
+            file: file,
+          },
+        },
       })
     } else {
       Alert.alert('Please choose an image.')
@@ -86,7 +86,7 @@ export default function ProfilePhoto() {
     if (error) return Alert.alert(error.message)
   }, [image, error])
 
-  const capture = v => {
+  const capture = (v) => {
     setOpenCamera(true)
     setImage(v)
   }
@@ -98,14 +98,14 @@ export default function ProfilePhoto() {
           <Header style={{ elevation: 0, backgroundColor: 'transparent' }}>
             <Left style={{ flex: 1 }}>
               <Button transparent onPress={() => navigation.goBack()}>
-                <Icon name="arrow-back" style={{ color: 'black' }} />
+                <Icon name="arrow-back" style={{ color: AppColors.BLACK }} />
               </Button>
             </Left>
             <Body
               style={{
                 flex: 3,
                 justifyContent: 'center',
-                alignItems: 'center'
+                alignItems: 'center',
               }}
             >
               <Image
@@ -159,7 +159,7 @@ export default function ProfilePhoto() {
             style={{
               justifyContent: 'center',
               alignItems: 'center',
-              padding: 15
+              padding: 15,
             }}
           >
             <TouchableOpacity

@@ -43,6 +43,16 @@ export class ProductResolver {
     return this.productsService.findByBrand(paginationQuery, brandId, user.id)
   }
 
+  @Query(() => [Product])
+  @UseGuards(new AuthGuard())
+  showProducts(
+    @Context('user') user,
+    @Args('showId') showId: string,
+    @Args('paginationQuery') paginationQuery: PaginationQueryDto,
+  ): Promise<Product[]> {
+    return this.productsService.findByShow(paginationQuery, showId, user.id)
+  }
+
   @Mutation(() => Product)
   @UseGuards(new AuthGuard())
   async addProduct(

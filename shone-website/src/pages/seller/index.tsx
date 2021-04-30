@@ -1,4 +1,4 @@
-import { Card, CircularProgress, Grid } from '@material-ui/core'
+import { CircularProgress, Grid } from '@material-ui/core'
 import Router from 'next/router'
 import React from 'react'
 import { FaPencilAlt } from 'react-icons/fa'
@@ -13,51 +13,60 @@ export default function SellerPage() {
 
   return (
     <Grid container alignItems="center" justify="center">
-      <Card className="w-6/12 p-4 m-4">
-        <Grid
-          container
-          alignItems="center"
-          justify="center"
-          direction="column"
-          spacing={3}
-        >
-          {loading ? (
-            <CircularProgress />
-          ) : (
-            <Table
-              handleRowClick={(id) => Router.push(`/seller/store/${id}`)}
-              rows={data.my_brands}
-              columns={[
-                {
-                  title: 'Name',
-                  field: 'name',
-                },
-                {
-                  title: 'Description',
-                  field: 'description',
-                },
-                {
-                  title: 'ID',
-                  field: 'id',
-                },
-                {
-                  title: 'Actions',
-                  renderField: (row) => (
-                    <FaPencilAlt
-                      onClick={() => Router.push(`/seller/${row.id}`)}
-                      size={20}
-                    />
-                  ),
-                  field: 'actions',
-                },
-              ]}
-              rowId="id"
-              tableTitle="My Stores"
-              tableWidth="75%"
-            />
-          )}
-        </Grid>
-      </Card>
+      <Grid
+        container
+        alignItems="center"
+        justify="center"
+        direction="column"
+        spacing={3}
+      >
+        {loading ? (
+          <CircularProgress />
+        ) : (
+          <Table
+            handleRowClick={(id) => Router.push(`/seller/store/details/${id}`)}
+            rows={data?.my_brands || []}
+            columns={[
+              {
+                title: 'Name',
+                field: 'name',
+              },
+              {
+                title: 'Description',
+                field: 'description',
+              },
+              {
+                title: 'ID',
+                field: 'id',
+              },
+              {
+                title: 'Actions',
+                renderField: (row) => (
+                  <FaPencilAlt
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      Router.push(`/seller/store/${row.id}`)
+                    }}
+                    size={20}
+                  />
+                ),
+                field: 'actions',
+              },
+            ]}
+            bottomActions={[
+              {
+                handleClick: () => Router.push(`/seller/store/new`),
+                name: 'Create Brand',
+              },
+            ]}
+            rowId="id"
+            tableTitle="My Stores"
+            tableWidth="75%"
+            // onChangePage={onChangePage}
+            // onChangeRowsPerPage={onChangeRowsPerPage}
+          />
+        )}
+      </Grid>
     </Grid>
   )
 }

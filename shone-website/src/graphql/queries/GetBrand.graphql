@@ -1,0 +1,6 @@
+query GetBrand($brandId: String!) {
+  brand(brandId: $brandId) {
+    name
+    description
+  }
+}

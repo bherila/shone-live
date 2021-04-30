@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/core'
 import { FlatList } from 'react-native-gesture-handler'
 import styles from './styles'
 import { Ionicons } from '@expo/vector-icons'
+import { AppColors } from '../../utils/colors'
 
 export default function Payment() {
   const navigation = useNavigation()
@@ -69,7 +70,9 @@ export default function Payment() {
               color="black"
               style={{ alignSelf: 'center' }}
             />
-            <Text style={{ color: 'black', alignSelf: 'center' }}>Back</Text>
+            <Text style={{ color: AppColors.BLACK, alignSelf: 'center' }}>
+              Back
+            </Text>
           </Button>
         </Left>
         <Body

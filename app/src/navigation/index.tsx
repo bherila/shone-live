@@ -24,8 +24,31 @@ import { userInitSuccess } from '../redux/actions/userActions'
 import WatchStyle from '../Screens/WatchStyle'
 import VoteAndWin from '../Screens/VoteAndWin'
 import RankingDetails from '../Screens/RankingDetails'
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
+import ContestVideoScreen from '../Screens/ContestVideoScreen'
+import ContestVoteScreen from '../Screens/ContestVoteScreen'
+import GiftScreen from '../Screens/GiftScreen'
 
 const Stack = createStackNavigator()
+const Tab = createMaterialTopTabNavigator()
+
+const ContestTabs = () => (
+  <Tab.Navigator
+    tabBar={() => null}
+    initialRouteName={ScreenNames.MainScreenTabs.CONTEST_VIDEO_VOTE}
+  >
+    <Tab.Screen
+      name={ScreenNames.MainScreenTabs.CONTEST_VIDEO_LIST_SCREEN}
+      component={ContestVideoScreen}
+    />
+    <Tab.Screen
+      name={ScreenNames.MainScreenTabs.CONTEST_VIDEO_VOTE}
+      component={ContestVoteScreen}
+    />
+  </Tab.Navigator>
+)
+
+const screenOptions = { headerShown: false }
 
 function Navigation() {
   const { data, isLoading } = useSecureStore(StorageKeys.USER)
@@ -46,74 +69,84 @@ function Navigation() {
         initialRouteName={
           !data
             ? ScreenNames.AuthScreens.LOGIN
-            : ScreenNames.HomeScreens.MAIN_SCREEN
+            : ScreenNames.HomeScreens.CONTEST_TAB_SCREEN
         }
         screenOptions={{ gestureEnabled: true }}
       >
         <Stack.Screen
           name={ScreenNames.AuthScreens.LOGIN}
           component={Login}
-          options={{ headerShown: false }}
+          options={screenOptions}
         />
         <Stack.Screen
           name={ScreenNames.AuthScreens.CONFIRM_SMS}
           component={ConfirmSms}
-          options={{ headerShown: false }}
+          options={screenOptions}
         />
         <Stack.Screen
           name={ScreenNames.AuthScreens.NEW_ACCOUNT}
           component={NewAccount}
-          options={{ headerShown: false }}
+          options={screenOptions}
         />
         <Stack.Screen
           name={ScreenNames.AuthScreens.PROFILE_PHOTO}
           component={ProfilePhoto}
-          options={{ headerShown: false }}
+          options={screenOptions}
         />
         <Stack.Screen
           name={ScreenNames.HomeScreens.MAIN_SCREEN}
           component={MainScreen}
-          options={{ headerShown: false }}
+          options={screenOptions}
+        />
+        <Stack.Screen
+          name={ScreenNames.HomeScreens.CONTEST_TAB_SCREEN}
+          component={ContestTabs}
+          options={screenOptions}
+        />
+        <Stack.Screen
+          name={ScreenNames.HomeScreens.GIFT_SCREEN}
+          component={GiftScreen}
+          options={screenOptions}
         />
         <Stack.Screen
           name={ScreenNames.HomeScreens.WATCH_STYLE}
           component={WatchStyle}
-          options={{ headerShown: false }}
+          options={screenOptions}
         />
         <Stack.Screen
           name={ScreenNames.HomeScreens.VOTE_AND_WIN}
           component={VoteAndWin}
-          options={{ headerShown: false }}
+          options={screenOptions}
         />
         <Stack.Screen
           name={ScreenNames.HomeScreens.RANKING_DETAILS_SCREEN}
           component={RankingDetails}
-          options={{ headerShown: false }}
+          options={screenOptions}
         />
         <Stack.Screen
           name={ScreenNames.HomeScreens.ACCOUNT}
           component={Account}
-          options={{ headerShown: false }}
+          options={screenOptions}
         />
         <Stack.Screen
           name={ScreenNames.HomeScreens.HOME}
           component={Home}
-          options={{ headerShown: false }}
+          options={screenOptions}
         />
         <Stack.Screen
           name={ScreenNames.HomeScreens.LIVE_SHOW}
           component={LiveShow}
-          options={{ headerShown: false }}
+          options={screenOptions}
         />
         <Stack.Screen
           name={ScreenNames.HomeScreens.PAYMENT}
           component={Payment}
-          options={{ headerShown: false }}
+          options={screenOptions}
         />
         <Stack.Screen
           name={ScreenNames.HomeScreens.ADDRESS}
           component={Address}
-          options={{ headerShown: false }}
+          options={screenOptions}
         />
       </Stack.Navigator>
     </NavigationContainer>

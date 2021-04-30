@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-use-before-define
 import React from 'react'
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
+import { AppColors } from '../utils/colors'
 
 export default function Poll(props: any) {
   return (
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 25,
   },
   shop_btn_text: {
-    color: 'white',
+    color: AppColors.WHITE,
     textAlign: 'center',
     fontWeight: 'bold',
     fontSize: 12,
@@ -61,13 +62,13 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   _question: {
-    color: 'white',
+    color: AppColors.WHITE,
     fontWeight: 'bold',
     fontSize: 22,
     textAlign: 'center',
   },
   _options_text: {
-    color: 'white',
+    color: AppColors.WHITE,
     textAlign: 'center',
     fontWeight: 'bold',
     fontSize: 22,

@@ -1,0 +1,17 @@
+mutation AddShowSegment(
+  $showId: String!
+  $brandId: String!
+  $title: String!
+  $productsIds: [String!]!
+) {
+  addShowSegment(
+    data: {
+      showId: $showId
+      brandId: $brandId
+      title: $title
+      productsIds: $productsIds
+    }
+  ) {
+    id
+  }
+}

@@ -1,0 +1,12 @@
+query GetShowSegmentByBrandAndShow ($brandId: String!, $showId: String!){
+  showSegmentByBrandAndShow(
+    brandId: $brandId,
+    showId: $showId
+  ) {
+    id
+    title
+    products{
+      name
+    } 
+  }
+}

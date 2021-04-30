@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  NotFoundException,
-  UnprocessableEntityException,
-} from '@nestjs/common'
+import { Injectable, UnprocessableEntityException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 
 import { BrandRepository } from '../brands/brands.repository'
@@ -12,6 +8,11 @@ import { ShowSegment } from '../show-segment/entities/show-segment.entity'
 import { ShowSegmentRepository } from '../show-segment/show-segments.repository'
 import { User } from '../user/entities/user.entity'
 import { UserRepository } from '../user/user.repository'
+import { UserBrandRole } from '../user-brand-role/entities/user-brand-role.entity'
+import { UserBrandRoleRepository } from '../user-brand-role/user-brand-roles.repository'
+import { UserShowRole } from '../user-show-role/entities/user-show-role.entity'
+import { UserShowRoleRepository } from '../user-show-role/user-show-roles.repository'
+import { VariantsService } from '../variants/variants.service'
 import { CreateProductDto } from './dto/create-product.dto'
 import { UpdateProductDto } from './dto/update-product.dto'
 import { Product } from './entities/product.entity'
@@ -28,6 +29,11 @@ export class ProductsService {
     private readonly showSegmentRepository: ShowSegmentRepository,
     @InjectRepository(Brand)
     private readonly brandRepository: BrandRepository,
+    @InjectRepository(UserBrandRole)
+    private readonly userBrandRoleRepository: UserBrandRoleRepository,
+    @InjectRepository(UserShowRole)
+    private readonly userShowRoleRepository: UserShowRoleRepository,
+    private readonly variantsService: VariantsService,
   ) {}
 
   findAll(paginationQuery: PaginationQueryDto) {
@@ -54,71 +60,82 @@ export class ProductsService {
     brandId: string,
     userId: string,
   ) {
+    await this.userBrandRoleRepository.checkPermission(brandId, userId, 'read')
     const { limit, offset } = paginationQuery
-    // return this.productRepository.find({
-    //   relations: ['user', 'brand', 'showSegments'],
-    //   skip: offset,
-    //   take: limit,
-    //   where: [{ showSegments: { brandId } }],
-    // })
     return this.productRepository
       .createQueryBuilder('product')
-      .leftJoin('brand', 'brand', 'brand.id = product.brand_id')
-      .leftJoin(
-        'product_show_segments',
-        'product_show_segments',
-        'product_show_segments.product_id = product.id ',
-      )
-      .leftJoin(
-        'show_segment',
-        'show_segment',
-        'product_show_segments.show_segment_id = show_segment.id',
-      )
+      .leftJoin('product.brand', 'brand')
+      .leftJoin('product.showSegments', 'showSegments')
       .where(
-        'product.brand_id = :brandId OR show_segment.brand_id = :brandId',
+        `(product.brand_id = :brandId OR showSegments.brand_id = :brandId)`,
         { brandId },
       )
+      .skip(offset)
+      .take(limit)
+      .getMany()
+  }
+
+  async findByShow(
+    paginationQuery: PaginationQueryDto,
+    showId: string,
+    userId: string,
+  ) {
+    await this.userShowRoleRepository.checkPermission(showId, userId, 'read')
+    const { limit, offset } = paginationQuery
+    return this.productRepository
+      .createQueryBuilder('product')
+      .leftJoin('product.showSegments', 'showSegments')
+      .where(`(showSegments.show_id = :showId)`, {
+        showId,
+      })
+      .skip(offset)
+      .take(limit)
       .getMany()
   }
 
   async findOne(id: string) {
-    const product = await this.productRepository.findOne(id, {
-      relations: ['user', 'brand', 'showSegments'],
+    return await this.productRepository.findOrFail(id, {
+      relations: ['variants', 'variants.skus'],
     })
-    if (!product) {
-      throw new NotFoundException(`Product id: ${id} not found`)
-    }
-    return product
   }
 
-  async create(createProductDto: CreateProductDto, userId: string) {
-    if (!createProductDto.showSegmentId && !createProductDto.brandId) {
+  async create(
+    {
+      brandId,
+      showSegmentId,
+      variantData,
+      ...createProductDto
+    }: CreateProductDto,
+    userId: string,
+  ) {
+    if (!showSegmentId && !brandId) {
       throw new UnprocessableEntityException(
-        `you must define a related ShowSegment or Brand`,
+        `You must define a related ShowSegment or Brand`,
       )
     }
-    const user = await this.userRepository.findOne(userId)
-    if (!user) {
-      throw new NotFoundException(`User #${userId} not found`)
-    }
+
+    const user = await this.userRepository.findOrFail(userId)
     const showsegmentOrBrand = { showSegments: undefined, brand: undefined }
-    if (createProductDto.showSegmentId) {
-      const showSegment = await this.showSegmentRepository.findOne(
-        createProductDto.showSegmentId,
+    if (showSegmentId) {
+      const showSegment = await this.showSegmentRepository.findOrFail(
+        showSegmentId,
+        {
+          relations: ['show'],
+        },
       )
-      if (!showSegment) {
-        throw new NotFoundException(
-          `Show Segment #${createProductDto.showSegmentId} not found`,
-        )
-      }
+      await this.userShowRoleRepository.checkPermission(
+        showSegment.show.id,
+        userId,
+        'write',
+      )
       showsegmentOrBrand.showSegments = [showSegment]
-    } else if (createProductDto.brandId) {
-      const brand = await this.brandRepository.findOne(createProductDto.brandId)
-      if (!brand) {
-        throw new NotFoundException(
-          `Brand #${createProductDto.showSegmentId} not found`,
-        )
-      }
+    } else if (brandId) {
+      const brand = await this.brandRepository.findOrFail(brandId)
+      await this.userBrandRoleRepository.checkPermission(
+        brandId,
+        userId,
+        'write',
+      )
       showsegmentOrBrand.brand = brand
     }
     const product = this.productRepository.create({
@@ -127,6 +144,10 @@ export class ProductsService {
       ...createProductDto,
     })
     const savedProduct = await this.productRepository.save(product)
+    await this.variantsService.create({
+      productId: savedProduct.id,
+      ...variantData,
+    })
     return savedProduct
   }
 

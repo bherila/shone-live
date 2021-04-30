@@ -35,9 +35,9 @@ const StyledTableCell = withStyles((theme) => ({
 }))(TableCell)
 
 const useStyles = makeStyles({
-  container: {
-    height: 587,
-  },
+  container: (props: { height?: number }) => ({
+    height: props.height || 587,
+  }),
 })
 
 const StyledTableRow = withStyles((theme) => ({
@@ -59,6 +59,7 @@ export default function BasicTable({
   handleSort,
   onChangeRowsPerPage,
   onChangePage,
+  styleProps,
 }: {
   bottomActions?: any[]
   rows: any[]
@@ -70,8 +71,9 @@ export default function BasicTable({
   handleSort?: (event, property) => void
   onChangeRowsPerPage?: (rowsPerPage) => void
   onChangePage?: (tablePage) => void
+  styleProps?: { height?: number }
 }) {
-  const classes = useStyles()
+  const classes = useStyles(styleProps)
   const [order, setOrder] = React.useState<'asc' | 'desc'>('asc')
   const [orderBy, setOrderBy] = React.useState('calories')
   const [tablePage, setPage] = React.useState(0)

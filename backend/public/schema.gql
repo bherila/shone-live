@@ -24,11 +24,38 @@ type Address {
   phone: String!
 }
 
-type Brand {
+type Variant {
   id: String!
   name: String!
   description: String!
-  ownerUser: User!
+  product: Product!
+  skus: [Sku!]
+}
+
+type Sku {
+  id: String!
+  name: String!
+  friendlyName: String!
+  COGS: String!
+  stock: Float!
+  variant: Variant!
+  skus: [LineItem!]
+}
+
+type LineItem {
+  id: String!
+  amount: Float!
+  order: Order!
+  sku: Sku!
+}
+
+type Order {
+  id: String!
+  name: String!
+  description: String!
+  user: User!
+  showSegment: ShowSegment!
+  lineItems: [LineItem!]
 }
 
 type MessageEntity {
@@ -72,15 +99,7 @@ type ShowSegment {
   show: Show!
   ownerUser: User!
   products: [Product!]!
-}
-
-type Product {
-  id: String!
-  name: String!
-  description: String!
-  user: User!
-  showSegments: [ShowSegment!]!
-  brand: Brand
+  orders: [Order!]
 }
 
 type UserBrandRole {
@@ -90,6 +109,25 @@ type UserBrandRole {
   admin: Boolean!
   user: User!
   brand: Brand!
+}
+
+type Brand {
+  id: String!
+  name: String!
+  description: String!
+  showSegments: [ShowSegment!]
+  userBrandRoles: [UserBrandRole!]
+  ownerUser: User!
+}
+
+type Product {
+  id: String!
+  name: String!
+  description: String!
+  user: User!
+  showSegments: [ShowSegment!]
+  brand: Brand
+  variants: [Variant!]
 }
 
 type ConsumerLead {
@@ -149,16 +187,31 @@ type Query {
   consumerLeads(paginationQuery: PaginationQueryDto!): [ConsumerLead!]!
   messageEntity(messageEntityId: String!): MessageEntity
   messageEntities: [MessageEntity!]!
+  lineItem(lineitemsId: String!): LineItem
+  lineItems(paginationQuery: PaginationQueryDto!): [LineItem!]!
+  orderLineItems(paginationQuery: PaginationQueryDto!, orderId: String!): [LineItem!]!
+  order(orderId: String!): Order
+  orders(paginationQuery: PaginationQueryDto!): [Order!]!
+  myOrders(paginationQuery: PaginationQueryDto!): [Order!]!
   product(productId: String!): Product
   products(paginationQuery: PaginationQueryDto!): [Product!]!
   myProducts(paginationQuery: PaginationQueryDto!): [Product!]!
   brandProducts(paginationQuery: PaginationQueryDto!, brandId: String!): [Product!]!
+  showProducts(paginationQuery: PaginationQueryDto!, showId: String!): [Product!]!
+  variant(variantId: String!): Variant
+  variants(paginationQuery: PaginationQueryDto!): [Variant!]!
+  brandVariants(paginationQuery: PaginationQueryDto!, productId: String!): [Variant!]!
+  sku(skuId: String!): Sku
+  skus(paginationQuery: PaginationQueryDto!): [Sku!]!
+  variantSkus(paginationQuery: PaginationQueryDto!, variantId: String!): [Sku!]!
   payment(PaymentId: String!): Payment
   payments: [Payment!]!
   show(showId: String!): Show
   shows: [Show!]!
+  brandShows(paginationQuery: PaginationQueryDto!, brandId: String!): [Show!]!
   showSegment(showsegmentId: String!): ShowSegment
   showSegments: [ShowSegment!]!
+  showSegmentByBrandAndShow(showId: String!, brandId: String!): [ShowSegment!]!
   show_your_style_Entry(showId: String!): ShowYourStyleEntry
   get_random_show_your_style_entry: ShowYourStyleEntry
   show_your_style_entries(paginationQuery: PaginationQueryDto!): [ShowYourStyleEntry!]!
@@ -184,14 +237,23 @@ input PaginationQueryDto {
 
 type Mutation {
   add_address(data: CreateAddressDto!): Address!
-  add_brand(data: CreateBrandDto!): Brand!
-  update_brand(data: UpdateBrandDto!): Brand!
+  addBrand(data: CreateBrandDto!): Brand!
+  updateBrand(data: UpdateBrandDto!): Brand!
   addConsumerLead(email: String!): ConsumerLead!
   add_message(message: String!, showId: String!): MessageEntity!
+  addLineItems(data: CreateLineItemsDto!): LineItem!
+  updateLineItems(data: UpdateLineItemsDto!): LineItem!
+  addOrder(data: CreateorderDto!): Order!
+  updateOrder(data: UpdateorderDto!): Order!
   addProduct(data: CreateProductDto!): Product!
   update_product(data: UpdateProductDto!): Product!
+  addVariant(data: CreateVariantDto!): Variant!
+  update_variant(data: UpdateVariantDto!): Variant!
+  addSku(data: CreateSkuDto!): Sku!
+  updateSku(data: UpdateSkuDto!): Sku!
   add_payment(quantity: String!, productId: String!): Payment!
   add_show(data: CreateShowDto!): Show!
+  addShowWithSegment(data: CreateShowWithSegmentDto!): Show!
   addShowSegment(data: CreateShowSegmentDto!): ShowSegment!
   updateShowSegment(data: UpdateShowSegmentDto!): ShowSegment!
   add_show_your_style_entry(videoUrl: String!): ShowYourStyleEntry!
@@ -229,17 +291,69 @@ input UpdateBrandDto {
   description: String!
 }
 
+input CreateLineItemsDto {
+  orderId: String!
+  skuId: String!
+  amount: Float!
+}
+
+input UpdateLineItemsDto {
+  id: String!
+  amount: Float!
+}
+
+input CreateorderDto {
+  showSegmentId: String!
+  name: String!
+  description: String!
+}
+
+input UpdateorderDto {
+  id: String!
+  name: String!
+  description: String!
+}
+
 input CreateProductDto {
   showSegmentId: String
   brandId: String
   name: String!
   description: String!
+  variantData: CreateVariantDto!
+}
+
+input CreateVariantDto {
+  productId: String
+  name: String!
+  description: String!
+  skuData: CreateSkuDto!
+}
+
+input CreateSkuDto {
+  variantId: String
+  name: String!
+  COGS: String!
+  friendlyName: String!
+  stock: Float!
 }
 
 input UpdateProductDto {
   id: String!
   name: String!
   description: String!
+}
+
+input UpdateVariantDto {
+  id: String!
+  name: String!
+  description: String!
+}
+
+input UpdateSkuDto {
+  id: String!
+  friendlyName: String!
+  COGS: String!
+  stock: Float!
 }
 
 input CreateShowDto {
@@ -249,10 +363,25 @@ input CreateShowDto {
   endDate: DateTime!
 }
 
+input CreateShowWithSegmentDto {
+  brandId: String!
+  title: String!
+  imageUrl: String!
+  startDate: DateTime!
+  endDate: DateTime!
+  showSegment: ShowSegmentDto!
+}
+
+input ShowSegmentDto {
+  title: String!
+  productsIds: [String!]!
+}
+
 input CreateShowSegmentDto {
   showId: String!
   brandId: String!
   title: String!
+  productsIds: [String!]!
 }
 
 input UpdateShowSegmentDto {

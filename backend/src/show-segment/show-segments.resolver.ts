@@ -21,6 +21,16 @@ export class ShowSegmentResolver {
     return this.showsegmentsService.findAll()
   }
 
+  @Query(() => [ShowSegment])
+  @UseGuards(new AuthGuard())
+  showSegmentByBrandAndShow(
+    @Context('user') user,
+    @Args('brandId') brandId: string,
+    @Args('showId') showId: string,
+  ): Promise<ShowSegment[]> {
+    return this.showsegmentsService.findByBrandAndShow(brandId, showId, user.id)
+  }
+
   @Mutation(() => ShowSegment)
   @UseGuards(new AuthGuard())
   async addShowSegment(

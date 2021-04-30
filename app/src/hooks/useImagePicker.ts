@@ -11,10 +11,10 @@ const useImagePicker = (height: number, width?: number) => {
   const [error, setError] = useState<any>()
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       if (Platform.OS !== 'web') {
         const {
-          status
+          status,
         } = await ImagePicker.requestMediaLibraryPermissionsAsync()
         if (status === ImagePicker.PermissionStatus.DENIED) {
           alert('Sorry, we need camera roll permissions to make this work!')
@@ -31,10 +31,10 @@ const useImagePicker = (height: number, width?: number) => {
       imageUri,
       [
         {
-          resize: resizeDimensions
-        }
+          resize: resizeDimensions,
+        },
       ],
-      { format: ImageManipulator.SaveFormat.JPEG }
+      { format: ImageManipulator.SaveFormat.JPEG },
     )
 
     return manipResult
@@ -45,7 +45,7 @@ const useImagePicker = (height: number, width?: number) => {
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
-        quality: 0.6
+        quality: 0.6,
       })
 
       if (!result.cancelled) {
@@ -66,7 +66,7 @@ const useImagePicker = (height: number, width?: number) => {
     image,
     setImage,
     error,
-    resizeImage
+    resizeImage,
   }
 }
 

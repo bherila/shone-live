@@ -1,0 +1,15 @@
+query GetShow ($showId: String!){
+  show(showId: $showId) {
+    id
+    title
+    start_date
+    end_date
+    showSegments{
+      id
+      title
+      products{
+        name
+      }
+    }
+  }
+}

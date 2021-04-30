@@ -4,6 +4,7 @@ import { Body, Button, Header, Left, Title, Text } from 'native-base'
 import { SafeAreaView, FlatList, View } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import styles from './styles'
+import { AppColors } from '../../utils/colors'
 
 export default function Address() {
   const navigation = useNavigation()
@@ -85,7 +86,9 @@ export default function Address() {
               color="black"
               style={{ alignSelf: 'center' }}
             />
-            <Text style={{ color: 'black', alignSelf: 'center' }}>Back</Text>
+            <Text style={{ color: AppColors.BLACK, alignSelf: 'center' }}>
+              Back
+            </Text>
           </Button>
         </Left>
         <Body

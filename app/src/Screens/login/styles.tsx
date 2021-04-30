@@ -1,9 +1,15 @@
 import { StyleSheet } from 'react-native'
+import { AppColors } from '../../utils/colors'
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
+  },
+  countryCodeText: {
+    fontWeight: 'bold',
+    fontSize: 18,
+    color: 'grey',
   },
   _logView: {
     flex: 1,
@@ -60,7 +66,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   _btn_text: {
-    color: 'white',
+    color: AppColors.WHITE,
     fontWeight: 'bold',
     textAlign: 'center',
     width: '100%',
@@ -72,7 +78,7 @@ const styles = StyleSheet.create({
   },
   _footer_text: {
     textAlign: 'center',
-    color: 'white',
+    color: AppColors.WHITE,
     fontWeight: '300',
     fontSize: 17,
   },
@@ -92,7 +98,7 @@ const styles = StyleSheet.create({
   _apple_btn: {
     height: 60,
     width: 60,
-    backgroundColor: 'white',
+    backgroundColor: AppColors.WHITE,
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
@@ -100,7 +106,7 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   _footerBox: {
-    backgroundColor: 'white',
+    backgroundColor: AppColors.WHITE,
     width: '70%',
     alignSelf: 'center',
     padding: 20,

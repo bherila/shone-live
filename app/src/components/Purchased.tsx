@@ -1,6 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 import React from 'react'
 import { Text, View, StyleSheet, Image } from 'react-native'
+import { AppColors } from '../utils/colors'
 // <<<<<<<<<<<<<<<<<<< ACTIVE POLL COMPONENT >>>>>>>>>>>>>>>>>>>
 export default function PurchasedItems() {
   return (
@@ -45,13 +46,13 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   _question: {
-    color: 'white',
+    color: AppColors.WHITE,
     fontWeight: 'bold',
     fontSize: 22,
     textAlign: 'center',
   },
   _options_text: {
-    color: 'white',
+    color: AppColors.WHITE,
     textAlign: 'center',
     fontWeight: 'bold',
     fontSize: 22,

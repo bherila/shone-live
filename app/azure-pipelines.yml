@@ -1,0 +1,29 @@
+# CI pipeline for app
+# https://aka.ms/yaml
+name: App
+
+trigger:
+  paths:
+    include:
+    - app
+
+pool:
+  name: Default
+
+steps:
+# - task: geeklearningio.gl-vsts-tasks-yarn.yarn-installer-task.YarnInstaller@3
+#   displayName: 'Use Yarn 1.x'
+
+# - task: geeklearningio.gl-vsts-tasks-yarn.yarn-task.Yarn@3
+#   displayName: 'yarn install'
+#   inputs:
+#     projectDirectory: app
+#     arguments: 'install --immutable'
+
+- script: 'yarn install'
+  displayName: 'yarn install'
+  workingDirectory: 'app'
+
+- script: 'yarn lint'
+  displayName: 'yarn lint'
+  workingDirectory: 'app'
