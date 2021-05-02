@@ -59,7 +59,7 @@ export default function AddEditShow() {
   }, [id, addShowSegmentResponse.data])
 
   useEffect(() => {
-    if (showData) {
+    if (showData && !isNew) {
       reset({
         title: showData.show.title,
         endDate: format(new Date(showData.show.end_date), "yyyy-MM-dd'T'hh:mm"),

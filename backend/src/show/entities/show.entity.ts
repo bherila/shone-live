@@ -65,4 +65,8 @@ export class Show {
   @Field({ name: 'owner_user' })
   @JoinColumn({ name: 'owner_user_id' })
   ownerUser: User
+
+  @Field({ name: 'is_broadcasting' })
+  @Column('boolean', { default: false })
+  isBroadcasting: boolean
 }

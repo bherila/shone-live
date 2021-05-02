@@ -52,10 +52,19 @@ export class ShowYourStyleVideoIdEntry {
   error: string
 
   @Field({ nullable: true, name: 'json_data' })
-  @Column({ type: 'mediumtext', default: null })
+  @Column({ type: 'text', default: null })
   jsonData: string
 
   @Field({ nullable: true, name: 'urls' })
   @Column({ default: null })
   urls: string
+
+  @Field({ name: 'inactive_date', nullable: true })
+  @CreateDateColumn({
+    type: 'timestamp',
+    name: 'inactive_date',
+    default: null,
+    nullable: true,
+  })
+  inactiveDate: Date
 }

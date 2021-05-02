@@ -111,6 +111,7 @@ export class ShowYourStyleEntriesService {
         user,
       },
     )
+    showYourStyleVideoIdEntry.inactiveDate = null
     const savedShowYourStyleEntry = await this.showYourStyleVideoIdEntriesRepository.save(
       showYourStyleVideoIdEntry,
     )

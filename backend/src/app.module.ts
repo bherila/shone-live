@@ -10,6 +10,7 @@ import { LineItemsModule } from './line-items/line-items.module'
 import { MessageModule } from './message/message.module'
 import { OrdersModule } from './orders/orders.module'
 import { PaymentModule } from './payment/payment.module'
+import { PaymentMethodModule } from './payment-method/payment-method.module'
 import { ProductsModule } from './products/products.module'
 import { ShowModule } from './show/show.module'
 import { ShowSegmentsModule } from './show-segment/show-segments.module'
@@ -52,6 +53,7 @@ import { VariantsModule } from './variants/variants.module'
     VariantsModule,
     SkusModule,
     StyleVideoEntryModule,
+    PaymentMethodModule,
     GraphQLModule.forRoot({
       path: '/api/graphql',
       installSubscriptionHandlers: false,

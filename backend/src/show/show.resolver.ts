@@ -1,8 +1,10 @@
-import { UseGuards } from '@nestjs/common'
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { HttpException, HttpStatus, UseGuards } from '@nestjs/common'
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql'
 
 import { AuthGuard } from '../common/auth.guards'
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto'
+import { ActiveShowsOutputDto } from './dto/active-shows-output.dto'
 import { CreateShowDto } from './dto/create-show.dto'
 import { CreateShowWithSegmentDto } from './dto/create-show-with-segment'
 import { UpdateShowDto } from './dto/update-show.dto'
@@ -46,6 +48,28 @@ export class ShowResolver {
     @Args('data') data: CreateShowWithSegmentDto,
   ) {
     return await this.showsService.createWithSegment(data, user.id)
+  }
+
+  @Mutation(() => Show)
+  @UseGuards(new AuthGuard())
+  async create_or_update_show_stream(
+    @Context('user') user,
+    @Args('id') id: string,
+  ) {
+    try {
+      return await this.showsService.createOrUpdateShowStream(id, user.id)
+    } catch (error) {
+      throw new HttpException(error, HttpStatus.BAD_REQUEST)
+    }
+  }
+
+  @Query(() => [Show])
+  async activeShows() {
+    try {
+      return await this.showsService.getActiveShows()
+    } catch (error) {
+      throw new HttpException(error, HttpStatus.BAD_REQUEST)
+    }
   }
 
   @Mutation(() => Show)

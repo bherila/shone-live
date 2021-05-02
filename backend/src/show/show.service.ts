@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto'
@@ -97,6 +97,34 @@ export class ShowService {
       .take(limit)
       .getMany()
     return show
+  }
+
+  async createOrUpdateShowStream(showId, id) {
+    const getUserDetails = await this.userRepository.findOne({ id: id })
+    if (!getUserDetails) {
+      throw new NotFoundException(`User for id - ${id} not found`)
+    }
+
+    const getShowDetails = await this.showRepository.findOne({ id: showId })
+    if (!getShowDetails) {
+      throw new NotFoundException(`Show for id - ${showId} not found`)
+    }
+
+    await this.showRepository.update(
+      { id: showId },
+      {
+        isBroadcasting: getShowDetails.isBroadcasting ? false : true,
+      },
+    )
+
+    return await this.showRepository.findOne({ id: showId })
+  }
+
+  async getActiveShows() {
+    const getActiveShows = await this.showRepository.find({
+      isBroadcasting: true,
+    })
+    return getActiveShows
   }
 
   async update(updateShowDto: UpdateShowDto) {

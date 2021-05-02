@@ -1,15 +1,24 @@
 /* eslint-disable no-empty */
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
 import { Request, Response } from 'express'
 import { getConnection } from 'typeorm'
 
 import { message } from '../../common/message'
+import { User } from '../../user/entities/user.entity'
+import { UserRepository } from '../../user/user.repository'
 import { ShowYourStyleVideoIdEntry } from '../show-your-style-entry/entities/show-your-style-video-entry.entity'
+import { ShowYourStyleVideoIdEntriesRepository } from './show-your-style-video-entry.repository'
 
 @Injectable()
 export class StyleVideoService {
-  constructor() {}
+  constructor(
+    @InjectRepository(ShowYourStyleVideoIdEntry)
+    private readonly showYourStyleVideoIdEntriesRepository: ShowYourStyleVideoIdEntriesRepository,
+    @InjectRepository(User)
+    private readonly userRepository: UserRepository,
+  ) {}
 
   async addTransloaditVideoEntry(req: Request, res: Response) {
     try {
@@ -90,5 +99,31 @@ export class StyleVideoService {
     } catch (error) {
       return res.json({ status: 500, msg: message.videoUploadError })
     }
+  }
+
+  async deactivateVideo(userId, videoId) {
+    const getUserAddressDetails = await this.showYourStyleVideoIdEntriesRepository.findOne(
+      { videoId },
+    )
+    if (!getUserAddressDetails) {
+      throw new NotFoundException(`Video for id -  ${videoId} not found`)
+    }
+
+    const checkForUserDetails = await this.userRepository.findOne({
+      id: userId,
+    })
+    if (!checkForUserDetails) {
+      throw new NotFoundException(`User for id -  ${userId} not found`)
+    }
+
+    await this.showYourStyleVideoIdEntriesRepository.update(
+      { videoId },
+      {
+        inactiveDate: new Date().toISOString(),
+      },
+    )
+    return await this.showYourStyleVideoIdEntriesRepository.findOne({
+      videoId: videoId,
+    })
   }
 }

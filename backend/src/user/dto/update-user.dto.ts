@@ -9,8 +9,8 @@ export class UpdateUserEntityDto {
   @IsString()
   id: string
 
-  @IsOptional()
   @Field({ nullable: true })
+  @IsString()
   username: string
 
   @IsOptional()
@@ -20,4 +20,14 @@ export class UpdateUserEntityDto {
   @IsOptional()
   @Field(() => GraphQLUpload, { nullable: true })
   file: FileUpload
+
+  @IsOptional()
+  @IsString()
+  @Field({ nullable: true })
+  lastname: string
+
+  @IsOptional()
+  @IsString()
+  @Field({ nullable: true })
+  firstname: string
 }

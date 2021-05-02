@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import jwt from 'jsonwebtoken'
+import Stripe from 'stripe'
 import Twilio from 'twilio'
 
 import { fileUpload } from '../common/fileUpload/index'
@@ -17,6 +18,11 @@ export class UserService {
   constructor(
     @InjectRepository(User) private readonly userRepository: UserRepository,
   ) {}
+
+  stripe = new Stripe(process.env.STRIPE_KEY.toString(), {
+    apiVersion: '2020-08-27',
+    typescript: true,
+  })
 
   async create(phone: string) {
     if (!phone) {
@@ -31,6 +37,16 @@ export class UserService {
         phone,
       })
       userDetail = await this.userRepository.save(newUser)
+    }
+
+    if (!userDetail.stripeCustomerId) {
+      const stripeCustomer = await this.stripe.customers.create({})
+      await this.userRepository.update(
+        { id: userDetail.id },
+        {
+          stripeCustomerId: stripeCustomer.id,
+        },
+      )
     }
     const code = Math.floor(Math.random() * 999999)
       .toString()
@@ -104,7 +120,9 @@ export class UserService {
       throw new UnprocessableEntityException(message.userNotExist)
     if (user.username) {
       tempData.username = user.username
-      const checkusernameExistsOrNot = await this.findOne(user.username)
+      const checkusernameExistsOrNot = await this.userRepository.findOne({
+        username: user.username,
+      })
       if (checkusernameExistsOrNot)
         throw new UnprocessableEntityException(message.usernameAlreadyExist)
     }
@@ -118,6 +136,16 @@ export class UserService {
         id: checkUserExist.id,
         phone: checkUserExist.phone,
       }
+
+      const { firstname, lastname } = user
+      if (firstname) {
+        tempData.firstname = firstname
+      }
+
+      if (lastname) {
+        tempData.firstname = lastname
+      }
+
       const token = await jwt.sign(payload, process.env.JWT_SECRET)
       tempData.token = token
       await this.userRepository.update(user.id, tempData)

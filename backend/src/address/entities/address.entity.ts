@@ -79,4 +79,8 @@ export class Address {
     name: 'user_id',
   })
   user: User
+
+  @Field({ name: 'is_deleted' })
+  @Column('boolean', { default: false })
+  isDeleted: boolean
 }

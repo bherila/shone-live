@@ -47,4 +47,24 @@ export class User {
   @Field({ nullable: true })
   @Column({ nullable: true })
   profileUrl: string
+
+  @Field({ name: 'stripe_customer_id', nullable: true })
+  @Column({ name: 'stripe_customer_id', nullable: true, default: null })
+  stripeCustomerId: string
+
+  @Field({ name: 'default_address_id', nullable: true })
+  @Column({ nullable: true })
+  defaultAddressId: string
+
+  @Field({ name: 'lastname', nullable: true })
+  @Column({ nullable: true })
+  lastname: string
+
+  @Field({ name: 'firstname', nullable: true })
+  @Column({ nullable: true })
+  firstname: string
+
+  @Field({ name: 'default_payment_method_id', nullable: true })
+  @Column({ nullable: true })
+  defaultPaymentMethodId: string
 }

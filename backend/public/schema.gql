@@ -10,6 +10,7 @@ type User {
   verification_code_time_sent: String!
   token: String
   profileUrl: String
+  stripe_customer_id: String
 }
 
 type Address {
@@ -22,6 +23,11 @@ type Address {
   state: String!
   name: String!
   phone: String!
+  is_deleted: Boolean!
+}
+
+type DeleteAddessOutputDto {
+  msg: String!
 }
 
 type Order {
@@ -91,6 +97,7 @@ type Show {
   showSegments: [ShowSegment!]
   userShowRoles: [UserShowRole!]
   owner_user: User!
+  is_broadcasting: Boolean!
 }
 
 type ShowSegment {
@@ -144,6 +151,20 @@ type Payment {
   quantity: Float!
 }
 
+type PaymentMethodEntity {
+  id: ID!
+  timestamp: DateTime!
+  paymentMethodId: String!
+  addressId: String!
+  cardName: String!
+  is_deleted: Boolean!
+  is_default: Boolean!
+}
+
+type DeletePaymentMethodOutputDto {
+  msg: String!
+}
+
 type ShowYourStyleEntry {
   id: String!
   user: User!
@@ -161,6 +182,7 @@ type ShowYourStyleVideoIdEntry {
   error: String
   json_data: String
   urls: String
+  inactive_date: DateTime
 }
 
 type ShowYourStyleViewRecord {
@@ -211,6 +233,7 @@ type Query {
   show(showId: String!): Show
   shows: [Show!]!
   brandShows(paginationQuery: PaginationQueryDto!, brandId: String!): [Show!]!
+  active_shows: [Show!]!
   showSegment(showsegmentId: String!): ShowSegment
   showSegments: [ShowSegment!]!
   showSegmentByBrandAndShow(showId: String!, brandId: String!): [ShowSegment!]!
@@ -230,6 +253,7 @@ type Query {
   usershowrole(usershowroleId: String!): UserShowRole
   usershowroles(paginationQuery: PaginationQueryDto!): [UserShowRole!]!
   my_usershowroles(paginationQuery: PaginationQueryDto!): [UserShowRole!]!
+  payment_methods: [PaymentMethodEntity!]!
 }
 
 input PaginationQueryDto {
@@ -239,6 +263,7 @@ input PaginationQueryDto {
 
 type Mutation {
   add_address(data: CreateAddressDto!): Address!
+  delete_address(id: String!): DeleteAddessOutputDto!
   addBrand(data: CreateBrandDto!): Brand!
   updateBrand(data: UpdateBrandDto!): Brand!
   addConsumerLead(email: String!): ConsumerLead!
@@ -256,6 +281,7 @@ type Mutation {
   add_payment(quantity: String!, productId: String!): Payment!
   add_show(data: CreateShowDto!): Show!
   addShowWithSegment(data: CreateShowWithSegmentDto!): Show!
+  create_or_update_show_stream(id: String!): Show!
   updateShow(data: UpdateShowDto!): Show!
   addShowSegment(data: CreateShowSegmentDto!): ShowSegment!
   updateShowSegment(data: UpdateShowSegmentDto!): ShowSegment!
@@ -269,6 +295,9 @@ type Mutation {
   update_userbrandrole(data: UpdateUserBrandRoleDto!): UserBrandRole!
   add_usershowrole(data: CreateUserShowRoleDto!): UserShowRole!
   update_usershowrole(data: UpdateUserShowRoleDto!): UserShowRole!
+  deactivate_video(videoId: String!): ShowYourStyleVideoIdEntry!
+  add_payment_method(addPaymentDetails: AddPaymentMethodDto!): PaymentMethodEntity!
+  delete_payment_method(id: String!): DeletePaymentMethodOutputDto!
 }
 
 input CreateAddressDto {
@@ -441,4 +470,12 @@ input UpdateUserShowRoleDto {
   write: Boolean!
   admin: Boolean!
   stream_to: Boolean!
+}
+
+input AddPaymentMethodDto {
+  addressId: String!
+  cvc: String!
+  cardNumber: String!
+  expiryDate: String!
+  cardName: String!
 }
