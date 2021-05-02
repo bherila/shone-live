@@ -4,11 +4,7 @@ mutation UpdateShowSegment(
   $productsIds: [String!]!
 ) {
   updateShowSegment(
-    data: {
-      id: $id
-      title: $title
-      productsIds: $productsIds
-    }
+    data: { id: $id, title: $title, productsIds: $productsIds }
   ) {
     id
   }

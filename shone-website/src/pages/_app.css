@@ -1,4 +1,5 @@
 /*@import './font/stylesheet.css';*/
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,4 +7,85 @@
 
 body {
   margin: 0;
+  font-family: 'Montserrat', sans-serif;
+}
+input {
+  color: #898989;
+}
+input::-webkit-input-placeholder {
+  /* Chrome/Opera/Safari */
+  color: #898989;
+}
+input::-moz-placeholder {
+  /* Firefox 19+ */
+  color: #898989;
+}
+input:-ms-input-placeholder {
+  /* IE 10+ */
+  color: #898989;
+}
+input:-moz-placeholder {
+  /* Firefox 18- */
+  color: #898989;
+}
+/* Video Css */
+.video-wrap:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.7) 0%,
+    rgba(0, 0, 0, 0) 49.48%,
+    rgba(0, 0, 0, 0.1) 76.55%,
+    rgba(0, 0, 0, 0.5) 100%
+  );
+}
+.custom-checkbox {
+  position: relative;
+}
+.custom-checkbox input:checked + span {
+  background-color: #ffcb74;
+  border-color: #ffcb74;
+}
+.custom-checkbox span:before {
+  content: '';
+  left: 7px;
+  top: 3.4px;
+  width: 6px;
+  height: 11px;
+  opacity: 0;
+  visibility: hidden;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  position: absolute;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+.custom-checkbox input:checked + span::before {
+  opacity: 1;
+  visibility: visible;
+}
+
+.text-gray {
+  color: #898989;
+}
+.bg-gray {
+  background-color: #f8f8f8;
+}
+.bg-yellow {
+  background-color: #ffcb74;
+}
+.bg-error {
+  background-color: #ff7474;
+}
+.border-error {
+  border-color: #ff7474;
+}
+.border-orange {
+  border-color: #f6993f;
 }
