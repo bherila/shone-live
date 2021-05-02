@@ -42,24 +42,15 @@ export class Show {
   endDate: Date
 
   @Field(() => [MessageEntity], { nullable: true })
-  @OneToMany(
-    () => MessageEntity,
-    message => message.show,
-  )
+  @OneToMany(() => MessageEntity, (message) => message.show)
   chatMessages: MessageEntity[]
 
   @Field(() => [ShowSegment], { nullable: true })
-  @OneToMany(
-    () => ShowSegment,
-    showSegment => showSegment.show,
-  )
+  @OneToMany(() => ShowSegment, (showSegment) => showSegment.show)
   showSegments: ShowSegment[]
 
   @Field(() => [UserShowRole], { nullable: true })
-  @OneToMany(
-    () => UserShowRole,
-    userShowRole => userShowRole.show,
-  )
+  @OneToMany(() => UserShowRole, (userShowRole) => userShowRole.show)
   userShowRoles: UserShowRole[]
 
   @Field({ name: 'owner_user' })
