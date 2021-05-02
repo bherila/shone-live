@@ -43,9 +43,7 @@ export class UserResolver {
     description:
       "Gets the stripe customer ID, automatically creating one if it doesn't exist",
   })
-  async resolveStripeCustomerIdAsync(
-    @Parent() user: User,
-  ): Promise<string> {
+  async resolveStripeCustomerIdAsync(@Parent() user: User): Promise<string> {
     return this.usersService.getOrCreateStripeCustomerIdAsync(user)
   }
 
