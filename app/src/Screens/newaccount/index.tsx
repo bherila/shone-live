@@ -5,7 +5,7 @@ import theme, { AppColors } from './../../utils/colors'
 import styles from './styles'
 import { Body, Item, Icon, Button, Header, Left, Right } from 'native-base'
 import Text from './../../components/Text'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { ScreenNames } from '../../utils/ScreenNames'
 import { globalStyles } from '../../utils/globalStyles'
@@ -16,7 +16,7 @@ import { useSecureStore } from '../../hooks/useSecureStore'
 
 export default function NewAccount() {
   const navigation = useNavigation()
-  const route = useRoute()
+  const route: any = useRoute()
 
   const [updateUser] = useUpdateUserMutation()
   const { setItem } = useSecureStore()

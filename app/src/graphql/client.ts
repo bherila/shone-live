@@ -44,7 +44,9 @@ const client = new ApolloClient({
   link: ApolloLink.from([
     authLink,
     link as any,
-    // createUploadLink({ uri: 'http://localhost:4000/api/graphql' })
+    // createUploadLink({
+    //   uri: 'http://9304d6e26e51.ngrok.io/api/graphql',
+    // }),
     createUploadLink({ uri: API }),
   ]),
   cache: new InMemoryCache(),

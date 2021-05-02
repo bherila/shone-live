@@ -1,10 +1,23 @@
 import { StyleSheet } from 'react-native'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { AppColors } from '../../utils/colors'
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  scrollContainer: {
+    flex: 1,
+    justifyContent: 'space-around',
+    paddingHorizontal: wp(5),
+    backgroundColor: AppColors.WHITE,
+  },
+  termsServicesContainer: {
+    paddingHorizontal: wp(6),
+  },
+  creatorTextContainer: {
+    marginVertical: wp(4),
   },
   countryCodeText: {
     fontWeight: 'bold',
@@ -27,10 +40,10 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   _logo: {
-    height: 100,
-    width: 290,
+    top: wp(10),
+    height: wp(18),
+    width: '100%',
     alignSelf: 'center',
-    marginBottom: 20,
   },
   _inputFiled: {
     borderBottomWidth: 2,
@@ -52,12 +65,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   _input: {
-    // textAlign: "center",
-    flex: 1,
-    color: 'grey',
-    fontWeight: 'bold',
-    padding: 10,
-    fontSize: 18,
+    // marginVertical: wp(4),
   },
   _continue_btn: {
     width: '96%',

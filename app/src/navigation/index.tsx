@@ -28,6 +28,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import ContestVideoScreen from '../Screens/ContestVideoScreen'
 import ContestVoteScreen from '../Screens/ContestVoteScreen'
 import GiftScreen from '../Screens/GiftScreen'
+import AddAddressScreen from '../Screens/AddAddressScreen'
 
 const Stack = createStackNavigator()
 const Tab = createMaterialTopTabNavigator()
@@ -69,7 +70,7 @@ function Navigation() {
         initialRouteName={
           !data
             ? ScreenNames.AuthScreens.LOGIN
-            : ScreenNames.HomeScreens.CONTEST_TAB_SCREEN
+            : ScreenNames.HomeScreens.MAIN_SCREEN
         }
         screenOptions={{ gestureEnabled: true }}
       >
@@ -126,6 +127,11 @@ function Navigation() {
         <Stack.Screen
           name={ScreenNames.HomeScreens.ACCOUNT}
           component={Account}
+          options={screenOptions}
+        />
+        <Stack.Screen
+          name={ScreenNames.HomeScreens.ADD_ADDRESS_SCREEN}
+          component={AddAddressScreen}
           options={screenOptions}
         />
         <Stack.Screen

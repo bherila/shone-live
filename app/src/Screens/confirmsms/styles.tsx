@@ -1,7 +1,17 @@
 import { StyleSheet } from 'react-native'
+import { widthPercentageToDP } from 'react-native-responsive-screen'
 import { AppColors } from '../../utils/colors'
+import { globalStyles } from '../../utils/globalStyles'
 
 const styles = StyleSheet.create({
+  otpWrapper: {
+    height: widthPercentageToDP(20),
+    width: '100%',
+    margin: 0,
+  },
+  otpBlockWrapper: {
+    marginBottom: widthPercentageToDP(4),
+  },
   container: {
     flex: 1,
     padding: 0,
@@ -15,9 +25,15 @@ const styles = StyleSheet.create({
   otpInputWrapper: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: '100%',
+    width: '80%',
   },
-  otpInput: { borderWidth: 1, borderRadius: 5 },
+  otpInput: {
+    ...globalStyles.textBody1,
+  },
+  focusedInput: {
+    ...globalStyles.textBody1,
+    borderColor: AppColors.NEUTRAL_PRIMARY,
+  },
   headerLogo: { height: 60, width: 120 },
   _innerView: {
     // flex: 1,
@@ -40,12 +56,12 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   _codeInput: {
-    // borderTopWidth: 1,
-    // borderBottomWidth: 1,
-    // borderRightWidth: 1,
-    // borderLeftWidth: 1,
-    padding: 2,
-    // borderRadius: 10,
+    height: widthPercentageToDP(15),
+    width: widthPercentageToDP(11.5),
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...globalStyles.textBody1,
+    ...globalStyles.input,
   },
   _confirmBtn: {
     // width: 350,
@@ -66,10 +82,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
   },
-  justifyCenter: {
-    justifyContent: 'center',
+  scrollContainer: {
+    paddingVertical: widthPercentageToDP(5),
+    paddingHorizontal: widthPercentageToDP(5),
   },
-  headerStyle: { elevation: 0, backgroundColor: 'transparent' },
+  headerStyle: { elevation: 0, backgroundColor: 'transparent', borderWidth: 0 },
   iconStyle: { color: AppColors.BLACK },
 })
 

@@ -1,0 +1,14 @@
+mutation AddAddress($address: CreateAddressDto!) {
+  add_address(data: $address) {
+    id
+    city
+    country
+    line1
+    line2
+    postal_code
+    state
+    name
+    phone
+    is_deleted
+  }
+}

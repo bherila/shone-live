@@ -17,6 +17,7 @@ export const ScreenNames = {
     RANKING_DETAILS_SCREEN: 'RankingDetails',
     CONTEST_TAB_SCREEN: 'ContestTabScreen',
     GIFT_SCREEN: 'GiftScreen',
+    ADD_ADDRESS_SCREEN: 'AddAddressScreen',
   },
   MainScreenTabs: {
     CONTEST_VIDEO_VOTE: 'ContestVideoVote',

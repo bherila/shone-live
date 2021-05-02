@@ -1,28 +1,26 @@
 import React, { useEffect, useState } from 'react'
-import { Image, View, TouchableOpacity } from 'react-native'
-import theme from './../../utils/colors'
+import { Image, View, TouchableOpacity, Alert, Text } from 'react-native'
+
 import styles from './styles'
-import { Header, Left, Button, Icon, Right, Body } from 'native-base'
-import Text from './../../components/Text'
-import OTPTextInput from 'react-native-otp-textinput'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import StorageKeys from '../../utils/StorageKeys'
 import { useSecureStore } from '../../hooks/useSecureStore'
 import { globalStyles } from '../../utils/globalStyles'
 import Loader from '../../components/Loader'
 import { ScreenNames } from '../../utils/ScreenNames'
-import {
-  userInit,
-  userInitFailure,
-  userInitSuccess,
-} from '../../redux/actions/userActions'
+import { userInit, userInitSuccess } from '../../redux/actions/userActions'
 import { useDispatch } from 'react-redux'
 import {
   User,
   VerifyCodeQuery,
   useVerifyCodeLazyQuery,
 } from '../../generated/graphql'
+import AppStrings from '../../utils/Strings'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import OTPInputView from '@twotalltotems/react-native-otp-input'
+import AppButton from '../../components/AppButton'
+import ErrorText from '../../components/ErrorText'
 
 export default function ConfirmSms() {
   const navigation = useNavigation()
@@ -38,14 +36,16 @@ export default function ConfirmSms() {
 
   const { setItem, error } = useSecureStore()
 
-  const verifyOTP = async () => {
-    verifyCode({
-      variables: {
-        code: otp,
-        phone: `+1${params?.phone}`,
-      },
-    })
-    dispatch(userInit())
+  const verifyOTP = async (OTP: string) => {
+    if (OTP.length == 6) {
+      verifyCode({
+        variables: {
+          code: OTP,
+          phone: `+91${params?.phone}`,
+        },
+      })
+      dispatch(userInit())
+    }
   }
 
   useEffect(() => {
@@ -55,13 +55,13 @@ export default function ConfirmSms() {
   }, [data])
 
   useEffect(() => {
-    if (errorVerifyCode) dispatch(userInitFailure(errorVerifyCode))
+    if (errorVerifyCode) {
+      Alert.alert(errorVerifyCode.message)
+    }
   }, [errorVerifyCode])
 
   useEffect(() => {
-    if (otp.length === 6 && !error) {
-      verifyOTP()
-    }
+    verifyOTP(otp)
   }, [otp])
 
   const navigateToMainScreen = async (data?: VerifyCodeQuery) => {
@@ -84,55 +84,57 @@ export default function ConfirmSms() {
   }
 
   return (
-    <View style={globalStyles.container}>
+    <SafeAreaView style={globalStyles.container}>
       <Loader isLoading={loading} />
-      <KeyboardAwareScrollView contentContainerStyle={styles.justifyCenter}>
-        <Header style={styles.headerStyle}>
-          <Left style={globalStyles.colorlessContainer}>
-            <Button transparent onPress={() => navigation.goBack()}>
-              <Icon name="arrow-back" style={styles.iconStyle} />
-            </Button>
-          </Left>
-          <Body style={styles.headerBody}>
-            <Image
-              source={require('./../../../assets/logo.png')}
-              style={styles.headerLogo}
-            />
-          </Body>
-          <Right style={globalStyles.colorlessContainer}></Right>
-        </Header>
-        <View style={[styles._innerView]}>
-          <Image
-            source={require('../../../assets/device.png')}
-            style={styles._deviceImg}
-          />
-          <Text style={styles._desc}>
-            We just texted you a code to confirm your identity
-          </Text>
-          <View style={styles.otpInputWrapper}>
-            <OTPTextInput
-              textInputStyle={styles.otpInput}
-              inputCount={6}
-              autoFocus={true}
-              handleTextChange={(text: string) => {
-                setOTP(text)
-              }}
-            />
-          </View>
+      <KeyboardAwareScrollView
+        contentContainerStyle={styles.scrollContainer}
+        keyboardShouldPersistTaps="handled"
+      >
+        <View style={globalStyles.rowContainer}>
           <TouchableOpacity
-            style={[styles._confirmBtn, theme.bg]}
-            onPress={() => {
-              if (otp.length === 6 && !error) {
-                verifyOTP()
-              } else {
-                alert('Enter valid OTP')
-              }
-            }}
+            style={globalStyles.colorlessContainer}
+            onPress={navigation.goBack}
           >
-            <Text style={styles._confirmBtn_text}>Confirm</Text>
+            <Image
+              source={require('../../../assets/left_arrow.png')}
+              style={globalStyles.defaultIconStyle}
+            />
           </TouchableOpacity>
+
+          <Text style={globalStyles.textHeader1}>
+            {AppStrings.confirmOTP.verification}
+          </Text>
+          <View style={globalStyles.colorlessContainer} />
         </View>
+
+        <Text style={globalStyles.textBody1}>
+          {AppStrings.confirmOTP.we_sent_the_code}
+        </Text>
+        <View style={styles.otpBlockWrapper}>
+          <OTPInputView
+            style={styles.otpWrapper}
+            pinCount={6}
+            autoFocusOnLoad
+            codeInputFieldStyle={styles._codeInput}
+            codeInputHighlightStyle={styles.focusedInput}
+            editable
+            placeholderCharacter="x"
+            keyboardType="phone-pad"
+            keyboardAppearance="dark"
+            onCodeChanged={(otp) => setOTP(otp)}
+          />
+          {errorVerifyCode ? (
+            <ErrorText error={errorVerifyCode.message} />
+          ) : null}
+        </View>
+
+        <AppButton
+          title={AppStrings.util.next}
+          onPress={() => {
+            verifyOTP(otp)
+          }}
+        />
       </KeyboardAwareScrollView>
-    </View>
+    </SafeAreaView>
   )
 }

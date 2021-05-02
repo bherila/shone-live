@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
   closeIconContainer: {
     width: wp(16),
     height: wp(16),
-    backgroundColor: AppColors.LIGHT_RED,
+    backgroundColor: AppColors.ERROR_PRIMARY,
     borderRadius: wp(16) / 2,
     margin: wp(2),
   },

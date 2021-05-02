@@ -22,6 +22,14 @@ export type Scalars = {
   Upload: any
 }
 
+export type AddPaymentMethodDto = {
+  addressId: Scalars['String']
+  cvc: Scalars['String']
+  cardNumber: Scalars['String']
+  expiryDate: Scalars['String']
+  cardName: Scalars['String']
+}
+
 export type Address = {
   __typename?: 'Address'
   id: Scalars['String']
@@ -33,6 +41,7 @@ export type Address = {
   state: Scalars['String']
   name: Scalars['String']
   phone: Scalars['String']
+  is_deleted: Scalars['Boolean']
 }
 
 export type Brand = {
@@ -40,6 +49,8 @@ export type Brand = {
   id: Scalars['String']
   name: Scalars['String']
   description: Scalars['String']
+  showSegments?: Maybe<Array<ShowSegment>>
+  userBrandRoles?: Maybe<Array<UserBrandRole>>
   ownerUser: User
 }
 
@@ -67,11 +78,18 @@ export type CreateBrandDto = {
   description: Scalars['String']
 }
 
+export type CreateLineItemsDto = {
+  orderId: Scalars['String']
+  skuId: Scalars['String']
+  amount: Scalars['Float']
+}
+
 export type CreateProductDto = {
   showSegmentId?: Maybe<Scalars['String']>
   brandId?: Maybe<Scalars['String']>
   name: Scalars['String']
   description: Scalars['String']
+  variantData: CreateVariantDto
 }
 
 export type CreateShowDto = {
@@ -85,6 +103,24 @@ export type CreateShowSegmentDto = {
   showId: Scalars['String']
   brandId: Scalars['String']
   title: Scalars['String']
+  productsIds: Array<Scalars['String']>
+}
+
+export type CreateShowWithSegmentDto = {
+  brandId: Scalars['String']
+  title: Scalars['String']
+  imageUrl: Scalars['String']
+  startDate: Scalars['DateTime']
+  endDate: Scalars['DateTime']
+  showSegment: ShowSegmentDto
+}
+
+export type CreateSkuDto = {
+  variantId?: Maybe<Scalars['String']>
+  name: Scalars['String']
+  COGS: Scalars['String']
+  friendlyName: Scalars['String']
+  stock: Scalars['Float']
 }
 
 export type CreateUserBrandRoleDto = {
@@ -104,6 +140,37 @@ export type CreateUserShowRoleDto = {
   streamTo: Scalars['Boolean']
 }
 
+export type CreateVariantDto = {
+  productId?: Maybe<Scalars['String']>
+  name: Scalars['String']
+  description: Scalars['String']
+  skuData: CreateSkuDto
+}
+
+export type CreateorderDto = {
+  showSegmentId: Scalars['String']
+  name: Scalars['String']
+  description: Scalars['String']
+}
+
+export type DeleteAddessOutputDto = {
+  __typename?: 'DeleteAddessOutputDto'
+  msg: Scalars['String']
+}
+
+export type DeletePaymentMethodOutputDto = {
+  __typename?: 'DeletePaymentMethodOutputDto'
+  msg: Scalars['String']
+}
+
+export type LineItem = {
+  __typename?: 'LineItem'
+  id: Scalars['String']
+  amount: Scalars['Float']
+  order: Order
+  sku: Sku
+}
+
 export type MessageEntity = {
   __typename?: 'MessageEntity'
   id: Scalars['String']
@@ -115,14 +182,25 @@ export type MessageEntity = {
 export type Mutation = {
   __typename?: 'Mutation'
   add_address: Address
-  add_brand: Brand
-  update_brand: Brand
+  delete_address: DeleteAddessOutputDto
+  addBrand: Brand
+  updateBrand: Brand
   addConsumerLead: ConsumerLead
   add_message: MessageEntity
+  addLineItems: LineItem
+  updateLineItems: LineItem
+  addOrder: Order
+  updateOrder: Order
   addProduct: Product
   update_product: Product
+  addVariant: Variant
+  update_variant: Variant
+  addSku: Sku
+  updateSku: Sku
   add_payment: Payment
   add_show: Show
+  addShowWithSegment: Show
+  create_or_update_show_stream: Show
   addShowSegment: ShowSegment
   updateShowSegment: ShowSegment
   add_show_your_style_entry: ShowYourStyleEntry
@@ -135,17 +213,24 @@ export type Mutation = {
   update_userbrandrole: UserBrandRole
   add_usershowrole: UserShowRole
   update_usershowrole: UserShowRole
+  deactivate_video: ShowYourStyleVideoIdEntry
+  add_payment_method: PaymentMethodEntity
+  delete_payment_method: DeletePaymentMethodOutputDto
 }
 
 export type MutationAdd_AddressArgs = {
   data: CreateAddressDto
 }
 
-export type MutationAdd_BrandArgs = {
+export type MutationDelete_AddressArgs = {
+  id: Scalars['String']
+}
+
+export type MutationAddBrandArgs = {
   data: CreateBrandDto
 }
 
-export type MutationUpdate_BrandArgs = {
+export type MutationUpdateBrandArgs = {
   data: UpdateBrandDto
 }
 
@@ -158,12 +243,44 @@ export type MutationAdd_MessageArgs = {
   showId: Scalars['String']
 }
 
+export type MutationAddLineItemsArgs = {
+  data: CreateLineItemsDto
+}
+
+export type MutationUpdateLineItemsArgs = {
+  data: UpdateLineItemsDto
+}
+
+export type MutationAddOrderArgs = {
+  data: CreateorderDto
+}
+
+export type MutationUpdateOrderArgs = {
+  data: UpdateorderDto
+}
+
 export type MutationAddProductArgs = {
   data: CreateProductDto
 }
 
 export type MutationUpdate_ProductArgs = {
   data: UpdateProductDto
+}
+
+export type MutationAddVariantArgs = {
+  data: CreateVariantDto
+}
+
+export type MutationUpdate_VariantArgs = {
+  data: UpdateVariantDto
+}
+
+export type MutationAddSkuArgs = {
+  data: CreateSkuDto
+}
+
+export type MutationUpdateSkuArgs = {
+  data: UpdateSkuDto
 }
 
 export type MutationAdd_PaymentArgs = {
@@ -173,6 +290,14 @@ export type MutationAdd_PaymentArgs = {
 
 export type MutationAdd_ShowArgs = {
   data: CreateShowDto
+}
+
+export type MutationAddShowWithSegmentArgs = {
+  data: CreateShowWithSegmentDto
+}
+
+export type MutationCreate_Or_Update_Show_StreamArgs = {
+  id: Scalars['String']
 }
 
 export type MutationAddShowSegmentArgs = {
@@ -225,6 +350,28 @@ export type MutationUpdate_UsershowroleArgs = {
   data: UpdateUserShowRoleDto
 }
 
+export type MutationDeactivate_VideoArgs = {
+  videoId: Scalars['String']
+}
+
+export type MutationAdd_Payment_MethodArgs = {
+  addPaymentDetails: AddPaymentMethodDto
+}
+
+export type MutationDelete_Payment_MethodArgs = {
+  id: Scalars['String']
+}
+
+export type Order = {
+  __typename?: 'Order'
+  id: Scalars['String']
+  name: Scalars['String']
+  description: Scalars['String']
+  user: User
+  showSegment: ShowSegment
+  lineItems?: Maybe<Array<LineItem>>
+}
+
 export type PaginationQueryDto = {
   limit: Scalars['Float']
   offset: Scalars['Float']
@@ -238,14 +385,26 @@ export type Payment = {
   quantity: Scalars['Float']
 }
 
+export type PaymentMethodEntity = {
+  __typename?: 'PaymentMethodEntity'
+  id: Scalars['ID']
+  timestamp: Scalars['DateTime']
+  paymentMethodId: Scalars['String']
+  addressId: Scalars['String']
+  cardName: Scalars['String']
+  is_deleted: Scalars['Boolean']
+  is_default: Scalars['Boolean']
+}
+
 export type Product = {
   __typename?: 'Product'
   id: Scalars['String']
   name: Scalars['String']
   description: Scalars['String']
   user: User
-  showSegments: Array<ShowSegment>
+  showSegments?: Maybe<Array<ShowSegment>>
   brand?: Maybe<Brand>
+  variants?: Maybe<Array<Variant>>
 }
 
 export type Query = {
@@ -259,16 +418,32 @@ export type Query = {
   consumerLeads: Array<ConsumerLead>
   messageEntity?: Maybe<MessageEntity>
   messageEntities: Array<MessageEntity>
+  lineItem?: Maybe<LineItem>
+  lineItems: Array<LineItem>
+  orderLineItems: Array<LineItem>
+  order?: Maybe<Order>
+  orders: Array<Order>
+  myOrders: Array<Order>
   product?: Maybe<Product>
   products: Array<Product>
   myProducts: Array<Product>
   brandProducts: Array<Product>
+  showProducts: Array<Product>
+  variant?: Maybe<Variant>
+  variants: Array<Variant>
+  brandVariants: Array<Variant>
+  sku?: Maybe<Sku>
+  skus: Array<Sku>
+  variantSkus: Array<Sku>
   payment?: Maybe<Payment>
   payments: Array<Payment>
   show?: Maybe<Show>
   shows: Array<Show>
+  brandShows: Array<Show>
+  active_shows: Array<Show>
   showSegment?: Maybe<ShowSegment>
   showSegments: Array<ShowSegment>
+  showSegmentByBrandAndShow: Array<ShowSegment>
   show_your_style_Entry?: Maybe<ShowYourStyleEntry>
   get_random_show_your_style_entry?: Maybe<ShowYourStyleEntry>
   show_your_style_entries: Array<ShowYourStyleEntry>
@@ -285,6 +460,7 @@ export type Query = {
   usershowrole?: Maybe<UserShowRole>
   usershowroles: Array<UserShowRole>
   my_usershowroles: Array<UserShowRole>
+  payment_methods: Array<PaymentMethodEntity>
 }
 
 export type QueryAddressArgs = {
@@ -315,6 +491,31 @@ export type QueryMessageEntityArgs = {
   messageEntityId: Scalars['String']
 }
 
+export type QueryLineItemArgs = {
+  lineitemsId: Scalars['String']
+}
+
+export type QueryLineItemsArgs = {
+  paginationQuery: PaginationQueryDto
+}
+
+export type QueryOrderLineItemsArgs = {
+  paginationQuery: PaginationQueryDto
+  orderId: Scalars['String']
+}
+
+export type QueryOrderArgs = {
+  orderId: Scalars['String']
+}
+
+export type QueryOrdersArgs = {
+  paginationQuery: PaginationQueryDto
+}
+
+export type QueryMyOrdersArgs = {
+  paginationQuery: PaginationQueryDto
+}
+
 export type QueryProductArgs = {
   productId: Scalars['String']
 }
@@ -332,6 +533,37 @@ export type QueryBrandProductsArgs = {
   brandId: Scalars['String']
 }
 
+export type QueryShowProductsArgs = {
+  paginationQuery: PaginationQueryDto
+  showId: Scalars['String']
+}
+
+export type QueryVariantArgs = {
+  variantId: Scalars['String']
+}
+
+export type QueryVariantsArgs = {
+  paginationQuery: PaginationQueryDto
+}
+
+export type QueryBrandVariantsArgs = {
+  paginationQuery: PaginationQueryDto
+  productId: Scalars['String']
+}
+
+export type QuerySkuArgs = {
+  skuId: Scalars['String']
+}
+
+export type QuerySkusArgs = {
+  paginationQuery: PaginationQueryDto
+}
+
+export type QueryVariantSkusArgs = {
+  paginationQuery: PaginationQueryDto
+  variantId: Scalars['String']
+}
+
 export type QueryPaymentArgs = {
   PaymentId: Scalars['String']
 }
@@ -340,8 +572,18 @@ export type QueryShowArgs = {
   showId: Scalars['String']
 }
 
+export type QueryBrandShowsArgs = {
+  paginationQuery: PaginationQueryDto
+  brandId: Scalars['String']
+}
+
 export type QueryShowSegmentArgs = {
   showsegmentId: Scalars['String']
+}
+
+export type QueryShowSegmentByBrandAndShowArgs = {
+  showId: Scalars['String']
+  brandId: Scalars['String']
 }
 
 export type QueryShow_Your_Style_EntryArgs = {
@@ -412,6 +654,7 @@ export type Show = {
   showSegments?: Maybe<Array<ShowSegment>>
   userShowRoles?: Maybe<Array<UserShowRole>>
   owner_user: User
+  is_broadcasting: Scalars['Boolean']
 }
 
 export type ShowSegment = {
@@ -422,6 +665,12 @@ export type ShowSegment = {
   show: Show
   ownerUser: User
   products: Array<Product>
+  orders?: Maybe<Array<Order>>
+}
+
+export type ShowSegmentDto = {
+  title: Scalars['String']
+  productsIds: Array<Scalars['String']>
 }
 
 export type ShowYourStyleEntry = {
@@ -443,6 +692,7 @@ export type ShowYourStyleVideoIdEntry = {
   error?: Maybe<Scalars['String']>
   json_data?: Maybe<Scalars['String']>
   urls?: Maybe<Scalars['String']>
+  inactive_date?: Maybe<Scalars['DateTime']>
 }
 
 export type ShowYourStyleViewRecord = {
@@ -462,10 +712,26 @@ export type ShowYourStyleVote = {
   view_duration: Scalars['Float']
 }
 
+export type Sku = {
+  __typename?: 'Sku'
+  id: Scalars['String']
+  name: Scalars['String']
+  friendlyName: Scalars['String']
+  COGS: Scalars['String']
+  stock: Scalars['Float']
+  variant: Variant
+  skus?: Maybe<Array<LineItem>>
+}
+
 export type UpdateBrandDto = {
   id: Scalars['String']
   name: Scalars['String']
   description: Scalars['String']
+}
+
+export type UpdateLineItemsDto = {
+  id: Scalars['String']
+  amount: Scalars['Float']
 }
 
 export type UpdateProductDto = {
@@ -477,6 +743,13 @@ export type UpdateProductDto = {
 export type UpdateShowSegmentDto = {
   id: Scalars['String']
   title: Scalars['String']
+}
+
+export type UpdateSkuDto = {
+  id: Scalars['String']
+  friendlyName: Scalars['String']
+  COGS: Scalars['String']
+  stock: Scalars['Float']
 }
 
 export type UpdateUserBrandRoleDto = {
@@ -501,6 +774,18 @@ export type UpdateUserShowRoleDto = {
   stream_to: Scalars['Boolean']
 }
 
+export type UpdateVariantDto = {
+  id: Scalars['String']
+  name: Scalars['String']
+  description: Scalars['String']
+}
+
+export type UpdateorderDto = {
+  id: Scalars['String']
+  name: Scalars['String']
+  description: Scalars['String']
+}
+
 export type User = {
   __typename?: 'User'
   id: Scalars['ID']
@@ -510,6 +795,7 @@ export type User = {
   verification_code_time_sent: Scalars['String']
   token?: Maybe<Scalars['String']>
   profileUrl?: Maybe<Scalars['String']>
+  stripe_customer_id?: Maybe<Scalars['String']>
 }
 
 export type UserBrandRole = {
@@ -531,6 +817,35 @@ export type UserShowRole = {
   stream_to: Scalars['Boolean']
   user: User
   show: Show
+}
+
+export type Variant = {
+  __typename?: 'Variant'
+  id: Scalars['String']
+  name: Scalars['String']
+  description: Scalars['String']
+  product: Product
+  skus?: Maybe<Array<Sku>>
+}
+
+export type AddAddressMutationVariables = Exact<{
+  address: CreateAddressDto
+}>
+
+export type AddAddressMutation = { __typename?: 'Mutation' } & {
+  add_address: { __typename?: 'Address' } & Pick<
+    Address,
+    | 'id'
+    | 'city'
+    | 'country'
+    | 'line1'
+    | 'line2'
+    | 'postal_code'
+    | 'state'
+    | 'name'
+    | 'phone'
+    | 'is_deleted'
+  >
 }
 
 export type AddMessageMutationVariables = Exact<{
@@ -628,6 +943,64 @@ export type VerifyCodeQuery = { __typename?: 'Query' } & {
   >
 }
 
+export const AddAddressDocument = gql`
+  mutation AddAddress($address: CreateAddressDto!) {
+    add_address(data: $address) {
+      id
+      city
+      country
+      line1
+      line2
+      postal_code
+      state
+      name
+      phone
+      is_deleted
+    }
+  }
+`
+export type AddAddressMutationFn = Apollo.MutationFunction<
+  AddAddressMutation,
+  AddAddressMutationVariables
+>
+
+/**
+ * __useAddAddressMutation__
+ *
+ * To run a mutation, you first call `useAddAddressMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddAddressMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addAddressMutation, { data, loading, error }] = useAddAddressMutation({
+ *   variables: {
+ *      address: // value for 'address'
+ *   },
+ * });
+ */
+export function useAddAddressMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    AddAddressMutation,
+    AddAddressMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<AddAddressMutation, AddAddressMutationVariables>(
+    AddAddressDocument,
+    options,
+  )
+}
+export type AddAddressMutationHookResult = ReturnType<
+  typeof useAddAddressMutation
+>
+export type AddAddressMutationResult = Apollo.MutationResult<AddAddressMutation>
+export type AddAddressMutationOptions = Apollo.BaseMutationOptions<
+  AddAddressMutation,
+  AddAddressMutationVariables
+>
 export const AddMessageDocument = gql`
   mutation AddMessage($message: String!, $showID: String!) {
     add_message(message: $message, showId: $showID) {
