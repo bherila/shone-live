@@ -48,7 +48,6 @@ export class User {
   @Column({ nullable: true })
   profileUrl: string
 
-  @Field({ name: 'stripe_customer_id', nullable: true })
   @Column({ name: 'stripe_customer_id', nullable: true, default: null })
   stripeCustomerId: string
 

@@ -1,5 +1,13 @@
 import { HttpException, HttpStatus, UseGuards } from '@nestjs/common'
-import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql'
+import {
+  Args,
+  Context,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql'
 
 import { AuthGuard } from '../common/auth.guards'
 import { UpdateUserEntityDto } from './dto/update-user.dto'
@@ -29,6 +37,16 @@ export class UserResolver {
     } catch (error) {
       throw new HttpException(JSON.stringify(error), HttpStatus.BAD_REQUEST)
     }
+  }
+
+  @ResolveField('stripeCustomerId', (returns) => [String], {
+    description:
+      "Gets the stripe customer ID, automatically creating one if it doesn't exist",
+  })
+  async resolveStripeCustomerIdAsync(
+    @Parent() user: User,
+  ): Promise<string> {
+    return this.usersService.getOrCreateStripeCustomerIdAsync(user)
   }
 
   @Query(() => User)

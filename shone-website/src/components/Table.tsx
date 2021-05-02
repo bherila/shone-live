@@ -41,7 +41,7 @@ const useStyles = makeStyles({
 })
 
 const StyledTableRow = withStyles((theme) => ({
-  root: ({ onClick }: { onClick: (e) => void }) => ({
+  root: ({ onClick }: { onClick?: (e) => void }) => ({
     '&:nth-of-type(odd)': {
       backgroundColor: theme.palette.action.hover,
     },

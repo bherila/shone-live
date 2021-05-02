@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   HttpException,
   HttpStatus,
   Injectable,
@@ -19,11 +20,6 @@ export class UserService {
     @InjectRepository(User) private readonly userRepository: UserRepository,
   ) {}
 
-  stripe = new Stripe(process.env.STRIPE_KEY.toString(), {
-    apiVersion: '2020-08-27',
-    typescript: true,
-  })
-
   async create(phone: string) {
     if (!phone) {
       throw new UnprocessableEntityException(
@@ -39,27 +35,45 @@ export class UserService {
       userDetail = await this.userRepository.save(newUser)
     }
 
-    if (!userDetail.stripeCustomerId) {
-      const stripeCustomer = await this.stripe.customers.create({})
-      await this.userRepository.update(
-        { id: userDetail.id },
-        {
-          stripeCustomerId: stripeCustomer.id,
-        },
-      )
-    }
     const code = Math.floor(Math.random() * 999999)
       .toString()
       .padStart(6, '0')
     await this.sendVerificationCode(phone, code)
-    this.userRepository.update(userDetail.id, {
+    await this.userRepository.update(userDetail.id, {
       verificationCodeTimeSent: new Date().toUTCString(),
       verificationCode: code,
     })
     return 'code send successfully'
   }
 
-  async sendVerificationCode(phone, code) {
+  // Gets or creates the stripe customer ID (if not exist)
+  async getOrCreateStripeCustomerIdAsync(userEntity: User): Promise<string> {
+    if (userEntity.stripeCustomerId !== null) {
+      return userEntity.stripeCustomerId
+    } else {
+      const stripe = new Stripe(process.env.STRIPE_KEY?.toString(), {
+        apiVersion: '2020-08-27',
+        typescript: true,
+      })
+      const stripeCustomer = await stripe.customers.create({})
+      await this.userRepository.update(
+        { id: userEntity.id },
+        {
+          stripeCustomerId: stripeCustomer.id,
+        },
+      )
+      return stripeCustomer.id
+    }
+  }
+
+  // Sends a verification code to the user via SMS.
+  async sendVerificationCode(phone: string, code: string) {
+    const validPhone = /^\+9?1/
+    if (!validPhone.test(phone)) {
+      throw new BadRequestException(
+        'Phone number only supported if it starts with +1 or +91',
+      )
+    }
     try {
       const client = Twilio(
         process.env.TWILIO_ACCOUNT_SID,
