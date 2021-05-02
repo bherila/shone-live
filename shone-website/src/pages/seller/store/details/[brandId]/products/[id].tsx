@@ -126,7 +126,7 @@ export default function AddEditProductPage() {
       } else {
         await addEditProduct(newProduct)
       }
-      if (id)
+      if (id !== 'new')
         getProduct({
           variables: { productId: id },
         })

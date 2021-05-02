@@ -52,7 +52,7 @@ export default function AddEditShow() {
   }, [brandId])
 
   useEffect(() => {
-    if (id) {
+    if (id && id !== 'new') {
       reset({ title: '' })
       getShow({ variables: { showId: id } })
     }
@@ -90,7 +90,6 @@ export default function AddEditShow() {
   }
 
   const addEditShow = async (show) => {
-    console.log(show)
     try {
       await (isNew ? addShow : updateShow)({
         variables: isNew
@@ -100,7 +99,7 @@ export default function AddEditShow() {
     } catch (e) {
       console.log('e', e)
     }
-    getShow({ variables: { showId: id } })
+    if (id !== 'new') getShow({ variables: { showId: id } })
   }
 
   const onSubmit = (data) => {
@@ -211,7 +210,7 @@ export default function AddEditShow() {
               bottomActions={[
                 {
                   handleClick: onAddShowSegmentClick,
-                  name: 'Add Variant',
+                  name: 'Add Show Segment',
                 },
               ]}
               styleProps={{ height: 300 }}

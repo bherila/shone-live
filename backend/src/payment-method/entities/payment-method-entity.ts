@@ -26,7 +26,7 @@ export class PaymentMethodEntity {
   @Field()
   @CreateDateColumn({
     type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP(6)',
+    default: () => 'CURRENT_TIMESTAMP',
     nullable: false,
   })
   readonly timestamp: Date

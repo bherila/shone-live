@@ -1,4 +1,8 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common'
+import {
+  ForbiddenException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 
 import { message } from '../common/message'
@@ -37,6 +41,7 @@ export class AddressService {
       where: { user: { id: userId } },
     })
   }
+
   findAll(userId) {
     return this.addressRepository.find({
       relations: ['user'],
@@ -44,17 +49,16 @@ export class AddressService {
     })
   }
 
-  async deleteAddress(id, userId) {
-    await this.userRepository.findOneOrFail(userId)
-    await this.addressRepository.findOneOrFail(id)
+  async deleteAddress(id, authenticatedUserId) {
+    const address = await this.addressRepository.findOrFail(id)
 
-    //check for address is already deleted
-    const getAddressDetails = await this.addressRepository.findOne({
-      id,
-      isDeleted: true,
-    })
+    // check address is owned by the user
+    if (address.user.id !== authenticatedUserId) {
+      throw new ForbiddenException('Address is not owned by the user')
+    }
 
-    if (getAddressDetails) {
+    //check if address is already deleted
+    if (address.isDeleted) {
       throw new InternalServerErrorException(
         `Address for id - ${id} is already deleted`,
       )
@@ -74,7 +78,7 @@ export class AddressService {
     addressData: CreateDefaultAddressDto,
     userId: string,
   ): Promise<Address> {
-    const user = await this.userRepository.findOneOrFail(userId)
+    const user = await this.userRepository.findOrFail(userId)
     const address = this.addressRepository.create({
       user,
       ...addressData,
