@@ -39,15 +39,15 @@ export const Vote = (): JSX.Element => {
 
   const prizeData = [
     {
-      image: '/bag1.png',
+      imageUrl: '/bag1.png',
       prize: '100$',
     },
     {
-      image: '/bag2.png',
+      imageUrl: '/bag2.png',
       prize: '100$',
     },
     {
-      image: '/bag3.png',
+      imageUrl: '/bag3.png',
       prize: '100$',
     },
   ]

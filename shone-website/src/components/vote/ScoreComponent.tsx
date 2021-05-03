@@ -1,6 +1,6 @@
 import React from 'react'
 interface props {
-  setStep?: any
+  setStep?: (int) => void
   totalPoints?: any
   invites?: any
 }

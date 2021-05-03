@@ -2,7 +2,20 @@ import React from 'react'
 import CustomTextField from '../CommonComponents/CustomTextField'
 import CustomButton from '../CommonComponents/CustomButton'
 
-const UserInformation = ({ setStep, prizeData }): JSX.Element => {
+interface Prize {
+  prize: number
+  imageUrl: string
+}
+
+interface UserInformationProps {
+  setStep: (int) => void
+  prizeData: Prize[]
+}
+
+const UserInformation = ({
+  setStep,
+  prizeData,
+}: UserInformationProps): JSX.Element => {
   return (
     <>
       <div className="px-4 pt-6 min-h-screen flex flex-col">
@@ -22,8 +35,8 @@ const UserInformation = ({ setStep, prizeData }): JSX.Element => {
             {prizeData.map((prize) => (
               <div className="w-1/3 px-3">
                 <div className="bg-gray p-2 rounded-2xl text-center">
-                  <img src={prize.image} />
-                  <span className="text-gray text-sm">{prize.prize}</span>
+                  <img src={prize.imageUrl} />
+                  <span className="text-gray text-sm">{prize.prize}$</span>
                 </div>
               </div>
             ))}

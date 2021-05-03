@@ -59,6 +59,7 @@
     "react-dom": "^17.0.1",
     "react-hook-form": "^7.1.1",
     "react-icons": "^4.2.0",
+    "react-otp-pin-code": "^1.0.8",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^6.6.6",

@@ -1,8 +1,9 @@
 import React from 'react'
 import Image from 'next/image'
-import OTPInput from '../verification'
 import { Button, Input } from '@material-ui/core'
 import CustomButton from '../CommonComponents/CustomButton'
+import MyComponent from 'react-otp-pin-code'
+import 'react-otp-pin-code/dist/index.css'
 
 const VerificationPage = ({ setStep }): JSX.Element => {
   return (
@@ -19,7 +20,7 @@ const VerificationPage = ({ setStep }): JSX.Element => {
           </span>
         </div>
         <div>
-          <OTPInput
+          <MyComponent
             autoFocus
             isNumberInput
             length={6}

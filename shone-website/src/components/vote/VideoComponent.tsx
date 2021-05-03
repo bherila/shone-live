@@ -12,7 +12,10 @@ const VideoComponent = ({ setStep }: Props): JSX.Element => {
       <Header />
       <div className="video-wrap">
         <video className="w-full h-screen object-cover" autoPlay loop muted>
-          <source src="/test.mp4" type="video/mp4" />
+          <source
+            src="https://s3-eu-west-1.amazonaws.com/video.gallereplay.com/artistarea/Lighthouse%20stands%20in%20Istanbul%E2%80%99s%20harbour_0554659b-5dc1-43d6-8a93-b31ec6b67f63/Cinemagraph_plain/1920x1080/cinemagraph.mp4"
+            type="video/mp4"
+          />
         </video>
       </div>
       <div className="fixed bottom-0 left-0 right-0 p-4 text-center">
